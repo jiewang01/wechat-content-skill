@@ -2,6 +2,9 @@
 
 块级节点 id 为 node_N，语义组件节点 id 为 component_N —— 修复循环据此定位（H3）。
 `>` 块引用解析为 QuoteNode；序列化时统一规范化为 :::quote 标记形式。
+
+标记语法常量（MARKER_RE / ATTR_RE / 列表正则）公开导出：
+组件 lint 复用同一份语法定义，保证 lint 与 parser 永不漂移。
 """
 
 from __future__ import annotations
@@ -35,11 +38,11 @@ class ParseError(ValueError):
         self.line = line
 
 
-_MARKER_RE = re.compile(r"^:::(\w+)((?:\s+\w+=\"[^\"]*\")*)\s*$")
-_ATTR_RE = re.compile(r"(\w+)=\"([^\"]*)\"")
+MARKER_RE = re.compile(r"^:::(\w+)((?:\s+\w+=\"[^\"]*\")*)\s*$")
+ATTR_RE = re.compile(r"(\w+)=\"([^\"]*)\"")
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.*)$")
-_UNORDERED_RE = re.compile(r"^[-*+]\s+(.*)$")
-_ORDERED_RE = re.compile(r"^\d+[.、)]\s+(.*)$")
+UNORDERED_RE = re.compile(r"^[-*+]\s+(.*)$")
+ORDERED_RE = re.compile(r"^\d+(?:[.]\s+|[、)]\s*)(.+)$")
 _IMAGE_RE = re.compile(r"^!\[([^\]]*)\]\(([^)]+)\)\s*$")
 _HR_RE = re.compile(r"^(?:-{3,}|\*{3,}|_{3,})\s*$")
 _QUOTE_PREFIX_RE = re.compile(r"^>\s?(.*)$")
@@ -51,7 +54,7 @@ def _parse_card_items(body_lines: list[str], line: int) -> list[str]:
         s = raw.strip()
         if not s:
             continue
-        m = _UNORDERED_RE.match(s) or _ORDERED_RE.match(s)
+        m = UNORDERED_RE.match(s) or ORDERED_RE.match(s)
         if not m:
             raise ParseError(
                 "invalid_card_content",
@@ -71,8 +74,8 @@ def _is_block_boundary(s: str) -> bool:
         or _HEADING_RE.match(s)
         or _HR_RE.match(s)
         or _IMAGE_RE.match(s)
-        or _UNORDERED_RE.match(s)
-        or _ORDERED_RE.match(s)
+        or UNORDERED_RE.match(s)
+        or ORDERED_RE.match(s)
     )
 
 
@@ -118,10 +121,10 @@ def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> Conte
             )
             continue
 
-        marker = _MARKER_RE.match(stripped)
+        marker = MARKER_RE.match(stripped)
         if marker:
             name = marker.group(1)
-            attrs = dict(_ATTR_RE.findall(marker.group(2)))
+            attrs = dict(ATTR_RE.findall(marker.group(2)))
             try:
                 validate_marker(name, attrs)
             except MarkerValidationError as exc:
@@ -170,6 +173,17 @@ def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> Conte
                 )
             continue
 
+        if stripped.startswith(":::"):
+            if stripped == ":::":
+                raise ParseError(
+                    "stray_marker", "未配对的 ::: 结束标记（前面没有对应的开始标记）", i + 1
+                )
+            raise ParseError(
+                "invalid_marker_syntax",
+                f'{stripped!r} 不是合法的标记行（应为 :::name key="value" 形式）',
+                i + 1,
+            )
+
         if stripped.startswith(">"):
             quote_lines: list[str] = []
             while i < n and lines[i].strip().startswith(">"):
@@ -200,17 +214,15 @@ def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> Conte
 
         image = _IMAGE_RE.match(stripped)
         if image:
-            nodes.append(
-                ImageNode(node_id=next_block_id(), src=image.group(2), alt=image.group(1))
-            )
+            nodes.append(ImageNode(node_id=next_block_id(), src=image.group(2), alt=image.group(1)))
             i += 1
             continue
 
-        unordered = _UNORDERED_RE.match(stripped)
-        ordered = _ORDERED_RE.match(stripped) if not unordered else None
+        unordered = UNORDERED_RE.match(stripped)
+        ordered = ORDERED_RE.match(stripped) if not unordered else None
         if unordered or ordered:
             is_ordered = bool(ordered)
-            pattern = _ORDERED_RE if is_ordered else _UNORDERED_RE
+            pattern = ORDERED_RE if is_ordered else UNORDERED_RE
             items: list[str] = []
             j = i
             while j < n:
@@ -237,9 +249,7 @@ def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> Conte
         while j < n and not _is_block_boundary(lines[j].strip()):
             para_lines.append(lines[j].strip())
             j += 1
-        nodes.append(
-            ParagraphNode(node_id=next_block_id(), text="\n".join(para_lines))
-        )
+        nodes.append(ParagraphNode(node_id=next_block_id(), text="\n".join(para_lines)))
         i = j
 
     texts: list[str] = []
@@ -300,9 +310,7 @@ def serialize(ast: ContentAST) -> str:
             blocks.append(f"```{node.language}\n{node.text}\n```")
         elif kind == "list":
             if node.ordered:
-                blocks.append(
-                    "\n".join(f"{idx}. {item}" for idx, item in enumerate(node.items, 1))
-                )
+                blocks.append("\n".join(f"{idx}. {item}" for idx, item in enumerate(node.items, 1)))
             else:
                 blocks.append("\n".join(f"- {item}" for item in node.items))
         elif kind == "hr":

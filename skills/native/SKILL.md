@@ -50,6 +50,82 @@ type ∈ info | warning | tip | danger；title 可选。
 - [components/callout.md](components/callout.md)
 - [components/card.md](components/card.md)
 
+## lint 错误类型速查
+
+组件 lint（`validators/component/`）容错扫描，一次报告全部问题；
+`node` 为 `component_N`，`property` 为涉事属性 —— 两者是定向修复的定位键（H3）。
+
+| error_type | 触发 |
+|------------|------|
+| `unknown_component` | 使用注册表之外的组件名 |
+| `unsupported_attribute` | 组件不支持的属性 |
+| `missing_required_prop` | 缺少必填属性 |
+| `invalid_prop_value` | 属性值不在枚举内（如 callout 的 type） |
+| `invalid_nesting` | `:::` 块内嵌另一个 `:::` 块 |
+| `invalid_card_content` | card 正文不是列表 |
+| `unclosed_marker` | `:::` 开始标记未闭合 |
+| `stray_marker` | 出现未配对的 `:::` 结束标记 |
+| `invalid_marker_syntax` | 标记行语法非法（如 `:::note foo`） |
+| `theme_component_missing` | 主题未启用组件或缺样式定义 |
+| `unclosed_code_block` | 代码围栏未闭合 |
+
+HTML 层（`validators/html/`，蓝图 9.3）与公众号平台层（`validators/wechat/`）
+在渲染后执行，`validate_wechat_html()` 一次组合九项检查；
+`property` 形如 `display:grid`，同样是定向修复的定位键。
+
+| error_type | 层 | 触发 |
+|------------|----|------|
+| `forbidden_tag` | html | 标签不在 {section, span, strong, em, img} |
+| `style_block` | html | 出现 `<style>`/`<link>`（样式必须全部内联） |
+| `disallowed_attribute` | html | 属性不在 {style, src, alt}（如 class/id） |
+| `html_structure` | html | 标签交叉、未闭合或多余结束标签 |
+| `unsupported_css` | html | CSS 属性不在白名单，或 `display` 取值非 block/inline/inline-block |
+| `empty_node` | html | 节点无文本、无子元素（hr 的单空格 section 豁免） |
+| `broken_image` | gzh | 图片缺少 src |
+| `insecure_image_url` | gzh | 图片地址非 `https://` 开头 |
+| `missing_image_dimensions` | gzh | 图片 style 缺 width 声明 |
+| `external_resource` | gzh | `<script>`/`<iframe>` 等引用标签或 style 中的 `url()` |
+| `html_too_large` | gzh | UTF-8 体积超过 1MB 上限（可配置） |
+
+Content 层（`validators/content/`，蓝图 9.1 v1 四项）在成稿后、渲染前执行：
+结构完整性 / 字数 / AI 味复检 / 引用 ID 一致性。AI 味复检不信任
+`draft.humanize` 缓存而是重跑检测器；`research` 缺省时跳过引用检查（降级）；
+字数口径与 parser 一致（`core.utils.estimate_word_count`）。
+
+| error_type | 触发 |
+|------------|------|
+| `structure_incomplete` | 标题为空 / 正文为空 / 正文无 Markdown 标题行 |
+| `word_count_mismatch` | 声明字数与实际相差超过 max(20, 5%) |
+| `word_count_below_target` | 实际字数低于大纲目标的 50%（warning） |
+| `ai_flavor_blacklist_phrase` | AI 高频套话命中（error） |
+| `ai_flavor_paired_phrase` | 同句关联句式如「随着…的发展」（error） |
+| `ai_flavor_long_sentence` | 单句超 60 字（warning，evidence 即 property） |
+| `ai_flavor_avg_sentence_length` | 平均句长超 35 字（warning） |
+| `ai_flavor_long_paragraph` | 段落超 200 字（warning） |
+| `ai_flavor_repetition` | 5-gram 重复出现 ≥3 次（warning） |
+| `unknown_source_ref` | Fact.source_ids 引用不存在的 source_id |
+| `unknown_fact_ref` | 文章或大纲小节引用不存在的 fact_id |
+
+## 修复循环（渲染层）
+
+lint 报错之后由 `core/workflow/repair.py` 执行定向修复（蓝图十章）：
+
+- 输入是渲染段（`node_id` + `html`），错误归属**以段为准**——段的 `node_id`
+  覆盖 lint 返回的 node，是 H3 定位键的唯一事实来源。
+- 修复策略全部确定性（H8）：
+
+| 错误场景 | 修复动作 |
+|----------|----------|
+| `display` 受限取值（如 `display:grid`） | 替换为回退值 `display:block` |
+| 白名单外 CSS 属性（如 `position:fixed`） | 删除该声明，其余声明保留 |
+| 删除后 `style` 为空 | 连 `style` 属性一并移除 |
+| 其他错误类型（如 `forbidden_tag`） | 无确定性修复手段，原样留档 |
+
+- 每轮修复后全量复检，至多 3 轮（H4）；无可修复项或无进展提前终止。
+- 3 轮后仍 failed → ErrorReport（`gate="render"`）留档，发布门禁拦截（H5）。
+- `repair_rendered(ast, renderer)` 一步完成渲染 + 修复闭环；
+  `RepairOutcome.repaired_nodes` 记录被改动的节点（H6 审计线索）。
+
 ## 参考资料
 
-- [../../../references/adversarial-constraints.md](../../../references/adversarial-constraints.md)
+- [../../references/adversarial-constraints.md](../../references/adversarial-constraints.md)

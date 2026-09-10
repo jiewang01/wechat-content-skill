@@ -28,6 +28,7 @@ include = ["core*", "renderer*", "validators*", "integrations*", "skills*"]
 
 [tool.setuptools.package-data]
 "renderer.themes" = ["default/*.yaml"]
+"skills.content.humanize" = ["rules.yaml"]
 "validators.content" = ["rules/*.yaml"]
 "validators.wechat" = ["rules/*.yaml"]
 
@@ -40,4 +41,5 @@ select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q"

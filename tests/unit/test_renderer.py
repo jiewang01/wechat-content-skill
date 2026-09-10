@@ -1,0 +1,174 @@
+"""渲染器单测：微信安全白名单、禁用模式、主题驱动样式、纯文本降级、确定性。"""
+
+import re
+import shutil
+
+import pytest
+import yaml
+
+from renderer.ast import parse
+from renderer.html import HtmlRenderer
+from renderer.themes import THEMES_DIR, ThemeError, load_theme
+
+DOC = """# 标题一
+
+普通段落，含 **加粗**、*斜体*、`code` 与 [链接](https://example.com)。
+
+:::note
+说明文字。
+:::
+
+:::quote cite="张三"
+原话内容。
+:::
+
+:::callout type="warning" title="注意"
+警告正文。
+:::
+
+:::card title="要点卡" footer="完"
+- 要点一
+- 要点二
+:::
+
+![配图](https://example.com/i.png)
+
+```python
+x = 1
+y = 2
+```
+
+- 项目甲
+- 项目乙
+
+1. 步骤一
+2. 步骤二
+
+---
+
+> 引用块形式。
+"""
+
+
+@pytest.fixture()
+def rendered() -> str:
+    return HtmlRenderer().render(parse(DOC))
+
+
+def test_tag_whitelist(rendered: str):
+    tags = {t.lstrip("/") for t in re.findall(r"</?([a-zA-Z]+)", rendered)}
+    assert tags <= {"section", "span", "strong", "em", "img"}
+
+
+def test_forbidden_patterns_absent(rendered: str):
+    forbidden = ("<div", "<style", "<script", "<br", "<hr", "<a ", "class=", "id=", "javascript:")
+    for pattern in forbidden:
+        assert pattern not in rendered
+
+
+def test_output_is_deterministic():
+    renderer = HtmlRenderer()
+    ast = parse(DOC)
+    assert renderer.render(ast) == renderer.render(ast)
+
+
+def test_root_section_carries_body_styles(rendered: str):
+    assert rendered.startswith('<section style="')
+    assert "font-size:" in rendered
+    assert "line-height:" in rendered
+    assert "word-break:" in rendered
+
+
+def test_inline_markdown_conversion(rendered: str):
+    assert "<strong>加粗</strong>" in rendered
+    assert "<em>斜体</em>" in rendered
+    assert "链接（https://example.com）" in rendered
+    assert rendered.count("<span") >= 1
+
+
+def test_html_escaping():
+    ast = parse('<script>alert("x")</script> 与 & 符号')
+    out = HtmlRenderer().render(ast)
+    assert "<script" not in out
+    assert "&lt;script&gt;" in out
+    assert "&amp;" in out
+
+
+def test_hr_is_background_section_not_hr_tag(rendered: str):
+    assert "height:1px" in rendered
+    assert "background:" in rendered
+
+
+def test_code_block_uses_pre_wrap_without_br(rendered: str):
+    assert "white-space:pre-wrap" in rendered
+    assert "x = 1\ny = 2" in rendered
+    assert "<br" not in rendered
+
+
+def test_image_inline_styles(rendered: str):
+    assert '<img src="https://example.com/i.png"' in rendered
+    assert "max-width:" in rendered
+
+
+def test_list_markers_rendered(rendered: str):
+    assert "•" in rendered
+    assert "1." in rendered and "2." in rendered
+
+
+def test_include_title_flag():
+    ast = parse("正文。", title="独特标题甲乙丙")
+    without = HtmlRenderer().render(ast)
+    with_title = HtmlRenderer().render(ast, include_title=True)
+    assert "独特标题甲乙丙" not in without
+    assert "独特标题甲乙丙" in with_title
+
+
+def test_plain_text_degradation():
+    plain = HtmlRenderer().render_plain_text(parse(DOC))
+    assert "<" not in plain
+    assert "[" not in plain and "**" not in plain and "`" not in plain
+    assert "加粗" in plain and "链接" in plain
+    assert "—— 张三" in plain
+    assert "注意" in plain and "警告正文。" in plain
+    assert "- 要点一" in plain and "要点二" in plain
+    assert "步骤一" in plain
+
+
+def test_callout_variants_render_distinctly():
+    renderer = HtmlRenderer()
+    outputs = []
+    for variant in ("info", "warning", "tip", "danger"):
+        ast = parse(f':::callout type="{variant}" title="标题{variant}"\n正文{variant}。\n:::')
+        out = renderer.render(ast)
+        assert f"标题{variant}" in out
+        assert f"正文{variant}。" in out
+        outputs.append(out)
+    assert len(set(outputs)) == 4
+
+
+def test_unknown_theme_raises():
+    with pytest.raises(ThemeError):
+        load_theme("no-such-theme")
+
+
+def test_custom_theme_changes_styles_without_code(tmp_path):
+    shutil.copytree(THEMES_DIR / "default", tmp_path / "custom")
+    typo = tmp_path / "custom" / "typography.yaml"
+    data = yaml.safe_load(typo.read_text(encoding="utf-8"))
+    data.setdefault("h1", {})["color"] = "#123456"
+    typo.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+
+    theme = load_theme("custom", themes_dir=tmp_path)
+    out = HtmlRenderer(theme).render(parse("# 大标题\n\n正文。"))
+    assert "#123456" in out
+
+
+def test_theme_with_disabled_required_component_raises(tmp_path):
+    shutil.copytree(THEMES_DIR / "default", tmp_path / "broken")
+    theme_yaml = tmp_path / "broken" / "theme.yaml"
+    data = yaml.safe_load(theme_yaml.read_text(encoding="utf-8"))
+    data["components"]["note"] = False
+    theme_yaml.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+
+    with pytest.raises(ThemeError, match="未启用必需组件"):
+        load_theme("broken", themes_dir=tmp_path)

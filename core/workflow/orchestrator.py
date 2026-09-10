@@ -24,7 +24,7 @@ def new_run_id() -> str:
 @dataclass(frozen=True)
 class Stage:
     entry: WorkflowState
-    func: Callable[["WorkflowRun"], None]
+    func: Callable[[WorkflowRun], None]
 
 
 class WorkflowRun:
@@ -76,7 +76,9 @@ class WorkflowRun:
     def artifact_typed(self, name: str, model_cls: type) -> object:
         return model_cls.model_validate(self.artifact(name).model_dump())
 
-    def record_round(self, attack: AttackReport, defense: DefenseReport | None, verdict: Verdict) -> None:
+    def record_round(
+        self, attack: AttackReport, defense: DefenseReport | None, verdict: Verdict
+    ) -> None:
         self.checkpoint.adversarial_history.append(
             AdversarialRound(
                 gate=attack.gate,
@@ -96,7 +98,7 @@ class WorkflowRun:
         )
 
     @classmethod
-    def resume(cls, run_id: str, store: CheckpointStore) -> "WorkflowRun":
+    def resume(cls, run_id: str, store: CheckpointStore) -> WorkflowRun:
         checkpoint = store.load_checkpoint(run_id)
         run = cls(
             run_id=run_id,

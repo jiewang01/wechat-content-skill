@@ -1,0 +1,56 @@
+{
+  "run_id": "run_20260910_001",
+  "created_at": "2026-09-10T13:42:07.718435Z",
+  "topic": "缓存穿透",
+  "intent": "explainer",
+  "audience": "初中级后端工程师",
+  "sources": [
+    {
+      "run_id": "run_20260910_001",
+      "created_at": "2026-09-10T13:42:07.718335Z",
+      "source_id": "src_001",
+      "title": "Redis 官方文档：缓存模式",
+      "url": "https://redis.io/docs/latest/develop/patterns/cache/",
+      "credibility": 0.9,
+      "published_at": "2025-03-01"
+    },
+    {
+      "run_id": "run_20260910_001",
+      "created_at": "2026-09-10T13:42:07.718415Z",
+      "source_id": "src_002",
+      "title": "工程博客：布隆过滤器在网关层的实践",
+      "url": "https://engineering.example.com/bloom-filter-gateway",
+      "credibility": 0.7,
+      "published_at": "2025-06-15"
+    }
+  ],
+  "facts": [
+    {
+      "run_id": "run_20260910_001",
+      "created_at": "2026-09-10T13:42:07.718421Z",
+      "fact_id": "fact_001",
+      "claim": "缓存穿透指请求的数据既不在缓存、也不在数据库中，流量会绕过缓存直接压到数据库。",
+      "source_ids": [
+        "src_001"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "run_id": "run_20260910_001",
+      "created_at": "2026-09-10T13:42:07.718428Z",
+      "fact_id": "fact_002",
+      "claim": "布隆过滤器能在常数时间内判断一个键一定不存在或可能存在，误判只是多查一次。",
+      "source_ids": [
+        "src_001",
+        "src_002"
+      ],
+      "confidence": 0.8
+    }
+  ],
+  "angles": [
+    "从一次线上不可用事故讲起",
+    "两种解法的成本对比",
+    "组合使用的工程惯例"
+  ],
+  "degraded": false
+}

@@ -47,4 +47,4 @@ description: wechat-content-skill 的研究子技能：搜索、阅读、提取�
 ## 参考资料
 
 - [references/source-credibility.md](references/source-credibility.md)
-- [references/adversarial-constraints.md](../../../references/adversarial-constraints.md)（硬约束 H1–H8）
+- [references/adversarial-constraints.md](../../references/adversarial-constraints.md)（硬约束 H1–H8）

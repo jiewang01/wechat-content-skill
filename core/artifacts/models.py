@@ -28,7 +28,9 @@ class Source(ArtifactBase):
 
 
 class Fact(ArtifactBase):
-    fact_id: str = Field(description="Stable id referenced by ArticleDraft.fact_ids, e.g. fact_001.")
+    fact_id: str = Field(
+        description="Stable id referenced by ArticleDraft.fact_ids, e.g. fact_001."
+    )
     claim: str
     source_ids: list[str] = Field(default_factory=list)
     confidence: float = Field(default=0.5, ge=0.0, le=1.0)
@@ -43,7 +45,10 @@ class ResearchResult(ArtifactBase):
     angles: list[str] = Field(default_factory=list)
     degraded: bool = Field(
         default=False,
-        description="True when search was unavailable and existing sources were reused (graceful degradation).",
+        description=(
+            "True when search was unavailable and existing sources were reused "
+            "(graceful degradation)."
+        ),
     )
 
 
@@ -113,7 +118,9 @@ class VisualPlan(ArtifactBase):
     cover: CoverSpec | None = None
     images: list[ImageSpec] = Field(default_factory=list)
     diagrams: list[DiagramSpec] = Field(default_factory=list)
-    degraded: bool = Field(default=False, description="True when the primary image pipeline failed.")
+    degraded: bool = Field(
+        default=False, description="True when the primary image pipeline failed."
+    )
 
 
 class ContentPackage(ArtifactBase):
@@ -121,7 +128,9 @@ class ContentPackage(ArtifactBase):
     digest: str = ""
     author: str = ""
     semantic_markdown: str = Field(
-        description="Markdown annotated with :::note / :::quote / :::callout / :::card semantic markers."
+        description=(
+            "Markdown annotated with :::note / :::quote / :::callout / :::card semantic markers."
+        )
     )
     visual: VisualPlan = Field(default_factory=VisualPlan)
     theme: str = "default"
@@ -164,7 +173,10 @@ class PublishResult(ArtifactBase):
         default="",
         description="Local HTML export path; set on success, degraded and failed exits alike.",
     )
-    degraded: bool = Field(default=False, description="True when WeChat API was unavailable and the run ended with a local artifact.")
+    degraded: bool = Field(
+        default=False,
+        description="True when WeChat API was unavailable and the run ended with a local artifact.",
+    )
     message: str = ""
 
 
@@ -175,13 +187,17 @@ class Attack(BaseModel):
     category: str
     severity: Literal["error", "warning"] = "error"
     location: str = Field(description="Node id, source id or section locator of the attacked spot.")
-    evidence: str = Field(min_length=1, description="Verbatim evidence backing the attack (hard constraint H2).")
+    evidence: str = Field(
+        min_length=1, description="Verbatim evidence backing the attack (hard constraint H2)."
+    )
     suggestion: str = ""
 
 
 class AttackReport(ArtifactBase):
     gate: Gate
-    round: int = Field(ge=1, le=3, description="Adversarial round number, capped at 3 (hard constraint H4).")
+    round: int = Field(
+        ge=1, le=3, description="Adversarial round number, capped at 3 (hard constraint H4)."
+    )
     attacks: list[Attack] = Field(default_factory=list)
 
 
@@ -191,7 +207,10 @@ class DefenseFix(BaseModel):
     attack_id: str
     action: str
     scope: str = Field(
-        description="Node ids / fields actually modified; must stay inside attacked locations (hard constraint H3)."
+        description=(
+            "Node ids / fields actually modified; must stay inside attacked locations "
+            "(hard constraint H3)."
+        )
     )
 
 
@@ -206,7 +225,9 @@ class Verdict(ArtifactBase):
     round: int = Field(ge=1, le=3)
     decision: Decision
     reason: str = ""
-    unresolved: list[str] = Field(default_factory=list, description="Attack ids still unresolved when decision != PASS.")
+    unresolved: list[str] = Field(
+        default_factory=list, description="Attack ids still unresolved when decision != PASS."
+    )
 
 
 ARTIFACT_MODELS: dict[str, type[ArtifactBase]] = {

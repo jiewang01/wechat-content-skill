@@ -50,6 +50,6 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 
 ## 参考资料
 
-- [../../../references/writing-guide.md](../../../references/writing-guide.md)
-- [../../../references/humanize.md](../../../references/humanize.md)
-- [../../../references/adversarial-constraints.md](../../../references/adversarial-constraints.md)
+- [../../references/writing-guide.md](../../references/writing-guide.md)
+- [../../references/humanize.md](../../references/humanize.md)
+- [../../references/adversarial-constraints.md](../../references/adversarial-constraints.md)

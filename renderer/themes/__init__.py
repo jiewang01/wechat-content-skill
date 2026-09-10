@@ -46,9 +46,7 @@ def load_theme(name: str = "default", themes_dir: str | Path | None = None) -> T
     base = Path(themes_dir) if themes_dir is not None else THEMES_DIR
     theme_dir = base / name
     if not theme_dir.is_dir():
-        available = (
-            sorted(d.name for d in base.iterdir() if d.is_dir()) if base.is_dir() else []
-        )
+        available = sorted(d.name for d in base.iterdir() if d.is_dir()) if base.is_dir() else []
         raise ThemeError(f"主题 {name!r} 不存在（可用主题：{available}）")
 
     data: dict[str, dict[str, Any]] = {}

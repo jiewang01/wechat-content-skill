@@ -1,0 +1,49 @@
+{
+  "run_id": "run_20260910_001",
+  "created_at": "2026-09-10T13:42:07.718445Z",
+  "topic": "缓存穿透",
+  "audience": "初中级后端工程师",
+  "goal": "帮读者理解缓存穿透的成因并掌握两种主流解法",
+  "framework": "tutorial",
+  "tone": "professional",
+  "word_target": 600,
+  "sections": [
+    {
+      "heading": "问题是什么",
+      "key_points": [
+        "穿透的触发场景",
+        "对数据库的影响"
+      ],
+      "fact_ids": [
+        "fact_001"
+      ]
+    },
+    {
+      "heading": "解法一：缓存空值",
+      "key_points": [
+        "短过期空值标记",
+        "实现成本与副作用"
+      ],
+      "fact_ids": [
+        "fact_001"
+      ]
+    },
+    {
+      "heading": "解法二：布隆过滤器",
+      "key_points": [
+        "一定不存在即可拦截",
+        "与空值缓存组合"
+      ],
+      "fact_ids": [
+        "fact_002"
+      ]
+    },
+    {
+      "heading": "小结",
+      "key_points": [
+        "两个自检问题"
+      ],
+      "fact_ids": []
+    }
+  ]
+}

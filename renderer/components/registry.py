@@ -10,13 +10,17 @@ from dataclasses import dataclass, field
 
 
 class MarkerValidationError(ValueError):
-    """标记校验失败；error_type 为机器可读的错误分类。"""
+    """标记校验失败；error_type 为机器可读的错误分类，prop 为涉事属性（可为空）。
+
+    prop 供组件 lint 填充 ValidationIssue.property，修复循环据此定位到属性级（H3）。
+    """
 
     error_type = "invalid_marker"
 
-    def __init__(self, error_type: str, message: str):
+    def __init__(self, error_type: str, message: str, prop: str = ""):
         super().__init__(message)
         self.error_type = error_type
+        self.prop = prop
 
 
 class UnknownComponentError(MarkerValidationError):
@@ -41,13 +45,16 @@ class ComponentSpec:
             if key not in self.allowed_props:
                 raise InvalidPropError(
                     "unsupported_attribute",
-                    f"组件 {self.name} 不支持属性 {key!r}，允许的属性：{sorted(self.allowed_props)}",
+                    f"组件 {self.name} 不支持属性 {key!r}，"
+                    f"允许的属性：{sorted(self.allowed_props)}",
+                    prop=key,
                 )
         for key in self.required_props:
             if not attrs.get(key):
                 raise InvalidPropError(
                     "missing_required_prop",
                     f"组件 {self.name} 缺少必填属性 {key!r}",
+                    prop=key,
                 )
         for key, allowed in self.prop_enums.items():
             value = attrs.get(key)
@@ -55,6 +62,7 @@ class ComponentSpec:
                 raise InvalidPropError(
                     "invalid_prop_value",
                     f"组件 {self.name} 的属性 {key}={value!r} 不在允许值 {sorted(allowed)} 内",
+                    prop=key,
                 )
 
 

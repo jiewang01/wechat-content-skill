@@ -45,5 +45,5 @@ python scripts/preview.py <wechat.html>                          # 本地浏览�
 ## 参考资料
 
 - [../../renderer/themes/default/](../../renderer/themes/default/)
-- [../../../references/wechat-rules.md](../../../references/wechat-rules.md)
-- [../../../references/adversarial-constraints.md](../../../references/adversarial-constraints.md)
+- [../../references/wechat-rules.md](../../references/wechat-rules.md)
+- [../../references/adversarial-constraints.md](../../references/adversarial-constraints.md)

@@ -40,4 +40,4 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 
 - [prompts/image-prompt-guide.md](prompts/image-prompt-guide.md)
 - [references/visual-checklist.md](references/visual-checklist.md)
-- [../../../references/adversarial-constraints.md](../../../references/adversarial-constraints.md)
+- [../../references/adversarial-constraints.md](../../references/adversarial-constraints.md)

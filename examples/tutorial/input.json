@@ -1,0 +1,9 @@
+{
+  "run_id": "run_20260910_001",
+  "intent": "写一篇讲清缓存穿透的公众号文章",
+  "author": "端到端作者",
+  "audience": "初中级后端工程师",
+  "word_target": 600,
+  "mode": "offline",
+  "note": "离线复现：LLM / 搜索 / 图片 / 微信 API 均为测试桩，再生成方式见 regenerate.py"
+}

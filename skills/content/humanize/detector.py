@@ -161,7 +161,8 @@ def analyze_text(markdown: str, rules: HumanizeRules | None = None) -> HumanizeR
                     "long_paragraph",
                     "warning",
                     _clip(paragraph),
-                    f"段落超过 {limits.max_paragraph_chars} 字（实际 {len(paragraph)} 字），请分段。",
+                    f"段落超过 {limits.max_paragraph_chars} 字"
+                    f"（实际 {len(paragraph)} 字），请分段。",
                 )
             )
 
