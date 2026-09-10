@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Run outputs (artifacts / checkpoints) — never commit
+outputs/*
+!outputs/.gitkeep
+
+# Secrets & real account configs — never commit
+.env
+.env.*
+*.secret
+accounts/*
+!accounts/accounts.example.yaml
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

@@ -30,7 +30,6 @@
 - [十七、端到端 Workflow](#十七端到端-workflow)
 - [十八、架构的五个核心特质](#十八架构的五个核心特质)
 - [十九、产品层级总览](#十九产品层级总览)
-- [二十、下一步：v0.1 落地范围](#二十下一步v01-落地范围)
 
 ---
 
@@ -1111,22 +1110,3 @@ LLM 可替换：`OpenAI / Claude / Gemini / Qwen / DeepSeek`
                          │
                     WeChat Adapter
 ```
-
----
-
-## 二十、下一步：v0.1 落地范围
-
-下一步最合理的动作**不是继续加功能**，而是直接把这个蓝图落成 **`wechat-content-skill` 的 v0.1 repository skeleton**，包括：
-
-1. `SKILL.md`（薄编排入口）
-2. 6 个 Sub-Skill（research / content / visual / native / layout / quality / publishing 中的 6 个核心 Skill 目录）
-3. Artifact schema（ResearchResult / ContentBrief / VisualPlan / ContentAST / ValidationReport 等）
-4. Orchestrator（State / Checkpoint / Resume）
-5. AST / Renderer
-6. `component_lint`
-7. `gzh_validator`
-8. WeChat API Facade
-9. 测试 fixtures
-10. 一条能真正跑通的 happy path：
-
-> **「一句话 → 研究 → 写作 → 排版 → 校验 → 微信草稿」**

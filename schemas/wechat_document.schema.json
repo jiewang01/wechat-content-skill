@@ -1,0 +1,59 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "Artifact creation timestamp (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "digest": {
+      "default": "",
+      "title": "Digest",
+      "type": "string"
+    },
+    "html": {
+      "description": "Final GZH-compatible HTML with inline styles only.",
+      "title": "Html",
+      "type": "string"
+    },
+    "plain_text": {
+      "default": "",
+      "title": "Plain Text",
+      "type": "string"
+    },
+    "cover_asset": {
+      "default": "",
+      "title": "Cover Asset",
+      "type": "string"
+    },
+    "image_assets": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Image Assets",
+      "type": "array"
+    },
+    "size_bytes": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Size Bytes",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "title",
+    "html"
+  ],
+  "title": "WechatDocument",
+  "type": "object"
+}

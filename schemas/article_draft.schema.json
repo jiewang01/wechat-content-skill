@@ -1,0 +1,98 @@
+{
+  "$defs": {
+    "HumanizeReport": {
+      "additionalProperties": false,
+      "properties": {
+        "humanize_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Humanize Score",
+          "type": "integer"
+        },
+        "issues": {
+          "items": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "passed": {
+          "default": false,
+          "title": "Passed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "humanize_score"
+      ],
+      "title": "HumanizeReport",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "Artifact creation timestamp (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "digest": {
+      "default": "",
+      "title": "Digest",
+      "type": "string"
+    },
+    "framework": {
+      "default": "",
+      "title": "Framework",
+      "type": "string"
+    },
+    "markdown": {
+      "description": "Plain Markdown body without semantic markers.",
+      "title": "Markdown",
+      "type": "string"
+    },
+    "word_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Word Count",
+      "type": "integer"
+    },
+    "fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Fact Ids",
+      "type": "array"
+    },
+    "humanize": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HumanizeReport"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "title",
+    "markdown"
+  ],
+  "title": "ArticleDraft",
+  "type": "object"
+}

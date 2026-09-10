@@ -1,0 +1,108 @@
+{
+  "$defs": {
+    "ValidationIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "node": {
+          "default": "",
+          "title": "Node",
+          "type": "string"
+        },
+        "property": {
+          "default": "",
+          "title": "Property",
+          "type": "string"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "severity": {
+          "default": "error",
+          "enum": [
+            "error",
+            "warning"
+          ],
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "ValidationIssue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "Artifact creation timestamp (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "gate": {
+      "default": "publish",
+      "description": "Gate this report belongs to.",
+      "enum": [
+        "content",
+        "render",
+        "publish"
+      ],
+      "title": "Gate",
+      "type": "string"
+    },
+    "errors": {
+      "items": {
+        "$ref": "#/$defs/ValidationIssue"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "$ref": "#/$defs/ValidationIssue"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "humanize_score": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Humanize Score"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "ValidationReport",
+  "type": "object"
+}

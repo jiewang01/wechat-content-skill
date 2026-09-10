@@ -1,0 +1,71 @@
+{
+  "$defs": {
+    "DefenseFix": {
+      "additionalProperties": false,
+      "properties": {
+        "attack_id": {
+          "title": "Attack Id",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "scope": {
+          "description": "Node ids / fields actually modified; must stay inside attacked locations (hard constraint H3).",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attack_id",
+        "action",
+        "scope"
+      ],
+      "title": "DefenseFix",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "Artifact creation timestamp (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "gate": {
+      "enum": [
+        "content",
+        "render",
+        "publish"
+      ],
+      "title": "Gate",
+      "type": "string"
+    },
+    "round": {
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Round",
+      "type": "integer"
+    },
+    "fixes": {
+      "items": {
+        "$ref": "#/$defs/DefenseFix"
+      },
+      "title": "Fixes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "gate",
+    "round"
+  ],
+  "title": "DefenseReport",
+  "type": "object"
+}
