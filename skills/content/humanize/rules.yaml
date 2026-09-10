@@ -1,0 +1,50 @@
+# Humanize 检测规则 —— 硬约束 H7：规则外置为配置，调整规则不需要改代码
+version: 1
+pass_score: 60
+
+penalties:
+  phrase: 8
+  paired_phrase: 8
+  long_sentence: 3
+  avg_sentence_length: 5
+  long_paragraph: 3
+  repetition: 5
+
+limits:
+  max_sentence_chars: 60
+  avg_sentence_chars: 35
+  max_paragraph_chars: 200
+  repeat_ngram_chars: 5
+  repeat_min_occurrences: 3
+  min_sentences_for_avg: 3
+
+phrases:
+  - "首先，"
+  - "其次，"
+  - "最后，"
+  - "再者，"
+  - "值得注意的是"
+  - "值得一提的是"
+  - "在当今"
+  - "在如今"
+  - "总而言之"
+  - "综上所述"
+  - "众所周知"
+  - "日新月异"
+  - "信息爆炸"
+  - "飞速发展"
+  - "迅猛发展"
+  - "赋能"
+  - "抓手"
+  - "闭环"
+  - "底层逻辑"
+  - "不难发现"
+  - "由此可见"
+  - "毫无疑问"
+  - "让我们"
+
+pairs:
+  - ["不仅", "而且"]
+  - ["随着", "的发展"]
+  - ["在这个", "的时代"]
+  - ["扮演着", "角色"]

@@ -1,48 +1,48 @@
 ---
 name: layout
-description: Layout sub-skill of wechat-content-skill. Chooses theme and drives the deterministic AST → HTML rendering pipeline (parser, theme engine, renderer). LLM never generates final HTML.
+description: wechat-content-skill 的排版子技能：选择主题并驱动确定性 AST → HTML 渲染管线（解析器、主题引擎、渲染器）。LLM 绝不生成最终 HTML。
 ---
 
-# Layout Skill
+# Layout Skill（排版技能）
 
-## Purpose
+## 目标
 
-Own the transformation `ContentPackage → ContentAST → theme-driven HTML → WechatDocument`. Layout decisions are expressed as theme selection + component usage, never as hand-written HTML.
+负责 `ContentPackage → ContentAST → 主题驱动 HTML → WechatDocument` 的转换。排版决策表达为主题选择 + 组件使用，绝不手写 HTML。
 
-## Input / Output
+## 输入 / 输出
 
-- Input: `ContentPackage` (semantic markdown + visual plan + theme)
-- Output: `WechatDocument` (schemas/wechat_document.schema.json) — GZH-safe HTML, inline styles only
+- 输入：`ContentPackage`（语义 Markdown + 视觉计划 + 主题）
+- 输出：`WechatDocument`（schemas/wechat_document.schema.json）—— 公众号安全 HTML，仅内联样式
 
-## Pipeline
+## 管线
 
 ```text
 semantic_markdown
     ↓  renderer/ast/parser.py
-ContentAST (nodes carry stable ids: node_N / component_N)
+ContentAST（节点携带稳定 id：node_N / component_N）
     ↓  renderer/html/renderer.py + renderer/themes/<theme>/
-wechat.html (inline CSS, WeChat-safe tags)
+wechat.html（内联 CSS，微信安全标签）
 ```
 
-## Theme selection
+## 主题选择
 
-v0.1 ships `default` only ([renderer/themes/default/](../../renderer/themes/default/)): `theme.yaml` (colors, enabled components), `typography.yaml`, `components.yaml`. The Theme Engine reads any directory with the same three files — new themes drop in without code changes (v0.2 backlog: editorial / minimal / tech / magazine).
+v0.1 只内置 `default`（[renderer/themes/default/](../../renderer/themes/default/)）：`theme.yaml`（颜色、启用组件）、`typography.yaml`、`components.yaml`。主题引擎读取任何包含这三个文件的目录 —— 新主题零代码接入（v0.2 待办：editorial / minimal / tech / magazine）。
 
-## Rules (Defender duties)
+## 规则（Defender 职责）
 
-- **The renderer is deterministic code; the LLM never emits final HTML.**
-- All styles inline; no `<style>`/`<script>`, no class/id hooks, no external resources.
-- WeChat-safe tags only: `section` / `span` / `strong` / `em` / `img`.
-- Targeted repair: when the render gate attacks `component_N`, re-render/fix that node only; the repair loop (`core/workflow/repair.py`) enforces ≤ 3 rounds (H3/H4).
+- **渲染器是确定性代码；LLM 绝不产出最终 HTML。**
+- 全部样式内联；无 `<style>`/`<script>`，无 class/id 钩子，无外部资源。
+- 只用微信安全标签：`section` / `span` / `strong` / `em` / `img`。
+- 定向修复：渲染门攻击 `component_N` 时，只重渲染 / 修复该节点；修复循环（`core/workflow/repair.py`）强制 ≤ 3 轮（H3/H4）。
 
 ## CLI
 
 ```bash
-python scripts/render.py <content_package.json> -o wechat.html   # package → HTML
-python scripts/preview.py <wechat.html>                          # local browser preview
+python scripts/render.py <content_package.json> -o wechat.html   # 产物包 → HTML
+python scripts/preview.py <wechat.html>                          # 本地浏览器预览
 ```
 
-## References
+## 参考资料
 
 - [../../renderer/themes/default/](../../renderer/themes/default/)
 - [../../../references/wechat-rules.md](../../../references/wechat-rules.md)

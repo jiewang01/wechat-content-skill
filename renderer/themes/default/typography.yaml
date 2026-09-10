@@ -1,0 +1,60 @@
+body:
+  font_size: 16
+  line_height: 1.75
+  color: "#333333"
+  font_family: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
+  word_break: break-word
+
+h1:
+  font_size: 22
+  font_weight: 600
+  color: "#333333"
+  margin_top: 24
+  margin_bottom: 14
+
+h2:
+  font_size: 20
+  font_weight: 600
+  color: "#333333"
+  margin_top: 22
+  margin_bottom: 12
+
+h3:
+  font_size: 17
+  font_weight: 600
+  color: "#333333"
+  margin_top: 18
+  margin_bottom: 10
+
+paragraph:
+  margin_top: 10
+  margin_bottom: 10
+
+code_inline:
+  font_family: "Consolas, 'Courier New', monospace"
+  color: "#c7254e"
+  background: "#f6f8fa"
+  padding_h: 4
+  padding_v: 2
+  border_radius: 3
+
+code_block:
+  background: "#f6f8fa"
+  color: "#333333"
+  font_family: "Consolas, 'Courier New', monospace"
+  font_size: 14
+  line_height: 1.6
+  padding: 12
+  border_radius: 4
+  white_space: pre-wrap
+
+list:
+  indent: 16
+  item_margin: 6
+  marker_color: "#07c160"
+
+image:
+  width: "100%"
+  max_width: "100%"
+  margin_top: 16
+  margin_bottom: 16

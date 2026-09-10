@@ -1,54 +1,54 @@
 ---
 name: content
-description: Content sub-skill of wechat-content-skill. Turns a ResearchResult into a ContentBrief and a humanized ArticleDraft via framework-driven writing, with a deterministic humanize quality gate.
+description: wechat-content-skill 的内容子技能：把 ResearchResult 变成 ContentBrief 与通过去 AI 味质量门的 ArticleDraft。写作由框架驱动，humanize 检测器是确定性质量门，而非提示词。
 ---
 
-# Content Skill
+# Content Skill（内容技能）
 
-## Purpose
+## 目标
 
-Receive `ResearchResult` + brand voice + audience + content goal; emit `ContentBrief` then `ArticleDraft` that passes the humanize gate.
+接收 `ResearchResult` + 品牌语气 + 受众 + 内容目标；先产出 `ContentBrief`，再产出通过 humanize 质量门的 `ArticleDraft`。
 
-## Input / Output
+## 输入 / 输出
 
-- Input: `ResearchResult` (+ tone / word target / framework hint)
-- Output: `ContentBrief` (schemas/content_brief.schema.json) → `ArticleDraft` (schemas/article_draft.schema.json)
+- 输入：`ResearchResult`（+ 语气 / 字数目标 / 框架提示）
+- 输出：`ContentBrief`（schemas/content_brief.schema.json）→ `ArticleDraft`（schemas/article_draft.schema.json）
 
-## Workflow
+## 工作流
 
 ```text
-ContentBrief → Framework Selection → Outline → Draft → Critique → Rewrite → Humanize → Final
+ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Humanize → 终稿
 ```
 
-1. **Brief** — topic, audience, goal, tone, `word_target`, section skeletons with `fact_ids`.
-2. **Framework selection** — route by topic type; v0.1 ships two frameworks (below). Adding a framework never touches the orchestrator.
-3. **Draft** — plain Markdown; semantic markers are NOT added here (that is the native skill's job).
-4. **Critique → Rewrite** — self-review against the chosen framework's checklist.
-5. **Humanize** — run the deterministic detector (`skills/content/humanize/`), rewrite flagged sentences, re-run until `passed: true`.
+1. **Brief** —— 选题、受众、目标、语气、`word_target`、带 `fact_ids` 的章节骨架。
+2. **框架选择** —— 按选题类型路由；v0.1 内置两个框架（见下）。新增框架不需要改 Orchestrator。
+3. **初稿** —— 纯 Markdown；这里不加语义标记（那是 native 技能的职责）。
+4. **批判 → 重写** —— 依据所选框架的检查清单自审。
+5. **Humanize** —— 运行确定性检测器（`skills/content/humanize/`），重写被标记的句子，反复运行直到 `passed: true`。
 
-## Frameworks (v0.1)
+## 框架（v0.1）
 
-| Framework | When | Definition |
-|-----------|------|------------|
+| 框架 | 适用场景 | 定义 |
+|------|----------|------|
 | `tutorial` | 教程 / how-to / 上手指南 | [frameworks/tutorial.md](frameworks/tutorial.md) |
 | `news-analysis` | 新闻解读 / 事件分析 | [frameworks/news-analysis.md](frameworks/news-analysis.md) |
 
-(v0.2 backlog: opinion / case-study / listicle / deep-dive / narrative)
+（v0.2 待办：opinion / case-study / listicle / deep-dive / narrative）
 
-## Rules (Defender duties)
+## 规则（Defender 职责）
 
-- Every factual statement must trace to a `fact_id` from the research result; no invented claims.
-- Humanize is a **quality gate**, not a prompt: the draft ships only with `humanize.passed: true`.
-- Do not output HTML or `:::` markers; plain Markdown only.
-- When attacked (AI-flavor, fact, structure), fix ONLY the flagged sentences/sections (H3).
+- 每条事实陈述必须能追溯到研究产物中的 `fact_id`；绝不编造论断。
+- Humanize 是**质量门**而非提示词：只有 `humanize.passed: true` 的稿件才能交付。
+- 不输出 HTML，也不输出 `:::` 标记；只写纯 Markdown。
+- 被攻击（AI 味、事实、结构）时，只修复被标记的句子 / 章节（H3）。
 
-## Components
+## 组件
 
-- [humanize/](humanize/) — deterministic AI-flavor detector (Attacker engine for the content gate)
-- [writing/](writing/) — sentence craft notes consumed during rewrite
-- [frameworks/](frameworks/) — writing framework definitions
+- [humanize/](humanize/) —— 确定性 AI 味检测器（内容门的 Attacker 引擎）
+- [writing/](writing/) —— 重写时使用的句子工艺笔记
+- [frameworks/](frameworks/) —— 写作框架定义
 
-## References
+## 参考资料
 
 - [../../../references/writing-guide.md](../../../references/writing-guide.md)
 - [../../../references/humanize.md](../../../references/humanize.md)

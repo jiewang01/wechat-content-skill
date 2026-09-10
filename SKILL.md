@@ -1,61 +1,61 @@
 ---
 name: wechat-content-skill
-description: Agent-native workflow skill that turns one sentence into a validated WeChat Official Account (公众号) draft — research, write, humanize, semantic layout, theme rendering, adversarial validation, draft-box publishing. Invoke when the user wants to create, design, or publish a WeChat 公众号 article.
+description: 微信公众号内容 Agent 工作流技能：一句话输入，经研究、写作、去 AI 味、语义排版、主题渲染、对抗校验，产出一篇通过校验的公众号草稿箱文章。当用户想要创作、排版或发布微信公众号文章时调用。
 ---
 
-# WeChat Content Skill
+# WeChat Content Skill（微信公众号内容技能）
 
-## Purpose
+## 目标
 
-Create, validate and publish high-quality WeChat Official Account content.
-One sentence in, a validated draft-box article out:
+创建、校验并发布高质量微信公众号内容。
+一句话进，校验通过的草稿箱文章出：
 
 > 一句话 → 研究 → 写作 → 排版 → 校验 → 微信草稿
 
-## Hard Constraints (read first)
+## 硬约束（必读）
 
-All stages MUST obey [references/adversarial-constraints.md](references/adversarial-constraints.md) (H1–H8):
+所有阶段必须遵守 [references/adversarial-constraints.md](references/adversarial-constraints.md)（H1–H8）：
 
-- Defender produces, Attacker attacks with evidence, Judge (deterministic code only) rules.
-- No evidence, no attack. No PASS verdict, no publishing. Max 3 repair rounds per gate, then degrade.
+- Defender 负责产出，Attacker 必须带证据攻击，Judge（只允许确定性代码）负责裁决。
+- 无证据不攻击；无 PASS 裁决不发布。每道门最多修复 3 轮，超限降级。
 
-## Workflow
+## 工作流
 
-1. **Research** — search, read, extract, cross-verify → `ResearchResult`
-2. **Plan** — select framework, outline → `ContentBrief`
-3. **Write** — draft → `ArticleDraft`
-4. **Humanize** — AI-flavor detection + rewrite loop (Quality Gate, not a prompt)
-5. **Design** — structured `VisualPlan` (cover / images / diagrams)
-6. **Native** — annotate with semantic markers (`:::note` / `:::quote` / `:::callout` / `:::card`) → `ContentPackage`
-7. **Render** — ContentAST → theme-driven HTML → `WechatDocument`
-8. **Validate** — 3 adversarial gates (content / render / publish) → `ValidationReport` + `Verdict`
-9. **Repair** — targeted node-level fixes only, ≤ 3 rounds, never regenerate the whole article
-10. **Publish** — WeChat draft box via API Facade; if API is down, degrade to local HTML export
+1. **Research（研究）** — 搜索、阅读、提取、交叉验证 → `ResearchResult`
+2. **Plan（规划）** — 选框架、定大纲 → `ContentBrief`
+3. **Write（写作）** — 成稿 → `ArticleDraft`
+4. **Humanize（去 AI 味）** — AI 味检测 + 重写循环（质量门，不是提示词）
+5. **Design（视觉）** — 结构化 `VisualPlan`（封面 / 插图 / 图表）
+6. **Native（原生组件）** — 用语义标记（`:::note` / `:::quote` / `:::callout` / `:::card`）标注 → `ContentPackage`
+7. **Render（渲染）** — ContentAST → 主题驱动 HTML → `WechatDocument`
+8. **Validate（校验）** — 3 道对抗门（content / render / publish）→ `ValidationReport` + `Verdict`
+9. **Repair（修复）** — 只做节点级定向修复，≤ 3 轮，绝不整篇重写
+10. **Publish（发布）** — 经 API Facade 写入微信草稿箱；API 不可用时降级为本地 HTML 导出
 
-Every stage: save artifact to checkpoint (`outputs/<run_id>/`), advance state machine, survive crash via `resume`.
+每个阶段：产物存入 checkpoint（`outputs/<run_id>/`），推进状态机，崩溃后可 `resume` 恢复。
 
-## Rules
+## 规则
 
-- Never invent factual claims; every fact carries `source_ids`.
-- Never directly generate final HTML — LLM output stops at semantic markers; the deterministic renderer owns HTML.
-- Always validate before publishing; never publish when validation fails.
-- Prefer deterministic tools over LLM judgment (Judge = code, always).
-- Preserve artifacts between stages; pass structured artifacts, never prose.
-- Search / image / WeChat API failures degrade gracefully — publishing is not the only exit.
+- 绝不编造事实；每条事实都携带 `source_ids`。
+- 绝不直接生成最终 HTML —— LLM 输出止步于语义标记；确定性渲染器独占 HTML。
+- 发布前必须校验；校验不通过绝不发布。
+- 确定性工具优先于 LLM 判断（Judge 永远是代码）。
+- 阶段之间传递结构化产物，绝不传递自然语言。
+- 搜索 / 图片 / 微信 API 失败时优雅降级 —— 发布不是唯一出口。
 
-## Routing
+## 路由
 
-| Stage | Sub-Skill | Output artifact |
-|-------|-----------|-----------------|
-| Research | [skills/research/SKILL.md](skills/research/SKILL.md) | `ResearchResult` |
-| Plan + Write + Humanize | [skills/content/SKILL.md](skills/content/SKILL.md) | `ContentBrief` → `ArticleDraft` |
-| Design | [skills/visual/SKILL.md](skills/visual/SKILL.md) | `VisualPlan` |
-| Native | [skills/native/SKILL.md](skills/native/SKILL.md) | `ContentPackage` |
-| Layout / Render | [skills/layout/SKILL.md](skills/layout/SKILL.md) | `WechatDocument` |
-| Publish | [skills/publishing/SKILL.md](skills/publishing/SKILL.md) | `PublishResult` |
+| 阶段 | 子技能 | 输出产物 |
+|------|--------|----------|
+| 研究 | [skills/research/SKILL.md](skills/research/SKILL.md) | `ResearchResult` |
+| 规划 + 写作 + 去 AI 味 | [skills/content/SKILL.md](skills/content/SKILL.md) | `ContentBrief` → `ArticleDraft` |
+| 视觉 | [skills/visual/SKILL.md](skills/visual/SKILL.md) | `VisualPlan` |
+| 原生组件 | [skills/native/SKILL.md](skills/native/SKILL.md) | `ContentPackage` |
+| 排版 / 渲染 | [skills/layout/SKILL.md](skills/layout/SKILL.md) | `WechatDocument` |
+| 发布 | [skills/publishing/SKILL.md](skills/publishing/SKILL.md) | `PublishResult` |
 
-Artifact schemas: [schemas/](schemas/) (JSON Schema, exported from `core/artifacts/`).
-State machine: `core/state/machine.py` (INIT → … → DRAFT_CREATED; see blueprint ch. 11).
+产物 Schema：[schemas/](schemas/)（JSON Schema，由 `core/artifacts/` 导出）。
+状态机：`core/state/machine.py`（INIT → … → DRAFT_CREATED，见蓝图第 11 章）。
 
 ## CLI
 
@@ -67,9 +67,9 @@ python scripts/preview.py <wechat.html>
 python scripts/publish.py <run_id> --account default
 ```
 
-## Resume
+## 恢复
 
-Any interrupted run can be resumed from its checkpoint:
+任何中断的运行都可以从 checkpoint 恢复：
 
 ```python
 from core.state.checkpoint import CheckpointStore

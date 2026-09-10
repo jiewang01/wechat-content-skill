@@ -1,20 +1,20 @@
 ---
 name: native
-description: Native-information sub-skill of wechat-content-skill. Annotates article Markdown with the four semantic markers (:::note, :::quote, :::callout, :::card) that the deterministic renderer turns into theme components. The LLM never writes HTML.
+description: wechat-content-skill 的原生信息子技能：为文章 Markdown 标注四种语义标记（:::note、:::quote、:::callout、:::card），由确定性渲染器转换为主题组件。LLM 绝不写 HTML。
 ---
 
-# Native Skill (Semantic Marker Layer)
+# Native Skill（语义标记层）
 
-## Purpose
+## 目标
 
-Add native information structure between writing and rendering: the Agent expresses intent with semantic markers; the renderer owns all HTML. This is what makes theme switching and WeChat-compatibility possible.
+在写作与渲染之间加入原生信息结构：Agent 用语义标记表达意图，渲染器独占全部 HTML。这正是主题切换与微信兼容得以成立的前提。
 
-## Input / Output
+## 输入 / 输出
 
-- Input: `ArticleDraft` + `VisualPlan`
-- Output: `ContentPackage` (schemas/content_package.schema.json) — `semantic_markdown` carries the markers
+- 输入：`ArticleDraft` + `VisualPlan`
+- 输出：`ContentPackage`（schemas/content_package.schema.json）—— `semantic_markdown` 携带标记
 
-## The 4 markers (complete v0.1 set — no others)
+## 四种标记（v0.1 全集，没有其他）
 
 ```markdown
 :::note
@@ -35,21 +35,21 @@ type ∈ info | warning | tip | danger；title 可选。
 :::
 ```
 
-## Rules (Defender duties)
+## 规则（Defender 职责）
 
-- Markers use exactly the props defined in [components/](components/) and `renderer/components/registry.py`; unknown props are lint errors.
-- **No nesting**: a `:::` block never contains another `:::` block (v0.1 hard limit).
-- Use sparingly: roughly one component per 300–500 words; the article must not become a slideshow.
-- Never emit `<div>`, `<span>`, inline styles, or any HTML — semantic markers only; the renderer generates HTML deterministically.
-- When lint attacks a component (`component_N`), fix that component only (H3).
+- 标记只允许使用 [components/](components/) 与 `renderer/components/registry.py` 中定义的属性；未知属性是 lint 错误。
+- **禁止嵌套**：一个 `:::` 块内绝不再出现另一个 `:::` 块（v0.1 硬限制）。
+- 克制使用：大约每 300–500 字一个组件；文章不能变成幻灯片。
+- 绝不输出 `<div>`、`<span>`、内联样式或任何 HTML —— 只用语义标记；HTML 由渲染器确定性生成。
+- lint 攻击某个组件（`component_N`）时，只修复该组件（H3）。
 
-## Component specs
+## 组件规格
 
 - [components/note.md](components/note.md)
 - [components/quote.md](components/quote.md)
 - [components/callout.md](components/callout.md)
 - [components/card.md](components/card.md)
 
-## References
+## 参考资料
 
 - [../../../references/adversarial-constraints.md](../../../references/adversarial-constraints.md)

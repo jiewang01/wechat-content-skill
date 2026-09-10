@@ -1,0 +1,15 @@
+name: default
+version: "1"
+
+colors:
+  primary: "#07c160"
+  text: "#333333"
+  text_secondary: "#888888"
+  background: "#ffffff"
+  border: "#e8e8e8"
+
+components:
+  note: true
+  quote: true
+  callout: true
+  card: true
