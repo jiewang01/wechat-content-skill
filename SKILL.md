@@ -28,7 +28,7 @@ description: 微信公众号内容 Agent 工作流技能：一句话输入，经
 5. **Design（视觉）** — 结构化 `VisualPlan`（封面 / 插图 / 图表）
 6. **Native（原生组件）** — 用语义标记（`:::note` / `:::quote` / `:::callout` / `:::card`）标注 → `ContentPackage`
 7. **Render（渲染）** — ContentAST → 主题驱动 HTML → `WechatDocument`
-8. **Validate（校验）** — 3 道对抗门（content / render / publish）→ `ValidationReport` + `Verdict`
+8. **Validate（校验）** — 3 道对抗门（content / render / publish；四道 validator 与门禁流转见 [skills/quality/SKILL.md](skills/quality/SKILL.md)）→ `ValidationReport` + `Verdict`
 9. **Repair（修复）** — 只做节点级定向修复，≤ 3 轮，绝不整篇重写
 10. **Publish（发布）** — 经 API Facade 写入微信草稿箱；API 不可用时降级为本地 HTML 导出
 
@@ -52,8 +52,11 @@ description: 微信公众号内容 Agent 工作流技能：一句话输入，经
 | 视觉 | [skills/visual/SKILL.md](skills/visual/SKILL.md) | `VisualPlan` |
 | 原生组件 | [skills/native/SKILL.md](skills/native/SKILL.md) | `ContentPackage` |
 | 排版 / 渲染 | [skills/layout/SKILL.md](skills/layout/SKILL.md) | `WechatDocument` |
+| 校验（质量门） | [skills/quality/SKILL.md](skills/quality/SKILL.md) | `ValidationReport` |
 | 发布 | [skills/publishing/SKILL.md](skills/publishing/SKILL.md) | `PublishResult` |
 
+主题（5 个，`renderer/themes/`）：`default` / `editorial` / `minimal` / `tech` / `magazine`。
+写作框架（7 个，[skills/content/frameworks/](skills/content/frameworks/)）：`tutorial` / `news-analysis` / `opinion` / `case-study` / `listicle` / `deep-dive` / `narrative`。
 产物 Schema：[schemas/](schemas/)（JSON Schema，由 `core/artifacts/` 导出）。
 状态机：`core/state/machine.py`（INIT → … → DRAFT_CREATED，见蓝图第 11 章）。
 
@@ -61,11 +64,13 @@ description: 微信公众号内容 Agent 工作流技能：一句话输入，经
 
 ```bash
 python scripts/render.py <content_package.json> -o wechat.html
-python scripts/lint.py <content_ast.json>
-python scripts/validate.py <wechat.html>
+python scripts/lint.py <draft.json | package.json | doc.md | page.html>
+python scripts/validate.py <content_package.json>
 python scripts/preview.py <wechat.html>
-python scripts/publish.py <run_id> --account default
+python scripts/run_evals.py
 ```
+
+发布走库调用而非 CLI：`WeChatPublisher.create_draft()` / `.release()`（见 [skills/publishing/SKILL.md](skills/publishing/SKILL.md)）。
 
 ## 恢复
 

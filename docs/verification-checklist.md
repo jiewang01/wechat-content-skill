@@ -1,8 +1,8 @@
-# v0.1 真实环境验证清单（人工执行）
+# 真实环境验证清单（人工执行）
 
-> **目标（M6-T4 DoD）**：在测试号或正式号完成一次真实「一句话 → 公众号草稿箱」。
+> **目标**：在测试号或正式号完成一次真实「一句话 → 公众号草稿箱」（§1–§7），并可继续验证正式发布（§8，v0.2 新增）。
 >
-> 离线链路已由 274 个自动化用例覆盖（`pytest -q`，含 httpx.MockTransport 模拟的端到端）。
+> 离线链路已由 324 个自动化用例覆盖（`pytest -q`，含 httpx.MockTransport 模拟的端到端与正式发布 mock）。
 > 本清单只覆盖自动化无法触达的部分：**真实凭证、真实网络、真实微信后台**。
 > 全部命令默认在仓库根目录执行。
 
@@ -10,7 +10,7 @@
 
 - [ ] Python ≥ 3.11：`python --version`
 - [ ] `pip install -e ".[dev]"` 安装成功
-- [ ] 基线全绿：`pytest -q` 显示 274 passed
+- [ ] 基线全绿：`pytest -q` 显示 324 passed
 - [ ] 一家 OpenAI 兼容 LLM 网关的 API Key（OpenAI / Qwen / DeepSeek / Gemini 兼容模式均可）
 - [ ] Tavily API Key（https://tavily.com 注册，免费额度即可）
 - [ ] 微信公众平台账号：**测试号**（公众平台官网 → 开发者工具 → 测试号，推荐）或已认证正式号
@@ -153,6 +153,45 @@ PY
 | §5 降级验证结果 | 1 / 2 / 3（/ 4） |
 | 异常与备注 | |
 
+## 8. 正式发布验证（v0.2，可选）
+
+> 前置：§3–§4 已完成（草稿已在草稿箱）。**freepublish 群发接口需要认证正式号权限**——测试号会返回 `errcode=48001`（api unauthorized），记录为已知限制即可。**群发额度是硬约束**（订阅号每天 1 次、服务号每月 4 次）：额度耗尽时 submit 返回 errcode 走降级出口，次日凭同一 `draft_id` 重新 release 即可，**不需要重跑内容管线**。
+
+方式 A —— 管线装配时开启自动发布（草稿落位后自动续发）：
+
+```python
+deps = load_deps(
+    author="你的署名", audience="初中级后端工程师", word_target=1500, auto_release=True
+)
+```
+
+方式 B —— 草稿落位后手动发布（§3 的 run 已产出 `publish_result.json`）：
+
+```python
+import json
+from pathlib import Path
+
+from core.workflow.pipeline import load_deps
+
+draft = json.loads(Path("outputs/<run_id>/publish_result.json").read_text(encoding="utf-8"))
+deps = load_deps()
+released = deps.publisher.release(
+    draft["draft_id"],
+    media_id=draft["media_id"],
+    html_path=draft["html_path"],
+)
+print(released.model_dump_json(indent=2))
+```
+
+验收项：
+
+- [ ] `released.status` 为 `published`：`article_url` 非空且浏览器可打开，`publish_id` 非空
+- [ ] `publish_state=4`（发布中）由 `release()` 内部轮询消化（默认 10 次 × 1s），无需人工介入
+- [ ] 公众平台后台「发表记录」出现该文章，标题 / 封面 / 正文与草稿箱版本一致
+- [ ] （失败路径）`status=degraded` 时：草稿仍在草稿箱，`message` 给出原因
+      （publish_state=1 审核失败 / 2 原创申明失败 / 3 常见错误 / 轮询超时）；
+      `html_path` 本地留档仍在——可人工后台发布，或排障后再次 release
+
 ## 附：常见错误速查
 
 | 现象 | 原因与处理 |
@@ -164,3 +203,7 @@ PY
 | `errcode=40164`（invalid ip） | 出口 IP 不在公众平台 IP 白名单，后台添加后重试 |
 | `errcode=40001 / 40125` | app_secret 错误或已被重置 |
 | `errcode=48001`（api unauthorized） | 账号无草稿箱接口权限，见 §5 第 4 项 |
+| release 返回 `degraded`，message 含「审核失败」 | publish_state=1：内容未过审——后台人工调整草稿后重新 release，或修复内容后重跑管线 |
+| release 返回 `degraded`，message 含「原创申明失败」 | publish_state=2：原创校验未通过，检查素材与转载声明 |
+| release 返回 `degraded`，额度类 errcode | 群发额度耗尽（订阅号每天 1 次 / 服务号每月 4 次），次日凭同一 draft_id 重新 release |
+| release 返回 `degraded`，message 含超时 / 发布中 | publish_state=4 轮询超时：草稿仍在发布队列，稍后在后台「发表记录」确认，勿盲目重复提交 |

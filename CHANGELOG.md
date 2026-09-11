@@ -4,6 +4,44 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-11
+
+内容能力扩展：多主题、7 个写作框架、正式发布与 evals 基准——范围与拆解见 [v0.2-implementation-plan.md](v0.2-implementation-plan.md)。
+
+### 新增
+
+**多主题（1 → 5）**
+- 新增 4 个主题：`editorial`（编辑部衬线风）/ `minimal`（极简黑白灰）/ `tech`（科技蓝 + 深色代码块）/ `magazine`（杂志高对比），与 `default` 共 5 个；全部 YAML 驱动（theme / typography / components），切换主题零代码改动。
+
+**写作框架（2 → 7）**
+- 新增 5 个框架：`opinion`（观点论证）/ `case-study`（案例复盘）/ `listicle`（清单体）/ `deep-dive`（深度长文）/ `narrative`（叙事文），与 `tutorial` / `news-analysis` 共 7 个；按选题路由，新增框架无需改 Orchestrator。
+
+**正式发布（freepublish）**
+- `WeChatPublisher.release(draft_id, ...)`：把草稿箱文章正式群发并轮询至终态（默认 10 次 × 1s），绝不抛出；仅 `publish_state=0` 才返回 `published`（含 `article_url`），其余一律 `degraded`——草稿保留在草稿箱，可再次 release，无需重跑内容管线。
+- `load_deps(auto_release=True)`：草稿落位后自动续发；默认关闭，不开启时行为与 v0.1 完全一致（向后兼容）。
+- 群发额度约束落档：订阅号每天 1 次、服务号每月 4 次。
+
+**evals（基准回归）**
+- 20 个用例（humanize 4 / content_gate 4 / render 5 主题 / framework 7）覆盖 13 份语料（`tests/evals/cases/`），`scripts/run_evals.py` 一键批量回归；13 个测试锁定阈值基线。
+
+**skills/quality/（质量门目录）**
+- 校验子技能 SKILL.md + 4 份规则文档（content / component / html / wechat，与 `validators/` 模块一一对应），作为「何时信任哪个门」的唯一权威说明。
+
+**参考文档**
+- `references/seo.md`：标题 / 摘要 / 关键词 / 搜一搜收录四节——SEO 是参考，不是质量门。
+- `references/content-policy.md`：内容合规红线（敏感内容 / 引用规范 / 免责边界），被 content 与 quality 子技能引用。
+
+**文档修正**
+- 根 `SKILL.md`：路由表补 quality 行；CLI 段修正与实现不符的三处（`validate.py` / `lint.py` 参数、移除不存在的 `scripts/publish.py`——发布走库调用）。
+
+### 明确不做（推迟至 v0.3）
+
+- 语义标记嵌套（`:::card` 内嵌 `:::note` 等）：解析器大改，v0.2 不动 parser。
+- humanize 规则集大幅迭代：仅随 evals 校准阈值，不新增检测维度。
+- Web UI / 复杂 CLI 交互：入口仍是 Agent（SKILL.md）+ `scripts/`。
+- 性能优化、并发、缓存、i18n：延续 v0.1 决策。
+- 监控告警（发布后数据回流）：仅提供 `status()` 查询；群发数据统计进 v0.3。
+
 ## [0.1.0] - 2026-09-10
 
 首个可用版本：从一句话需求到微信草稿箱的完整链路——离线端到端可复现，真实环境按清单验证。

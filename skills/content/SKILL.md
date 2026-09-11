@@ -21,12 +21,12 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 ```
 
 1. **Brief** —— 选题、受众、目标、语气、`word_target`、带 `fact_ids` 的章节骨架。
-2. **框架选择** —— 按选题类型路由；v0.1 内置两个框架（见下）。新增框架不需要改 Orchestrator。
+2. **框架选择** —— 按选题类型路由；内置 7 个写作框架（见下）。新增框架不需要改 Orchestrator。
 3. **初稿** —— 纯 Markdown；这里不加语义标记（那是 native 技能的职责）。
 4. **批判 → 重写** —— 依据所选框架的检查清单自审。
 5. **Humanize** —— 运行确定性检测器（`skills/content/humanize/`），重写被标记的句子，反复运行直到 `passed: true`。
 
-## 框架（v0.1）
+## 框架（7 个）
 
 | 框架 | 适用场景 | 定义 |
 |------|----------|------|
@@ -56,3 +56,4 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 - [../../references/writing-guide.md](../../references/writing-guide.md)
 - [../../references/humanize.md](../../references/humanize.md)
 - [../../references/adversarial-constraints.md](../../references/adversarial-constraints.md)
+- [../../references/content-policy.md](../../references/content-policy.md)

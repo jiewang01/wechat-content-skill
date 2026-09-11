@@ -39,7 +39,7 @@
 
 ## 四、排版约定
 
-由主题（`renderer/themes/<theme>/typography.yaml` + `components.yaml`）决定，v0.1 内置 `default`：
+由主题（`renderer/themes/<theme>/typography.yaml` + `components.yaml`）决定，内置 5 个主题（`default` / `editorial` / `minimal` / `tech` / `magazine`）：
 
 - 正文 15-16px、行高 1.75 左右、`word-break: break-all`（防英文长词溢出手机屏）；
 - 组件（note / quote / callout / card）用 `background` + `border-left` + 圆角区分层级；
