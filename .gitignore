@@ -24,6 +24,9 @@ outputs/*
 accounts/*
 !accounts/accounts.example.yaml
 
+# TRAE IDE temp share packages
+.trae-html-share-packages/
+
 # OS / editor
 .DS_Store
 .idea/
