@@ -1,0 +1,15 @@
+name: minimal
+version: "1"
+
+colors:
+  primary: "#111111"
+  text: "#1a1a1a"
+  text_secondary: "#8a8a8a"
+  background: "#ffffff"
+  border: "#eeeeee"
+
+components:
+  note: true
+  quote: true
+  callout: true
+  card: true

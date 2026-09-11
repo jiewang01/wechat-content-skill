@@ -130,6 +130,7 @@ class PipelineDeps:
     author: str = ""
     audience: str = "通用技术读者"
     word_target: int = 1500
+    auto_release: bool = False
 
 
 # ---------------------------------------------------------------------------
@@ -760,6 +761,15 @@ def _stage_upload_draft(run: WorkflowRun, deps: PipelineDeps) -> None:
     )
     run.save("publish_result", result)
     run.advance(WorkflowState.DRAFT_CREATED)
+    if deps.auto_release and result.status == "draft_created" and result.draft_id:
+        released = deps.publisher.release(
+            result.draft_id,
+            media_id=result.media_id,
+            html_path=result.html_path,
+        )
+        run.save("publish_result", released)
+        if released.status == "published":
+            run.advance(WorkflowState.PUBLISHED)
 
 
 # ---------------------------------------------------------------------------
@@ -803,6 +813,7 @@ def load_deps(
     author: str = "",
     audience: str = "通用技术读者",
     word_target: int = 1500,
+    auto_release: bool = False,
 ) -> PipelineDeps:
     """从环境变量与账号配置装配生产依赖（LLM / 安全搜索 / 兜底图片 / 微信发布）。"""
     account_config = load_account(accounts_dir, account=account)
@@ -818,4 +829,5 @@ def load_deps(
         author=author,
         audience=audience,
         word_target=word_target,
+        auto_release=auto_release,
     )

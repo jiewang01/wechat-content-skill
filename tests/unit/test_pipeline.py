@@ -187,19 +187,37 @@ class StubImage:
 
 
 class StubPublisher:
-    """记录 create_draft 入参并返回固定成功结果。"""
+    """记录 create_draft / release 入参并返回固定结果。"""
 
-    def __init__(self, status: str = "draft_created") -> None:
+    def __init__(
+        self, status: str = "draft_created", released: PublishResult | None = None
+    ) -> None:
         self._status = status
+        self._released = released
         self.docs: list[WechatDocument] = []
         self.authors: list[str] = []
         self.cover_paths: list[str | None] = []
+        self.release_calls: list[str] = []
 
     def create_draft(self, doc, *, author: str = "", cover_path=None) -> PublishResult:
         self.docs.append(doc)
         self.authors.append(author)
         self.cover_paths.append(cover_path)
         return PublishResult(status=self._status, draft_id="draft-001", media_id="media-001")
+
+    def release(self, draft_id, *, media_id: str = "", html_path: str = "") -> PublishResult:
+        self.release_calls.append(draft_id)
+        if self._released is not None:
+            return self._released
+        return PublishResult(
+            status="published",
+            draft_id=draft_id,
+            media_id=media_id,
+            publish_id="pub-001",
+            article_url="https://mp.weixin.qq.com/s/stub",
+            html_path=html_path,
+            message="发布成功",
+        )
 
 
 def _hits() -> list[SearchHit]:
@@ -214,6 +232,7 @@ def _deps(
     search: StubSearch | None = None,
     image: StubImage | None = None,
     publisher: StubPublisher | None = None,
+    auto_release: bool = False,
 ) -> PipelineDeps:
     return PipelineDeps(
         llm=llm,
@@ -221,6 +240,7 @@ def _deps(
         image=image if image is not None else StubImage(),
         publisher=publisher if publisher is not None else StubPublisher(),
         author="测试作者",
+        auto_release=auto_release,
     )
 
 
@@ -282,6 +302,55 @@ def test_happy_path_full_pipeline(tmp_path):
     assert ("render", "PASS") in gates
     assert ("publish", "PASS") in gates
     assert run.publish_gate_passed
+
+
+# ---------------------------------------------------------------------------
+# auto_release（N2-T4：DRAFT_CREATED → 条件推进 PUBLISHED）
+# ---------------------------------------------------------------------------
+
+
+def test_auto_release_advances_to_published(tmp_path):
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, _DRAFT_MD, _DESIGN_JSON])
+    publisher = StubPublisher()
+    run, _ = _start(tmp_path, _deps(llm, publisher=publisher, auto_release=True))
+
+    assert run.state == WorkflowState.PUBLISHED
+    assert publisher.release_calls == ["draft-001"]
+    result = run.artifact_typed("publish_result", PublishResult)
+    assert result.status == "published"
+    assert result.publish_id == "pub-001"
+    assert result.article_url == "https://mp.weixin.qq.com/s/stub"
+    assert result.draft_id == "draft-001"
+    assert result.media_id == "media-001"
+
+
+def test_auto_release_degraded_stays_draft_created(tmp_path):
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, _DRAFT_MD, _DESIGN_JSON])
+    released = PublishResult(
+        status="degraded",
+        draft_id="draft-001",
+        degraded=True,
+        message="微信 API 请求失败",
+    )
+    publisher = StubPublisher(released=released)
+    run, _ = _start(tmp_path, _deps(llm, publisher=publisher, auto_release=True))
+
+    assert run.state == WorkflowState.DRAFT_CREATED
+    assert publisher.release_calls == ["draft-001"]
+    result = run.artifact_typed("publish_result", PublishResult)
+    assert result.status == "degraded"
+    assert result.degraded is True
+
+
+def test_auto_release_skipped_when_draft_not_created(tmp_path):
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, _DRAFT_MD, _DESIGN_JSON])
+    publisher = StubPublisher(status="degraded")
+    run, _ = _start(tmp_path, _deps(llm, publisher=publisher, auto_release=True))
+
+    assert run.state == WorkflowState.DRAFT_CREATED
+    assert publisher.release_calls == []  # 没有草稿句柄，绝不调用 release
+    result = run.artifact_typed("publish_result", PublishResult)
+    assert result.status == "degraded"
 
 
 # ---------------------------------------------------------------------------

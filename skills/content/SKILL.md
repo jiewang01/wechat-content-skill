@@ -32,8 +32,11 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 |------|----------|------|
 | `tutorial` | 教程 / how-to / 上手指南 | [frameworks/tutorial.md](frameworks/tutorial.md) |
 | `news-analysis` | 新闻解读 / 事件分析 | [frameworks/news-analysis.md](frameworks/news-analysis.md) |
-
-（v0.2 待办：opinion / case-study / listicle / deep-dive / narrative）
+| `opinion` | 观点文 / 立场论证 | [frameworks/opinion.md](frameworks/opinion.md) |
+| `case-study` | 案例复盘 / 成败归因 | [frameworks/case-study.md](frameworks/case-study.md) |
+| `listicle` | 清单体 / 盘点合集 | [frameworks/listicle.md](frameworks/listicle.md) |
+| `deep-dive` | 深度长文 / 原理拆解 | [frameworks/deep-dive.md](frameworks/deep-dive.md) |
+| `narrative` | 叙事文 / 非虚构故事 | [frameworks/narrative.md](frameworks/narrative.md) |
 
 ## 规则（Defender 职责）
 

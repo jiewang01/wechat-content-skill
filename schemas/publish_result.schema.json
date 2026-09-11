@@ -15,6 +15,7 @@
     "status": {
       "enum": [
         "draft_created",
+        "published",
         "degraded",
         "failed"
       ],
@@ -29,6 +30,18 @@
     "draft_id": {
       "default": "",
       "title": "Draft Id",
+      "type": "string"
+    },
+    "publish_id": {
+      "default": "",
+      "description": "Freepublish task id; set once the draft was submitted for release.",
+      "title": "Publish Id",
+      "type": "string"
+    },
+    "article_url": {
+      "default": "",
+      "description": "Published article URL; set only on the confirmed published exit.",
+      "title": "Article Url",
       "type": "string"
     },
     "html_path": {

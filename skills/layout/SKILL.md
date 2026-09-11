@@ -26,7 +26,7 @@ wechat.html（内联 CSS，微信安全标签）
 
 ## 主题选择
 
-v0.1 只内置 `default`（[renderer/themes/default/](../../renderer/themes/default/)）：`theme.yaml`（颜色、启用组件）、`typography.yaml`、`components.yaml`。主题引擎读取任何包含这三个文件的目录 —— 新主题零代码接入（v0.2 待办：editorial / minimal / tech / magazine）。
+内置主题：`default`、`editorial`（编辑部衬线风）、`minimal`（极简黑白灰）、`tech`（科技蓝 + 深色代码块）、`magazine`（杂志高对比），均位于 [renderer/themes/](../../renderer/themes/)，每个主题包含 `theme.yaml`（颜色、启用组件）、`typography.yaml`、`components.yaml`。主题引擎读取任何包含这三个文件的目录 —— 新主题零代码接入。
 
 ## 规则（Defender 职责）
 

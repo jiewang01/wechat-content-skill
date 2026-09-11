@@ -1,0 +1,60 @@
+body:
+  font_size: 16
+  line_height: 1.8
+  color: "#2b2b2b"
+  font_family: "Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif"
+  word_break: break-word
+
+h1:
+  font_size: 22
+  font_weight: 700
+  color: "#1a1a1a"
+  margin_top: 26
+  margin_bottom: 14
+
+h2:
+  font_size: 20
+  font_weight: 700
+  color: "#1a1a1a"
+  margin_top: 24
+  margin_bottom: 12
+
+h3:
+  font_size: 17
+  font_weight: 700
+  color: "#3d3d3d"
+  margin_top: 18
+  margin_bottom: 10
+
+paragraph:
+  margin_top: 10
+  margin_bottom: 10
+
+code_inline:
+  font_family: "Consolas, 'Courier New', monospace"
+  color: "#8c2f39"
+  background: "#f7f3ee"
+  padding_h: 4
+  padding_v: 2
+  border_radius: 3
+
+code_block:
+  background: "#f7f3ee"
+  color: "#2b2b2b"
+  font_family: "Consolas, 'Courier New', monospace"
+  font_size: 14
+  line_height: 1.6
+  padding: 12
+  border_radius: 4
+  white_space: pre-wrap
+
+list:
+  indent: 16
+  item_margin: 6
+  marker_color: "#8c2f39"
+
+image:
+  width: "100%"
+  max_width: "100%"
+  margin_top: 16
+  margin_bottom: 16

@@ -64,7 +64,10 @@ class ContentBrief(ArtifactBase):
     topic: str
     audience: str = ""
     goal: str = ""
-    framework: str = Field(description="Writing framework id: tutorial | news-analysis (v0.1).")
+    framework: str = Field(
+        description="Writing framework id: tutorial | news-analysis | opinion | case-study "
+        "| listicle | deep-dive | narrative."
+    )
     tone: str = "professional"
     word_target: int = Field(default=1500, ge=200, le=10000)
     sections: list[BriefSection] = Field(default_factory=list)
@@ -166,9 +169,17 @@ class ValidationReport(ArtifactBase):
 
 
 class PublishResult(ArtifactBase):
-    status: Literal["draft_created", "degraded", "failed"]
+    status: Literal["draft_created", "published", "degraded", "failed"]
     media_id: str = ""
     draft_id: str = ""
+    publish_id: str = Field(
+        default="",
+        description="Freepublish task id; set once the draft was submitted for release.",
+    )
+    article_url: str = Field(
+        default="",
+        description="Published article URL; set only on the confirmed published exit.",
+    )
     html_path: str = Field(
         default="",
         description="Local HTML export path; set on success, degraded and failed exits alike.",

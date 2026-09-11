@@ -27,7 +27,7 @@ dev = [
 include = ["core*", "renderer*", "validators*", "integrations*", "skills*"]
 
 [tool.setuptools.package-data]
-"renderer.themes" = ["default/*.yaml"]
+"renderer.themes" = ["*/theme.yaml", "*/typography.yaml", "*/components.yaml"]
 "skills.content.humanize" = ["rules.yaml"]
 "validators.content" = ["rules/*.yaml"]
 "validators.wechat" = ["rules/*.yaml"]

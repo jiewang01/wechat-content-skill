@@ -1,8 +1,9 @@
-"""发布 Facade：上层只调 create_draft(doc)，零感知微信细节（蓝图十三章，计划 M5-T6）。
+"""发布 Facade：上层只调 create_draft / release，零感知微信细节（蓝图十三章，M5-T6 / N2-T3）。
 
 出口语义（蓝图十二章「发布不是 Workflow 的唯一出口」）：
 - draft_created：微信链路全程成功（封面素材上传 + 草稿箱落位）；
-- degraded：微信 API 不可用（或无可用封面素材）→ 本地导出 HTML，人工发布；
+- published：草稿经 freepublish 确认发布成功（release 专用出口，含 article_url）；
+- degraded：微信 API 不可用（或无可用封面素材 / 发布未确认成功）→ 本地导出 HTML，人工发布；
 - failed：连本地导出都失败（磁盘错误），没有任何 artifact 落地。
 非 failed 出口都会落 html_path 本地留档。
 """
@@ -11,6 +12,7 @@ from __future__ import annotations
 
 import base64
 import re
+import time
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -20,6 +22,7 @@ from integrations.errors import ProviderError
 from .auth import TokenManager
 from .client import WeChatClient
 from .draft import DraftService
+from .freepublish import FreepublishService
 from .media import MediaService
 
 DEFAULT_OUTPUT_DIR = Path("artifacts/wechat")
@@ -61,10 +64,12 @@ class WeChatPublisher:
         *,
         media: MediaService | None = None,
         drafts: DraftService | None = None,
+        freepublish: FreepublishService | None = None,
         output_dir: Path = DEFAULT_OUTPUT_DIR,
     ) -> None:
         self._media = media or MediaService(client, tokens)
         self._drafts = drafts or DraftService(client, tokens)
+        self._freepublish = freepublish or FreepublishService(client, tokens)
         self._output_dir = Path(output_dir)
 
     def create_draft(
@@ -102,6 +107,67 @@ class WeChatPublisher:
             media_id=uploaded.media_id,
             draft_id=draft_id,
             html_path=str(html_path),
+        )
+
+    def release(
+        self,
+        draft_id: str,
+        *,
+        media_id: str = "",
+        html_path: str = "",
+        max_polls: int = 10,
+        poll_interval: float = 1.0,
+        sleep=time.sleep,
+    ) -> PublishResult:
+        """把草稿箱文章正式发布（freepublish 群发）并轮询至终态；绝不抛出。
+
+        只有确认 publish_state=0 才返回 published（含 article_url）；
+        提交失败 / 审核失败 / 轮询超时一律返回 degraded——草稿仍在草稿箱，
+        可人工发布或再次调用 release（计划 N2-T3，蓝图十二章降级出口）。
+        """
+        if not draft_id:
+            return PublishResult(
+                status="degraded",
+                media_id=media_id,
+                html_path=html_path,
+                degraded=True,
+                message="缺少草稿 media_id，无法提交发布",
+            )
+        try:
+            publish_id = self._freepublish.submit(draft_id)
+            status = self._freepublish.wait(
+                publish_id,
+                max_polls=max_polls,
+                poll_interval=poll_interval,
+                sleep=sleep,
+            )
+        except ProviderError as exc:
+            return PublishResult(
+                status="degraded",
+                media_id=media_id,
+                draft_id=draft_id,
+                html_path=html_path,
+                degraded=True,
+                message=str(exc),
+            )
+        if status.success:
+            return PublishResult(
+                status="published",
+                media_id=media_id,
+                draft_id=draft_id,
+                publish_id=publish_id,
+                article_url=status.article_url,
+                html_path=html_path,
+                message="发布成功",
+            )
+        return PublishResult(
+            status="degraded",
+            media_id=media_id,
+            draft_id=draft_id,
+            publish_id=publish_id,
+            html_path=html_path,
+            degraded=True,
+            message=status.message,
         )
 
     def _export_html(self, doc: WechatDocument) -> Path:

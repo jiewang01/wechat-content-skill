@@ -1,0 +1,72 @@
+quote:
+  background: "#f9f6f1"
+  border_left: "3px solid #8c2f39"
+  border_radius: 4
+  padding: 14
+  margin_top: 18
+  margin_bottom: 18
+  text_color: "#3f3a35"
+  font_size: 17
+  cite_color: "#8a8075"
+  cite_size: 13
+
+note:
+  background: "#f5f1ea"
+  border_left: "3px solid #b08d57"
+  border_radius: 4
+  padding: 12
+  margin_top: 16
+  margin_bottom: 16
+  text_color: "#5a5248"
+  font_size: 15
+
+callout:
+  base:
+    border_radius: 4
+    padding: 12
+    margin_top: 16
+    margin_bottom: 16
+    font_size: 15
+  variants:
+    info:
+      background: "#eef1f6"
+      border_left: "3px solid #3d5a80"
+      title_color: "#3d5a80"
+      text_color: "#43536a"
+    warning:
+      background: "#faf3e8"
+      border_left: "3px solid #b07d2b"
+      title_color: "#8f6420"
+      text_color: "#6a5326"
+    tip:
+      background: "#f2f5ef"
+      border_left: "3px solid #5f7a4e"
+      title_color: "#4c6640"
+      text_color: "#4a5a42"
+    danger:
+      background: "#f9eeed"
+      border_left: "3px solid #a4382f"
+      title_color: "#8c2f39"
+      text_color: "#6e322c"
+
+card:
+  border: "1px solid #d9d2c7"
+  border_radius: 6
+  padding: 14
+  margin_top: 16
+  margin_bottom: 16
+  background: "#faf8f4"
+  title_color: "#8c2f39"
+  title_size: 16
+  title_weight: 700
+  item_color: "#4a453d"
+  item_size: 15
+  item_margin: 6
+  item_marker_color: "#8c2f39"
+  footer_color: "#9a9186"
+  footer_size: 13
+
+hr:
+  color: "#d9d2c7"
+  margin_top: 24
+  margin_bottom: 24

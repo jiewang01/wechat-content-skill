@@ -57,7 +57,7 @@
       "type": "string"
     },
     "framework": {
-      "description": "Writing framework id: tutorial | news-analysis (v0.1).",
+      "description": "Writing framework id: tutorial | news-analysis | opinion | case-study | listicle | deep-dive | narrative.",
       "title": "Framework",
       "type": "string"
     },

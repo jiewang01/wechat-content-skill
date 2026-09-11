@@ -3,15 +3,27 @@
 蓝图十二章：**发布不是 Workflow 的唯一出口**。微信 API 任何环节不可用时，
 流程必须仍能以本地 HTML 收尾，绝不因第三方故障丢稿。
 
-## 三级出口判定
+## 四级出口判定
 
 | 出口 | 触发条件 | 处置动作 |
 |------|----------|----------|
-| `draft_created` | 封面上传 + 草稿创建全部成功 | 记录 draft_id；在公众号后台预览、群发 |
-| `degraded` | 无可用封面 / 微信 API 业务错误 / HTTP 5xx / 网络不通 | 打开 `html_path` 本地副本，按下方「人工发布 Checklist」执行 |
+| `published` | release 确认 publish_state=0 | 记录 publish_id 与 article_url；流程结束 |
+| `draft_created` | 封面上传 + 草稿创建全部成功（未开启 auto_release） | 记录 draft_id；需要正式发布时调 `release(draft_id)` 或在后台群发 |
+| `degraded` | 无可用封面 / 微信 API 业务错误 / HTTP 5xx / 网络不通 / 发布未确认成功 | 打开 `html_path` 本地副本，按下方「人工发布 Checklist」执行 |
 | `failed` | 本地导出都失败（目录不可写、磁盘满） | 修复 output_dir 权限后重跑发布；此出口没有任何 artifact 落地 |
 
 非 `failed` 出口都会落 `html_path` 本地留档；`degraded` 额外置 `degraded: true`。
+
+## release（正式发布）降级场景
+
+release 绝不抛出：任何失败都收敛为 `degraded` + message。处置对照：
+
+| 场景 | 表现 | 处置动作 |
+|------|------|----------|
+| 提交被拒（errcode） | submit 返回业务错误（额度耗尽 / 草稿不合规等） | 看 message 中的 errcode；草稿仍在草稿箱，排障后凭 draft_id 重新 release |
+| 群发额度耗尽 | 订阅号每天 1 次、服务号每月 4 次 | 次日凭 draft_id 重新 release，不重跑内容管线 |
+| 审核 / 原创申明失败 | publish_state=1/2/3（终态失败） | message 含具体 state；按驳回原因改稿后重建草稿再 release |
+| 轮询超时 | 超过 max_polls（默认 10 次 × 1s）仍是 publish_state=4 | 大多数为延迟非失败：稍后在公众号后台或用 publish_id 查询确认，不盲目重复 submit |
 
 ## 常见 errcode 与处置
 
