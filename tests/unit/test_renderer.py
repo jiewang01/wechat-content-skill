@@ -9,6 +9,7 @@ import yaml
 from renderer.ast import parse
 from renderer.html import HtmlRenderer
 from renderer.themes import THEMES_DIR, ThemeError, load_theme
+from validators import lint_gzh, lint_html
 
 DOC = """# 标题一
 
@@ -132,6 +133,53 @@ def test_plain_text_degradation():
     assert "注意" in plain and "警告正文。" in plain
     assert "- 要点一" in plain and "要点二" in plain
     assert "步骤一" in plain
+
+
+NESTED_DOC = """:::card title="嵌套要点卡" footer="完"
+- 文本要点一
+:::note
+嵌套说明内容。
+:::
+:::quote cite="嵌套引用人"
+嵌套原话内容。
+:::
+:::callout type="warning" title="嵌套注意"
+嵌套警示正文。
+:::
+- 文本要点二
+:::
+"""
+
+
+def test_nested_card_children_rendered_inline():
+    out = HtmlRenderer().render(parse(NESTED_DOC))
+    assert "嵌套说明内容。" in out
+    assert "嵌套原话内容。" in out
+    assert "嵌套注意" in out and "嵌套警示正文。" in out
+    assert "文本要点一" in out and "文本要点二" in out
+
+
+def test_nested_render_passes_html_and_gzh_gates():
+    html = HtmlRenderer().render(parse(NESTED_DOC))
+    assert [issue for issue in lint_html(html) if issue.severity == "error"] == []
+    assert [issue for issue in lint_gzh(html) if issue.severity == "error"] == []
+
+
+def test_render_segments_keeps_top_level_granularity_for_nested_card():
+    """嵌套子节点 HTML 并入父段 —— 修复循环按顶层段定位（v0.3 N1-T7）。"""
+    segments = HtmlRenderer().render_segments(parse(NESTED_DOC))
+    assert [node_id for node_id, _ in segments] == ["component_1"]
+    assert "嵌套说明内容。" in segments[0][1]
+    assert "嵌套警示正文。" in segments[0][1]
+
+
+def test_plain_text_unrolls_nested_children():
+    plain = HtmlRenderer().render_plain_text(parse(NESTED_DOC))
+    assert "<" not in plain
+    assert "- 文本要点一" in plain and "- 文本要点二" in plain
+    assert "嵌套说明内容。" in plain
+    assert "—— 嵌套引用人" in plain
+    assert "嵌套注意" in plain and "嵌套警示正文。" in plain
 
 
 def test_callout_variants_render_distinctly():

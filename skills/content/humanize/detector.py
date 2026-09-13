@@ -7,6 +7,7 @@ Judge 职责由确定性代码承担，LLM 不参与打分。
 from __future__ import annotations
 
 import re
+import statistics
 from pathlib import Path
 
 import yaml
@@ -24,6 +25,8 @@ _LIST_ITEM_RE = re.compile(r"^\s*(?:[-*+]|\d+[.、)])\s+")
 _IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _CJK_RUN_RE = re.compile(r"[\u4e00-\u9fff]+")
 
+_OPENING_NOISE_CHARS = "*`_~:> \t"
+
 _EVIDENCE_MAX = 60
 
 
@@ -38,6 +41,9 @@ class Penalties(_RuleModel):
     avg_sentence_length: int = Field(default=5, ge=0)
     long_paragraph: int = Field(default=3, ge=0)
     repetition: int = Field(default=5, ge=0)
+    connective_density: int = Field(default=3, ge=0)
+    opening_monotony: int = Field(default=3, ge=0)
+    sentence_length_uniformity: int = Field(default=3, ge=0)
 
 
 class Limits(_RuleModel):
@@ -47,15 +53,21 @@ class Limits(_RuleModel):
     repeat_ngram_chars: int = 5
     repeat_min_occurrences: int = 3
     min_sentences_for_avg: int = 3
+    max_connectives_per_kilo: int = 12
+    min_chars_for_rhythm: int = 150
+    min_sentences_for_rhythm: int = 6
+    max_repeated_opening_run: int = 3
+    min_sentence_length_std: float = 3.5
 
 
 class HumanizeRules(_RuleModel):
-    version: int = 1
+    version: int = 2
     pass_score: int = Field(default=60, ge=0, le=100)
     penalties: Penalties = Field(default_factory=Penalties)
     limits: Limits = Field(default_factory=Limits)
     phrases: list[str] = Field(default_factory=list)
     pairs: list[tuple[str, str]] = Field(default_factory=list)
+    connectives: list[str] = Field(default_factory=list)
 
 
 def load_rules(path: str | Path | None = None) -> HumanizeRules:
@@ -83,6 +95,14 @@ def _normalize(markdown: str) -> str:
 
 def _sentences(paragraph: str) -> list[str]:
     return [s.strip() for s in _SENTENCE_SPLIT_RE.split(paragraph) if s.strip()]
+
+
+def _opening(sentence: str) -> str:
+    return sentence.lstrip(_OPENING_NOISE_CHARS)[:2]
+
+
+def _cjk_char_count(text: str) -> int:
+    return sum(len(run) for run in _CJK_RUN_RE.findall(text))
 
 
 def _issue(kind: str, severity: str, evidence: str, message: str) -> dict[str, str]:
@@ -181,6 +201,57 @@ def analyze_text(markdown: str, rules: HumanizeRules | None = None) -> HumanizeR
                     "warning",
                     gram,
                     f"片段「{gram}」重复出现 {count} 次，请替换表述。",
+                )
+            )
+
+    cjk_total = _cjk_char_count(text)
+    if (
+        cjk_total >= limits.min_chars_for_rhythm
+        and len(all_sentences) >= limits.min_sentences_for_rhythm
+    ):
+        hits = sum(text.count(connective) for connective in rules.connectives)
+        density = hits * 1000 / cjk_total
+        if density > limits.max_connectives_per_kilo:
+            score -= rules.penalties.connective_density
+            issues.append(
+                _issue(
+                    "connective_density",
+                    "warning",
+                    f"{density:.1f} 处/千字",
+                    f"连接词密度 {density:.1f} 处/千字，超过 {limits.max_connectives_per_kilo}，"
+                    "句间衔接过度依赖显式连接词，请删减或改写。",
+                )
+            )
+
+        openings = [_opening(sentence) for sentence in all_sentences]
+        run_start = 0
+        for index in range(1, len(openings) + 1):
+            if index < len(openings) and openings[index] == openings[run_start]:
+                continue
+            run_length = index - run_start
+            head = openings[run_start]
+            if head and run_length >= limits.max_repeated_opening_run:
+                score -= rules.penalties.opening_monotony
+                issues.append(
+                    _issue(
+                        "opening_monotony",
+                        "warning",
+                        head,
+                        f"连续 {run_length} 句以「{head}」开头，句首单调，请变换切入角度。",
+                    )
+                )
+            run_start = index
+
+        std = statistics.pstdev([len(sentence) for sentence in all_sentences])
+        if std < limits.min_sentence_length_std:
+            score -= rules.penalties.sentence_length_uniformity
+            issues.append(
+                _issue(
+                    "sentence_length_uniformity",
+                    "warning",
+                    f"{std:.1f} 字",
+                    f"句长标准差 {std:.1f} 字，低于 {limits.min_sentence_length_std}，"
+                    "句子长度过于均匀，缺少长短交错的节奏。",
                 )
             )
 

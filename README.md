@@ -47,14 +47,14 @@ python scripts/validate.py examples/tutorial/run_20260910_001/content_package.js
 # 单产物快速检查（按扩展名分派：draft → Content QA；package → 组件 lint；html → 双层）
 python scripts/lint.py examples/tutorial/run_20260910_001/article_draft.json
 
-# evals 基准（20 个用例：humanize / 内容门 / 5 主题渲染 / 7 框架全链路）
+# evals 基准（27 个用例：humanize / 内容门 / 5 主题 × 2 语料渲染 / 7 框架全链路）
 python scripts/run_evals.py
 
 # 全量测试（全部离线，无网络依赖）
 pytest -q
 ```
 
-## 能力清单（v0.2）
+## 能力清单（v0.3）
 
 **主题（5 个，`renderer/themes/`）**：
 
@@ -68,9 +68,15 @@ pytest -q
 
 **写作框架（7 个，`skills/content/frameworks/`）**：`tutorial`（教程）/ `news-analysis`（新闻解读）/ `opinion`（观点论证）/ `case-study`（案例复盘）/ `listicle`（清单体）/ `deep-dive`（深度长文）/ `narrative`（叙事文）。
 
+**语义标记嵌套（v0.3）**：card 是唯一容器，正文列表项之间可混排 note / quote / callout 子组件块（深度上限 2 层，`MAX_COMPONENT_DEPTH`），嵌套渲染覆盖全部 5 个主题；语法与允许组合见 [skills/native/components/card.md](skills/native/components/card.md)。
+
+**去 AI 味（v0.3，9 维检测）**：2 条 error 级硬拦截（黑名单短语 / 成对短语）+ 7 条 warning 级指标（长句、平均句长、长段落、用词重复、连接词密度、开头单一化、句长均匀度），规则与扣分权重见 [skills/content/humanize/rules.yaml](skills/content/humanize/rules.yaml)。
+
 **正式发布（v0.2）**：`WeChatPublisher.release()` 把草稿箱文章正式群发（内部轮询至终态），或 `load_deps(auto_release=True)` 草稿落位后自动续发；群发额度约束（订阅号每天 1 次 / 服务号每月 4 次）见 [skills/publishing/SKILL.md](skills/publishing/SKILL.md)。
 
-**evals**：20 个用例（humanize 4 / content_gate 4 / render 5 主题 / framework 7）覆盖 13 份语料，`python scripts/run_evals.py` 一键回归，13 个测试锁定阈值。
+**发布数据统计（v0.3）**：`python scripts/stats.py [--date YYYY-MM-DD] [--account <name>]` 查询已群发文章的阅读 / 分享 / 在看 / 点赞 / 收藏 / 评论 / 完读率 / 送达率（发表当日口径），回执幂等落盘 `outputs/stats/<date>_article_stats.json`，操作细节见 [docs/verification-checklist.md](docs/verification-checklist.md) §9。
+
+**evals**：27 个用例（humanize 6 / content_gate 4 / render 10 / framework 7）覆盖 16 份语料，`python scripts/run_evals.py` 一键回归，14 个测试锁定阈值。
 
 ## 真实环境发布
 
@@ -79,7 +85,7 @@ pytest -q
 ## 入口
 
 - **Agent 入口**：根 [SKILL.md](SKILL.md)（编排 7 个 Sub-Skill：research / content / visual / native / layout / quality / publishing）
-- **CLI 入口**：`scripts/`（render / validate / lint / preview / run_evals / export_schemas）
+- **CLI 入口**：`scripts/`（render / validate / lint / preview / stats / run_evals / export_schemas）
 - **编程入口**：`core/workflow/pipeline.py` 的 `load_deps()` + `build_pipeline()`（真实 Provider 装配与全流程编排；`auto_release=True` 开启草稿落位后自动发布）
 
 ## 仓库结构
@@ -92,9 +98,9 @@ pytest -q
 | `validators/` | 质量门：component_lint / Content QA / gzh_validator（确定性代码） |
 | `integrations/` | LLM / 搜索 / 图片 Provider（环境变量切换）+ 微信 API Facade（草稿 + 正式发布） |
 | `schemas/` | 全部 Artifact 的 JSON Schema |
-| `scripts/` | CLI：render / validate / lint / preview / run_evals / export_schemas |
+| `scripts/` | CLI：render / validate / lint / preview / stats / run_evals / export_schemas |
 | `examples/tutorial/` | 首个可复现示例（离线、确定性 run_id） |
-| `docs/` | 真实环境验证清单（含正式发布 §8） |
+| `docs/` | 真实环境验证清单（含正式发布 §8、发布数据统计 §9） |
 | `accounts/` | 多账号配置示例（只引用环境变量，不落 secret） |
 | `references/` | 对抗式约束（H1–H8）、SEO、内容合规等参考文档 |
 | `tests/` | 全量测试（离线，CI 无网络依赖；含 evals 回归） |
@@ -105,7 +111,7 @@ pytest -q
 
 ## 版本
 
-当前 v0.2.0，变更记录见 [CHANGELOG.md](CHANGELOG.md)。v0.2 落地记录见 [v0.2-implementation-plan.md](v0.2-implementation-plan.md)。
+当前 v0.3.0，变更记录见 [CHANGELOG.md](CHANGELOG.md)。v0.3 落地记录见 [v0.3-implementation-plan.md](v0.3-implementation-plan.md)。
 
 ## License
 

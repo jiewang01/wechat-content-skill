@@ -14,7 +14,7 @@ description: wechat-content-skill 的原生信息子技能：为文章 Markdown 
 - 输入：`ArticleDraft` + `VisualPlan`
 - 输出：`ContentPackage`（schemas/content_package.schema.json）—— `semantic_markdown` 携带标记
 
-## 四种标记（v0.1 全集，没有其他）
+## 四种标记（全集，没有其他）
 
 ```markdown
 :::note
@@ -35,13 +35,32 @@ type ∈ info | warning | tip | danger；title 可选。
 :::
 ```
 
+## 嵌套（v0.3）
+
+只有 card 是容器：正文列表项之间可插入 note / quote / callout 子组件块，深度上限 2 层（`MAX_COMPONENT_DEPTH`，子组件内不可再嵌套）。子组件 node_id 为 `component_N.M`，同样是 lint 定向修复的定位键。
+
+```markdown
+:::card title="核心要点"
+- 文本要点
+:::note
+局部旁注：只与这张卡片相关的补充。
+:::
+- 收尾要点
+:::
+```
+
+| 容器 | 允许的子组件 | 更深一层 |
+|------|--------------|----------|
+| card | note / quote / callout | 不允许（深度上限 2） |
+| note / quote / callout | 无 —— 任何 `:::` 标记都报 `invalid_nesting` | — |
+
 ## 规则（Defender 职责）
 
 - 标记只允许使用 [components/](components/) 与 `renderer/components/registry.py` 中定义的属性；未知属性是 lint 错误。
-- **禁止嵌套**：一个 `:::` 块内绝不再出现另一个 `:::` 块（v0.1 硬限制）。
+- **受控嵌套（v0.3）**：仅 card 可作容器，子组件只允许 note / quote / callout，深度上限 2 层（子组件内不可再嵌套）；其余任何嵌套组合报 `invalid_nesting`。语法见上方「嵌套」一节。
 - 克制使用：大约每 300–500 字一个组件；文章不能变成幻灯片。
 - 绝不输出 `<div>`、`<span>`、内联样式或任何 HTML —— 只用语义标记；HTML 由渲染器确定性生成。
-- lint 攻击某个组件（`component_N`）时，只修复该组件（H3）。
+- lint 攻击某个组件（`component_N`，嵌套子组件 `component_N.M`）时，只修复该组件（H3）。
 
 ## 组件规格
 
@@ -61,7 +80,7 @@ type ∈ info | warning | tip | danger；title 可选。
 | `unsupported_attribute` | 组件不支持的属性 |
 | `missing_required_prop` | 缺少必填属性 |
 | `invalid_prop_value` | 属性值不在枚举内（如 callout 的 type） |
-| `invalid_nesting` | `:::` 块内嵌另一个 `:::` 块 |
+| `invalid_nesting` | 不允许的嵌套：card 之外的组件内出现 `:::` 标记、card 内嵌 card、深度超过 2 层 |
 | `invalid_card_content` | card 正文不是列表 |
 | `unclosed_marker` | `:::` 开始标记未闭合 |
 | `stray_marker` | 出现未配对的 `:::` 结束标记 |

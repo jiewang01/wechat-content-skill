@@ -46,10 +46,13 @@ class CalloutNode(_ASTNodeBase):
     text: str
 
 
+CardItem = str | NoteNode | QuoteNode | CalloutNode
+
+
 class CardNode(_ASTNodeBase):
     type: Literal["card"] = "card"
     title: str = ""
-    items: list[str] = Field(default_factory=list)
+    items: list[CardItem] = Field(default_factory=list)
     footer: str = ""
 
 

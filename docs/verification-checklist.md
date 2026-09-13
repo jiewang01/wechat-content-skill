@@ -1,8 +1,8 @@
 # 真实环境验证清单（人工执行）
 
-> **目标**：在测试号或正式号完成一次真实「一句话 → 公众号草稿箱」（§1–§7），并可继续验证正式发布（§8，v0.2 新增）。
+> **目标**：在测试号或正式号完成一次真实「一句话 → 公众号草稿箱」（§1–§7），并可继续验证正式发布（§8，v0.2 新增）与发布数据统计（§9，v0.3 新增）。
 >
-> 离线链路已由 324 个自动化用例覆盖（`pytest -q`，含 httpx.MockTransport 模拟的端到端与正式发布 mock）。
+> 离线链路已由 383 个自动化用例覆盖（`pytest -q`，含 httpx.MockTransport 模拟的端到端与正式发布 mock）。
 > 本清单只覆盖自动化无法触达的部分：**真实凭证、真实网络、真实微信后台**。
 > 全部命令默认在仓库根目录执行。
 
@@ -10,7 +10,7 @@
 
 - [ ] Python ≥ 3.11：`python --version`
 - [ ] `pip install -e ".[dev]"` 安装成功
-- [ ] 基线全绿：`pytest -q` 显示 324 passed
+- [ ] 基线全绿：`pytest -q` 显示 383 passed
 - [ ] 一家 OpenAI 兼容 LLM 网关的 API Key（OpenAI / Qwen / DeepSeek / Gemini 兼容模式均可）
 - [ ] Tavily API Key（https://tavily.com 注册，免费额度即可）
 - [ ] 微信公众平台账号：**测试号**（公众平台官网 → 开发者工具 → 测试号，推荐）或已认证正式号
@@ -192,6 +192,32 @@ print(released.model_dump_json(indent=2))
       （publish_state=1 审核失败 / 2 原创申明失败 / 3 常见错误 / 轮询超时）；
       `html_path` 本地留档仍在——可人工后台发布，或排障后再次 release
 
+## 9. 发布数据统计验证（v0.3，可选）
+
+> 前置：**认证正式号**（datacube 数据统计接口需要认证权限；测试号 / 未认证号返回
+> `errcode=48001`，记录为已知限制即可）。数据自 **2025-11-01** 起存储；每篇文章统计
+> 其发表日起 **30 天**；接口仅支持 **1 天跨度**（begin = end），end_date 最大昨日。
+
+```bash
+python scripts/stats.py                     # 查昨日（默认）
+python scripts/stats.py --date 2025-12-01   # 指定日（YYYY-MM-DD，最早 2025-11-01）
+python scripts/stats.py --account tech      # 多账号（accounts/tech.yaml，凭据同 §1–§2）
+```
+
+验收项：
+
+- [ ] 退出码 0：stdout 打印摘要表（每篇文章一行核心指标 + 合计行），
+      `outputs/stats/<date>_article_stats.json` 回执落盘
+- [ ] 回执 `article_count` 与当日实际群发篇数一致；`articles[].detail_list`
+      按 `stat_date` 逐日展开（首日 = 发表当日口径），`msgid` 形如
+      `msg_data_id_index`（无下标 = 头条）
+- [ ] 同一 `--date` 重复运行：回执幂等覆盖，内容不变
+- [ ] （失败路径）`--date 2099-01-01` → 退出码 1，提示「end_date 最大昨日」；
+      早于 2025-11-01 的日期 → 微信返回 61501，报错已语义化；
+      `unset WECHAT_APP_ID_A WECHAT_APP_SECRET_A` → 退出码 2，提示 set 变量名
+- [ ] （认证号）发布 24h 后查昨日数据：阅读 / 分享 / 在看等指标与公众平台后台
+      「内容分析 - 图文分析」一致
+
 ## 附：常见错误速查
 
 | 现象 | 原因与处理 |
@@ -207,3 +233,6 @@ print(released.model_dump_json(indent=2))
 | release 返回 `degraded`，message 含「原创申明失败」 | publish_state=2：原创校验未通过，检查素材与转载声明 |
 | release 返回 `degraded`，额度类 errcode | 群发额度耗尽（订阅号每天 1 次 / 服务号每月 4 次），次日凭同一 draft_id 重新 release |
 | release 返回 `degraded`，message 含超时 / 发布中 | publish_state=4 轮询超时：草稿仍在发布队列，稍后在后台「发表记录」确认，勿盲目重复提交 |
+| stats 提示日期格式错误（退出码 1） | errcode=61500：`--date` 需补零 YYYY-MM-DD（如 2025-12-01，非 2025-12-1） |
+| stats errcode=61501（日期范围错误） | 早于 2025-11-01 无数据；单日查询由 CLI 保证 begin=end，改查 2025-11-01 及之后的日期 |
+| stats 退出码 1，errcode=48001（api unauthorized） | 账号未认证：datacube 统计接口仅认证号可用，见 §9 |

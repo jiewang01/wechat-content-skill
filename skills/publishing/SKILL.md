@@ -1,6 +1,6 @@
 ---
 name: publishing
-description: wechat-content-skill 的发布子技能：把校验通过的 WechatDocument 经 WeChatPublisher Facade 落进公众号草稿箱，可选经 freepublish 正式发布并轮询状态；微信 API 不可用时按降级手册以本地 HTML 收尾——发布永远不是流程的唯一出口。
+description: wechat-content-skill 的发布子技能：把校验通过的 WechatDocument 经 WeChatPublisher Facade 落进公众号草稿箱，可选经 freepublish 正式发布并轮询状态，发布后经 stats CLI 查询群发数据统计并留档回执；微信 API 不可用时按降级手册以本地 HTML 收尾——发布永远不是流程的唯一出口。
 ---
 
 # Publishing Skill（发布技能）
@@ -51,12 +51,20 @@ description: wechat-content-skill 的发布子技能：把校验通过的 Wechat
    - `degraded`：草稿仍在草稿箱——可人工在后台发布，或排障后再次 release；
    - 提交前草稿缺失（draft_id 为空）：直接 degraded，不发起任何 API 调用。
 
+### 数据监控（stats，v0.3）
+
+1. **定位** —— 发布 24h 后的运营回路：查询某日群发文章的阅读 / 分享 / 在看 / 收藏 / 完读率等全量指标（datacube `getarticletotaldetail`）。查询型能力不进 pipeline 状态机：经 `scripts/stats.py` 手动触发，回执留档 `outputs/stats/<date>_article_stats.json`（含 `detail_list` 逐日明细，重复运行幂等覆盖）。
+2. **用法** —— `python scripts/stats.py`（默认查昨日）；`--date YYYY-MM-DD` 指定日、`--account <name>` 多账号。凭据与 pipeline 同源（`accounts/<name>.yaml` 只存环境变量名）；stdout 打印摘要表，stderr 一行状态。退出码：0 查询成功；1 查询失败（日期预检拒绝 / 微信侧错误）；2 环境 / 配置错误。
+3. **接口约束（硬性）** —— 仅**认证账号**可用（测试号 / 未认证号返回 `errcode=48001`）；数据自 **2025-11-01** 起存储；每篇文章统计其发表日起 **30 天**；仅支持 **1 天跨度**（begin = end），end_date 最大昨日。未来日期由客户端预检拦截（零网络）；errcode 61500（日期格式）/ 61501（范围超限，如早于 2025-11-01）报错已语义化。
+4. **与发布链路的关系** —— 查询失败只影响本次 stats 运行（退出码 1），不触碰草稿箱与已发布内容；发布额度、降级出口等语义不受监控影响。
+
 ## 规则（Defender 职责）
 
 - 上层代码禁止直接调用 `WeChatClient` / `TokenManager` / `MediaService` / `DraftService` / `FreepublishService`——一律经 `WeChatPublisher`（蓝图十三章）。
 - token 失效（errcode 40001/42001）由 `call_with_token_retry` 自动废弃缓存并重试一次；上层不得自建重试循环。
 - `release()` 绝不抛出：任何 ProviderError 都收敛为 `status="degraded"` + message；发布未确认成功（轮询超时仍在 state=4）同样只算 degraded。
 - 远程封面 URL 不在发布层下载：视觉阶段必须先把素材物化为本地文件或 data URI。
+- 数据查询（v0.3）走 `DatacubeService.article_stats(date)`，仅经 `scripts/stats.py` 触发：认证号 / 2025-11-01 起数据 / 30 天窗口 / 1 天跨度（end_date ≤ 昨日）等约束由 Service 统一预检与语义化（61500/61501），上层无需也不应自行拼接 datacube API；查询失败不影响发布链路。
 - 降级只改变「送达方式」，不改变「内容」——禁止因降级而删改成稿。
 - 被 Judge 攻击（错误出口、越权调用微信 API）时，只修复被点名的环节（H3）。
 

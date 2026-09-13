@@ -24,7 +24,7 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 2. **框架选择** —— 按选题类型路由；内置 7 个写作框架（见下）。新增框架不需要改 Orchestrator。
 3. **初稿** —— 纯 Markdown；这里不加语义标记（那是 native 技能的职责）。
 4. **批判 → 重写** —— 依据所选框架的检查清单自审。
-5. **Humanize** —— 运行确定性检测器（`skills/content/humanize/`），重写被标记的句子，反复运行直到 `passed: true`。
+5. **Humanize** —— 运行确定性检测器（`skills/content/humanize/`，rules v2 共 9 个维度：黑名单短语 / 成对句式 / 长句 / 平均句长 / 长段 / 重复 / 连接词密度 / 句首单调 / 句长均匀度），重写被标记的句子，反复运行直到 `passed: true`。
 
 ## 框架（7 个）
 
@@ -47,7 +47,7 @@ ContentBrief → 框架选择 → 大纲 → 初稿 → 批判 → 重写 → Hu
 
 ## 组件
 
-- [humanize/](humanize/) —— 确定性 AI 味检测器（内容门的 Attacker 引擎）
+- [humanize/](humanize/) —— 确定性 AI 味检测器（内容门的 Attacker 引擎）：9 个维度，阈值全部外置于 [humanize/rules.yaml](humanize/rules.yaml)（v2，含连接词清单与节奏门限，调规则不改代码）
 - [writing/](writing/) —— 重写时使用的句子工艺笔记
 - [frameworks/](frameworks/) —— 写作框架定义
 

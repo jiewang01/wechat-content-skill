@@ -26,7 +26,7 @@ description: 微信公众号内容 Agent 工作流技能：一句话输入，经
 3. **Write（写作）** — 成稿 → `ArticleDraft`
 4. **Humanize（去 AI 味）** — AI 味检测 + 重写循环（质量门，不是提示词）
 5. **Design（视觉）** — 结构化 `VisualPlan`（封面 / 插图 / 图表）
-6. **Native（原生组件）** — 用语义标记（`:::note` / `:::quote` / `:::callout` / `:::card`）标注 → `ContentPackage`
+6. **Native（原生组件）** — 用语义标记（`:::note` / `:::quote` / `:::callout` / `:::card`）标注，card 可嵌套 note / quote / callout（深度上限 2）→ `ContentPackage`
 7. **Render（渲染）** — ContentAST → 主题驱动 HTML → `WechatDocument`
 8. **Validate（校验）** — 3 道对抗门（content / render / publish；四道 validator 与门禁流转见 [skills/quality/SKILL.md](skills/quality/SKILL.md)）→ `ValidationReport` + `Verdict`
 9. **Repair（修复）** — 只做节点级定向修复，≤ 3 轮，绝不整篇重写
@@ -67,6 +67,7 @@ python scripts/render.py <content_package.json> -o wechat.html
 python scripts/lint.py <draft.json | package.json | doc.md | page.html>
 python scripts/validate.py <content_package.json>
 python scripts/preview.py <wechat.html>
+python scripts/stats.py [--date YYYY-MM-DD] [--account <name>]
 python scripts/run_evals.py
 ```
 

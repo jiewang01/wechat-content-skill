@@ -14,7 +14,7 @@ from __future__ import annotations
 import html
 import re
 
-from renderer.ast.nodes import AnyASTNode, ContentAST
+from renderer.ast.nodes import AnyASTNode, CardItem, ContentAST
 from renderer.themes import Theme, load_theme
 
 _LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
@@ -83,23 +83,32 @@ class HtmlRenderer:
 
     def render_plain_text(self, ast: ContentAST) -> str:
         """渲染为纯文本（去除行内标记），用于摘要与降级导出。"""
-        parts: list[str] = []
-        for node in ast.nodes:
-            kind = node.type
-            if kind in {"heading", "paragraph", "note", "code"}:
-                parts.append(node.text)
-            elif kind == "quote":
-                parts.append(node.text + (f"\n—— {node.cite}" if node.cite else ""))
-            elif kind == "callout":
-                parts.append((f"{node.title}\n" if node.title else "") + node.text)
-            elif kind == "card":
-                lines = [node.title] + [f"- {item}" for item in node.items] + [node.footer]
-                parts.append("\n".join(line for line in lines if line))
-            elif kind == "image":
-                parts.append(node.alt)
-            elif kind == "list":
-                parts.append("\n".join(node.items))
+        parts = [self._plain_block(node) for node in ast.nodes]
         return _to_plain("\n\n".join(p for p in parts if p and p.strip()))
+
+    def _plain_block(self, node: AnyASTNode) -> str:
+        """单节点 → 纯文本；card 的节点条目递归展开（嵌套子组件并入父块）。"""
+        kind = node.type
+        if kind in {"heading", "paragraph", "note", "code"}:
+            return node.text
+        if kind == "quote":
+            return node.text + (f"\n—— {node.cite}" if node.cite else "")
+        if kind == "callout":
+            return (f"{node.title}\n" if node.title else "") + node.text
+        if kind == "card":
+            lines = [node.title]
+            for item in node.items:
+                if isinstance(item, str):
+                    lines.append(f"- {item}")
+                else:
+                    lines.append(self._plain_block(item))
+            lines.append(node.footer)
+            return "\n".join(line for line in lines if line)
+        if kind == "image":
+            return node.alt
+        if kind == "list":
+            return "\n".join(node.items)
+        return ""
 
     def _typ(self, key: str) -> dict:
         return self.theme.typography.get(key) or {}
@@ -267,7 +276,7 @@ class HtmlRenderer:
             parts.append(f'<span style="{text_css}">{self._inline(text)}</span>')
         return f'<section style="{outer}">\n' + "\n".join(parts) + "\n</section>"
 
-    def _card_html(self, title: str, items: list[str], footer: str) -> str:
+    def _card_html(self, title: str, items: list[CardItem], footer: str) -> str:
         if not title and not items and not footer:
             return ""
         c = self._comp("card")
@@ -300,20 +309,34 @@ class HtmlRenderer:
                 ("color", c.get("item_color", "#4a5568")),
             ]
         )
+        item_margin = c.get("item_margin", 6)
+        child_margin = c.get("child_margin", item_margin)
         for item in items:
-            if not item.strip():
+            if isinstance(item, str):
+                if not item.strip():
+                    continue
+                row_css = _css(
+                    [
+                        ("margin-top", _px(item_margin)),
+                        ("margin-bottom", _px(item_margin)),
+                    ]
+                )
+                parts.append(
+                    f'<section style="{row_css}">'
+                    f'<span style="{marker_css}">•</span>'
+                    f'<span style="{item_css}"> {self._inline(item)}</span></section>'
+                )
+                continue
+            block = self._render_node(item)
+            if not block:
                 continue
             row_css = _css(
                 [
-                    ("margin-top", _px(c.get("item_margin", 6))),
-                    ("margin-bottom", _px(c.get("item_margin", 6))),
+                    ("margin-top", _px(child_margin)),
+                    ("margin-bottom", _px(child_margin)),
                 ]
             )
-            parts.append(
-                f'<section style="{row_css}">'
-                f'<span style="{marker_css}">•</span>'
-                f'<span style="{item_css}"> {self._inline(item)}</span></section>'
-            )
+            parts.append(f'<section style="{row_css}">\n{block}\n</section>')
         if footer:
             footer_css = _css(
                 [

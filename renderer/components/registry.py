@@ -31,11 +31,15 @@ class InvalidPropError(MarkerValidationError):
     """属性级错误：unsupported_attribute / missing_required_prop / invalid_prop_value。"""
 
 
+MAX_COMPONENT_DEPTH = 2
+
+
 @dataclass(frozen=True)
 class ComponentSpec:
     name: str
     description: str
     allowed_props: frozenset[str]
+    allowed_children: frozenset[str] = frozenset()
     required_props: frozenset[str] = frozenset()
     prop_enums: dict[str, frozenset[str]] = field(default_factory=dict)
     content: str = "text"
@@ -88,8 +92,9 @@ COMPONENT_SPECS: dict[str, ComponentSpec] = {
     ),
     "card": ComponentSpec(
         name="card",
-        description="要点卡片；正文为列表",
+        description="要点卡片；正文为列表，可嵌套 note/quote/callout",
         allowed_props=frozenset({"title", "footer"}),
+        allowed_children=frozenset({"note", "quote", "callout"}),
         content="list",
     ),
 }

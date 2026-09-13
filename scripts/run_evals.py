@@ -10,7 +10,8 @@
                      AI 味文得分 ≤ AI_FLAVOR_MAX_SCORE 且检出 error 级问题；
     2. content_gate  结构缺失文必须被 lint_content 检出 structure_incomplete；
                      好文走正向路径，零 error；
-    3. render        同一全组件样张在 5 个内置主题下渲染，
+    3. render        全组件样张 + 嵌套样张（card 内嵌 note/quote/callout）
+                     各在 5 个内置主题下渲染，
                      组件门 + HTML 门 + 公众号门全部零 error；
     4. framework     7 个写作框架语料各配 research / brief / draft 样例，
                      走 content → component → render/publish 全链路三层门禁，零 error。
@@ -428,22 +429,30 @@ def run_content_gate_eval() -> list[dict]:
 
 
 def run_render_eval() -> list[dict]:
-    title = _extract_title(RENDER_DOC)
-    digest = _make_digest(RENDER_DOC)
-    results: list[dict] = []
-    for theme_name in BUILTIN_THEMES:
-        issues, html_bytes, rounds = _render_theme(
-            RENDER_DOC, title=title, digest=digest, theme_name=theme_name
-        )
-        results.append(
-            _case_result(
-                f"render/{theme_name}",
-                issues,
-                theme=theme_name,
-                html_bytes=html_bytes,
-                repair_rounds=rounds,
+    nested_path = CASES_DIR / "render_nested.md"
+    if not nested_path.is_file():
+        raise EvalsError(f"嵌套渲染语料缺失：{nested_path}")
+    nested_doc = nested_path.read_text(encoding="utf-8")
+    nested_title = _extract_title(nested_doc)
+    nested_digest = _make_digest(nested_doc)
+    results = []
+    for doc, title, digest, prefix in (
+        (RENDER_DOC, _extract_title(RENDER_DOC), _make_digest(RENDER_DOC), "render"),
+        (nested_doc, nested_title, nested_digest, "render_nested"),
+    ):
+        for theme_name in BUILTIN_THEMES:
+            issues, html_bytes, rounds = _render_theme(
+                doc, title=title, digest=digest, theme_name=theme_name
             )
-        )
+            results.append(
+                _case_result(
+                    f"{prefix}/{theme_name}",
+                    issues,
+                    theme=theme_name,
+                    html_bytes=html_bytes,
+                    repair_rounds=rounds,
+                )
+            )
     return results
 
 
@@ -490,7 +499,7 @@ def run_all_evals() -> dict[str, object]:
     total = sum(len(cases) for cases in suites.values())
     failed = [str(case["case"]) for cases in suites.values() for case in cases if not case["ok"]]
     return {
-        "version": "0.2",
+        "version": "0.3",
         "suites": suites,
         "summary": {
             "total": total,

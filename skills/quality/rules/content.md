@@ -29,12 +29,17 @@ lint 内部重跑 `skills/content/humanize` 的检测器 —— **不信任** dr
 
 | kind | severity | 扣分 | 判定 |
 |------|----------|------|------|
-| `blacklist_phrase` | error | −8/次 | 命中 23 个黑名单短语（首先，/其次，/值得注意的是/赋能/抓手/闭环/底层逻辑……全表见 rules.yaml） |
-| `paired_phrase` | error | −8 | 命中 4 组套话对（不仅…而且 / 随着…的发展 / 在这个…的时代 / 扮演着…角色） |
+| `blacklist_phrase` | error | −8/次 | 命中 32 个黑名单短语（首先，/其次，/值得注意的是/赋能/抓手/闭环/底层逻辑/不得不说/毋庸置疑……全表见 rules.yaml） |
+| `paired_phrase` | error | −8 | 命中 5 组套话对（不仅…而且 / 随着…的发展 / 在这个…的时代 / 扮演着…角色 / 一方面…另一方面） |
 | `long_sentence` | warning | −3 | 单句超过 60 字 |
 | `avg_sentence_length` | warning | −5 | 平均句长超过 35 字（至少 3 句才统计） |
 | `long_paragraph` | warning | −3 | 单段超过 200 字 |
 | `repetition` | warning | −5 | 5 字 n-gram 重复出现 ≥ 3 次 |
+| `connective_density` | warning | −3 | 连接词密度超过 12 处/千字（但是/然而/因此……13 个连接词） |
+| `opening_monotony` | warning | −3 | 连续 ≥ 3 句以相同两字开头 |
+| `sentence_length_uniformity` | warning | −3 | 句长标准差低于 3.5 字，长短缺少交错节奏 |
+
+末三个节奏维度（v0.3 / rules v2）共用短文豁免门限：正文 CJK 字数 ≥ 150 且句数 ≥ 6 才参与统计，短文不判节奏，防误伤。
 
 humanize 评分：起始 100，按上表扣减后夹在 [0, 100]，`passed = score ≥ 60`（pass_score）。
 全部阈值集中在 `skills/content/humanize/rules.yaml`，调整只改该文件。

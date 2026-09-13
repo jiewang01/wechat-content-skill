@@ -1,4 +1,5 @@
-"""humanize eval 回归测试（v0.2 计划 N3-T2 / N3-T5）：语料判分 + eval CLI 报告。
+"""humanize eval 回归测试（v0.2 计划 N3-T2 / N3-T5；v0.3 计划 N3-T3 扩至 6 例）：
+语料判分 + eval CLI 报告。
 
 对应 DoD：
 - 好文 humanize_score ≥ GOOD_CASE_MIN_SCORE 且 passed；
@@ -28,7 +29,7 @@ def test_good_cases_score_high_and_pass():
 def test_ai_flavor_cases_detected():
     results = evals.run_humanize_eval()
     flagged = [case for case in results if case["kind"] == "ai_flavor"]
-    assert len(flagged) == 2
+    assert len(flagged) == 4
     for case in flagged:
         assert case["ok"], case
         assert case["score"] <= AI_FLAVOR_MAX_SCORE
@@ -62,15 +63,15 @@ def test_main_writes_full_json_report(tmp_path):
     assert evals.main(["-o", str(report_path)]) == 0
     report = json.loads(report_path.read_text(encoding="utf-8"))
     assert report["summary"] == {
-        "total": 20,
+        "total": 27,
         "failed": 0,
         "failed_cases": [],
         "passed": True,
     }
     assert {suite: len(cases) for suite, cases in report["suites"].items()} == {
-        "humanize": 4,
+        "humanize": 6,
         "content_gate": 4,
-        "render": 5,
+        "render": 10,
         "framework": 7,
     }
 

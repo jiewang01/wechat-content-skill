@@ -35,6 +35,8 @@
 
 一篇之内 callout 总数建议 ≤ 3；全是警示框等于没有警示框。
 
+v0.3 起 callout 可被 card 嵌套，做卡片内的局部警示（语法见 [card.md](card.md)）；嵌套的 callout 同样计入上面的总数建议。
+
 ## 示例
 
 ```markdown

@@ -8,16 +8,28 @@ from __future__ import annotations
 
 from .auth import TokenManager, call_with_token_retry
 from .client import WeChatClient
+from .datacube import (
+    ArticleDailyDetail,
+    ArticleTotalDetail,
+    DatacubeService,
+    JumpPosition,
+    ReadSource,
+)
 from .draft import DraftService
 from .freepublish import FreepublishService, FreepublishStatus
 from .media import MediaService, UploadedMedia
 from .publish import WeChatPublisher
 
 __all__ = [
+    "ArticleDailyDetail",
+    "ArticleTotalDetail",
+    "DatacubeService",
     "DraftService",
     "FreepublishService",
     "FreepublishStatus",
+    "JumpPosition",
     "MediaService",
+    "ReadSource",
     "TokenManager",
     "UploadedMedia",
     "WeChatClient",

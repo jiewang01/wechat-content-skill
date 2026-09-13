@@ -4,6 +4,40 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-13
+
+表达力、数据回流与去 AI 味迭代：语义标记受控嵌套、发布数据统计、humanize 规则 v2——范围与拆解见 [v0.3-implementation-plan.md](v0.3-implementation-plan.md)。
+
+### 新增
+
+**语义标记受控嵌套（N1）**
+- card 成为唯一容器：正文列表项之间可混排 `:::note` / `:::quote` / `:::callout` 子组件块，深度上限 2 层（`MAX_COMPONENT_DEPTH`）；嵌套合法性由 registry 的 `allowed_children` 契约驱动，parser 与 component_lint 同构校验，违例报 `invalid_nesting` 并归属父组件。
+- 子组件 node_id 编号 `component_N.M`（容器内出现序号），同样是 Targeted Repair 的定位键；嵌套渲染覆盖全部 5 个主题。
+- 「文档即测试」：native 技能文档中的全部 markdown 示例块由 `test_parser.py` 提取并断言可解析 + 往返序列化稳定。
+
+**发布数据统计（N2）**
+- datacube 数据统计（`integrations/wechat/datacube.py`）：`getarticletotaldetail` 接口封装，Pydantic 响应模型严格校验（`ArticleTotalDetail` 含按 `stat_date` 逐日展开的 `detail_list[]`，指标覆盖阅读 / 分享 / 在看 / 点赞 / 收藏 / 评论 / 完读率 / 送达率）。
+- `scripts/stats.py` CLI：默认查昨日，`--date YYYY-MM-DD` / `--account <name>` 可选；stdout 摘要（每篇文章一行核心指标 + 合计行，发表当日口径），回执幂等落盘 `outputs/stats/<date>_article_stats.json`；退出码 0 成功 / 1 查询失败 / 2 环境配置错误。
+- `skills/publishing/SKILL.md` 新增「发布后数据回流」节；`docs/verification-checklist.md` 新增 §9 发布数据统计验证。
+
+**humanize 规则 v2（N3）**
+- 新增 3 条 warning 级节奏维度：`connective_density`（连接词密度）/ `opening_monotony`（开头单一化）/ `sentence_length_uniformity`（句长均匀度），与既有 6 维共 9 维（2 error + 7 warning）；共用 CJK≥150 字且句数≥6 门限，短文豁免防误伤。
+- 规则版本 1 → 2，旧字段不删不改（向后兼容）；黑名单短语与成对句式清单按 v0.2 观察扩充。
+
+**evals（20 → 27 用例）**
+- 27 个用例（humanize 6 / content_gate 4 / render 10 / framework 7）覆盖 16 份语料（新增 `render_nested.md`），14 个测试锁定阈值。
+
+### 工程基线
+
+- ruff 全绿；pytest 383 passed（v0.2 为 324）；evals 27/27 全过。
+
+### 明确不做（推迟至 v0.4）
+
+- 深度 > 2 的嵌套与任意组件互嵌：表达力够用，先观察真实用法。
+- 定时自动统计 / 数据看板：stats 保持一次性 CLI 查询 + 回执留档。
+- humanize 新语言风格维度（如情感基调、口语化程度）：待积累真实读者反馈。
+- Web UI / 性能优化 / i18n：延续 v0.1 决策。
+
 ## [0.2.0] - 2026-09-11
 
 内容能力扩展：多主题、7 个写作框架、正式发布与 evals 基准——范围与拆解见 [v0.2-implementation-plan.md](v0.2-implementation-plan.md)。

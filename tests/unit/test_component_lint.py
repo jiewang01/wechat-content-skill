@@ -1,7 +1,14 @@
-"""组件 lint 单测（蓝图 9.2）：五类错误检出 + 与 parser 编号一致 + 容错全收集。"""
+"""组件 lint 单测（蓝图 9.2）：五类错误检出 + 与 parser 编号一致 + 容错全收集。
+
+v0.3 嵌套：合法嵌套零误报、子组件错误报 component_N.M、多层 unclosed 全量报告，
+并以参数化防漂移用例锁定 lint 与 parser 的错误分类永不分叉。
+"""
 
 from __future__ import annotations
 
+import pytest
+
+from renderer.ast import ParseError, parse
 from renderer.components.registry import COMPONENT_SPECS, ComponentSpec
 from renderer.themes import Theme, load_theme
 from validators.component import lint_components
@@ -149,3 +156,66 @@ def test_component_numbering_matches_parser_scheme():
     issues = lint_components(markdown)
     assert len(issues) == 1
     assert issues[0].node == "component_3"
+
+
+NESTED_CLEAN_DOC = (
+    ':::card title="嵌套要点" footer="共 3 子"\n'
+    "- 文本要点\n"
+    ":::note\n嵌套说明。\n:::\n"
+    ':::quote cite="嵌套引用人"\n嵌套原话。\n:::\n'
+    ':::callout type="tip" title="嵌套提示"\n嵌套内容。\n:::\n'
+    ":::"
+)
+
+
+def test_nested_card_children_pass_default_theme():
+    assert lint_components(NESTED_CLEAN_DOC, load_theme("default")) == []
+
+
+def test_nested_child_issue_reported_on_dotted_id():
+    """嵌套子组件自身的属性错误报在 component_N.M —— 修复循环可定位到子组件。"""
+    markdown = ':::card title="要点"\n:::callout type="bogus"\n内容\n:::\n:::'
+    issues = lint_components(markdown)
+    assert len(issues) == 1
+    assert issues[0].type == "invalid_prop_value"
+    assert issues[0].node == "component_1.1"
+    assert issues[0].property == "type"
+
+
+def test_multiple_unclosed_markers_all_reported_at_eof():
+    """EOF 时栈内每一层全量报告；parser fail-fast 只报最内层（语义互补）。"""
+    issues = lint_components(":::card\n:::note\n没有闭合")
+    assert [(issue.type, issue.node) for issue in issues] == [
+        ("unclosed_marker", "component_1"),
+        ("unclosed_marker", "component_1.1"),
+    ]
+    assert "第 1 行" in issues[0].message
+    assert "第 2 行" in issues[1].message
+
+
+def test_nested_card_text_lines_still_validated():
+    """子组件行入子栈；card 的直接文本行仍受列表约束。"""
+    markdown = ':::card\n:::note\n嵌套说明。\n:::\n不是列表\n:::'
+    issues = lint_components(markdown)
+    assert [issue.type for issue in issues] == ["invalid_card_content"]
+    assert issues[0].node == "component_1"
+
+
+@pytest.mark.parametrize(
+    "markdown",
+    [
+        ":::note\n:::quote\n嵌套\n:::\n:::",
+        ":::card\n:::note\n:::quote\n三层\n:::\n:::\n:::",
+        ":::note\n:::spoiler\n嵌套\n:::\n:::",
+        ':::card\n:::note foo="x"\n内容\n:::\n:::',
+        ':::card\n:::callout type="bogus"\n内容\n:::\n:::',
+        ":::card\n:::note\n没有闭合",
+        ":::card\n:::note\n正文。\n:::\n不是列表\n:::",
+    ],
+)
+def test_lint_never_misses_parser_first_error(markdown: str):
+    """防漂移：parser fail-fast 拦下的每个错误，lint 必检出同类型问题。"""
+    with pytest.raises(ParseError) as exc_info:
+        parse(markdown)
+    lint_types = {issue.type for issue in lint_components(markdown) if issue.severity == "error"}
+    assert exc_info.value.error_type in lint_types

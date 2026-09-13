@@ -3,6 +3,7 @@
 from renderer.ast.nodes import (
     AnyASTNode,
     CalloutNode,
+    CardItem,
     CardNode,
     CodeNode,
     ContentAST,
@@ -19,6 +20,7 @@ from renderer.ast.parser import ParseError, parse, serialize
 __all__ = [
     "AnyASTNode",
     "CalloutNode",
+    "CardItem",
     "CardNode",
     "CodeNode",
     "ContentAST",
