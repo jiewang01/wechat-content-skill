@@ -104,6 +104,13 @@ def test_hr_is_background_section_not_hr_tag(rendered: str):
     assert "height:4px" in rendered
 
 
+def test_strong_border_radius_has_px_unit():
+    theme = load_theme("orange-heart")
+    html = HtmlRenderer(theme).render(parse("正文 **加粗** 一处。"))
+    assert "border-radius:3px" in html
+    assert "border-radius:3;" not in html
+
+
 def test_code_block_uses_pre_wrap_without_br(rendered: str):
     assert "white-space:pre-wrap" in rendered
     assert "x = 1\ny = 2" in rendered

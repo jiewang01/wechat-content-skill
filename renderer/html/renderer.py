@@ -139,12 +139,13 @@ class HtmlRenderer:
         )
         out = _CODE_RE.sub(lambda m: f'<span style="{code_css}">{m.group(1)}</span>', out)
         strong = self._typ("strong")
+        strong_radius = strong.get("border_radius")
         strong_css = _css(
             [
                 ("color", strong.get("color")),
                 ("background", strong.get("background")),
                 ("padding", strong.get("padding")),
-                ("border-radius", strong.get("border_radius")),
+                ("border-radius", _px(strong_radius) if strong_radius not in (None, "") else None),
             ]
         )
         if strong_css:
