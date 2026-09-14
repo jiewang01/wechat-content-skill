@@ -77,6 +77,8 @@ class HtmlRenderer:
                 ("color", spec.get("color", "#333333")),
                 ("font-family", spec.get("font_family")),
                 ("word-break", spec.get("word_break", "break-word")),
+                ("letter-spacing", spec.get("letter_spacing")),
+                ("text-align", spec.get("text_align")),
             ]
         )
         return f'<section style="{root_css}">\n{body}\n</section>'
@@ -136,7 +138,13 @@ class HtmlRenderer:
             ]
         )
         out = _CODE_RE.sub(lambda m: f'<span style="{code_css}">{m.group(1)}</span>', out)
-        out = _BOLD_RE.sub(r"<strong>\1</strong>", out)
+        strong_css = _css([("color", self._typ("strong").get("color"))])
+        if strong_css:
+            out = _BOLD_RE.sub(
+                lambda m: f'<strong style="{strong_css}">{m.group(1)}</strong>', out
+            )
+        else:
+            out = _BOLD_RE.sub(r"<strong>\1</strong>", out)
         out = _ITALIC_RE.sub(r"<em>\1</em>", out)
         return out
 
@@ -148,9 +156,19 @@ class HtmlRenderer:
                 ("font-size", _px(spec.get("font_size", 17))),
                 ("font-weight", spec.get("font_weight", 600)),
                 ("color", spec.get("color", "#333333")),
-                ("line-height", 1.4),
+                ("line-height", spec.get("line_height", 1.4)),
                 ("margin-top", _px(spec.get("margin_top", 18))),
                 ("margin-bottom", _px(spec.get("margin_bottom", 10))),
+                ("text-align", spec.get("text_align")),
+                ("letter-spacing", spec.get("letter_spacing")),
+                ("background", spec.get("background")),
+                ("border-left", spec.get("border_left")),
+                ("padding", spec.get("padding")),
+                ("padding-left", spec.get("padding_left")),
+                ("padding-top", spec.get("padding_top")),
+                ("padding-bottom", spec.get("padding_bottom")),
+                ("border-bottom", spec.get("border_bottom")),
+                ("border-radius", spec.get("border_radius")),
             ]
         )
         return f'<section style="{css}">{self._inline(text)}</section>'

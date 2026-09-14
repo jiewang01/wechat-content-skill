@@ -64,7 +64,7 @@ CASES_DIR = ROOT / "tests" / "evals" / "cases"
 FRAMEWORKS_DIR = CASES_DIR / "frameworks"
 REPORT_PATH = ROOT / "outputs" / "evals" / "evals-report.json"
 
-BUILTIN_THEMES = ("default", "editorial", "minimal", "tech", "magazine")
+BUILTIN_THEMES = ("default", "editorial", "minimal", "tech", "magazine", "orange-heart")
 FRAMEWORK_IDS = (
     "tutorial",
     "news-analysis",

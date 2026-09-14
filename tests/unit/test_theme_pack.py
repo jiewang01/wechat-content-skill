@@ -15,7 +15,7 @@ from renderer.themes import THEMES_DIR, load_theme
 from validators.html.checks import lint_html
 from validators.wechat.gzh import lint_gzh
 
-BUILTIN_THEMES = ("default", "editorial", "minimal", "tech", "magazine")
+BUILTIN_THEMES = ("default", "editorial", "minimal", "tech", "magazine", "orange-heart")
 
 DOC = """# 标题一
 

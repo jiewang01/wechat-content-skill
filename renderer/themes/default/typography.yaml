@@ -4,6 +4,11 @@ body:
   color: "#333333"
   font_family: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
   word_break: break-word
+  letter_spacing: "0.5px"
+  text_align: justify
+
+strong:
+  color: "#07c160"
 
 h1:
   font_size: 22
@@ -11,20 +16,26 @@ h1:
   color: "#333333"
   margin_top: 24
   margin_bottom: 14
+  text_align: center
+  letter_spacing: "1px"
 
 h2:
   font_size: 20
   font_weight: 600
   color: "#333333"
-  margin_top: 22
-  margin_bottom: 12
+  margin_top: 26
+  margin_bottom: 14
+  border_left: "4px solid #07c160"
+  padding_left: 12
 
 h3:
   font_size: 17
   font_weight: 600
-  color: "#333333"
-  margin_top: 18
+  color: "#07c160"
+  margin_top: 20
   margin_bottom: 10
+  border_left: "3px solid #07c160"
+  padding_left: 10
 
 paragraph:
   margin_top: 10

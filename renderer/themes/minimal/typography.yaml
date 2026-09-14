@@ -4,20 +4,24 @@ body:
   color: "#1a1a1a"
   font_family: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
   word_break: break-word
+  text_align: justify
 
 h1:
   font_size: 21
   font_weight: 600
   color: "#111111"
   margin_top: 28
-  margin_bottom: 14
+  margin_bottom: 16
+  text_align: center
 
 h2:
   font_size: 18
   font_weight: 600
   color: "#111111"
-  margin_top: 24
-  margin_bottom: 12
+  margin_top: 26
+  margin_bottom: 14
+  border_bottom: "1px solid #e0e0e0"
+  padding_bottom: 10
 
 h3:
   font_size: 16

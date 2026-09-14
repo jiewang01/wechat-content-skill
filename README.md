@@ -56,15 +56,16 @@ pytest -q
 
 ## 能力清单（v0.3）
 
-**主题（5 个，`renderer/themes/`）**：
+**主题（6 个，`renderer/themes/`）**：
 
 | 主题 | 风格 |
 |------|------|
-| `default` | 默认通用 |
-| `editorial` | 编辑部衬线风 |
-| `minimal` | 极简黑白灰 |
-| `tech` | 科技蓝 + 深色代码块 |
-| `magazine` | 杂志高对比 |
+| `default` | 默认通用（微信绿左竖条） |
+| `editorial` | 编辑部衬线风（居中大字距） |
+| `minimal` | 极简黑白灰（细底线标题） |
+| `tech` | 科技蓝 + 深色代码块（粗蓝条标题） |
+| `magazine` | 杂志高对比（居中栏目题） |
+| `orange-heart` | 暖橙治愈风（mdnice 橙心同款） |
 
 **写作框架（7 个，`skills/content/frameworks/`）**：`tutorial`（教程）/ `news-analysis`（新闻解读）/ `opinion`（观点论证）/ `case-study`（案例复盘）/ `listicle`（清单体）/ `deep-dive`（深度长文）/ `narrative`（叙事文）。
 

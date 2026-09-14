@@ -55,7 +55,7 @@ description: 微信公众号内容 Agent 工作流技能：一句话输入，经
 | 校验（质量门） | [skills/quality/SKILL.md](skills/quality/SKILL.md) | `ValidationReport` |
 | 发布 | [skills/publishing/SKILL.md](skills/publishing/SKILL.md) | `PublishResult` |
 
-主题（5 个，`renderer/themes/`）：`default` / `editorial` / `minimal` / `tech` / `magazine`。
+主题（6 个，`renderer/themes/`）：`default` / `editorial` / `minimal` / `tech` / `magazine` / `orange-heart`。
 写作框架（7 个，[skills/content/frameworks/](skills/content/frameworks/)）：`tutorial` / `news-analysis` / `opinion` / `case-study` / `listicle` / `deep-dive` / `narrative`。
 产物 Schema：[schemas/](schemas/)（JSON Schema，由 `core/artifacts/` 导出）。
 状态机：`core/state/machine.py`（INIT → … → DRAFT_CREATED，见蓝图第 11 章）。

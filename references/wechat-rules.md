@@ -39,10 +39,10 @@
 
 ## 四、排版约定
 
-由主题（`renderer/themes/<theme>/typography.yaml` + `components.yaml`）决定，内置 5 个主题（`default` / `editorial` / `minimal` / `tech` / `magazine`）：
+由主题（`renderer/themes/<theme>/typography.yaml` + `components.yaml`）决定，内置 6 个主题（`default` / `editorial` / `minimal` / `tech` / `magazine` / `orange-heart`）：
 
 - 正文 15-16px、行高 1.75 左右、`word-break: break-all`（防英文长词溢出手机屏）；
-- 组件（note / quote / callout / card）用 `background` + `border-left` + 圆角区分层级；
+- 组件（note / quote / callout / card）与标题装饰（h2/h3 左边框 / 底线 / 居中）由主题定义，用 `background` + `border-left` + `border-bottom` + 圆角区分层级；
 - 图片内联 `width` / `max-width: 100%`，不依赖编辑器默认；
 - 全部尺寸用 `px`，不用 `rem`/`em`/`%`（编辑器对相对单位处理不一致）。
 

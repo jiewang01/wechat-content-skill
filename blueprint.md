@@ -451,7 +451,9 @@ themes/
 │
 ├── tech/
 │
-└── magazine/
+├── magazine/
+│
+└── orange-heart/
 ```
 
 主题配置示例：

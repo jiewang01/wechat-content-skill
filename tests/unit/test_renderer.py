@@ -81,7 +81,7 @@ def test_root_section_carries_body_styles(rendered: str):
 
 
 def test_inline_markdown_conversion(rendered: str):
-    assert "<strong>加粗</strong>" in rendered
+    assert '<strong style="color:#07c160;">加粗</strong>' in rendered
     assert "<em>斜体</em>" in rendered
     assert "链接（https://example.com）" in rendered
     assert rendered.count("<span") >= 1

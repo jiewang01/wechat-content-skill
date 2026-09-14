@@ -17,7 +17,7 @@
 ## 属性与 CSS
 
 - `ALLOWED_ATTRS = {style, src, alt}`，其他属性 → `disallowed_attribute`（`property` = 属性名）
-- `ALLOWED_CSS_PROPS`（19 项）：color / font-size / font-weight / font-family / line-height / margin-top / margin-bottom / background / border / border-left / border-radius / padding / padding-left / display / width / max-width / height / white-space / word-break
+- `ALLOWED_CSS_PROPS`（25 项）：color / font-size / font-weight / font-family / line-height / letter-spacing / text-align / margin-top / margin-bottom / background / border / border-left / border-bottom / border-radius / padding / padding-left / padding-right / padding-top / padding-bottom / display / width / max-width / height / white-space / word-break
   - 白名单外的 CSS 属性 → `unsupported_css`
 - `RESTRICTED_CSS_VALUES`：`display` 仅允许 `block` / `inline` / `inline-block`，其他取值（如 `flex` / `grid`）→ `unsupported_css`
 - `unsupported_css` 的 `property` 形如 `prop:value`，修复器据此定向替换（`core/workflow/repair.py`）

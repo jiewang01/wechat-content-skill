@@ -63,7 +63,7 @@ def test_main_writes_full_json_report(tmp_path):
     assert evals.main(["-o", str(report_path)]) == 0
     report = json.loads(report_path.read_text(encoding="utf-8"))
     assert report["summary"] == {
-        "total": 27,
+        "total": 29,
         "failed": 0,
         "failed_cases": [],
         "passed": True,
@@ -71,7 +71,7 @@ def test_main_writes_full_json_report(tmp_path):
     assert {suite: len(cases) for suite, cases in report["suites"].items()} == {
         "humanize": 6,
         "content_gate": 4,
-        "render": 10,
+        "render": 12,
         "framework": 7,
     }
 

@@ -1,41 +1,41 @@
 body:
   font_size: 16
   line_height: 1.8
-  color: "#2b2b2b"
-  font_family: "Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif"
+  color: "#333333"
+  font_family: "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
   word_break: break-word
-  letter_spacing: "1px"
+  letter_spacing: "0.5px"
   text_align: justify
 
 strong:
-  color: "#8c2f39"
+  color: "#ef7060"
 
 h1:
   font_size: 22
-  font_weight: 700
-  color: "#1a1a1a"
-  margin_top: 28
+  font_weight: 600
+  color: "#ef7060"
+  margin_top: 24
   margin_bottom: 16
   text_align: center
-  letter_spacing: "4px"
+  letter_spacing: "1px"
 
 h2:
   font_size: 20
-  font_weight: 700
-  color: "#8c2f39"
-  margin_top: 28
+  font_weight: 600
+  color: "#ef7060"
+  margin_top: 26
   margin_bottom: 14
-  text_align: center
-  letter_spacing: "2px"
+  border_left: "4px solid #ef7060"
+  padding_left: 12
 
 h3:
   font_size: 17
-  font_weight: 700
-  color: "#3d3d3d"
+  font_weight: 600
+  color: "#ef7060"
   margin_top: 20
   margin_bottom: 10
-  text_align: center
-  letter_spacing: "1px"
+  border_left: "3px solid #ef7060"
+  padding_left: 10
 
 paragraph:
   margin_top: 10
@@ -43,26 +43,26 @@ paragraph:
 
 code_inline:
   font_family: "Consolas, 'Courier New', monospace"
-  color: "#8c2f39"
-  background: "#f7f3ee"
+  color: "#e05a45"
+  background: "#fff5f3"
   padding_h: 4
   padding_v: 2
-  border_radius: 3
+  border_radius: 4
 
 code_block:
-  background: "#f7f3ee"
-  color: "#2b2b2b"
+  background: "#2d2a26"
+  color: "#f8efe8"
   font_family: "Consolas, 'Courier New', monospace"
   font_size: 14
   line_height: 1.6
-  padding: 12
-  border_radius: 4
+  padding: 14
+  border_radius: 8
   white_space: pre-wrap
 
 list:
   indent: 16
   item_margin: 6
-  marker_color: "#8c2f39"
+  marker_color: "#ef7060"
 
 image:
   width: "100%"
