@@ -205,6 +205,42 @@ def test_callout_variants_render_distinctly():
     assert len(set(outputs)) == 4
 
 
+FIGURE_DOC = """# 标题
+
+正文段落。
+
+:::figure
+「上升趋势」概念插画：登山者立于山脊远眺日出。现代扁平概念插画，干净的几何构图与柔和渐变，横构图（16:9）。低饱和中性色调，以主题色 #ef7060 为点缀。画面中不出现任何文字、无水印、无 logo。
+:::
+"""
+
+
+def test_figure_renders_placeholder_card():
+    html = HtmlRenderer().render(parse(FIGURE_DOC))
+    assert "配图 · 生图提示词" in html
+    assert "登山者立于山脊远眺日出" in html
+    assert ":::figure" not in html
+
+
+def test_figure_passes_html_and_gzh_gates():
+    html = HtmlRenderer().render(parse(FIGURE_DOC))
+    assert [issue for issue in lint_html(html) if issue.severity == "error"] == []
+    assert [issue for issue in lint_gzh(html) if issue.severity == "error"] == []
+
+
+def test_figure_prompt_keeps_markup_literal():
+    doc = ":::figure\nprompt 含 **加粗记号** 与 `代码记号`，必须字面呈现。\n:::"
+    html = HtmlRenderer().render(parse(f"# 标题\n\n{doc}"))
+    assert "**加粗记号**" in html
+    assert "`代码记号`" in html
+
+
+def test_figure_plain_text_keeps_prompt():
+    plain = HtmlRenderer().render_plain_text(parse(FIGURE_DOC))
+    assert "<" not in plain
+    assert "登山者立于山脊远眺日出" in plain
+
+
 def test_unknown_theme_raises():
     with pytest.raises(ThemeError):
         load_theme("no-such-theme")

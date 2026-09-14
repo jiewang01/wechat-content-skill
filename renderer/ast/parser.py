@@ -24,6 +24,7 @@ from renderer.ast.nodes import (
     CardNode,
     CodeNode,
     ContentAST,
+    FigureNode,
     HeadingNode,
     HrNode,
     ImageNode,
@@ -104,6 +105,8 @@ def _build_component(comp: _OpenMarker, close_line: int) -> AnyASTNode:
             title=comp.attrs.get("title", ""),
             text=body,
         )
+    if comp.name == "figure":
+        return FigureNode(node_id=comp.node_id, prompt=body)
     return CardNode(
         node_id=comp.node_id,
         title=comp.attrs.get("title", ""),
@@ -390,6 +393,8 @@ def serialize(ast: ContentAST) -> str:
                 else:
                     parts.append(_component_block(item))
             blocks.append(f":::card{attrs}\n" + "\n".join(parts) + "\n:::")
+        elif kind == "figure":
+            blocks.append(f":::figure\n{node.prompt}\n:::")
         elif kind == "image":
             blocks.append(f"![{node.alt}]({node.src})")
         elif kind == "code":

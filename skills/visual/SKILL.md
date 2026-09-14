@@ -28,7 +28,7 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 2. **封面** —— 一份封面规格；风格须匹配主题基调；比例默认 `2.35:1`。
 3. **插图** —— 每 600–900 字最多 1 张；每张都有明确的 `purpose`（concept / example / screenshot / mood）与可直接用于生成的提示词（见 [prompts/](prompts/)）。
 4. **图表** —— 流程图 / 架构图 / 时间线以 `spec` 描述；稍后由图片 provider 或样式化组件渲染。
-5. **素材** —— 若配置了图片 provider，填充 `asset_path`；生成失败时降级：图片搜索 → 占位图，并置 `degraded: true`。
+5. **素材** —— 若配置了图片 provider，填充 `asset_path`；生成失败时降级：图片搜索 → `:::figure` 占位块（生图 prompt 直接呈现在正文，生图后回填替换），并置 `degraded: true`。
 
 ## 确定性兜底（v0.4）
 
@@ -36,6 +36,7 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 
 - 依据主题的 `imagery.yaml` 风格画像 + 主题色，直接套用五要素模板生成封面与插图提示词（配额：每 600 字最多 1 张、至多 4 张，章节中点优先）。
 - pipeline 的 `_stage_plan_visual` 在 design 缺失时自动走此路径；`scripts/imagery.py` CLI 可单独离线生成 brief 并可选 `--apply` 回写 `visual` 字段。
+- 成品必有图或占位符：`asset_path` 为空的插图在主题启用 `figure` 组件时，以 `:::figure` 占位块把生图 prompt 呈现在正文（虚线卡片样式，六主题内置）；生图后回填 `asset_path` 重渲染即替换为真图。`--apply` 先清后插，幂等可重跑。
 - 兜底产物同样遵守本技能全部规则（自包含、无指代、无文字水印收尾）。
 
 ## 规则（Defender 职责）

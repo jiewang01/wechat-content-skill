@@ -30,6 +30,7 @@ from core.artifacts.models import (
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.workflow import pipeline
+from core.workflow.imagery import strip_figure_blocks
 from core.workflow.orchestrator import WorkflowRun
 from core.workflow.pipeline import (
     ContentGateError,
@@ -480,13 +481,16 @@ def test_graceful_degradation_research_brief_design(tmp_path):
     assert draft.fact_ids == []  # 无 facts → 无引用
 
     package = run.artifact_typed("content_package", ContentPackage)
-    assert package.semantic_markdown == draft.markdown  # design 降级 → 原文直出
     # design 降级 → imagery 确定性兜底：插图保留 prompt，非 https 资产不进入正文
     assert len(package.visual.images) == 1
     fallback_spec = package.visual.images[0]
     assert fallback_spec.purpose == "concept"
     assert fallback_spec.asset_path == ""
     assert fallback_spec.prompt.endswith("画面中不出现任何文字、无水印、无 logo。")
+    # design 降级 → 原文直出 + figure 占位块（主题启用 figure，成品必有图或 prompt 占位符）
+    assert strip_figure_blocks(package.semantic_markdown) == draft.markdown
+    assert ":::figure" in package.semantic_markdown
+    assert fallback_spec.prompt in package.semantic_markdown
     assert package.visual.degraded is True
     assert "![概念图]" not in package.semantic_markdown
     assert len(llm.calls) == 4

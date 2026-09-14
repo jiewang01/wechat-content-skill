@@ -14,7 +14,13 @@ import argparse
 import json
 
 from core.artifacts.models import ContentPackage
-from core.workflow.imagery import build_brief, plan_visual
+from core.workflow.imagery import (
+    build_brief,
+    figure_block,
+    insert_images,
+    plan_visual,
+    strip_figure_blocks,
+)
 from renderer.themes import ThemeError, load_theme
 
 
@@ -56,6 +62,7 @@ def main() -> int:
         print(f"错误：主题加载失败：{exc}", file=sys.stderr)
         return 1
 
+    package.semantic_markdown = strip_figure_blocks(package.semantic_markdown)
     plan = plan_visual(package, theme)
     brief = build_brief(package, theme)
 
@@ -67,11 +74,15 @@ def main() -> int:
         if args.theme:
             package.theme = args.theme
         package.visual = plan
+        if theme.components_enabled.get("figure"):
+            package.semantic_markdown = insert_images(
+                package.semantic_markdown, plan.images, placeholders=True
+            )
         in_path.write_text(
             json.dumps(package.model_dump(mode="json"), ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
-        print(f"updated {in_path} (visual)")
+        print(f"updated {in_path} (visual + semantic_markdown)")
     return 0
 
 

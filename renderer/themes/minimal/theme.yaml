@@ -13,3 +13,4 @@ components:
   quote: true
   callout: true
   card: true
+  figure: true

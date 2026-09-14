@@ -70,3 +70,16 @@ hr:
   color: "#e5e5e5"
   margin_top: 28
   margin_bottom: 28
+
+figure:
+  border: "1px dashed #8a8a8a"
+  border_radius: 4
+  padding: 12
+  margin_top: 16
+  margin_bottom: 16
+  background: "#fafafa"
+  label_color: "#8a8a8a"
+  label_size: 12
+  prompt_color: "#4a4a4a"
+  prompt_size: 14
+  line_height: 1.7

@@ -56,6 +56,11 @@ class CardNode(_ASTNodeBase):
     footer: str = ""
 
 
+class FigureNode(_ASTNodeBase):
+    type: Literal["figure"] = "figure"
+    prompt: str
+
+
 class ImageNode(_ASTNodeBase):
     type: Literal["image"] = "image"
     src: str
@@ -85,6 +90,7 @@ AnyASTNode = Annotated[
     | NoteNode
     | CalloutNode
     | CardNode
+    | FigureNode
     | ImageNode
     | CodeNode
     | ListNode

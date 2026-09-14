@@ -58,7 +58,7 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
-from core.workflow.imagery import plan_visual
+from core.workflow.imagery import insert_images, plan_visual, strip_figure_blocks
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -257,28 +257,12 @@ def _theme_or_render_error(name: str) -> Theme:
         raise RenderError(f"主题「{name}」加载失败：{exc}") from exc
 
 
-def _insert_images(markdown: str, images: list[ImageSpec]) -> str:
-    """把插图插到第 N 个小节标题之前（首标题视为文章标题，不作为锚点）。"""
-    if not images:
-        return markdown
-    lines = markdown.split("\n")
-    heading_indices = [i for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())]
-    anchors = heading_indices[1:]
-    insertions: dict[int, str] = {}
-    for spec in images:
-        if not spec.asset_path:
-            continue
-        index = spec.position - 1
-        if 0 <= index < len(anchors):
-            insertions[anchors[index]] = f"![{spec.purpose}]({spec.asset_path})"
-    if not insertions:
-        return markdown
-    out: list[str] = []
-    for i, line in enumerate(lines):
-        if i in insertions:
-            out.extend(["", insertions[i], ""])
-        out.append(line)
-    return "\n".join(out)
+def _insert_images(markdown: str, images: list[ImageSpec], theme: Theme | None = None) -> str:
+    """插图入文：有资产插 `![purpose](asset)`；无资产且主题启用 figure 组件时，
+    以 :::figure 占位块把生图 prompt 呈现在正文（供读者取用、生图后回填替换）。
+    先移除既有 figure 块再插入，保证幂等。"""
+    placeholders = bool(theme is not None and theme.components_enabled.get("figure"))
+    return insert_images(strip_figure_blocks(markdown), images, placeholders=placeholders)
 
 
 # ---------------------------------------------------------------------------
@@ -517,7 +501,7 @@ def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
 
 def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageSpec]:
     """LLM 规划的正文插图：provider 失败时保留 prompt（asset_path 留空，
-    由 imagery 方案兜底交付，_insert_images 会跳过空资产防 broken image）。"""
+    主题启用 figure 时由 _insert_images 以占位块呈现，防 broken image）。"""
     specs: list[ImageSpec] = []
     for item in _as_list(design.get("images"))[:2]:
         if not isinstance(item, dict):
@@ -577,7 +561,7 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         title=draft.title,
         digest=draft.digest,
         author=deps.author,
-        semantic_markdown=_insert_images(base_markdown, images),
+        semantic_markdown=_insert_images(base_markdown, images, theme),
         visual=VisualPlan(
             cover=CoverSpec(prompt=cover_prompt, asset_path=cover_asset),
             images=images,

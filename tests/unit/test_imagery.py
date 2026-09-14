@@ -8,9 +8,12 @@ from core.workflow.imagery import (
     build_brief,
     cover_prompt,
     extract_anchors,
+    figure_block,
     image_quota,
+    insert_images,
     plan_visual,
     section_prompt,
+    strip_figure_blocks,
 )
 from core.workflow.pipeline import _insert_images
 from renderer.themes import Theme, load_theme
@@ -173,4 +176,48 @@ def test_insert_images_skips_empty_asset():
 
 def test_insert_images_all_empty_returns_original():
     images = [ImageSpec(position=1, purpose="concept", prompt="p", asset_path="")]
+    assert _insert_images(MARKDOWN, images) == MARKDOWN
+
+
+def test_figure_block_wraps_prompt():
+    assert figure_block("  山巅日出概念插画。  ") == ":::figure\n山巅日出概念插画。\n:::"
+
+
+def test_insert_images_placeholders_true_inserts_figure_blocks():
+    images = [
+        ImageSpec(position=1, prompt="p1"),
+        ImageSpec(position=2, prompt="p2", asset_path="https://example.com/a.png"),
+        ImageSpec(position=9, prompt="p-out-of-range"),
+        ImageSpec(position=3, prompt="   "),
+    ]
+    out = insert_images(MARKDOWN, images, placeholders=True)
+    assert ":::figure\np1\n:::" in out  # 空 asset → 占位块
+    assert "![concept](https://example.com/a.png)" in out  # 有 asset 仍优先真图
+    assert out.count(":::figure") == 1  # 越界与空白 prompt 均不插
+
+
+def test_insert_images_placeholders_false_keeps_skip_semantics():
+    images = [ImageSpec(position=1, prompt="p1")]
+    assert insert_images(MARKDOWN, images, placeholders=False) == MARKDOWN
+
+
+def test_strip_figure_blocks_restores_original():
+    images = [ImageSpec(position=2, prompt="p2")]
+    out = insert_images(MARKDOWN, images, placeholders=True)
+    assert ":::figure" in out
+    assert strip_figure_blocks(out) == MARKDOWN  # 含块前空行收整，完全还原
+
+
+def test_figure_insert_roundtrip_idempotent():
+    images = [ImageSpec(position=2, prompt="p2"), ImageSpec(position=3, prompt="p3")]
+    once = insert_images(MARKDOWN, images, placeholders=True)
+    twice = insert_images(strip_figure_blocks(once), images, placeholders=True)
+    assert once == twice
+
+
+def test_insert_images_theme_aware_placeholder():
+    """_insert_images：主题启用 figure → 占位块；无主题 → 维持跳过语义（防 broken image）。"""
+    images = [ImageSpec(position=2, prompt="p2")]
+    with_theme = _insert_images(MARKDOWN, images, load_theme("orange-heart"))
+    assert ":::figure\np2\n:::" in with_theme
     assert _insert_images(MARKDOWN, images) == MARKDOWN

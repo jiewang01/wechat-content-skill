@@ -158,6 +158,68 @@ def plan_visual(package: ContentPackage, theme: Theme) -> VisualPlan:
     )
 
 
+def figure_block(prompt: str) -> str:
+    """把生图 prompt 包成 :::figure 占位块（语义 Markdown 层的图片占位符）。"""
+    return f":::figure\n{prompt.strip()}\n:::"
+
+
+def strip_figure_blocks(markdown: str) -> str:
+    """移除正文中已有的 :::figure 占位块（幂等重插的基础）。
+
+    状态机扫描：`:::figure` 开栈后丢弃整块（含闭合 `:::`）；figure 契约上
+    无嵌套子组件，块内出现的 `:::` 一律视为闭合行。块前的空行一并收掉，
+    使「strip → insert → strip」空运转完全幂等。
+    """
+    out: list[str] = []
+    in_figure = False
+    for line in markdown.split("\n"):
+        stripped = line.strip()
+        if in_figure:
+            if stripped == ":::":
+                in_figure = False
+            continue
+        if stripped == ":::figure":
+            in_figure = True
+            while out and not out[-1].strip():
+                out.pop()
+            continue
+        out.append(line)
+    return "\n".join(out)
+
+
+def insert_images(
+    markdown: str, images: list[ImageSpec], *, placeholders: bool = False
+) -> str:
+    """把插图插到第 N 个小节标题之前（首标题视为文章标题，不作为锚点）。
+
+    有资产的插图插入 `![purpose](asset)`；无资产的插图在 placeholders=True
+    时插入 :::figure 占位块（prompt 直接呈现给读者，供生图替换），
+    否则跳过（防 broken image）。
+    """
+    if not images:
+        return markdown
+    lines = markdown.split("\n")
+    heading_indices = [i for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())]
+    anchors = heading_indices[1:]
+    insertions: dict[int, str] = {}
+    for spec in images:
+        index = spec.position - 1
+        if not 0 <= index < len(anchors):
+            continue
+        if spec.asset_path:
+            insertions[anchors[index]] = f"![{spec.purpose}]({spec.asset_path})"
+        elif placeholders and spec.prompt.strip():
+            insertions[anchors[index]] = figure_block(spec.prompt)
+    if not insertions:
+        return markdown
+    out: list[str] = []
+    for i, line in enumerate(lines):
+        if i in insertions:
+            out.extend(["", insertions[i], ""])
+        out.append(line)
+    return "\n".join(out)
+
+
 def build_brief(package: ContentPackage, theme: Theme) -> str:
     """生成可直接交付的 Markdown 配图方案文档。"""
     profile = ImageryProfile.from_theme(theme)
@@ -192,6 +254,6 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         "",
         "1. 以上 prompt 均自包含，可直接粘贴到任意文生图工具（即梦、DALL·E、SDXL 等）。",
         "2. 成图后把 https:// 图片链接回填到 content_package.json 的 `visual.images[i].asset_path`，重跑 render.py 即可入文。",
-        "3. 未回填 asset_path 时，管线不会把空图插进正文（防 broken image）。",
+        "3. 未回填 asset_path 时，管线以 :::figure 占位块把 prompt 呈现在正文占位（主题启用 figure 组件时），回填重渲染即替换为真图。",
     ]
     return "\n".join(lines)

@@ -1,4 +1,4 @@
-"""组件注册表：四种语义标记的唯一权威契约（H8 确定性优先）。
+"""组件注册表：五种语义标记的唯一权威契约（H8 确定性优先）。
 
 native 技能只允许按本注册表标注属性；超出契约的标记在解析期即报错，
 错误类型可直接被渲染门的 Attack 使用（H2：报错必带证据）。
@@ -96,6 +96,12 @@ COMPONENT_SPECS: dict[str, ComponentSpec] = {
         allowed_props=frozenset({"title", "footer"}),
         allowed_children=frozenset({"note", "quote", "callout"}),
         content="list",
+    ),
+    "figure": ComponentSpec(
+        name="figure",
+        description="配图占位符；正文为生图 prompt（暂无图片资产时以占位卡片呈现）",
+        allowed_props=frozenset(),
+        content="text",
     ),
 }
 

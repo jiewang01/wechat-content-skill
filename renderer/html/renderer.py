@@ -106,6 +106,8 @@ class HtmlRenderer:
                     lines.append(self._plain_block(item))
             lines.append(node.footer)
             return "\n".join(line for line in lines if line)
+        if kind == "figure":
+            return node.prompt
         if kind == "image":
             return node.alt
         if kind == "list":
@@ -205,6 +207,8 @@ class HtmlRenderer:
             return self._callout_html(node.variant, node.title, node.text)
         if kind == "card":
             return self._card_html(node.title, node.items, node.footer)
+        if kind == "figure":
+            return self._figure_html(node.prompt)
         if kind == "image":
             return self._image_html(node.src, node.alt)
         if kind == "code":
@@ -375,6 +379,42 @@ class HtmlRenderer:
             )
             parts.append(f'<span style="{footer_css}">{self._inline(footer)}</span>')
         return f'<section style="{outer}">\n' + "\n".join(parts) + "\n</section>"
+
+    def _figure_html(self, prompt: str) -> str:
+        if not prompt.strip():
+            return ""
+        f = self._comp("figure")
+        outer = _css(
+            [
+                ("border", f.get("border")),
+                ("border-radius", _px(f.get("border_radius", 8))),
+                ("padding", _px(f.get("padding", 14))),
+                ("margin-top", _px(f.get("margin_top", 16))),
+                ("margin-bottom", _px(f.get("margin_bottom", 16))),
+                ("background", f.get("background")),
+            ]
+        )
+        label_css = _css(
+            [
+                ("display", "block"),
+                ("margin-bottom", "6px"),
+                ("font-size", _px(f.get("label_size", 12))),
+                ("color", f.get("label_color", "#999999")),
+            ]
+        )
+        prompt_css = _css(
+            [
+                ("font-size", _px(f.get("prompt_size", 14))),
+                ("color", f.get("prompt_color", "#4a5568")),
+                ("line-height", f.get("line_height", 1.7)),
+            ]
+        )
+        return (
+            f'<section style="{outer}">\n'
+            f'<span style="{label_css}">配图 · 生图提示词</span>\n'
+            f'<span style="{prompt_css}">{html.escape(prompt)}</span>\n'
+            "</section>"
+        )
 
     def _image_html(self, src: str, alt: str) -> str:
         spec = self._typ("image")

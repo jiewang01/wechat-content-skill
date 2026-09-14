@@ -77,3 +77,16 @@ hr:
   border_radius: 2
   margin_top: 20
   margin_bottom: 20
+
+figure:
+  border: "1px dashed #ef7060"
+  border_radius: 8
+  padding: 14
+  margin_top: 16
+  margin_bottom: 16
+  background: "#fff4f0"
+  label_color: "#ef7060"
+  label_size: 12
+  prompt_color: "#5f5450"
+  prompt_size: 14
+  line_height: 1.8
