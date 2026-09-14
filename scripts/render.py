@@ -78,7 +78,7 @@ def main() -> int:
     )
 
     html_path.parent.mkdir(parents=True, exist_ok=True)
-    html_path.write_text(html, encoding="utf-8")
+    html_path.write_text(html, encoding="utf-8-sig")
     doc_path.parent.mkdir(parents=True, exist_ok=True)
     doc_path.write_text(
         json.dumps(document.model_dump(mode="json"), ensure_ascii=False, indent=2),

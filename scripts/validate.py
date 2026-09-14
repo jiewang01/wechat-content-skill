@@ -120,7 +120,7 @@ def main() -> int:
     if args.html_output:
         html_path = Path(args.html_output)
         html_path.parent.mkdir(parents=True, exist_ok=True)
-        html_path.write_text(full_html, encoding="utf-8")
+        html_path.write_text(full_html, encoding="utf-8-sig")
         print(f"wrote {html_path}", file=sys.stderr)
     return _emit(report, args.output)
 

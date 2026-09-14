@@ -307,7 +307,7 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert result.status == "draft_created"
     assert result.media_id == "MEDIA-9"
     assert result.draft_id == "DRAFT-9"
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
 
     # checkpoint 磁盘产物：7 份管线 artifact 落盘；攻防三件套记入 adversarial_history，
     # visual_plan 嵌于 content_package.visual，均不单独落盘
@@ -347,7 +347,7 @@ def test_wechat_outage_degrades_to_local_export(tmp_path: Path):
     assert result.draft_id == ""
     assert result.media_id == ""
     assert result.html_path
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
 
     # 微信侧全部失败：没有草稿请求，只尝试过取 token
     assert state == {"tokens": 0, "uploads": 0, "drafts": 0}

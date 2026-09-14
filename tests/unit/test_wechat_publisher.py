@@ -112,7 +112,7 @@ def test_create_draft_success_with_explicit_cover_path(tmp_path: Path):
     exported = Path(result.html_path)
     assert exported.parent == out
     assert exported.name == "手冲咖啡完整指南.html"
-    assert exported.read_text(encoding="utf-8") == doc.html
+    assert exported.read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 
@@ -168,7 +168,7 @@ def test_create_draft_without_cover_degrades_without_any_request(tmp_path: Path)
     assert result.media_id == ""
     assert result.draft_id == ""
     assert requests == []
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 
@@ -190,7 +190,7 @@ def test_create_draft_upload_failure_degrades(tmp_path: Path):
     assert result.degraded is True
     assert result.draft_id == ""
     assert state["drafts"] == 0
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 
@@ -202,7 +202,7 @@ def test_create_draft_draft_api_failure_degrades(tmp_path: Path):
     assert result.status == "degraded"
     assert result.degraded is True
     assert state["drafts"] == 1
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 

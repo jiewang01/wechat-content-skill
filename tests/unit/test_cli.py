@@ -82,7 +82,7 @@ def test_validate_good_package_passes_and_writes_artifacts(tmp_path):
     assert report["gate"] == "publish"
     assert report["errors"] == []
     assert json.loads(report_file.read_text(encoding="utf-8"))["status"] == "passed"
-    html = html_file.read_text(encoding="utf-8")
+    html = html_file.read_text(encoding="utf-8-sig")
     assert html.startswith('<section style="')
     assert html.rstrip().endswith("</section>")
 

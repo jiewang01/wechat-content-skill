@@ -140,7 +140,7 @@ def test_full_flow_creates_draft_and_keeps_local_copy(tmp_path: Path):
     article = json.loads(requests[2].content)["articles"][0]
     assert article["thumb_media_id"] == "MEDIA-1"
     assert article["author"] == "老王"
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 
@@ -200,7 +200,7 @@ def test_wechat_outage_ends_with_local_html(tmp_path: Path):
     assert result.degraded is True
     assert result.draft_id == ""
     assert state["drafts"] == 0
-    assert Path(result.html_path).read_text(encoding="utf-8") == doc.html
+    assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
     client.close()
 
 

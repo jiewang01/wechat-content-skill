@@ -174,7 +174,7 @@ class WeChatPublisher:
         """本地留档：无论微信侧成败，最终 HTML 始终有本地副本。"""
         self._output_dir.mkdir(parents=True, exist_ok=True)
         path = self._output_dir / f"{_slugify(doc.title)}.html"
-        path.write_text(doc.html, encoding="utf-8")
+        path.write_text(doc.html, encoding="utf-8-sig")
         return path
 
     def _load_cover(self, ref: str) -> tuple[bytes, str] | None:

@@ -98,7 +98,7 @@ def main() -> int:
             print(f"错误：预览渲染失败：{exc}", file=sys.stderr)
             return 1
     else:
-        fragment = in_path.read_text(encoding="utf-8")
+        fragment = in_path.read_text(encoding="utf-8-sig")
         title, meta = _title_from_sibling_doc(in_path)
         if not title:
             title = in_path.stem
