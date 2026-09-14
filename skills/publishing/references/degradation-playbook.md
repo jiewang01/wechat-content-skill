@@ -38,7 +38,7 @@ release 绝不抛出：任何失败都收敛为 `degraded` + message。处置对
 
 1. 确认 `html_path` 指向的 HTML 文件存在且内容完整（样式全部内联，粘贴即生效）。
 2. 封面：本地封面文件（或 data URI）→ 公众号后台「图文素材 → 上传封面」。
-3. 正文：浏览器打开 HTML，全选复制，粘贴进公众号编辑器。
+3. 正文：先跑 `python scripts/preview.py <wechat.html>` 生成带 `<meta charset="utf-8">` 的预览页再在浏览器打开（片段本身无编码声明，直接打开在部分浏览器会因 fallback 编码显示乱码），全选复制正文区域，粘贴进公众号编辑器。
 4. 标题 / 摘要 / 作者：从 WechatDocument 的 `title` / `digest` / `author` 字段取值。
 5. 完成后在 run 目录记录人工发布时间与操作者（H6 审计链）。
 
