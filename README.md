@@ -14,7 +14,7 @@ An agent-native workflow skill for creating, designing, and publishing high-qual
 - **Targeted Repair**：验证失败只修被命中的节点，最多 3 轮，绝不整篇重写。
 - **Graceful Degradation**：搜索 / 图片 / 微信 API 任一失败均有兜底出口；发布不是唯一出口。
 
-完整架构见 [blueprint.md](blueprint.md)，v0.1 / v0.2 落地计划见 [v0.1-implementation-plan.md](v0.1-implementation-plan.md) 与 [v0.2-implementation-plan.md](v0.2-implementation-plan.md)。
+完整架构见 [blueprint.md](blueprint.md)，v0.1 / v0.2 落地计划见 [v0.1-implementation-plan.md](plan/v0.1-implementation-plan.md) 与 [v0.2-implementation-plan.md](plan/v0.2-implementation-plan.md)。
 
 ## 快速上手（10 分钟，全程离线）
 
@@ -111,7 +111,7 @@ pytest -q
 
 ## 版本
 
-当前 v0.3.0，变更记录见 [CHANGELOG.md](CHANGELOG.md)。v0.3 落地记录见 [v0.3-implementation-plan.md](v0.3-implementation-plan.md)。
+当前 v0.3.0，变更记录见 [CHANGELOG.md](CHANGELOG.md)。v0.3 落地记录见 [v0.3-implementation-plan.md](plan/v0.3-implementation-plan.md)。
 
 ## License
 

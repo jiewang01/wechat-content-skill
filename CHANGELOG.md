@@ -6,7 +6,7 @@
 
 ## [0.3.0] - 2026-09-13
 
-表达力、数据回流与去 AI 味迭代：语义标记受控嵌套、发布数据统计、humanize 规则 v2——范围与拆解见 [v0.3-implementation-plan.md](v0.3-implementation-plan.md)。
+表达力、数据回流与去 AI 味迭代：语义标记受控嵌套、发布数据统计、humanize 规则 v2——范围与拆解见 [v0.3-implementation-plan.md](plan/v0.3-implementation-plan.md)。
 
 ### 新增
 
@@ -40,7 +40,7 @@
 
 ## [0.2.0] - 2026-09-11
 
-内容能力扩展：多主题、7 个写作框架、正式发布与 evals 基准——范围与拆解见 [v0.2-implementation-plan.md](v0.2-implementation-plan.md)。
+内容能力扩展：多主题、7 个写作框架、正式发布与 evals 基准——范围与拆解见 [v0.2-implementation-plan.md](plan/v0.2-implementation-plan.md)。
 
 ### 新增
 
@@ -117,4 +117,4 @@
 
 ### 明确不做（推迟至 v0.2）
 
-正式发布 / 群发 / 定时 / 监控、多主题（editorial / minimal / tech / magazine）、更多写作框架（opinion / case-study / listicle / deep-dive / narrative）、`skills/quality/` 目录、evals、SEO、Web UI。详见 [v0.1-implementation-plan.md](v0.1-implementation-plan.md) 第 7 节。
+正式发布 / 群发 / 定时 / 监控、多主题（editorial / minimal / tech / magazine）、更多写作框架（opinion / case-study / listicle / deep-dive / narrative）、`skills/quality/` 目录、evals、SEO、Web UI。详见 [v0.1-implementation-plan.md](plan/v0.1-implementation-plan.md) 第 7 节。
