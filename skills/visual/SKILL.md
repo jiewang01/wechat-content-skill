@@ -30,6 +30,14 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 4. **图表** —— 流程图 / 架构图 / 时间线以 `spec` 描述；稍后由图片 provider 或样式化组件渲染。
 5. **素材** —— 若配置了图片 provider，填充 `asset_path`；生成失败时降级：图片搜索 → 占位图，并置 `degraded: true`。
 
+## 确定性兜底（v0.4）
+
+当流程拿不到 LLM 产出的 `VisualPlan`（离线回放、visual 阶段失败、存量 ContentPackage 补配图）时，由 [core/workflow/imagery.py](../../core/workflow/imagery.py) 确定性兜底：
+
+- 依据主题的 `imagery.yaml` 风格画像 + 主题色，直接套用五要素模板生成封面与插图提示词（配额：每 600 字最多 1 张、至多 4 张，章节中点优先）。
+- pipeline 的 `_stage_plan_visual` 在 design 缺失时自动走此路径；`scripts/imagery.py` CLI 可单独离线生成 brief 并可选 `--apply` 回写 `visual` 字段。
+- 兜底产物同样遵守本技能全部规则（自包含、无指代、无文字水印收尾）。
+
 ## 规则（Defender 职责）
 
 - 绝不以原始 HTML 形式内嵌图片；只给位置与提示词。

@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field
 THEMES_DIR = Path(__file__).parent
 
 REQUIRED_FILES = ("theme.yaml", "typography.yaml", "components.yaml")
+OPTIONAL_FILES = ("imagery.yaml",)
 REQUIRED_COMPONENTS = ("note", "quote", "callout", "card")
 
 
@@ -30,6 +31,7 @@ class Theme(BaseModel):
     components_enabled: dict[str, bool] = Field(default_factory=dict)
     typography: dict[str, Any] = Field(default_factory=dict)
     components: dict[str, Any] = Field(default_factory=dict)
+    imagery: dict[str, Any] = Field(default_factory=dict)
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -52,6 +54,10 @@ def load_theme(name: str = "default", themes_dir: str | Path | None = None) -> T
     data: dict[str, dict[str, Any]] = {}
     for fname in REQUIRED_FILES:
         data[fname.removesuffix(".yaml")] = _load_yaml(theme_dir / fname)
+    for fname in OPTIONAL_FILES:
+        path = theme_dir / fname
+        if path.is_file():
+            data[fname.removesuffix(".yaml")] = _load_yaml(path)
 
     theme_data = data["theme"]
     theme = Theme(
@@ -61,6 +67,7 @@ def load_theme(name: str = "default", themes_dir: str | Path | None = None) -> T
         components_enabled=theme_data.get("components", {}),
         typography=data["typography"],
         components=data["components"],
+        imagery=data.get("imagery", {}),
     )
 
     enabled = {key for key, value in theme.components_enabled.items() if value}

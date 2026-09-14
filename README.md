@@ -44,6 +44,9 @@ python scripts/render.py examples/tutorial/run_20260910_001/content_package.json
 # 发布门禁：组件 lint → 渲染 + 定向修复循环（≤3 轮）→ 平台检查，输出结构化 ErrorReport
 python scripts/validate.py examples/tutorial/run_20260910_001/content_package.json
 
+# 生成配图方案：封面 + 插图提示词（确定性规划，主题风格联动；--apply 可回写 visual 字段）
+python scripts/imagery.py examples/tutorial/run_20260910_001/content_package.json --theme orange-heart
+
 # 单产物快速检查（按扩展名分派：draft → Content QA；package → 组件 lint；html → 双层）
 python scripts/lint.py examples/tutorial/run_20260910_001/article_draft.json
 

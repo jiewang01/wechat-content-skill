@@ -2,11 +2,12 @@ quote:
   background: "#fff9f9"
   border_left: "3px solid #ef7060"
   border_radius: 4
-  padding: 12
+  padding: 14
   margin_top: 16
   margin_bottom: 16
   text_color: "#5f5450"
   font_size: 15
+  line_height: 1.8
   cite_color: "#99928f"
   cite_size: 13
 
@@ -14,19 +15,21 @@ note:
   background: "#fff4f0"
   border_left: "3px solid #ef7060"
   border_radius: 4
-  padding: 12
+  padding: 14
   margin_top: 16
   margin_bottom: 16
   text_color: "#6b5a55"
   font_size: 15
+  line_height: 1.8
 
 callout:
   base:
     border_radius: 4
-    padding: 12
+    padding: 14
     margin_top: 16
     margin_bottom: 16
     font_size: 15
+    line_height: 1.8
   variants:
     info:
       background: "#eef6ff"
@@ -67,6 +70,10 @@ card:
   footer_size: 13
 
 hr:
-  color: "#f3d9d3"
+  style: bar
+  color: "#ef7060"
+  width: 60
+  height: 4
+  border_radius: 2
   margin_top: 20
   margin_bottom: 20

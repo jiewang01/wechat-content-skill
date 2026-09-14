@@ -8,7 +8,10 @@ body:
   text_align: justify
 
 strong:
-  color: "#ef7060"
+  color: "#d94a38"
+  background: "#fdf0ee"
+  padding: "0 4px"
+  border_radius: 3
 
 h1:
   font_size: 22
@@ -21,7 +24,7 @@ h1:
 
 h2:
   font_size: 20
-  font_weight: 600
+  font_weight: 700
   color: "#ef7060"
   margin_top: 26
   margin_bottom: 14
@@ -30,7 +33,7 @@ h2:
 
 h3:
   font_size: 17
-  font_weight: 600
+  font_weight: 700
   color: "#ef7060"
   margin_top: 20
   margin_bottom: 10
@@ -38,14 +41,14 @@ h3:
   padding_left: 10
 
 paragraph:
-  margin_top: 10
-  margin_bottom: 10
+  margin_top: 14
+  margin_bottom: 14
 
 code_inline:
   font_family: "Consolas, 'Courier New', monospace"
   color: "#e05a45"
   background: "#fff5f3"
-  padding_h: 4
+  padding_h: 6
   padding_v: 2
   border_radius: 4
 
@@ -63,9 +66,11 @@ list:
   indent: 16
   item_margin: 6
   marker_color: "#ef7060"
+  marker_weight: 700
 
 image:
   width: "100%"
   max_width: "100%"
   margin_top: 16
   margin_bottom: 16
+  border_radius: 8

@@ -443,6 +443,7 @@ themes/
 │   ├── theme.yaml
 │   ├── typography.yaml
 │   ├── components.yaml
+│   ├── imagery.yaml   # 可选：配图风格画像（缺省时用内置默认画像）
 │   └── renderer.py
 │
 ├── editorial/

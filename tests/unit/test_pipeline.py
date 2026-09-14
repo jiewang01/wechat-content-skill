@@ -481,7 +481,12 @@ def test_graceful_degradation_research_brief_design(tmp_path):
 
     package = run.artifact_typed("content_package", ContentPackage)
     assert package.semantic_markdown == draft.markdown  # design 降级 → 原文直出
-    assert package.visual.images == []  # 非 https 资产不进入正文
+    # design 降级 → imagery 确定性兜底：插图保留 prompt，非 https 资产不进入正文
+    assert len(package.visual.images) == 1
+    fallback_spec = package.visual.images[0]
+    assert fallback_spec.purpose == "concept"
+    assert fallback_spec.asset_path == ""
+    assert fallback_spec.prompt.endswith("画面中不出现任何文字、无水印、无 logo。")
     assert package.visual.degraded is True
     assert "![概念图]" not in package.semantic_markdown
     assert len(llm.calls) == 4

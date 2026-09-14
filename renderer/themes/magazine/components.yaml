@@ -67,6 +67,10 @@ card:
   footer_size: 13
 
 hr:
-  color: "#e9e2da"
+  style: bar
+  color: "#d9480f"
+  width: 56
+  height: 4
+  border_radius: 2
   margin_top: 22
   margin_bottom: 22

@@ -96,8 +96,12 @@ def test_html_escaping():
 
 
 def test_hr_is_background_section_not_hr_tag(rendered: str):
-    assert "height:1px" in rendered
-    assert "background:" in rendered
+    assert "<hr" not in rendered
+    assert "text-align:center" in rendered
+    assert "display:inline-block" in rendered
+    assert "background:#07c160" in rendered
+    assert "width:60px" in rendered
+    assert "height:4px" in rendered
 
 
 def test_code_block_uses_pre_wrap_without_br(rendered: str):

@@ -138,7 +138,15 @@ class HtmlRenderer:
             ]
         )
         out = _CODE_RE.sub(lambda m: f'<span style="{code_css}">{m.group(1)}</span>', out)
-        strong_css = _css([("color", self._typ("strong").get("color"))])
+        strong = self._typ("strong")
+        strong_css = _css(
+            [
+                ("color", strong.get("color")),
+                ("background", strong.get("background")),
+                ("padding", strong.get("padding")),
+                ("border-radius", strong.get("border_radius")),
+            ]
+        )
         if strong_css:
             out = _BOLD_RE.sub(
                 lambda m: f'<strong style="{strong_css}">{m.group(1)}</strong>', out
@@ -222,7 +230,7 @@ class HtmlRenderer:
             [
                 ("font-size", _px(q.get("font_size", 15))),
                 ("color", q.get("text_color", "#555555")),
-                ("line-height", 1.7),
+                ("line-height", q.get("line_height", 1.7)),
             ]
         )
         inner = [f'<span style="{text_css}">{self._inline(text)}</span>']
@@ -252,7 +260,7 @@ class HtmlRenderer:
                 ("margin-bottom", _px(n.get("margin_bottom", 16))),
                 ("font-size", _px(n.get("font_size", 15))),
                 ("color", n.get("text_color", "#4a5568")),
-                ("line-height", 1.7),
+                ("line-height", n.get("line_height", 1.7)),
             ]
         )
         return f'<section style="{css}">{self._inline(text)}</section>'
@@ -288,7 +296,7 @@ class HtmlRenderer:
                 [
                     ("font-size", _px(base.get("font_size", 15))),
                     ("color", var.get("text_color", "#4a5568")),
-                    ("line-height", 1.7),
+                    ("line-height", base.get("line_height", 1.7)),
                 ]
             )
             parts.append(f'<span style="{text_css}">{self._inline(text)}</span>')
@@ -375,6 +383,7 @@ class HtmlRenderer:
                 ("max-width", spec.get("max_width", "100%")),
                 ("margin-top", _px(spec.get("margin_top", 16))),
                 ("margin-bottom", _px(spec.get("margin_bottom", 16))),
+                ("border-radius", _px(spec.get("border_radius")) if spec.get("border_radius") else None),
             ]
         )
         safe_src = html.escape(src, quote=True)
@@ -424,7 +433,12 @@ class HtmlRenderer:
                     ("margin-bottom", _px(item_margin)),
                 ]
             )
-            marker_css = _css([("color", marker_color)])
+            marker_css = _css(
+                [
+                    ("color", marker_color),
+                    ("font-weight", spec.get("marker_weight")),
+                ]
+            )
             parts.append(
                 f'<section style="{row_css}">'
                 f'<span style="{marker_css}">{marker}</span>'
@@ -434,12 +448,34 @@ class HtmlRenderer:
 
     def _hr_html(self) -> str:
         hr = self._comp("hr")
+        margin_top = _px(hr.get("margin_top", 20))
+        margin_bottom = _px(hr.get("margin_bottom", 20))
+        if hr.get("style", "line") == "bar":
+            outer_css = _css(
+                [
+                    ("text-align", "center"),
+                    ("margin-top", margin_top),
+                    ("margin-bottom", margin_bottom),
+                ]
+            )
+            bar_css = _css(
+                [
+                    ("display", "inline-block"),
+                    ("width", _px(hr.get("width", 60))),
+                    ("height", _px(hr.get("height", 4))),
+                    ("background", hr.get("color", "#e0e0e0")),
+                    ("border-radius", _px(hr.get("border_radius", 2))),
+                    ("font-size", "0"),
+                    ("line-height", "0"),
+                ]
+            )
+            return f'<section style="{outer_css}"><section style="{bar_css}"> </section></section>'
         css = _css(
             [
                 ("height", "1px"),
                 ("background", hr.get("color", "#e0e0e0")),
-                ("margin-top", _px(hr.get("margin_top", 20))),
-                ("margin-bottom", _px(hr.get("margin_bottom", 20))),
+                ("margin-top", margin_top),
+                ("margin-bottom", margin_bottom),
                 ("font-size", "0"),
                 ("line-height", "0"),
             ]

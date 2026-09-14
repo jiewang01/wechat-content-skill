@@ -58,6 +58,7 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
+from core.workflow.imagery import plan_visual
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -265,6 +266,8 @@ def _insert_images(markdown: str, images: list[ImageSpec]) -> str:
     anchors = heading_indices[1:]
     insertions: dict[int, str] = {}
     for spec in images:
+        if not spec.asset_path:
+            continue
         index = spec.position - 1
         if 0 <= index < len(anchors):
             insertions[anchors[index]] = f"![{spec.purpose}]({spec.asset_path})"
@@ -513,6 +516,8 @@ def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
 
 
 def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageSpec]:
+    """LLM 规划的正文插图：provider 失败时保留 prompt（asset_path 留空，
+    由 imagery 方案兜底交付，_insert_images 会跳过空资产防 broken image）。"""
     specs: list[ImageSpec] = []
     for item in _as_list(design.get("images"))[:2]:
         if not isinstance(item, dict):
@@ -525,18 +530,19 @@ def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageS
         purpose = str(item.get("purpose", "")).strip() or "concept"
         if not prompt:
             continue
+        asset_path = ""
         try:
             asset = deps.image.generate(prompt)
         except ProviderError:
-            continue
-        if not asset.url.startswith("https://"):
-            continue
+            asset = None
+        if asset and asset.url.startswith("https://"):
+            asset_path = asset.url
         specs.append(
             ImageSpec(
                 position=max(position, 1),
                 purpose=purpose,
                 prompt=prompt,
-                asset_path=asset.url,
+                asset_path=asset_path,
             )
         )
     return specs
@@ -551,13 +557,22 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         base_markdown = ""
     if not base_markdown:
         base_markdown = draft.markdown
-    cover_prompt = str(design.get("cover_prompt", "")).strip() or f"{draft.title} 概念插画"
+    fallback = plan_visual(
+        ContentPackage(
+            title=draft.title,
+            digest=draft.digest,
+            semantic_markdown=base_markdown,
+            word_count=draft.word_count,
+        ),
+        theme,
+    )
+    cover_prompt = str(design.get("cover_prompt", "")).strip() or fallback.cover.prompt
     cover_asset = ""
     try:
         cover_asset = deps.image.generate(cover_prompt).url
     except ProviderError:
         cover_asset = ""
-    images = _plan_body_images(deps, design)
+    images = _plan_body_images(deps, design) if design else fallback.images
     package = ContentPackage(
         title=draft.title,
         digest=draft.digest,
