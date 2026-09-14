@@ -246,3 +246,21 @@ def test_load_fallback_image_provider_never_raises():
     asset = provider.get_image("手冲咖啡封面")
     assert asset.source == "placeholder"
     assert asset.url.startswith("data:image/svg+xml")
+
+
+def test_fallback_generate_satisfies_image_provider_contract():
+    """load_deps 把 FallbackImageProvider 注入管线 deps.image（ImageProvider 契约），
+    管线经 generate() 取图：必须走完整三级降级链而非 AttributeError。"""
+    provider = FallbackImageProvider(None)
+    asset = provider.generate("手冲咖啡封面", size="800x600")
+    assert asset.source == "placeholder"
+    assert asset.url.startswith("data:image/svg+xml")
+    assert asset.prompt == "手冲咖啡封面"
+    direct = provider.get_image("手冲咖啡封面", size="800x600")
+    assert asset.url == direct.url
+
+
+def test_fallback_generate_prefers_generation():
+    generated = ImageAsset(url="https://cdn.test/gen.png", source="generated", prompt=PROMPT)
+    provider = FallbackImageProvider(_StubGenerator(generated))
+    assert provider.generate(PROMPT) is generated

@@ -55,6 +55,10 @@ class FallbackImageProvider:
         self._generator = generator
         self._searcher = SafeSearchProvider(searcher) if searcher is not None else None
 
+    def generate(self, prompt: str, *, size: str = "1024x1024") -> ImageAsset:
+        """ImageProvider 契约入口：管线经此走完整三级降级链。"""
+        return self.get_image(prompt, size=size)
+
     def get_image(
         self,
         prompt: str,
