@@ -53,7 +53,24 @@ def main() -> int:
     except Exception as exc:
         print(f"错误：ContentPackage 校验失败：{exc}", file=sys.stderr)
         return 1
-
+    
+    # 自动补全 VisualPlan（如果缺失）并插入占位符
+    from core.workflow.imagery import plan_visual, insert_images
+    theme = load_theme(args.theme or package.theme or "default")
+    if not package.visual.cover or not package.visual.images:
+        autoplanned = plan_visual(package, theme)
+        if not package.visual.cover:
+            package.visual.cover = autoplanned.cover
+        if not package.visual.images:
+            package.visual.images = autoplanned.images
+    # 将图片占位符插入到 semantic_markdown
+    if package.visual.images and any(not img.asset_path for img in package.visual.images):
+        package.semantic_markdown = insert_images(
+            package.semantic_markdown, 
+            package.visual.images, 
+            placeholders=True
+        )
+    
     try:
         ast = parse(package.semantic_markdown, title=package.title, digest=package.digest)
         theme = load_theme(args.theme or package.theme or "default")
