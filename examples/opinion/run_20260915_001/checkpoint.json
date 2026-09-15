@@ -1,0 +1,83 @@
+{
+  "run_id": "run_20260915_001",
+  "intent": "写一篇500字\"有本事的人往往很低调\"公众号文章",
+  "state": "DRAFT_CREATED",
+  "theme": "default",
+  "account": "default",
+  "artifacts": {
+    "research_result": "research_result.json",
+    "content_brief": "content_brief.json",
+    "article_draft": "article_draft.json",
+    "content_package": "content_package.json",
+    "validation_report": "validation_report.json",
+    "wechat_document": "wechat_document.json",
+    "publish_result": "publish_result.json"
+  },
+  "adversarial_history": [
+    {
+      "gate": "content",
+      "round": 1,
+      "attack_report": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.582721Z",
+        "gate": "content",
+        "round": 1,
+        "attacks": []
+      },
+      "defense_report": null,
+      "verdict": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.582729Z",
+        "gate": "content",
+        "round": 1,
+        "decision": "PASS",
+        "reason": "内容门禁全部通过",
+        "unresolved": []
+      }
+    },
+    {
+      "gate": "render",
+      "round": 1,
+      "attack_report": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.617630Z",
+        "gate": "render",
+        "round": 1,
+        "attacks": []
+      },
+      "defense_report": null,
+      "verdict": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.617639Z",
+        "gate": "render",
+        "round": 1,
+        "decision": "PASS",
+        "reason": "渲染门禁通过",
+        "unresolved": []
+      }
+    },
+    {
+      "gate": "publish",
+      "round": 1,
+      "attack_report": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.619771Z",
+        "gate": "publish",
+        "round": 1,
+        "attacks": []
+      },
+      "defense_report": null,
+      "verdict": {
+        "run_id": "",
+        "created_at": "2026-09-15T02:30:45.619778Z",
+        "gate": "publish",
+        "round": 1,
+        "decision": "PASS",
+        "reason": "发布门禁通过",
+        "unresolved": []
+      }
+    }
+  ],
+  "created_at": "2026-09-15T02:30:45.570134Z",
+  "updated_at": "2026-09-15T02:30:45.624575Z"
+}
