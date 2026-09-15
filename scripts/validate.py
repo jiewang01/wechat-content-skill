@@ -1,4 +1,4 @@
-"""发布门禁 CLI：ContentPackage JSON → 渲染 + 修复循环 + 三层校验 → 结构化 ErrorReport。
+"""发布门禁 CLI：ContentPackage JSON → 渲染 + 修复循环 + 多层校验 → 结构化 ErrorReport。
 
 用法：
     python scripts/validate.py pkg.json
@@ -7,6 +7,7 @@
 
 管线（蓝图九章 / 十章）：
     1. 组件 lint（gate=content）：语义标记层，错误即止——标记问题无法靠渲染修复；
+       同时检查 visual↔figure 一致性（prompt-first 配图契约，见 validators.visual）；
     2. 渲染 + 定向修复循环 ≤3 轮（gate=render）：HTML 层，段级节点归属（H3/H4）；
     3. 发布门禁（gate=publish）：平台层文档级检查（图片 / 外部资源 / 体积），
        与渲染层残留合并为最终 ErrorReport（H5：无 PASS 不发布）。
@@ -30,6 +31,7 @@ from renderer.ast import ParseError, parse
 from renderer.html import HtmlRenderer
 from renderer.themes import ThemeError, load_theme
 from validators.component import lint_components
+from validators.visual import lint_visual_consistency
 from validators.wechat import lint_gzh
 
 
@@ -89,7 +91,10 @@ def main() -> int:
         print(f"错误：主题加载失败：{exc}", file=sys.stderr)
         return 2
 
-    component_errors, component_warnings = _split(lint_components(package.semantic_markdown, theme))
+    component_issues = lint_components(package.semantic_markdown, theme) + lint_visual_consistency(
+        package
+    )
+    component_errors, component_warnings = _split(component_issues)
     if component_errors:
         report = ValidationReport(
             status="failed",

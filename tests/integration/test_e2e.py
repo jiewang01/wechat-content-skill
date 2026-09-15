@@ -8,7 +8,8 @@ DoD（v0.1-implementation-plan.md M6-T3）：
 - unit 层以 StubPublisher 验证阶段编排与门禁语义；
 - 本文件注入 M5 的真实 WeChatPublisher（仅 HTTP 传输层 mock），
   缝合「管线 → Facade → 微信 API 契约」全链路；
-- LLM 四段响应全部取自 tests/fixtures 的《缓存穿透》故事线（fixtures 即文档），
+- LLM 六段响应（research / brief / draft / annotate / style / imagery）全部取自 tests/fixtures
+  的《缓存穿透》故事线（fixtures 即文档），
   并把产出 artifact 与 fixtures 逐字锚定（标题/正文/字数/去 AI 味得分/事实清单）；
 - 校验环节用真实 lint_components / lint_gzh，不做任何 mock。
 """
@@ -26,6 +27,7 @@ from core.artifacts.models import (
     ContentPackage,
     PublishResult,
     ResearchResult,
+    StyleDecision,
     ValidationReport,
     WechatDocument,
 )
@@ -47,12 +49,11 @@ from validators import lint_gzh
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
 INTENT = "写一篇讲清缓存穿透的公众号文章"
 AUTHOR = "端到端作者"
-IMG_URL = "https://mmbiz.qpic.cn/mmbiz_png/e2e_gate_diagram_001.png"
 PNG_BYTES = b"\x89PNG\r\n\x1a\nfake-cover-data"
 
 
 # ---------------------------------------------------------------------------
-# fixtures → LLM 响应（fixtures 即文档：研究/大纲/正文/排版四段全取自同一故事线）
+# fixtures → LLM 响应（fixtures 即文档：研究/大纲/正文/标注/风格/配图六段全取自同一故事线）
 # ---------------------------------------------------------------------------
 
 
@@ -61,12 +62,13 @@ def _fixture(name: str) -> dict:
 
 
 def _llm_responses() -> list[str]:
-    research, brief, draft, package, visual = (
+    research, brief, draft, package, visual, style = (
         _fixture("research_result"),
         _fixture("content_brief"),
         _fixture("article_draft"),
         _fixture("content_package"),
         _fixture("visual_plan"),
+        _fixture("style_decision"),
     )
     research_json = json.dumps(
         {
@@ -99,9 +101,21 @@ def _llm_responses() -> list[str]:
         for line in package["semantic_markdown"].split("\n")
         if not line.lstrip().startswith("![")
     )
-    design_json = json.dumps(
+    annotate_json = json.dumps({"semantic_markdown": base_markdown}, ensure_ascii=False)
+    style_json = json.dumps(
         {
-            "semantic_markdown": base_markdown,
+            "theme": style["theme"],
+            "rationale": style["rationale"],
+            "cover_style": style["cover_style"],
+            "rejected": [
+                {"theme": rejected["theme"], "reason": rejected["reason"]}
+                for rejected in style["rejected"]
+            ],
+        },
+        ensure_ascii=False,
+    )
+    imagery_json = json.dumps(
+        {
             "cover_prompt": visual["cover"]["prompt"],
             "images": [
                 {
@@ -114,7 +128,14 @@ def _llm_responses() -> list[str]:
         },
         ensure_ascii=False,
     )
-    return [research_json, brief_json, draft["markdown"], design_json]
+    return [
+        research_json,
+        brief_json,
+        draft["markdown"],
+        annotate_json,
+        style_json,
+        imagery_json,
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -123,7 +144,7 @@ def _llm_responses() -> list[str]:
 
 
 class ScriptLLM:
-    """按调用顺序回放预设响应，模拟真实 LLM 的四段产出。"""
+    """按调用顺序回放预设响应，模拟真实 LLM 的六段产出。"""
 
     def __init__(self, responses: list[str]) -> None:
         self._responses = list(responses)
@@ -148,19 +169,17 @@ class StaticSearch:
 
 
 class RoleImage:
-    """封面 prompt 返回 data URI（Facade 可直接上传）；其余 prompt 返回 https 插图 URL。"""
+    """封面 prompt 返回 data URI（UPLOADING 阶段兜底生图，Facade 可直接上传）。
 
-    def __init__(self, cover_prompt: str, cover_uri: str, body_url: str) -> None:
-        self._cover_prompt = cover_prompt
+    prompt-first 管线正文不出图，图片 provider 只会被封面调用一次。"""
+
+    def __init__(self, cover_uri: str) -> None:
         self._cover_uri = cover_uri
-        self._body_url = body_url
         self.prompts: list[str] = []
 
     def generate(self, prompt: str, *, size: str = "1024x1024") -> ImageAsset:
         self.prompts.append(prompt)
-        if prompt == self._cover_prompt:
-            return ImageAsset(url=self._cover_uri, source="generated", prompt=prompt)
-        return ImageAsset(url=self._body_url, source="generated", prompt=prompt)
+        return ImageAsset(url=self._cover_uri, source="generated", prompt=prompt)
 
 
 # ---------------------------------------------------------------------------
@@ -211,7 +230,7 @@ def run_e2e(tmp_path: Path, *, api_status: int | None = None):
             SearchHit(url="https://blog.example.com/bloom-filter.html", title="布隆过滤器入门"),
         ]
     )
-    image = RoleImage(_fixture("visual_plan")["cover"]["prompt"], cover_uri, IMG_URL)
+    image = RoleImage(cover_uri)
     client, tokens, requests, state = make_wechat_api(api_status=api_status)
     publisher = WeChatPublisher(
         client,
@@ -249,10 +268,15 @@ def _only_run_id(store: CheckpointStore) -> str:
 def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     run, store, requests, state = run_e2e(tmp_path)
 
-    # 终态与三道门禁（真实 lint_content / lint_components / lint_gzh，无 mock）
+    # 终态与四道门禁（真实 lint_content / lint_components / lint_gzh，无 mock）
     assert run.state == WorkflowState.DRAFT_CREATED
     gates = [(r.gate, r.verdict.decision) for r in run.checkpoint.adversarial_history]
-    assert gates == [("content", "PASS"), ("render", "PASS"), ("publish", "PASS")]
+    assert gates == [
+        ("content", "PASS"),  # 内容门（DRAFTED）
+        ("content", "PASS"),  # 组件门（ANNOTATED，自渲染前移）
+        ("render", "PASS"),
+        ("publish", "PASS"),
+    ]
 
     # 产出与 fixtures 逐字锚定（fixtures 即文档）
     research = run.artifact_typed("research_result", ResearchResult)
@@ -270,9 +294,20 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert draft.word_count == fixture_draft["word_count"]
     assert draft.humanize.humanize_score == fixture_draft["humanize"]["humanize_score"]
 
-    # 插图由 stub 注入语义稿（fixtures 语义稿中的图片行已剥离）
+    # 风格决策与 fixtures 逐字锚定
+    style = run.artifact_typed("style_decision", StyleDecision)
+    fixture_style = _fixture("style_decision")
+    assert style.theme == fixture_style["theme"]
+    assert style.cover_style == fixture_style["cover_style"]
+    assert style.degraded is False
+
+    # prompt-first 配图：正文插图是 figure 占位块；封面在上传时兜底生图并回写
     package = run.artifact_typed("content_package", ContentPackage)
-    assert f"![解法示意]({IMG_URL})" in package.semantic_markdown
+    assert package.theme == fixture_style["theme"]  # 风格决策回写 package.theme
+    assert ":::figure" in package.semantic_markdown
+    body = package.visual.images[0]
+    assert body.asset_path == ""
+    assert body.prompt in package.semantic_markdown
     assert package.visual.cover is not None
     assert package.visual.cover.asset_path.startswith("data:image/png;base64,")
     assert package.visual.degraded is False
@@ -281,8 +316,9 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     doc = run.artifact_typed("wechat_document", WechatDocument)
     assert lint_gzh(doc.html) == []
     assert doc.size_bytes == len(doc.html.encode("utf-8"))
-    assert IMG_URL in doc.html
-    assert doc.image_assets == [IMG_URL]
+    assert body.prompt in doc.html  # figure 占位块渲染为 prompt 文本卡片
+    assert doc.cover_asset == ""  # 文档在渲染时定型，早于封面生成
+    assert doc.image_assets == [""]
     assert doc.plain_text and "<" not in doc.plain_text
 
     report = run.artifact_typed("validation_report", ValidationReport)
@@ -300,7 +336,7 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert article["author"] == AUTHOR
     assert article["digest"] == draft.digest
     assert article["thumb_media_id"] == "MEDIA-9"
-    assert IMG_URL in article["content"]
+    assert body.prompt in article["content"]  # 占位块文本随正文进入草稿
 
     # 草稿创建结果 + 本地 HTML 留档
     result = run.artifact_typed("publish_result", PublishResult)
@@ -309,7 +345,7 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert result.draft_id == "DRAFT-9"
     assert Path(result.html_path).read_text(encoding="utf-8-sig") == doc.html
 
-    # checkpoint 磁盘产物：7 份管线 artifact 落盘；攻防三件套记入 adversarial_history，
+    # checkpoint 磁盘产物：8 份管线 artifact 落盘；攻防三件套记入 adversarial_history，
     # visual_plan 嵌于 content_package.visual，均不单独落盘
     checkpoint = store.load_checkpoint(_only_run_id(store))
     assert checkpoint.state == WorkflowState.DRAFT_CREATED
@@ -317,13 +353,14 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
         "research_result",
         "content_brief",
         "article_draft",
+        "style_decision",
         "content_package",
         "validation_report",
         "wechat_document",
         "publish_result",
     }
     assert set(checkpoint.artifacts) == expected_artifacts
-    assert len(checkpoint.adversarial_history) == 3
+    assert len(checkpoint.adversarial_history) == 4
     run_dir = store.base_dir / _only_run_id(store)
     on_disk = {path.stem for path in run_dir.glob("*.json")}
     assert expected_artifacts <= on_disk

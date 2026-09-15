@@ -1,0 +1,82 @@
+{
+  "$defs": {
+    "RejectedTheme": {
+      "additionalProperties": false,
+      "properties": {
+        "theme": {
+          "title": "Theme",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "theme"
+      ],
+      "title": "RejectedTheme",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "Artifact creation timestamp (UTC).",
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "theme": {
+      "description": "Selected layout theme id, e.g. editorial.",
+      "title": "Theme",
+      "type": "string"
+    },
+    "rationale": {
+      "default": "",
+      "title": "Rationale",
+      "type": "string"
+    },
+    "rejected": {
+      "description": "Candidate themes considered and rejected, with reasons (audit trail).",
+      "items": {
+        "$ref": "#/$defs/RejectedTheme"
+      },
+      "title": "Rejected",
+      "type": "array"
+    },
+    "cover_style": {
+      "default": "",
+      "description": "Cover visual style label; empty means inherit the theme name.",
+      "title": "Cover Style",
+      "type": "string"
+    },
+    "framework": {
+      "default": "",
+      "title": "Framework",
+      "type": "string"
+    },
+    "tone": {
+      "default": "",
+      "title": "Tone",
+      "type": "string"
+    },
+    "degraded": {
+      "default": false,
+      "description": "True when the LLM was unavailable and the framework->theme fallback table decided.",
+      "title": "Degraded",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "theme"
+  ],
+  "title": "StyleDecision",
+  "type": "object"
+}

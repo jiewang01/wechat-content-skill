@@ -57,4 +57,4 @@
 ## 信任时机
 
 - 语义标记生成后、渲染前；管线中本门错误记在 `gate="content"`（组件错误本质是内容层标记问题），抛 `ContentGateError`
-- 设计阶段（DESIGNING）LLM 产出的语义标记也先过这道门，有错则整段弃用、回退纯 Markdown
+- 标注阶段（ANNOTATING）LLM 产出的语义标记也先过这道门（`theme=None` 语法预检），有错则整段弃用、回退纯 Markdown；ANNOTATED 状态另设独立组件门禁，error 直接拒绝进入风格阶段

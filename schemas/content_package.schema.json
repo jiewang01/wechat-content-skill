@@ -56,7 +56,7 @@
       "additionalProperties": false,
       "properties": {
         "position": {
-          "description": "Insert before the section at this 1-based position.",
+          "description": "Insert before the section/block at this 1-based position (headings when present, top-level blocks otherwise).",
           "minimum": 1,
           "title": "Position",
           "type": "integer"
@@ -124,7 +124,7 @@
         },
         "degraded": {
           "default": false,
-          "description": "True when the primary image pipeline failed.",
+          "description": "True only when prompt planning itself failed and deterministic fallback prompts were used (prompt-first: placeholder figure blocks are the primary product, not a degraded exit).",
           "title": "Degraded",
           "type": "boolean"
         }

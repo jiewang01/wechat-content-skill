@@ -1,0 +1,16 @@
+{
+  "run_id": "run_20260910_001",
+  "created_at": "2026-09-10T13:42:07.723400Z",
+  "theme": "default",
+  "rationale": "教程框架配中性默认版式，小节结构清晰，note 与 card 组件样式齐备。",
+  "rejected": [
+    {
+      "theme": "magazine",
+      "reason": "大标题与分栏感适合盘点类内容，与线性教程的阅读路径不符。"
+    }
+  ],
+  "cover_style": "editorial",
+  "framework": "tutorial",
+  "tone": "professional",
+  "degraded": false
+}

@@ -103,7 +103,13 @@ class CoverSpec(BaseModel):
 class ImageSpec(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    position: int = Field(ge=1, description="Insert before the section at this 1-based position.")
+    position: int = Field(
+        ge=1,
+        description=(
+            "Insert before the section/block at this 1-based position "
+            "(headings when present, top-level blocks otherwise)."
+        ),
+    )
     purpose: str = "concept"
     prompt: str = ""
     asset_path: str = ""
@@ -122,7 +128,38 @@ class VisualPlan(ArtifactBase):
     images: list[ImageSpec] = Field(default_factory=list)
     diagrams: list[DiagramSpec] = Field(default_factory=list)
     degraded: bool = Field(
-        default=False, description="True when the primary image pipeline failed."
+        default=False,
+        description=(
+            "True only when prompt planning itself failed and deterministic "
+            "fallback prompts were used (prompt-first: placeholder figure "
+            "blocks are the primary product, not a degraded exit)."
+        ),
+    )
+
+
+class RejectedTheme(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    theme: str
+    reason: str = ""
+
+
+class StyleDecision(ArtifactBase):
+    theme: str = Field(description="Selected layout theme id, e.g. editorial.")
+    rationale: str = ""
+    rejected: list[RejectedTheme] = Field(
+        default_factory=list,
+        description="Candidate themes considered and rejected, with reasons (audit trail).",
+    )
+    cover_style: str = Field(
+        default="",
+        description="Cover visual style label; empty means inherit the theme name.",
+    )
+    framework: str = ""
+    tone: str = ""
+    degraded: bool = Field(
+        default=False,
+        description="True when the LLM was unavailable and the framework->theme fallback table decided.",
     )
 
 
@@ -245,6 +282,7 @@ ARTIFACT_MODELS: dict[str, type[ArtifactBase]] = {
     "research_result": ResearchResult,
     "content_brief": ContentBrief,
     "article_draft": ArticleDraft,
+    "style_decision": StyleDecision,
     "visual_plan": VisualPlan,
     "content_package": ContentPackage,
     "wechat_document": WechatDocument,
@@ -273,7 +311,9 @@ __all__ = [
     "ImageSpec",
     "PublishResult",
     "ResearchResult",
+    "RejectedTheme",
     "Source",
+    "StyleDecision",
     "ValidationIssue",
     "ValidationReport",
     "Verdict",

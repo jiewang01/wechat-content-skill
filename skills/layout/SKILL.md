@@ -24,9 +24,17 @@ ContentAST（节点携带稳定 id：node_N / component_N）
 wechat.html（内联 CSS，微信安全标签）
 ```
 
-## 主题选择
+## 主题选择（STYLING 阶段）
 
 内置主题：`default`（微信绿左竖条）、`editorial`（编辑部衬线风）、`minimal`（极简黑白灰）、`tech`（科技蓝 + 深色代码块）、`magazine`（杂志高对比）、`orange-heart`（暖橙治愈风），均位于 [renderer/themes/](../../renderer/themes/)，每个主题包含 `theme.yaml`（颜色、启用组件）、`typography.yaml`、`components.yaml`。主题引擎读取任何包含这三个文件的目录 —— 新主题零代码接入。
+
+主题不是 LLM 说了算，是「LLM 提议 + 确定性裁决」（pipeline `_stage_style`）：
+
+1. **提议** —— LLM 读稿件与框架，给出主题 + 理由（`rationale`）。
+2. **裁决** —— 代码验证：主题可加载（`load_theme`）且组件兼容（正文用到的组件主题必须启用且有样式定义）；不通过则否决该提议，连同理由记入 `StyleDecision.rejected`（可审计）。
+3. **回退** —— LLM 不可用或提议被否决时，按写作框架查决策表：tutorial / news-analysis → `default`，opinion → `editorial`，case-study / listicle → `magazine`，deep-dive → `tech`，narrative → `orange-heart`，其余 → `default`（此时 `degraded: true`）。
+
+产物 `StyleDecision`（schemas/style_decision.schema.json）：选定主题、理由、被否决提议、封面风格（`cover_style`，供配图阶段取用）、框架与语气画像。主题选定后回写 `checkpoint.theme` 与 `package.theme`，渲染与配图（主题 → `imagery.yaml` 风格画像）都以此为准。
 
 ## 规则（Defender 职责）
 

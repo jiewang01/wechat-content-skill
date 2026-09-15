@@ -1,6 +1,6 @@
 """确定性配图规划器：从 ContentPackage + Theme 生成配图 prompt 方案。
 
-不依赖 LLM 与图片 provider：既是 design 阶段的确定性兜底（蓝图 ch12 三级降级
+不依赖 LLM 与图片 provider：既是 imagery 阶段的确定性兜底（蓝图 ch12 三级降级
 的 image 一级），也可通过 scripts/imagery.py 对既有 content_package 补跑。
 
 Prompt 模板遵循 skills/visual/prompts/image-prompt-guide.md 的五要素规范，
@@ -8,6 +8,9 @@ Prompt 模板遵循 skills/visual/prompts/image-prompt-guide.md 的五要素规�
 约束 + 负向收尾）：
 
     [主体] + [风格] + [构图/比例] + [色调] + [约束]
+
+锚点策略：有小节标题时按标题锚定；无标题文章（opinion/narrative 等框架常见）
+回退到顶层块锚点（段落 / 组件块 / 列表各为一个可插单位）。
 
 硬规则：图内不要求可读文字（prompt 以「无文字、无水印」收尾）；封面 2.35:1、
 正文 16:9；风格与主题色系锁定（theme.colors.primary 动态注入）；每 600 字
@@ -64,7 +67,7 @@ class ImageryProfile:
 @dataclass(frozen=True)
 class SectionAnchor:
     """正文锚点：position 与 pipeline._insert_images 的语义一致
-    （插入到第 N 个非首标题之前，1-based）。"""
+    （标题模式：插入到第 N 个非首标题之前；块模式：第 N 个可插块之前，均 1-based）。"""
 
     position: int
     title: str
@@ -82,27 +85,95 @@ def _strip_inline(text: str) -> str:
     return text.strip()
 
 
-def extract_anchors(markdown: str) -> list[SectionAnchor]:
-    """提取插图锚点：跳过第一个标题（文章标题），其余标题各为一个锚点。"""
-    lines = markdown.split("\n")
-    heading_lines = [
-        (i, line) for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())
-    ]
-    anchors: list[SectionAnchor] = []
-    for idx, (line_no, line) in enumerate(heading_lines[1:], start=1):
-        match = _HEADING_RE.match(line.strip())
-        title = _strip_inline(match.group(2)) if match else ""
-        if not title:
+def _clean_block_text(text: str) -> str:
+    return re.sub(r"^[-*>+]\s+", "", _strip_inline(text)).strip()
+
+
+def _top_level_blocks(lines: list[str]) -> list[tuple[int, int]]:
+    """划分顶层块：返回 [(起始行号, 结束行号)]。
+
+    组件块（:::xxx ... :::）整体为一块；其余以空行分隔的连续非空行为一块
+    （段落 / 列表 / 引用块 / 表格天然聚合）。扫描器不进入组件块内部。
+    """
+    blocks: list[tuple[int, int]] = []
+    i = 0
+    total = len(lines)
+    while i < total:
+        stripped = lines[i].strip()
+        if not stripped:
+            i += 1
             continue
-        end = heading_lines[idx + 1][0] if idx + 1 < len(heading_lines) else len(lines)
-        summary = ""
-        for body_line in lines[line_no + 1 : end]:
-            text = _strip_inline(body_line)
-            if text and not text.startswith((":::", "#", ">", "-", "|", "!")):
-                summary = text[:_SUMMARY_LIMIT]
-                break
-        anchors.append(SectionAnchor(position=idx, title=title, summary=summary))
-    return anchors
+        start = i
+        if stripped.startswith(":::") and stripped != ":::":
+            i += 1
+            while i < total and lines[i].strip() != ":::":
+                i += 1
+            i = min(i + 1, total)
+        else:
+            while i < total:
+                probe = lines[i].strip()
+                if not probe or (probe.startswith(":::") and probe != ":::"):
+                    break
+                i += 1
+        blocks.append((start, i))
+    return blocks
+
+
+def _heading_indices(lines: list[str]) -> list[int]:
+    return [i for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())]
+
+
+def _use_heading_anchors(lines: list[str], heading_indices: list[int]) -> bool:
+    """标题模式判定：至少两个标题，且首个标题之外存在有效标题（extract 与 insert 共用）。"""
+    if len(heading_indices) < 2:
+        return False
+    for line_no in heading_indices[1:]:
+        match = _HEADING_RE.match(lines[line_no].strip())
+        if match and _strip_inline(match.group(2)):
+            return True
+    return False
+
+
+def _block_anchor_entries(lines: list[str]) -> list[tuple[int, SectionAnchor]]:
+    """块模式锚点：文章标题块（若正文以标题开头）不作为插入位，其余块依次编号。"""
+    blocks = _top_level_blocks(lines)
+    if blocks and _HEADING_RE.match(lines[blocks[0][0]].strip()):
+        blocks = blocks[1:]
+    entries: list[tuple[int, SectionAnchor]] = []
+    for position, (start, end) in enumerate(blocks, start=1):
+        meaningful = [
+            text
+            for text in (_clean_block_text(line) for line in lines[start:end])
+            if text and not text.startswith((":::", "#"))
+        ]
+        title = meaningful[0][:_SUMMARY_LIMIT] if meaningful else f"块 {position}"
+        summary = meaningful[1][:_SUMMARY_LIMIT] if len(meaningful) > 1 else ""
+        entries.append((start, SectionAnchor(position=position, title=title, summary=summary)))
+    return entries
+
+
+def extract_anchors(markdown: str) -> list[SectionAnchor]:
+    """提取插图锚点：标题模式跳过第一个标题（文章标题），其余标题各为一个锚点；
+    无有效小节标题时回退为顶层块锚点（组件块整块计一，段落各计一）。"""
+    lines = markdown.split("\n")
+    heading_indices = _heading_indices(lines)
+    if _use_heading_anchors(lines, heading_indices):
+        anchors: list[SectionAnchor] = []
+        for idx, line_no in enumerate(heading_indices[1:], start=1):
+            match = _HEADING_RE.match(lines[line_no].strip())
+            title = _strip_inline(match.group(2)) if match else ""
+            if not title:
+                continue
+            end = heading_indices[idx + 1] if idx + 1 < len(heading_indices) else len(lines)
+            summary = ""
+            for body_line in lines[line_no + 1 : end]:
+                text = _strip_inline(body_line)
+                if text and not text.startswith((":::", "#", ">", "-", "|", "!")):
+                    summary = text[:_SUMMARY_LIMIT]
+                    break
+            anchors.append(SectionAnchor(position=idx, title=title, summary=summary))
+        return anchors
+    return [anchor for _, anchor in _block_anchor_entries(lines)]
 
 
 def _pick_anchors(anchors: list[SectionAnchor], quota: int) -> list[SectionAnchor]:
@@ -138,14 +209,20 @@ def section_prompt(anchor: SectionAnchor, profile: ImageryProfile) -> str:
     )
 
 
-def plan_visual(package: ContentPackage, theme: Theme) -> VisualPlan:
-    """确定性生成完整 VisualPlan：封面 prompt + 正文插图 prompts（asset_path 留空）。"""
+def plan_visual(
+    package: ContentPackage, theme: Theme, *, cover_style: str = "editorial"
+) -> VisualPlan:
+    """确定性生成完整 VisualPlan：封面 prompt + 正文插图 prompts（asset_path 留空）。
+
+    cover_style 由风格阶段决策传入（StyleDecision.cover_style，缺省继承主题名），
+    仅作为封面风格标签写进 CoverSpec.style。
+    """
     profile = ImageryProfile.from_theme(theme)
     anchors = extract_anchors(package.semantic_markdown)
     picked = _pick_anchors(anchors, image_quota(package.word_count))
     return VisualPlan(
         cover=CoverSpec(
-            style="editorial",
+            style=cover_style.strip() or "editorial",
             ratio="2.35:1",
             prompt=cover_prompt(package.title, package.digest, profile),
         ),
@@ -190,26 +267,30 @@ def strip_figure_blocks(markdown: str) -> str:
 def insert_images(
     markdown: str, images: list[ImageSpec], *, placeholders: bool = False
 ) -> str:
-    """把插图插到第 N 个小节标题之前（首标题视为文章标题，不作为锚点）。
+    """把插图插到第 N 个锚点之前（首标题视为文章标题，不作为锚点）。
 
-    有资产的插图插入 `![purpose](asset)`；无资产的插图在 placeholders=True
-    时插入 :::figure 占位块（prompt 直接呈现给读者，供生图替换），
-    否则跳过（防 broken image）。
+    有小节标题时按标题锚定（第 N 个非首标题）；无标题文章回退为顶层块锚点
+    （第 N 个可插块，跳过文章标题块）。有资产的插图插入 `![purpose](asset)`；
+    无资产的插图在 placeholders=True 时插入 :::figure 占位块（prompt 直接
+    呈现给读者，供生图替换），否则跳过（防 broken image）。
     """
     if not images:
         return markdown
     lines = markdown.split("\n")
-    heading_indices = [i for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())]
-    anchors = heading_indices[1:]
+    heading_indices = _heading_indices(lines)
+    if _use_heading_anchors(lines, heading_indices):
+        anchor_lines = heading_indices[1:]
+    else:
+        anchor_lines = [line_no for line_no, _ in _block_anchor_entries(lines)]
     insertions: dict[int, str] = {}
     for spec in images:
         index = spec.position - 1
-        if not 0 <= index < len(anchors):
+        if not 0 <= index < len(anchor_lines):
             continue
         if spec.asset_path:
-            insertions[anchors[index]] = f"![{spec.purpose}]({spec.asset_path})"
+            insertions[anchor_lines[index]] = f"![{spec.purpose}]({spec.asset_path})"
         elif placeholders and spec.prompt.strip():
-            insertions[anchors[index]] = figure_block(spec.prompt)
+            insertions[anchor_lines[index]] = figure_block(spec.prompt)
     if not insertions:
         return markdown
     out: list[str] = []
@@ -220,8 +301,10 @@ def insert_images(
     return "\n".join(out)
 
 
-def build_brief(package: ContentPackage, theme: Theme) -> str:
-    """生成可直接交付的 Markdown 配图方案文档。"""
+def build_brief(
+    package: ContentPackage, theme: Theme, *, cover_style: str = "editorial"
+) -> str:
+    """生成可直接交付的 Markdown 配图方案文档（cover_style 与 plan_visual 保持一致）。"""
     profile = ImageryProfile.from_theme(theme)
     anchors = extract_anchors(package.semantic_markdown)
     picked = _pick_anchors(anchors, image_quota(package.word_count))
@@ -230,10 +313,10 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         "",
         f"- 主题：{theme.name}（主色 {profile.primary}）",
         f"- 风格：{profile.style}",
-        f"- 篇幅：{package.word_count} 字 ｜ 小节 {len(anchors)} 个 ｜ 配图 {len(picked)} 张",
+        f"- 篇幅：{package.word_count} 字 ｜ 小节/块 {len(anchors)} 个 ｜ 配图 {len(picked)} 张",
         "- 规范：skills/visual/prompts/image-prompt-guide.md 五要素（主体 / 风格 / 构图 / 色调 / 约束）",
         "",
-        "## 封面（2.35:1 · editorial）",
+        f"## 封面（2.35:1 · {cover_style.strip() or 'editorial'}）",
         "",
         "```text",
         cover_prompt(package.title, package.digest, profile),
@@ -242,7 +325,7 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
     ]
     for i, anchor in enumerate(picked, 1):
         lines += [
-            f"## 正文插图 {i}（16:9 · concept · 第 {anchor.position} 节「{anchor.title}」之前）",
+            f"## 正文插图 {i}（16:9 · concept · 第 {anchor.position} 位「{anchor.title}」之前）",
             "",
             "```text",
             section_prompt(anchor, profile),

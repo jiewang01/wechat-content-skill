@@ -1,11 +1,22 @@
 """端到端内容管线（M6-T1）：一句话意图 → 公众号草稿。
 
 按 references/adversarial-constraints.md 的 H1–H8 硬约束，把研究、写作、
-排版、渲染、校验、修复、发布能力编排为 13 个状态的流水线，由 Orchestrator 驱动：
+标注、风格、配图、渲染、校验、修复、发布能力编排为 19 个状态的流水线，
+由 Orchestrator 驱动：
 
     INIT → RESEARCHING → RESEARCHED → DRAFTING → DRAFTED
-         → DESIGNING → RENDERING → VALIDATING ⇄ REPAIRING（发布门修复回环，≤3 轮）
+         → ANNOTATING → ANNOTATED（组件门禁）
+         → STYLING → STYLED → IMAGERY（配图 prompt 规划，prompt-first）
+         → RENDERING → VALIDATING ⇄ REPAIRING（发布门修复回环，≤3 轮）
          → VALIDATED → READY_TO_PUBLISH → UPLOADING → DRAFT_CREATED
+
+新增三阶段分工：
+- 标注（ANNOTATING）：LLM 产出语义组件标注的 ContentPackage 骨架；
+- 风格（STYLING）：LLM 提议 + 确定性裁决产出 StyleDecision（主题、封面风格、
+  否决记录），并回写 checkpoint.theme 与 package.theme；
+- 配图（IMAGERY）：LLM 产出五要素配图 prompt（封面 2.35:1 + 正文 16:9），
+  失败时确定性模板兜底；图片生成不在管线内（prompt-first：:::figure 占位块
+  是主路产物，人工经 scripts/imagery.py --apply 回填真图）。
 
 对抗角色分工（H1）：
 - Attacker：lint_content / lint_components / lint_gzh 产出带证据的 Attack
@@ -14,13 +25,17 @@
 
 三级降级（蓝图 ch12）：
 - research：LLM 提炼失败 → 只保留搜索来源，facts 为空
-- brief / design：LLM 失败 → 确定性模板 / 纯正文（VisualPlan.degraded=True）
+- brief：LLM 失败 → 确定性模板
+- annotate：LLM 失败 → 纯正文（无组件标注，不视为降级，组件门禁照样通过）
+- style：LLM 失败 → framework→theme 决策表（StyleDecision.degraded=True）
+- imagery：LLM 失败 → 确定性五要素模板（VisualPlan.degraded=True）；
+  prompt-first 下占位块是主路，仅连 prompt 都生成不了才标记降级
 - draft：LLM 失败 → DraftGenerationError（正文不可伪造，不做降级）
-- image：封面与插图经 fallback provider 兜底；非 https 资产不进入正文
+- image：正文图不生成；封面在上传时（UPLOADING）按 cover prompt 兜底生成
 
 门禁与状态机约束（core/state/machine.py）：
-- DRAFTED / RENDERING 无通往 REJECTED 的转移，内容/组件门禁失败以异常中断，
-  checkpoint 保留现场可 resume；
+- DRAFTED / ANNOTATED / RENDERING 无通往 REJECTED 的转移，内容/组件/渲染门禁
+  失败以异常中断，checkpoint 保留现场可 resume；
 - REJECTED 仅能从 REPAIRING 进入（发布门修复轮次耗尽或无手段，H4）；
 - VALIDATED → READY_TO_PUBLISH 强制 publish_verdict_pass=True（H5，PublishGateError 兜底）。
 """
@@ -48,8 +63,10 @@ from core.artifacts.models import (
     Fact,
     Gate,
     ImageSpec,
+    RejectedTheme,
     ResearchResult,
     Source,
+    StyleDecision,
     Verdict,
     VisualPlan,
     WechatDocument,
@@ -58,7 +75,14 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
-from core.workflow.imagery import insert_images, plan_visual, strip_figure_blocks
+from core.workflow.imagery import (
+    SectionAnchor,
+    extract_anchors,
+    image_quota,
+    insert_images,
+    plan_visual,
+    strip_figure_blocks,
+)
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -79,7 +103,7 @@ from renderer.ast.parser import ParseError, parse
 from renderer.html.renderer import HtmlRenderer
 from renderer.themes import Theme, ThemeError, load_theme
 from skills.content.humanize.detector import analyze_text
-from validators import lint_components, lint_content, lint_gzh
+from validators import lint_components, lint_content, lint_gzh, lint_visual_consistency
 
 _MAX_PUBLISH_ROUNDS = 3
 _DIGEST_MAX_CHARS = 54
@@ -93,7 +117,28 @@ _DRAFT_SYSTEM = (
     "不使用「首先」「其次」「最后」「总而言之」「众所周知」等套话；"
     "不堆砌形容词；结尾不给行动号召口号。"
 )
-_DESIGN_SYSTEM = "你是一名微信公众号排版设计师。只输出一个 JSON 对象，不要输出任何解释文字。"
+_ANNOTATE_SYSTEM = "你是一名微信公众号排版标注师。只输出一个 JSON 对象，不要输出任何解释文字。"
+_STYLE_SYSTEM = "你是一名微信公众号视觉风格顾问。只输出一个 JSON 对象，不要输出任何解释文字。"
+_IMAGERY_SYSTEM = "你是一名公众号配图规划师。只输出一个 JSON 对象，不要输出任何解释文字。"
+
+_THEME_CATALOG: dict[str, str] = {
+    "default": "中性默认版式，适合教程与说明文",
+    "editorial": "编辑风格，衬线标题与强留白，适合观点与评论",
+    "minimal": "极简黑白，信息密度低，适合严肃技术说明",
+    "tech": "科技感版式，冷色强调，适合深度技术解析",
+    "magazine": "杂志风格，大标题与分栏感，适合案例与盘点",
+    "orange-heart": "暖色调人文风格，适合叙事与情感表达",
+}
+
+_FRAMEWORK_THEME_FALLBACK: dict[str, str] = {
+    "tutorial": "default",
+    "news-analysis": "default",
+    "opinion": "editorial",
+    "case-study": "magazine",
+    "listicle": "magazine",
+    "deep-dive": "tech",
+    "narrative": "orange-heart",
+}
 
 
 class PipelineError(RuntimeError):
@@ -316,18 +361,56 @@ def _draft_prompt(brief: ContentBrief) -> str:
     return "\n".join(lines)
 
 
-def _design_prompt(draft: ArticleDraft) -> str:
+def _annotate_prompt(draft: ArticleDraft) -> str:
     preview = draft.markdown[:2000]
     return (
         f"文章标题：{draft.title}\n\n文章 Markdown：\n{preview}\n\n"
-        "请输出排版方案 JSON，字段：\n"
-        '- "semantic_markdown"：在原文基础上插入语义组件标注后的全文。组件为三行块，'
+        "请在原文基础上插入语义组件标注，只输出 JSON 对象，字段：\n"
+        '- "semantic_markdown"：插入组件标注后的全文。组件为三行块，'
         '如 :::note\\n提示文字\\n:::；:::quote cite="出处"\\n引文\\n:::；'
         ':::callout\\n强调内容\\n:::；:::card title="标题"\\n- 要点\\n:::'
-        "（card 正文必须是列表）。组件块前后各留一个空行；无需组件则原样返回全文。\n"
-        '- "cover_prompt"：封面图中文描述（一句话）。\n'
-        '- "images"：正文插图数组，最多 2 项，每项 {"position": 1, "purpose": "概念图",'
-        ' "prompt": "中文描述"}，position 表示插入到第几个小节标题之前。\n'
+        "（card 正文必须是列表）。组件块前后各留一个空行；"
+        "标注服务于内容结构（提示、引文、强调、要点卡），不要为标而标；"
+        "无需组件则原样返回全文。\n"
+    )
+
+
+def _style_prompt(draft: ArticleDraft, brief: ContentBrief) -> str:
+    catalog_lines = [f"- {name}：{desc}" for name, desc in _THEME_CATALOG.items()]
+    return (
+        f"文章标题：{draft.title}\n摘要：{draft.digest}\n"
+        f"写作框架：{brief.framework}；语气：{brief.tone}\n\n"
+        f"候选主题：\n" + "\n".join(catalog_lines) + "\n\n"
+        "请为这篇文章选择最合适的排版主题，只输出 JSON 对象：\n"
+        '{"theme": "主题 id", "cover_style": "封面视觉风格一句话标签", '
+        '"rationale": "选择理由（一句话）", '
+        '"rejected": [{"theme": "落选 id", "reason": "落选原因"}]}\n'
+        "theme 只能取候选列表中的 id；cover_style 描述封面画面的视觉气质"
+        "（如「冷峻杂志封面」「暖色手绘感」），不是主题 id。"
+    )
+
+
+def _imagery_prompt(
+    package: ContentPackage, anchors: list[SectionAnchor], quota: int
+) -> str:
+    anchor_lines = [
+        f"- 第 {a.position} 位：「{a.title}」" + (f"——{a.summary}" if a.summary else "")
+        for a in anchors
+    ] or ["-（无可用插入位）"]
+    preview = package.semantic_markdown[:2000]
+    return (
+        f"文章标题：{package.title}\n摘要：{package.digest}\n\n"
+        f"正文（语义 Markdown）：\n{preview}\n\n"
+        f"可插入位置（插图插到该位之前）：\n" + "\n".join(anchor_lines) + "\n\n"
+        f"配额：正文插图最多 {quota} 张。\n\n"
+        "请规划配图，只输出 JSON 对象：\n"
+        '- "cover_prompt"：封面图中文 prompt，五要素结构（主体+风格+构图/比例+'
+        "色调+约束），横向封面构图（2.35:1），以「画面中不出现任何文字、无水印、"
+        '无 logo」收尾。\n'
+        '- "images"：正文插图数组，数量不超过配额，每项 {"position": 1, '
+        '"purpose": "概念图", "prompt": "五要素中文 prompt"}；构图一律横构图'
+        "（16:9）；position 只能取上面列出的插入位；每条 prompt 自包含、"
+        "可直接粘贴到任意文生图工具。\n"
     )
 
 
@@ -489,89 +572,223 @@ def _stage_judge_content(run: WorkflowRun, deps: PipelineDeps) -> None:
         decision="PASS",
         reason="内容门禁全部通过",
     )
-    run.advance(WorkflowState.DESIGNING)
+    run.advance(WorkflowState.ANNOTATING)
 
 
-def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
+def _annotate_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> str:
     try:
-        return _llm_json(deps.llm, _DESIGN_SYSTEM, _design_prompt(draft))
+        data = _llm_json(deps.llm, _ANNOTATE_SYSTEM, _annotate_prompt(draft))
     except (ProviderError, PipelineError, ValueError):
-        return {}
+        return ""
+    return str(data.get("semantic_markdown", "")).strip()
 
 
-def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageSpec]:
-    """LLM 规划的正文插图：provider 失败时保留 prompt（asset_path 留空，
-    主题启用 figure 时由 _insert_images 以占位块呈现，防 broken image）。"""
-    specs: list[ImageSpec] = []
-    for item in _as_list(design.get("images"))[:2]:
-        if not isinstance(item, dict):
-            continue
-        try:
-            position = int(item.get("position", 1))
-        except (TypeError, ValueError):
-            continue
-        prompt = str(item.get("prompt", "")).strip()
-        purpose = str(item.get("purpose", "")).strip() or "concept"
-        if not prompt:
-            continue
-        asset_path = ""
-        try:
-            asset = deps.image.generate(prompt)
-        except ProviderError:
-            asset = None
-        if asset and asset.url.startswith("https://"):
-            asset_path = asset.url
-        specs.append(
-            ImageSpec(
-                position=max(position, 1),
-                purpose=purpose,
-                prompt=prompt,
-                asset_path=asset_path,
-            )
-        )
-    return specs
+def _stage_annotate(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """ANNOTATING：LLM 语义标注 → ContentPackage 骨架（主题沿用 checkpoint，风格阶段再定）。
 
-
-def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
+    标注有语法错误时宁可丢弃（回退纯正文，不视为降级）；组件兼容留待门禁裁决。"""
     draft = run.artifact_typed("article_draft", ArticleDraft)
-    design = _design_with_llm(deps, draft)
-    theme = _theme_or_render_error(run.checkpoint.theme)
-    base_markdown = str(design.get("semantic_markdown", "")).strip()
-    if base_markdown and lint_components(base_markdown, theme):
-        base_markdown = ""
-    if not base_markdown:
-        base_markdown = draft.markdown
-    fallback = plan_visual(
-        ContentPackage(
-            title=draft.title,
-            digest=draft.digest,
-            semantic_markdown=base_markdown,
-            word_count=draft.word_count,
-        ),
-        theme,
-    )
-    cover_prompt = str(design.get("cover_prompt", "")).strip() or fallback.cover.prompt
-    cover_asset = ""
-    try:
-        cover_asset = deps.image.generate(cover_prompt).url
-    except ProviderError:
-        cover_asset = ""
-    images = _plan_body_images(deps, design) if design else fallback.images
+    semantic_markdown = _annotate_with_llm(deps, draft)
+    if semantic_markdown and lint_components(semantic_markdown, None):
+        semantic_markdown = ""
+    if not semantic_markdown:
+        semantic_markdown = draft.markdown
     package = ContentPackage(
         title=draft.title,
         digest=draft.digest,
         author=deps.author,
-        semantic_markdown=_insert_images(base_markdown, images, theme),
-        visual=VisualPlan(
-            cover=CoverSpec(prompt=cover_prompt, asset_path=cover_asset),
-            images=images,
-            diagrams=[],
-            degraded=not design or not cover_asset,
-        ),
+        semantic_markdown=semantic_markdown,
+        visual=VisualPlan(),
         theme=run.checkpoint.theme,
         word_count=draft.word_count,
     )
     run.save("content_package", package)
+    run.advance(WorkflowState.ANNOTATED)
+
+
+def _stage_judge_components(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """ANNOTATED：组件门禁（自 RENDERING 前移）；失败以异常中断，现场可 resume。"""
+    package = run.artifact_typed("content_package", ContentPackage)
+    theme = _theme_or_render_error(run.checkpoint.theme)
+    component_errors = lint_components(package.semantic_markdown, theme)
+    if component_errors:
+        attacks = _attacks_from(component_errors, prefix="component")
+        _record_round(
+            run,
+            gate="content",
+            round_no=1,
+            attacks=attacks,
+            decision="REJECT",
+            reason=f"组件门禁发现 {len(component_errors)} 个错误",
+            unresolved=[a.attack_id for a in attacks],
+        )
+        raise ContentGateError(f"组件门禁失败：{len(component_errors)} 个错误", component_errors)
+    _record_round(
+        run,
+        gate="content",
+        round_no=1,
+        attacks=[],
+        decision="PASS",
+        reason="组件门禁全部通过",
+    )
+    run.advance(WorkflowState.STYLING)
+
+
+def _rejected_themes(data: dict[str, Any]) -> list[RejectedTheme]:
+    rejected: list[RejectedTheme] = []
+    for item in _as_list(data.get("rejected")):
+        if not isinstance(item, dict):
+            continue
+        theme = str(item.get("theme", "")).strip()
+        if not theme:
+            continue
+        rejected.append(RejectedTheme(theme=theme, reason=str(item.get("reason", "")).strip()))
+    return rejected
+
+
+def _style_with_llm(
+    deps: PipelineDeps, draft: ArticleDraft, brief: ContentBrief
+) -> StyleDecision | None:
+    try:
+        data = _llm_json(deps.llm, _STYLE_SYSTEM, _style_prompt(draft, brief))
+    except (ProviderError, PipelineError, ValueError):
+        return None
+    theme = str(data.get("theme", "")).strip()
+    if not theme:
+        return None
+    return StyleDecision(
+        theme=theme,
+        rationale=str(data.get("rationale", "")).strip(),
+        rejected=_rejected_themes(data),
+        cover_style=str(data.get("cover_style", "")).strip(),
+        framework=brief.framework,
+        tone=brief.tone,
+        degraded=False,
+    )
+
+
+def _used_components(semantic_markdown: str) -> set[str]:
+    """扫描正文使用的组件名（:::xxx 标记行；组件门禁已保证标记合法）。"""
+    used: set[str] = set()
+    for line in semantic_markdown.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith(":::") and stripped != ":::" and len(stripped) > 3:
+            used.add(stripped[3:].split()[0])
+    return used
+
+
+def _components_missing(theme: Theme, used: set[str]) -> list[str]:
+    """组件兼容安全网：正文用到的组件，主题必须启用且有样式定义。"""
+    return [
+        name
+        for name in sorted(used)
+        if not theme.components_enabled.get(name, False) or name not in theme.components
+    ]
+
+
+def _stage_style(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """STYLING：LLM 提议 → 确定性裁决（主题可加载 + 组件兼容）→ 决策表兜底。
+
+    决策写入 StyleDecision 工件（含否决记录），并回写 checkpoint.theme 与
+    package.theme，供渲染与配图阶段取用。"""
+    draft = run.artifact_typed("article_draft", ArticleDraft)
+    brief = run.artifact_typed("content_brief", ContentBrief)
+    package = run.artifact_typed("content_package", ContentPackage)
+    decision = _style_with_llm(deps, draft, brief)
+    rejected_proposal: RejectedTheme | None = None
+    if decision is not None:
+        try:
+            theme = load_theme(decision.theme)
+        except ThemeError:
+            theme = None
+        if theme is None or _components_missing(theme, _used_components(package.semantic_markdown)):
+            rejected_proposal = RejectedTheme(
+                theme=decision.theme, reason="主题不可用或组件不兼容，回退决策表"
+            )
+            decision = None
+    if decision is None:
+        decision = StyleDecision(
+            theme=_FRAMEWORK_THEME_FALLBACK.get(brief.framework, "default"),
+            rationale=f"LLM 风格提议不可用，按框架「{brief.framework}」查决策表",
+            rejected=[rejected_proposal] if rejected_proposal else [],
+            framework=brief.framework,
+            tone=brief.tone,
+            degraded=True,
+        )
+    run.save("style_decision", decision)
+    run.checkpoint.theme = decision.theme
+    run.store.save_checkpoint(run.checkpoint)
+    run.save("content_package", package.model_copy(update={"theme": decision.theme}))
+    run.advance(WorkflowState.STYLED)
+
+
+def _imagery_with_llm(
+    deps: PipelineDeps, package: ContentPackage, anchors: list[SectionAnchor], quota: int
+) -> dict[str, Any]:
+    try:
+        return _llm_json(deps.llm, _IMAGERY_SYSTEM, _imagery_prompt(package, anchors, quota))
+    except (ProviderError, PipelineError, ValueError):
+        return {}
+
+
+def _llm_body_images(data: dict[str, Any], positions: set[int], quota: int) -> list[ImageSpec]:
+    """LLM 规划的正文插图：只取 prompt（prompt-first，asset_path 一律留空，
+    真图由人工经 scripts/imagery.py --apply 回填）。"""
+    specs: list[ImageSpec] = []
+    for item in _as_list(data.get("images"))[:quota]:
+        if not isinstance(item, dict):
+            continue
+        try:
+            position = int(item.get("position", 0))
+        except (TypeError, ValueError):
+            continue
+        prompt = str(item.get("prompt", "")).strip()
+        purpose = str(item.get("purpose", "")).strip() or "concept"
+        if not prompt or position not in positions:
+            continue
+        specs.append(ImageSpec(position=position, purpose=purpose, prompt=prompt))
+    return specs
+
+
+def _stage_begin_imagery(run: WorkflowRun, deps: PipelineDeps) -> None:
+    run.advance(WorkflowState.IMAGERY)
+
+
+def _stage_plan_imagery(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """IMAGERY：prompt-first 配图规划（封面 2.35:1 + 正文 16:9 五要素 prompt）。
+
+    图片生成不在管线内：正文 :::figure 占位块是主路产物，封面在上传时按
+    prompt 兜底生成；LLM 整体不可用时确定性模板兜底（degraded=True），
+    部分结果与兜底合并不算降级。"""
+    package = run.artifact_typed("content_package", ContentPackage)
+    decision = run.artifact_typed("style_decision", StyleDecision)
+    theme = _theme_or_render_error(run.checkpoint.theme)
+    fallback = plan_visual(package, theme, cover_style=decision.cover_style or decision.theme)
+    fallback_cover = fallback.cover or CoverSpec()
+    anchors = extract_anchors(package.semantic_markdown)
+    quota = image_quota(package.word_count)
+    data = _imagery_with_llm(deps, package, anchors, quota)
+    images = _llm_body_images(data, {a.position for a in anchors}, quota) if data else []
+    cover_prompt = str(data.get("cover_prompt", "")).strip() if data else ""
+    visual = VisualPlan(
+        cover=CoverSpec(
+            style=fallback_cover.style,
+            ratio="2.35:1",
+            prompt=cover_prompt or fallback_cover.prompt,
+        ),
+        images=images or fallback.images,
+        diagrams=[],
+        degraded=not data,
+    )
+    run.save(
+        "content_package",
+        package.model_copy(
+            update={
+                "semantic_markdown": _insert_images(package.semantic_markdown, visual.images, theme),
+                "visual": visual,
+            }
+        ),
+    )
     run.advance(WorkflowState.RENDERING)
 
 
@@ -592,24 +809,25 @@ def _render_package(package: ContentPackage) -> tuple[str, ContentAST, RepairOut
 
 
 def _stage_render_document(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """RENDERING：解析 + 渲染 + 渲染层修复 + 渲染门禁
+    （组件门禁已前移至 ANNOTATED；visual↔figure 一致性在此终检）。"""
     package = run.artifact_typed("content_package", ContentPackage)
-    theme = _theme_or_render_error(package.theme)
-    component_errors = lint_components(package.semantic_markdown, theme)
-    if component_errors:
-        attacks = _attacks_from(component_errors, prefix="component")
-        _record_round(
-            run,
-            gate="content",
-            round_no=1,
-            attacks=attacks,
-            decision="REJECT",
-            reason=f"组件门禁发现 {len(component_errors)} 个错误",
-            unresolved=[a.attack_id for a in attacks],
-        )
-        raise ContentGateError(f"组件校验失败：{len(component_errors)} 个错误", component_errors)
     html, ast, outcome, renderer = _render_package(package)
-    run.save("validation_report", outcome.report)
-    render_errors = [issue for issue in outcome.report.errors if issue.severity == "error"]
+    visual_issues = lint_visual_consistency(package)
+    report = (
+        outcome.report.model_copy(
+            update={
+                "errors": list(outcome.report.errors)
+                + [i for i in visual_issues if i.severity == "error"],
+                "warnings": list(outcome.report.warnings)
+                + [i for i in visual_issues if i.severity == "warning"],
+            }
+        )
+        if visual_issues
+        else outcome.report
+    )
+    run.save("validation_report", report)
+    render_errors = [issue for issue in report.errors if issue.severity == "error"]
     if render_errors:
         attacks = _attacks_from(render_errors, prefix="render")
         _record_round(
@@ -750,13 +968,32 @@ def _stage_begin_upload(run: WorkflowRun, deps: PipelineDeps) -> None:
 
 
 def _stage_upload_draft(run: WorkflowRun, deps: PipelineDeps) -> None:
+    """UPLOADING：创建公众号草稿；封面缺资产但有 prompt 时按 prompt 兜底生成（增强 C）。
+
+    生成的 URL 原样交给 publisher：data: URI 原生可用；https 由 publisher 侧
+    裁决（v0.1 仅收 data: 与本地路径，无封面走降级发布）。生成结果回写
+    package.visual.cover.asset_path，重试时不重复生图。"""
     doc = run.artifact_typed("wechat_document", WechatDocument)
     package = run.artifact_typed("content_package", ContentPackage)
     cover = package.visual.cover
+    cover_path = cover.asset_path if cover else ""
+    if not cover_path and cover and cover.prompt:
+        try:
+            cover_path = deps.image.generate(cover.prompt).url
+        except ProviderError:
+            cover_path = ""
+    if cover_path and cover and not cover.asset_path:
+        cover = cover.model_copy(update={"asset_path": cover_path})
+        run.save(
+            "content_package",
+            package.model_copy(
+                update={"visual": package.visual.model_copy(update={"cover": cover})}
+            ),
+        )
     result = deps.publisher.create_draft(
         doc,
         author=deps.author or package.author,
-        cover_path=cover.asset_path if cover and cover.asset_path else None,
+        cover_path=cover_path or None,
     )
     run.save("publish_result", result)
     run.advance(WorkflowState.DRAFT_CREATED)
@@ -777,7 +1014,8 @@ def _stage_upload_draft(run: WorkflowRun, deps: PipelineDeps) -> None:
 
 
 def build_pipeline(store: CheckpointStore, deps: PipelineDeps) -> Orchestrator:
-    """构建端到端 Orchestrator：12 个阶段函数覆盖 13 个状态（DRAFT_CREATED 为终态）。"""
+    """构建端到端 Orchestrator：16 个阶段函数覆盖 19 个状态
+    （DRAFT_CREATED / PUBLISHED / REJECTED 为终态，不绑定阶段函数）。"""
 
     def bind(
         func: Callable[[WorkflowRun, PipelineDeps], None],
@@ -792,7 +1030,11 @@ def build_pipeline(store: CheckpointStore, deps: PipelineDeps) -> Orchestrator:
             Stage(entry=WorkflowState.RESEARCHED, func=bind(_stage_plan_brief)),
             Stage(entry=WorkflowState.DRAFTING, func=bind(_stage_write_draft)),
             Stage(entry=WorkflowState.DRAFTED, func=bind(_stage_judge_content)),
-            Stage(entry=WorkflowState.DESIGNING, func=bind(_stage_plan_visual)),
+            Stage(entry=WorkflowState.ANNOTATING, func=bind(_stage_annotate)),
+            Stage(entry=WorkflowState.ANNOTATED, func=bind(_stage_judge_components)),
+            Stage(entry=WorkflowState.STYLING, func=bind(_stage_style)),
+            Stage(entry=WorkflowState.STYLED, func=bind(_stage_begin_imagery)),
+            Stage(entry=WorkflowState.IMAGERY, func=bind(_stage_plan_imagery)),
             Stage(entry=WorkflowState.RENDERING, func=bind(_stage_render_document)),
             Stage(entry=WorkflowState.VALIDATING, func=bind(_stage_judge_publish)),
             Stage(entry=WorkflowState.REPAIRING, func=bind(_stage_repair_publish)),

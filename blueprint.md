@@ -661,7 +661,15 @@ DRAFTING
  ↓
 DRAFTED
  ↓
-DESIGNING
+ANNOTATING
+ ↓
+ANNOTATED
+ ↓
+STYLING
+ ↓
+STYLED
+ ↓
+IMAGERY
  ↓
 RENDERING
  ↓
@@ -703,14 +711,16 @@ continue
 ### 图片生成挂了
 
 ```text
-Visual
+Imagery（配图 prompt）
  ↓
-Image generation unavailable
+LLM 不可用 → 确定性五要素模板兜底（degraded: true）
  ↓
-use image search
+:::figure 占位块（生图 prompt 直接呈现在正文）
  ↓
-continue
+发布不阻塞；生图后回填 CDN URL 再渲染
 ```
+
+配图是 prompt-first：占位块本身就是合法产物，渲染 / 校验 / 发布全链路都能带着占位块走通；封面生成推迟到 UPLOADING 阶段按 prompt 兜底，失败时无封面照样建草稿（后续手工补）。
 
 ### 微信 API 挂了
 

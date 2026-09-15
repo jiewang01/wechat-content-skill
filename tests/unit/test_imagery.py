@@ -75,8 +75,9 @@ def test_extract_anchors_skips_title_and_strips_inline():
     assert anchors[1].summary == "普通正文。"
 
 
-def test_extract_anchors_empty_when_single_heading():
-    assert extract_anchors("# 只有标题\n\n正文。") == []
+def test_extract_anchors_single_heading_falls_back_to_block_anchor():
+    anchors = extract_anchors("# 只有标题\n\n正文。")
+    assert [(a.position, a.title) for a in anchors] == [(1, "正文。")]
 
 
 def test_cover_prompt_five_elements(orange: Theme):

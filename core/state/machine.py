@@ -9,7 +9,11 @@ class WorkflowState(StrEnum):
     RESEARCHED = "RESEARCHED"
     DRAFTING = "DRAFTING"
     DRAFTED = "DRAFTED"
-    DESIGNING = "DESIGNING"
+    ANNOTATING = "ANNOTATING"
+    ANNOTATED = "ANNOTATED"
+    STYLING = "STYLING"
+    STYLED = "STYLED"
+    IMAGERY = "IMAGERY"
     RENDERING = "RENDERING"
     VALIDATING = "VALIDATING"
     REPAIRING = "REPAIRING"
@@ -26,8 +30,12 @@ TRANSITIONS: dict[WorkflowState, frozenset[WorkflowState]] = {
     WorkflowState.RESEARCHING: frozenset({WorkflowState.RESEARCHED}),
     WorkflowState.RESEARCHED: frozenset({WorkflowState.DRAFTING}),
     WorkflowState.DRAFTING: frozenset({WorkflowState.DRAFTED}),
-    WorkflowState.DRAFTED: frozenset({WorkflowState.DESIGNING}),
-    WorkflowState.DESIGNING: frozenset({WorkflowState.RENDERING}),
+    WorkflowState.DRAFTED: frozenset({WorkflowState.ANNOTATING}),
+    WorkflowState.ANNOTATING: frozenset({WorkflowState.ANNOTATED}),
+    WorkflowState.ANNOTATED: frozenset({WorkflowState.STYLING}),
+    WorkflowState.STYLING: frozenset({WorkflowState.STYLED}),
+    WorkflowState.STYLED: frozenset({WorkflowState.IMAGERY}),
+    WorkflowState.IMAGERY: frozenset({WorkflowState.RENDERING}),
     WorkflowState.RENDERING: frozenset({WorkflowState.VALIDATING}),
     WorkflowState.VALIDATING: frozenset({WorkflowState.REPAIRING, WorkflowState.VALIDATED}),
     WorkflowState.REPAIRING: frozenset(
@@ -46,6 +54,16 @@ TERMINAL_STATES = frozenset(
 )
 
 
+STATE_MIGRATIONS: dict[str, str] = {
+    "DESIGNING": "ANNOTATING",
+}
+"""Legacy checkpoint state names mapped to their successor states.
+
+Old runs persisted before the style/imagery split resume at the earliest
+affected state so that annotation -> style -> imagery are re-executed.
+"""
+
+
 class IllegalTransitionError(Exception):
     pass
 
@@ -56,6 +74,8 @@ class PublishGateError(IllegalTransitionError):
 
 class StateMachine:
     def __init__(self, state: WorkflowState = WorkflowState.INIT) -> None:
+        if isinstance(state, str):
+            state = STATE_MIGRATIONS.get(state, state)
         self._state = WorkflowState(state)
 
     @property
@@ -93,6 +113,7 @@ class StateMachine:
 __all__ = [
     "IllegalTransitionError",
     "PublishGateError",
+    "STATE_MIGRATIONS",
     "TERMINAL_STATES",
     "TRANSITIONS",
     "StateMachine",

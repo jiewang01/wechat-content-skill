@@ -63,7 +63,8 @@ description: wechat-content-skill 的发布子技能：把校验通过的 Wechat
 - 上层代码禁止直接调用 `WeChatClient` / `TokenManager` / `MediaService` / `DraftService` / `FreepublishService`——一律经 `WeChatPublisher`（蓝图十三章）。
 - token 失效（errcode 40001/42001）由 `call_with_token_retry` 自动废弃缓存并重试一次；上层不得自建重试循环。
 - `release()` 绝不抛出：任何 ProviderError 都收敛为 `status="degraded"` + message；发布未确认成功（轮询超时仍在 state=4）同样只算 degraded。
-- 远程封面 URL 不在发布层下载：视觉阶段必须先把素材物化为本地文件或 data URI。
+- 远程封面 URL 不在发布层下载：封面素材由 UPLOADING 阶段按 prompt 兜底生成（`data:` URI 原生可用；`https://` 交发布层裁决，v0.1 仅收本地路径与 data URI，无封面走降级发布）。
+- 正文图片必须是微信素材域名的 `https://` 地址（发布门禁硬性要求）：本地文件先经 `MediaService.upload_content_image` 上传素材库取 CDN URL，再由配图回填环写回正文。
 - 数据查询（v0.3）走 `DatacubeService.article_stats(date)`，仅经 `scripts/stats.py` 触发：认证号 / 2025-11-01 起数据 / 30 天窗口 / 1 天跨度（end_date ≤ 昨日）等约束由 Service 统一预检与语义化（61500/61501），上层无需也不应自行拼接 datacube API；查询失败不影响发布链路。
 - 降级只改变「送达方式」，不改变「内容」——禁止因降级而删改成稿。
 - 被 Judge 攻击（错误出口、越权调用微信 API）时，只修复被点名的环节（H3）。

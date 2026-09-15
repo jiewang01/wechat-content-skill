@@ -1,7 +1,7 @@
 """tests/fixtures/ 全 Artifact 合法示例的活文档契约（M6-T2，DoD：fixtures 即文档）。
 
-11 份 fixture 讲的是同一个故事：一篇《缓存穿透》示例文章的全链路产物——
-research → brief → draft → visual → package → document → report/publish，
+12 份 fixture 讲的是同一个故事：一篇《缓存穿透》示例文章的全链路产物——
+research → brief → draft → style → package（含 visual）→ document → report/publish，
 外加一轮 publish 门禁攻防三件套（attack / defense / verdict）。
 
 本测试把示例当活文档验证三层契约：
@@ -24,6 +24,7 @@ from core.artifacts.models import (
     ContentBrief,
     ContentPackage,
     ResearchResult,
+    StyleDecision,
     VisualPlan,
     WechatDocument,
 )
@@ -82,6 +83,17 @@ def test_brief_and_draft_cite_only_known_facts() -> None:
         assert set(section.fact_ids) <= fact_ids
     draft = ArticleDraft.model_validate(_load("article_draft"))
     assert set(draft.fact_ids) <= fact_ids
+
+
+def test_style_decision_matches_package_and_brief() -> None:
+    style = StyleDecision.model_validate(_load("style_decision"))
+    package = ContentPackage.model_validate(_load("content_package"))
+    brief = ContentBrief.model_validate(_load("content_brief"))
+    assert style.theme == package.theme  # 风格决策回写 package.theme
+    assert style.framework == brief.framework
+    assert style.tone == brief.tone
+    assert style.cover_style == package.visual.cover.style
+    assert style.degraded is False
 
 
 def test_document_uses_visual_assets() -> None:

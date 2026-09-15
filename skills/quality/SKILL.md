@@ -1,6 +1,6 @@
 ---
 name: quality
-description: wechat-content-skill 的质量门权威说明（Judge 侧）：content / component / html / wechat 四道门各管什么、问题类型与 severity 语义、管线门禁流转与修复轮次上限。回答「何时信任哪个门」。
+description: wechat-content-skill 的质量门权威说明（Judge 侧）：content / component / visual / html / wechat 五层门各管什么、问题类型与 severity 语义、管线门禁流转与修复轮次上限。回答「何时信任哪个门」。
 ---
 
 # Quality Skill（质量门技能）
@@ -9,22 +9,23 @@ description: wechat-content-skill 的质量门权威说明（Judge 侧）：cont
 
 回答一个核心问题：**何时信任哪个门**。
 
-`validators/` 的四个模块就是四道门，本 skill 与之一一对应（`rules/` 四份规则文档），是门的**唯一权威说明**：通过条件、问题类型、severity 语义只在这里定义；其他 skill 引用本文，不重复定义。
+`validators/` 的五个模块就是五层门，本 skill 与之对应（`rules/` 四份规则文档；visual 层的配图契约见 [../visual/SKILL.md](../visual/SKILL.md)），是门的**唯一权威说明**：通过条件、问题类型、severity 语义只在这里定义；其他 skill 引用本文，不重复定义。
 
 ## 输入 / 输出
 
-- 输入：任一中间产物 —— `ArticleDraft`（内容门）、语义 Markdown（组件门）、渲染 HTML（HTML 门 / 公众号门）
+- 输入：任一中间产物 —— `ArticleDraft`（内容门）、语义 Markdown（组件门）、`ContentPackage`（visual 门）、渲染 HTML（HTML 门 / 公众号门）
 - 输出：`list[ValidationIssue]`（字段：`type` / `node` / `property` / `message` / `severity`）
 
 全部 validator 遵守同一容错契约：**永不抛异常；一次扫描收集全部问题；空列表 = 通过**。
 （对比：parser 是 fail-fast 的，首错即抛 —— 两者互补，lint 的全量问题列表是 H3 定向修复的前提。）
 
-## 四道门总览
+## 五层门总览
 
 | 门 | 对应模块 · 规则 | 入口函数 | 检查层 | 何时信任 |
 |----|----------------|----------|--------|----------|
-| 内容门 | `validators/content/qa.py` · [rules/content.md](rules/content.md) | `lint_content(draft, research, brief)` | 文本层 | 初稿完成、进入视觉规划前。通过 = 文本层达标，**不代表可发布** |
-| 组件门 | `validators/component/lint.py` · [rules/component.md](rules/component.md) | `lint_components(semantic_markdown, theme)` | 标记层 | 语义标记生成后、渲染前。错误全部拦截在渲染之前 |
+| 内容门 | `validators/content/qa.py` · [rules/content.md](rules/content.md) | `lint_content(draft, research, brief)` | 文本层 | 初稿完成、进入标注前。通过 = 文本层达标，**不代表可发布** |
+| 组件门 | `validators/component/lint.py` · [rules/component.md](rules/component.md) | `lint_components(semantic_markdown, theme)` | 标记层 | 语义标记生成后（标注预检 + ANNOTATED 门禁），错误全部拦截在风格与渲染之前 |
+| visual 门 | `validators/visual/lint.py` · [../visual/SKILL.md](../visual/SKILL.md) | `lint_visual_consistency(package)` | 配图契约层 | 渲染门。校验 `VisualPlan` ↔ 正文 `:::figure` 占位块一一对应（prompt-first 配图契约），问题并入渲染门报告 |
 | HTML 门 | `validators/html/checks.py` · [rules/html.md](rules/html.md) | `lint_html(html)` | 产物层 | 渲染后（渲染修复循环逐轮执行）。白名单与渲染器输出同步，默认链路零误报 |
 | 公众号门 | `validators/wechat/gzh.py` · [rules/wechat.md](rules/wechat.md) | `lint_gzh(html)` | 产物层 | 发布前最后一道。`validate_wechat_html()` = HTML 门 + 公众号门（蓝图 9.3 九项） |
 
@@ -39,17 +40,18 @@ description: wechat-content-skill 的质量门权威说明（Judge 侧）：cont
 
 ## 工作流（管线门禁流转）
 
-`core/workflow/pipeline.py` 把四道门接进状态机，gate 名只有三个（content / render / publish）：
+`core/workflow/pipeline.py` 把五层门接进状态机，gate 名只有三个（content / render / publish）：
 
 | 步骤 | 门 | 动作 |
 |------|----|------|
-| WRITING → DESIGNING | 内容门 | `lint_content` 有 error → `gate="content"` 拒绝，抛 `ContentGateError` |
-| DESIGNING（预检） | 组件门 | LLM 产出的语义标记先过 `lint_components`，有错则弃用该设计、回退 `draft.markdown` |
-| RENDERING → VALIDATING | 组件门 + 渲染门 | `lint_components` 错误记 `gate="content"`（组件错误本质是内容层标记问题）；`repair_rendered` 渲染 + 修复循环逐轮跑 `lint_html`（≤ 3 轮，`MAX_REPAIR_ROUNDS`），残留 error → `gate="render"` 拒绝；parser 解析失败同样以 `RenderError` 拦截 |
+| DRAFTED → ANNOTATING | 内容门 | `lint_content` 有 error → `gate="content"` 拒绝，抛 `ContentGateError` |
+| ANNOTATING（预检） | 组件门 | LLM 产出的语义标记先过 `lint_components`（`theme=None` 语法检查），有错则弃用该标注、回退 `draft.markdown` |
+| ANNOTATED → STYLING | 组件门 | `lint_components` 有 error → `gate="content"` 拒绝（`ContentGateError`），组件错误全部拦截在风格与渲染之前 |
+| RENDERING → VALIDATING | visual 门 + 渲染门 | `lint_visual_consistency` 校验配图契约并入报告；`repair_rendered` 渲染 + 修复循环逐轮跑 `lint_html`（≤ 3 轮，`MAX_REPAIR_ROUNDS`），残留 error → `gate="render"` 拒绝；parser 解析失败同样以 `RenderError` 拦截 |
 | VALIDATING → VALIDATED / REJECT | 公众号门 | `lint_gzh` 有 error → 修复循环（≤ 3 轮，`_MAX_PUBLISH_ROUNDS`，H4），清零 → VALIDATED，超限 → REJECT |
 | VALIDATED → READY_TO_PUBLISH | — | 全部通过；发布能力与降级出口见 [../publishing/SKILL.md](../publishing/SKILL.md) |
 
-单命令跑三层门禁：`python scripts/validate.py pkg.json`（组件门 → 渲染修复循环 → 公众号门；stdout 输出 `ValidationReport` JSON，退出码 0/1/2）。
+单命令跑全部门禁：`python scripts/validate.py pkg.json`（组件门 + visual 一致性 → 渲染修复循环 → 公众号门；stdout 输出 `ValidationReport` JSON，退出码 0/1/2）。
 
 ### 修复策略（H3）
 
@@ -76,6 +78,7 @@ description: wechat-content-skill 的质量门权威说明（Judge 侧）：cont
 - [rules/component.md](rules/component.md) —— 组件门：11 类错误、代码块感知与主题组件检查
 - [rules/html.md](rules/html.md) —— HTML 门：标签 / 属性 / CSS 白名单全集
 - [rules/wechat.md](rules/wechat.md) —— 公众号门：平台五项约束
+- [../visual/SKILL.md](../visual/SKILL.md) —— visual 门：`VisualPlan` ↔ `:::figure` 占位块一致性（prompt-first 配图契约）
 
 ## 参考资料
 

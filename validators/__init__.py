@@ -1,4 +1,4 @@
-"""质量门验证器集合（蓝图 9）：component / html / wechat / content 四层。
+"""质量门验证器集合（蓝图 9）：component / content / html / wechat / visual 五层。
 
 所有验证器共用同一契约：输入文档，输出 list[ValidationIssue]（空列表 = 通过），
 不抛异常 —— 与 parser 的 fail-fast 互补，供 Error Report 与修复循环消费。
@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 from validators.component.lint import lint_components
 from validators.content.qa import lint_content
 from validators.html.checks import lint_html
+from validators.visual.lint import lint_visual_consistency
 from validators.wechat.gzh import lint_gzh
 
 if TYPE_CHECKING:
@@ -25,7 +26,8 @@ def validate_wechat_html(html: str, *, max_bytes: int | None = None) -> list[Val
 __all__ = [
     "lint_components",
     "lint_content",
-    "lint_html",
     "lint_gzh",
+    "lint_html",
+    "lint_visual_consistency",
     "validate_wechat_html",
 ]
