@@ -1,0 +1,74 @@
+{
+  "run_id": "run_potential_001",
+  "created_at": "2026-09-15T03:09:52.117976Z",
+  "topic": "写一篇如何判断一个人是否有潜力的公众号文章",
+  "intent": "explainer",
+  "audience": "职场人士与管理者",
+  "sources": [
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117466Z",
+      "source_id": "src_001",
+      "title": "Growth Mindset: 能力可塑的心理学证据",
+      "url": "https://psych.example.com/growth-mindset",
+      "credibility": 0.5,
+      "published_at": ""
+    },
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117474Z",
+      "source_id": "src_002",
+      "title": "内部晋升数据分析：主动学习者占据优势",
+      "url": "https://career.example.com/promotion-data",
+      "credibility": 0.5,
+      "published_at": ""
+    },
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117479Z",
+      "source_id": "src_003",
+      "title": "动物行为学：探索意愿与适应能力的关系",
+      "url": "https://bio.example.com/exploration-behavior",
+      "credibility": 0.5,
+      "published_at": ""
+    }
+  ],
+  "facts": [
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117954Z",
+      "fact_id": "fact_001",
+      "claim": "卡罗尔·德韦克提出的成长型思维理论认为，相信能力可以通过努力提升的人，长期表现优于认为天赋决定一切的人。",
+      "source_ids": [
+        "src_001"
+      ],
+      "confidence": 0.5
+    },
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117964Z",
+      "fact_id": "fact_002",
+      "claim": "心理学研究发现，面对陌生任务时主动寻找方法的人，其职业发展速度和适应能力明显高于被动等待指导的人。",
+      "source_ids": [
+        "src_002"
+      ],
+      "confidence": 0.5
+    },
+    {
+      "run_id": "",
+      "created_at": "2026-09-15T03:09:52.117969Z",
+      "fact_id": "fact_003",
+      "claim": "行为观察研究表明，愿意尝试新事物并容忍失败的人，在复杂环境中更容易积累经验优势。",
+      "source_ids": [
+        "src_003"
+      ],
+      "confidence": 0.5
+    }
+  ],
+  "angles": [
+    "从心理学研究看潜力本质",
+    "反方观点：天赋决定论为什么站不住",
+    "三个可观察的潜力判断信号"
+  ],
+  "degraded": false
+}
