@@ -1,13 +1,13 @@
 {
   "run_id": "run_20260910_001",
-  "created_at": "2026-09-10T14:16:28.850745Z",
+  "created_at": "2026-09-15T09:41:04.683881Z",
   "topic": "写一篇讲清缓存穿透的公众号文章",
   "intent": "explainer",
   "audience": "初中级后端工程师",
   "sources": [
     {
       "run_id": "",
-      "created_at": "2026-09-10T14:16:28.850569Z",
+      "created_at": "2026-09-15T09:41:04.683700Z",
       "source_id": "src_001",
       "title": "缓存穿透详解",
       "url": "https://docs.example.com/cache-penetration.html",
@@ -16,7 +16,7 @@
     },
     {
       "run_id": "",
-      "created_at": "2026-09-10T14:16:28.850578Z",
+      "created_at": "2026-09-15T09:41:04.683708Z",
       "source_id": "src_002",
       "title": "布隆过滤器入门",
       "url": "https://blog.example.com/bloom-filter.html",
@@ -27,7 +27,7 @@
   "facts": [
     {
       "run_id": "",
-      "created_at": "2026-09-10T14:16:28.850728Z",
+      "created_at": "2026-09-15T09:41:04.683863Z",
       "fact_id": "fact_001",
       "claim": "缓存穿透指请求的数据既不在缓存、也不在数据库中，流量会绕过缓存直接压到数据库。",
       "source_ids": [
@@ -37,7 +37,7 @@
     },
     {
       "run_id": "",
-      "created_at": "2026-09-10T14:16:28.850737Z",
+      "created_at": "2026-09-15T09:41:04.683872Z",
       "fact_id": "fact_002",
       "claim": "布隆过滤器能在常数时间内判断一个键一定不存在或可能存在，误判只是多查一次。",
       "source_ids": [

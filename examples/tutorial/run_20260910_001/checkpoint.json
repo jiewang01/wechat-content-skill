@@ -4,6 +4,9 @@
   "state": "DRAFT_CREATED",
   "theme": "default",
   "account": "default",
+  "preferences": {
+    "figure_placeholders": true
+  },
   "artifacts": {
     "research_result": "research_result.json",
     "content_brief": "content_brief.json",
@@ -19,7 +22,7 @@
       "round": 1,
       "attack_report": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.858834Z",
+        "created_at": "2026-09-15T09:41:04.695121Z",
         "gate": "content",
         "round": 1,
         "attacks": []
@@ -27,7 +30,7 @@
       "defense_report": null,
       "verdict": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.858840Z",
+        "created_at": "2026-09-15T09:41:04.695128Z",
         "gate": "content",
         "round": 1,
         "decision": "PASS",
@@ -40,7 +43,7 @@
       "round": 1,
       "attack_report": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.884121Z",
+        "created_at": "2026-09-15T09:41:04.729168Z",
         "gate": "render",
         "round": 1,
         "attacks": []
@@ -48,7 +51,7 @@
       "defense_report": null,
       "verdict": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.884130Z",
+        "created_at": "2026-09-15T09:41:04.729177Z",
         "gate": "render",
         "round": 1,
         "decision": "PASS",
@@ -61,7 +64,7 @@
       "round": 1,
       "attack_report": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.885942Z",
+        "created_at": "2026-09-15T09:41:04.731151Z",
         "gate": "publish",
         "round": 1,
         "attacks": []
@@ -69,7 +72,7 @@
       "defense_report": null,
       "verdict": {
         "run_id": "",
-        "created_at": "2026-09-10T14:16:28.885951Z",
+        "created_at": "2026-09-15T09:41:04.731157Z",
         "gate": "publish",
         "round": 1,
         "decision": "PASS",
@@ -78,6 +81,6 @@
       }
     }
   ],
-  "created_at": "2026-09-10T14:16:28.849580Z",
-  "updated_at": "2026-09-10T14:16:28.889957Z"
+  "created_at": "2026-09-15T09:41:04.682574Z",
+  "updated_at": "2026-09-15T09:41:04.736003Z"
 }
