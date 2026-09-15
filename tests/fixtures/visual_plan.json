@@ -4,14 +4,14 @@
   "cover": {
     "style": "editorial",
     "ratio": "2.35:1",
-    "prompt": "深色背景上绘有缓存与数据库两层示意，箭头从上层绕过直达下层",
+    "prompt": "深色背景上绘有缓存与数据库两层示意，箭头从上层绕过直达下层；扁平矢量示意风格；横向封面构图（2.35:1），主体居中；深蓝与中性灰的低饱和色调；画面中不出现任何文字、无水印、无 logo。",
     "asset_path": "https://mmbiz.qpic.cn/mmbiz_png/demo_cover_cache_001.png"
   },
   "images": [
     {
       "position": 2,
       "purpose": "解法示意",
-      "prompt": "缓存空值与布隆过滤器两道闸门的对比示意",
+      "prompt": "缓存空值与布隆过滤器两道闸门的对比示意；扁平矢量示意风格；横构图（16:9），视觉焦点居中；深蓝与中性灰的低饱和色调；画面中不出现任何文字、无水印、无 logo。",
       "asset_path": "https://mmbiz.qpic.cn/mmbiz_png/demo_gate_diagram_001.png"
     }
   ],

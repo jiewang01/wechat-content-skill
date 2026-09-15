@@ -146,6 +146,15 @@ _DESIGN_JSON = json.dumps(
     ensure_ascii=False,
 )
 
+# design 原始 prompt 经 optimize_prompt 归一后的期望值（五要素：主体；风格省略；构图；约束）
+_DESIGN_COVER_PROMPT = (
+    "深蓝色数据流动抽象插画；横向封面构图（2.35:1），主体居中；"
+    "画面中不出现任何文字、无水印、无 logo。"
+)
+_DESIGN_IMAGE_PROMPT = (
+    "布隆过滤器示意；横构图（16:9），视觉焦点居中；画面中不出现任何文字、无水印、无 logo。"
+)
+
 
 class StubLLM:
     """按调用顺序返回预设响应；None 表示该次调用抛 ProviderError（模拟供应商故障）。"""
@@ -509,11 +518,27 @@ def test_design_without_images_falls_back_to_imagery(tmp_path):
     assert run.state == WorkflowState.DRAFT_CREATED
     package = run.artifact_typed("content_package", ContentPackage)
     assert package.visual.cover is not None
-    assert package.visual.cover.prompt == "深蓝色数据流动抽象插画"
+    assert package.visual.cover.prompt == _DESIGN_COVER_PROMPT
     assert package.visual.images  # design 缺 images → 确定性兜底，插图非空
     assert all(spec.prompt.strip() for spec in package.visual.images)
     assert lint_visual(package) == []  # 渲染门禁视角：成品必有图或占位符
     assert ":::figure" in package.semantic_markdown
+
+
+def test_design_prompts_normalized_to_five_elements(tmp_path):
+    # design LLM 返回的原始 prompt 缺构图与负向约束 → 统一归一为五要素格式后再入 VisualPlan
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, _DRAFT_MD, _DESIGN_JSON])
+    image = StubImage()
+    run, _ = _start(tmp_path, _deps(llm, image=image))
+
+    package = run.artifact_typed("content_package", ContentPackage)
+    assert package.visual.cover is not None
+    assert package.visual.cover.prompt == _DESIGN_COVER_PROMPT
+    assert [spec.prompt for spec in package.visual.images] == [_DESIGN_IMAGE_PROMPT]
+    # 生图与卡片内嵌拿到的是同一份优化 prompt：封面在前、正文插图在后
+    assert image.prompts == [package.visual.cover.prompt] + [
+        spec.prompt for spec in package.visual.images
+    ]
 
 
 def test_draft_llm_failure_raises_without_degradation(tmp_path):

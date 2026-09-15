@@ -16,7 +16,6 @@ import json
 from core.artifacts.models import ContentPackage
 from core.workflow.imagery import (
     build_brief,
-    figure_block,
     insert_images,
     plan_visual,
     strip_figure_blocks,

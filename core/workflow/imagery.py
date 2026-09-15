@@ -12,6 +12,10 @@ Prompt 模板遵循 skills/visual/prompts/image-prompt-guide.md 的五要素规�
 硬规则：图内不要求可读文字（prompt 以「无文字、无水印」收尾）；封面 2.35:1、
 正文 16:9；风格与主题色系锁定（theme.colors.primary 动态注入）；每 600 字
 最多 1 张、全文至多 4 张；每条 prompt 自包含，可直接粘贴到任意文生图工具。
+
+optimize_prompt 是全部 prompt 的统一出口：LLM 设计稿与确定性兜底产出的
+prompt 进入 VisualPlan 前都经它补齐画幅与负向约束（幂等、不重写主体），
+保证 figure 占位卡片、配图方案与成稿内嵌的是同一份优化 prompt。
 """
 
 from __future__ import annotations
@@ -33,6 +37,11 @@ _DEFAULT_PROFILE: dict[str, str] = {
     "palette": "低饱和中性色调，大量留白",
     "mood": "沉静、克制、有呼吸感",
     "negative": "画面中不出现任何文字、无水印、无 logo",
+}
+
+_RATIO_HINTS = {
+    "2.35:1": "横向封面构图（2.35:1），主体居中",
+    "16:9": "横构图（16:9），视觉焦点居中",
 }
 
 
@@ -85,9 +94,7 @@ def _strip_inline(text: str) -> str:
 def extract_anchors(markdown: str) -> list[SectionAnchor]:
     """提取插图锚点：跳过第一个标题（文章标题），其余标题各为一个锚点。"""
     lines = markdown.split("\n")
-    heading_lines = [
-        (i, line) for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())
-    ]
+    heading_lines = [(i, line) for i, line in enumerate(lines) if _HEADING_RE.match(line.strip())]
     anchors: list[SectionAnchor] = []
     for idx, (line_no, line) in enumerate(heading_lines[1:], start=1):
         match = _HEADING_RE.match(line.strip())
@@ -120,21 +127,43 @@ def _pick_anchors(anchors: list[SectionAnchor], quota: int) -> list[SectionAncho
     return [candidates[round(i * step)] for i in range(quota)]
 
 
+def optimize_prompt(prompt: str, *, ratio: str, profile: ImageryProfile) -> str:
+    """把任意来源的生图 prompt 归一为可直贴生图工具的优化格式（幂等、不重写主体）。
+
+    统一规则：压平空白为单行并去掉尾部句读；补齐缺失的画幅段（封面 2.35:1 /
+    正文 16:9）与负向约束段（profile.negative）；段间以「；」分隔、以「。」
+    收尾。主体与风格措辞保持原样，已合规的 prompt 再过一次结果不变。
+    """
+    text = re.sub(r"\s+", " ", prompt).strip().rstrip("。；;")
+    if not text:
+        return ""
+    segments = [text]
+    if ratio and ratio not in text:
+        segments.append(_RATIO_HINTS.get(ratio, f"构图（{ratio}），视觉焦点居中"))
+    if "无水印" not in text:
+        segments.append(profile.negative)
+    return "；".join(segments) + "。"
+
+
 def cover_prompt(title: str, digest: str, profile: ImageryProfile) -> str:
     digest_core = digest.split("。")[0].strip() if digest else ""
     subject = f"{title}——{digest_core}" if digest_core else f"{title}的概念意象"
-    return (
-        f"{subject}。{profile.style}，横向封面构图（2.35:1），主体居中、四周留白。"
-        f"{profile.palette}，以主题色 {profile.primary} 为视觉强调。{profile.mood}。"
-        f"{profile.negative}。"
+    return optimize_prompt(
+        f"{subject}；{profile.style}，{profile.mood}；横向封面构图（2.35:1），主体居中；"
+        f"{profile.palette}，以主题色 {profile.primary} 为视觉强调",
+        ratio="2.35:1",
+        profile=profile,
     )
 
 
 def section_prompt(anchor: SectionAnchor, profile: ImageryProfile) -> str:
-    subject = f"{anchor.title}：{anchor.summary}" if anchor.summary else anchor.title
-    return (
-        f"「{subject}」概念插画。{profile.style}，横构图（16:9），视觉焦点居中、留白充足。"
-        f"{profile.palette}，以主题色 {profile.primary} 为点缀。{profile.negative}。"
+    summary_core = anchor.summary.split("。")[0].strip() if anchor.summary else ""
+    subject = f"{anchor.title}：{summary_core}" if summary_core else anchor.title
+    return optimize_prompt(
+        f"「{subject}」的视觉隐喻概念插画；{profile.style}，{profile.mood}；"
+        f"横构图（16:9），视觉焦点居中；{profile.palette}，以主题色 {profile.primary} 为点缀",
+        ratio="16:9",
+        profile=profile,
     )
 
 
@@ -150,7 +179,11 @@ def plan_visual(package: ContentPackage, theme: Theme) -> VisualPlan:
             prompt=cover_prompt(package.title, package.digest, profile),
         ),
         images=[
-            ImageSpec(position=anchor.position, purpose="concept", prompt=section_prompt(anchor, profile))
+            ImageSpec(
+                position=anchor.position,
+                purpose="concept",
+                prompt=section_prompt(anchor, profile),
+            )
             for anchor in picked
         ],
         diagrams=[],
@@ -187,9 +220,7 @@ def strip_figure_blocks(markdown: str) -> str:
     return "\n".join(out)
 
 
-def insert_images(
-    markdown: str, images: list[ImageSpec], *, placeholders: bool = False
-) -> str:
+def insert_images(markdown: str, images: list[ImageSpec], *, placeholders: bool = False) -> str:
     """把插图插到第 N 个小节标题之前（首标题视为文章标题，不作为锚点）。
 
     有资产的插图插入 `![purpose](asset)`；无资产的插图在 placeholders=True
@@ -231,7 +262,8 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         f"- 主题：{theme.name}（主色 {profile.primary}）",
         f"- 风格：{profile.style}",
         f"- 篇幅：{package.word_count} 字 ｜ 小节 {len(anchors)} 个 ｜ 配图 {len(picked)} 张",
-        "- 规范：skills/visual/prompts/image-prompt-guide.md 五要素（主体 / 风格 / 构图 / 色调 / 约束）",
+        "- 规范：五要素（主体/风格/构图/色调/约束），"
+        "见 skills/visual/prompts/image-prompt-guide.md",
         "",
         "## 封面（2.35:1 · editorial）",
         "",
@@ -253,7 +285,9 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         "## 使用说明",
         "",
         "1. 以上 prompt 均自包含，可直接粘贴到任意文生图工具（即梦、DALL·E、SDXL 等）。",
-        "2. 成图后把 https:// 图片链接回填到 content_package.json 的 `visual.images[i].asset_path`，重跑 render.py 即可入文。",
-        "3. 未回填 asset_path 时，管线以 :::figure 占位块把 prompt 呈现在正文占位（主题启用 figure 组件时），回填重渲染即替换为真图。",
+        "2. 成图后把 https:// 图片链接回填到 content_package.json 的 "
+        "`visual.images[i].asset_path`，重跑 render.py 即可入文。",
+        "3. 未回填 asset_path 时，管线以 :::figure 占位块把 prompt 呈现在正文占位"
+        "（主题启用 figure 组件时），回填重渲染即替换为真图。",
     ]
     return "\n".join(lines)

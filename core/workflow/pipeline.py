@@ -60,7 +60,14 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
-from core.workflow.imagery import extract_anchors, insert_images, plan_visual, strip_figure_blocks
+from core.workflow.imagery import (
+    ImageryProfile,
+    extract_anchors,
+    insert_images,
+    optimize_prompt,
+    plan_visual,
+    strip_figure_blocks,
+)
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -327,9 +334,11 @@ def _design_prompt(draft: ArticleDraft) -> str:
         '如 :::note\\n提示文字\\n:::；:::quote cite="出处"\\n引文\\n:::；'
         ':::callout\\n强调内容\\n:::；:::card title="标题"\\n- 要点\\n:::'
         "（card 正文必须是列表）。组件块前后各留一个空行；无需组件则原样返回全文。\n"
-        '- "cover_prompt"：封面图中文描述（一句话）。\n'
+        '- "cover_prompt"：封面图中文 prompt，一句话自包含五要素「主体；风格；横向构图 2.35:1；'
+        "色调；无文字、无水印」，主体用视觉隐喻而非原文摘句。\n"
         '- "images"：正文插图数组，最多 2 项，每项 {"position": 1, "purpose": "概念图",'
-        ' "prompt": "中文描述"}，position 表示插入到第几个小节标题之前。\n'
+        ' "prompt": "中文 prompt，自包含五要素「主体；风格；横构图 16:9；色调；无文字、无水印」"}，'
+        "position 表示插入到第几个小节标题之前。\n"
     )
 
 
@@ -502,11 +511,12 @@ def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
 
 
 def _plan_body_images(
-    deps: PipelineDeps, design: dict[str, Any], anchor_count: int
+    deps: PipelineDeps, design: dict[str, Any], anchor_count: int, profile: ImageryProfile
 ) -> list[ImageSpec]:
     """LLM 规划的正文插图：position 收敛到锚点范围内（越界插图会静默丢失）；
-    provider 失败时保留 prompt（asset_path 留空，主题启用 figure 时由
-    _insert_images 以占位块呈现，防 broken image）。"""
+    prompt 经 optimize_prompt 统一补齐画幅与负向约束；provider 失败时保留
+    prompt（asset_path 留空，主题启用 figure 时由 _insert_images 以占位块
+    呈现，防 broken image）。"""
     specs: list[ImageSpec] = []
     for item in _as_list(design.get("images"))[:2]:
         if not isinstance(item, dict):
@@ -515,7 +525,7 @@ def _plan_body_images(
             position = int(item.get("position", 1))
         except (TypeError, ValueError):
             continue
-        prompt = str(item.get("prompt", "")).strip()
+        prompt = optimize_prompt(str(item.get("prompt", "")), ratio="16:9", profile=profile)
         purpose = str(item.get("purpose", "")).strip() or "concept"
         if not prompt:
             continue
@@ -543,6 +553,7 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
     draft = run.artifact_typed("article_draft", ArticleDraft)
     design = _design_with_llm(deps, draft)
     theme = _theme_or_render_error(run.checkpoint.theme)
+    profile = ImageryProfile.from_theme(theme)
     base_markdown = str(design.get("semantic_markdown", "")).strip()
     if base_markdown and lint_components(base_markdown, theme):
         base_markdown = ""
@@ -557,14 +568,18 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         ),
         theme,
     )
-    cover_prompt = str(design.get("cover_prompt", "")).strip() or fallback.cover.prompt
+    cover_prompt = optimize_prompt(
+        str(design.get("cover_prompt", "")) or fallback.cover.prompt,
+        ratio="2.35:1",
+        profile=profile,
+    )
     cover_asset = ""
     try:
         cover_asset = deps.image.generate(cover_prompt).url
     except ProviderError:
         cover_asset = ""
     # design 缺 images（或全部插图被过滤）时回落确定性兜底，保证「成品必有图或占位符」
-    images = _plan_body_images(deps, design, len(extract_anchors(base_markdown)))
+    images = _plan_body_images(deps, design, len(extract_anchors(base_markdown)), profile)
     if not images:
         images = fallback.images
     package = ContentPackage(

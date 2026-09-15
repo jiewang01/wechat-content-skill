@@ -11,6 +11,7 @@ from core.workflow.imagery import (
     figure_block,
     image_quota,
     insert_images,
+    optimize_prompt,
     plan_visual,
     section_prompt,
     strip_figure_blocks,
@@ -96,10 +97,57 @@ def test_cover_prompt_without_digest(orange: Theme):
 def test_section_prompt_five_elements(orange: Theme):
     anchor = extract_anchors(MARKDOWN)[1]
     prompt = section_prompt(anchor, ImageryProfile.from_theme(orange))
-    assert "第二节" in prompt and "普通正文。" in prompt
+    assert "第二节" in prompt and "普通正文" in prompt
     assert "16:9" in prompt
     assert "#ef7060" in prompt
     assert prompt.endswith("画面中不出现任何文字、无水印、无 logo。")
+
+
+def test_prompts_five_segment_structure(orange: Theme):
+    """五要素格式统一：恰好五段、「；」分隔、构图段带画幅、约束段收尾、留白只出现一次。"""
+    profile = ImageryProfile.from_theme(orange)
+    prompts = [
+        cover_prompt("测试文章", "一句话摘要。第二句。", profile),
+        section_prompt(extract_anchors(MARKDOWN)[1], profile),
+    ]
+    for prompt in prompts:
+        segments = prompt[:-1].split("；")
+        assert len(segments) == 5
+        assert "2.35:1" in segments[2] or "16:9" in segments[2]
+        assert segments[4] == "画面中不出现任何文字、无水印、无 logo"
+        assert prompt.count("留白") == 1  # 只在色调段出现，构图段不再重复
+
+
+def test_optimize_prompt_appends_missing_elements():
+    profile = ImageryProfile.from_theme(Theme(name="ghost"))
+    assert optimize_prompt("山巅日出概念插画", ratio="16:9", profile=profile) == (
+        "山巅日出概念插画；横构图（16:9），视觉焦点居中；画面中不出现任何文字、无水印、无 logo。"
+    )
+    assert optimize_prompt("登坡者剪影", ratio="2.35:1", profile=profile) == (
+        "登坡者剪影；横向封面构图（2.35:1），主体居中；画面中不出现任何文字、无水印、无 logo。"
+    )
+
+
+def test_optimize_prompt_idempotent_on_canonical(orange: Theme):
+    profile = ImageryProfile.from_theme(orange)
+    canonical = cover_prompt("测试文章", "一句话摘要。第二句。", profile)
+    assert optimize_prompt(canonical, ratio="2.35:1", profile=profile) == canonical
+    section = section_prompt(extract_anchors(MARKDOWN)[1], profile)
+    assert optimize_prompt(section, ratio="16:9", profile=profile) == section
+
+
+def test_optimize_prompt_collapses_whitespace_and_trailing_punct():
+    profile = ImageryProfile.from_theme(Theme(name="ghost"))
+    prompt = optimize_prompt("  山巅日出\n概念插画。；;  ", ratio="16:9", profile=profile)
+    assert prompt == (
+        "山巅日出 概念插画；横构图（16:9），视觉焦点居中；画面中不出现任何文字、无水印、无 logo。"
+    )
+
+
+def test_optimize_prompt_blank_returns_empty():
+    profile = ImageryProfile.from_theme(Theme(name="ghost"))
+    assert optimize_prompt("   ", ratio="16:9", profile=profile) == ""
+    assert optimize_prompt("。。。；；", ratio="2.35:1", profile=profile) == ""
 
 
 def test_prompts_self_contained(orange: Theme):

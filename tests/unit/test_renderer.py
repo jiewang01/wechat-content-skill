@@ -205,12 +205,18 @@ def test_callout_variants_render_distinctly():
     assert len(set(outputs)) == 4
 
 
-FIGURE_DOC = """# 标题
+FIGURE_PROMPT = (
+    "「上升趋势」概念插画：登山者立于山脊远眺日出。现代扁平概念插画，干净的几何构图与柔和渐变，"
+    "横构图（16:9）。低饱和中性色调，以主题色 #ef7060 为点缀。"
+    "画面中不出现任何文字、无水印、无 logo。"
+)
+
+FIGURE_DOC = f"""# 标题
 
 正文段落。
 
 :::figure
-「上升趋势」概念插画：登山者立于山脊远眺日出。现代扁平概念插画，干净的几何构图与柔和渐变，横构图（16:9）。低饱和中性色调，以主题色 #ef7060 为点缀。画面中不出现任何文字、无水印、无 logo。
+{FIGURE_PROMPT}
 :::
 """
 
