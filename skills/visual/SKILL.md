@@ -30,6 +30,16 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 4. **图表** —— 流程图 / 架构图 / 时间线以 `spec` 描述；稍后由图片 provider 或样式化组件渲染。
 5. **素材** —— 若配置了图片 provider，填充 `asset_path`；生成失败时降级：图片搜索 → `:::figure` 占位块（生图 prompt 直接呈现在正文，生图后回填替换），并置 `degraded: true`。
 
+## Intake 偏好收集（占位开关）
+
+管线启动前（intake 层，与主题选择同批询问）用 AskQuestion 收集占位策略，避免降级发生后再打断用户：
+
+> 生图失败时，正文如何呈现缺失的插图？
+> - A. 插入 `:::figure` 占位块，生图 prompt 呈现在正文（默认，成品必有图或占位符）
+> - B. 不插占位块，正文保持干净；prompt 仅保留在 `VisualPlan.images` 供回填重渲染
+
+答案物化为 `RunPreferences(figure_placeholders=...)`，经 `Orchestrator.start(preferences=...)` 写入 `checkpoint.preferences` 持久化（可 resume），由规划层 `_stage_plan_visual` 消费：占位块是否入文 = `主题启用 figure 组件 AND preferences.figure_placeholders`。渲染层零感知，`degraded` 审计信号不受影响。
+
 ## 确定性兜底（v0.4）
 
 当流程拿不到 LLM 产出的 `VisualPlan`（离线回放、visual 阶段失败、存量 ContentPackage 补配图）时，由 [core/workflow/imagery.py](../../core/workflow/imagery.py) 确定性兜底：

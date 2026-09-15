@@ -221,3 +221,16 @@ def test_insert_images_theme_aware_placeholder():
     with_theme = _insert_images(MARKDOWN, images, load_theme("orange-heart"))
     assert ":::figure\np2\n:::" in with_theme
     assert _insert_images(MARKDOWN, images) == MARKDOWN
+
+
+def test_insert_images_preference_gates_placeholders():
+    """偏好门控：主题启用 figure 但 figure_placeholders=False → 不插占位块（正文干净），
+    prompt 仅保留在 VisualPlan 层；True（默认）维持既有降级行为。"""
+    images = [ImageSpec(position=2, prompt="p2")]
+    theme = load_theme("orange-heart")
+    assert theme.components_enabled.get("figure") is True  # 前置：主题确实启用 figure
+    opt_out = _insert_images(MARKDOWN, images, theme, figure_placeholders=False)
+    assert ":::figure" not in opt_out
+    assert opt_out == MARKDOWN  # 空 asset 跳过，无占位块
+    opt_in = _insert_images(MARKDOWN, images, theme, figure_placeholders=True)
+    assert ":::figure\np2\n:::" in opt_in

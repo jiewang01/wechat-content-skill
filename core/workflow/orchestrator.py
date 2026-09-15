@@ -7,7 +7,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from core.artifacts.models import ArtifactBase, AttackReport, DefenseReport, Verdict
-from core.state.checkpoint import AdversarialRound, Checkpoint, CheckpointStore
+from core.state.checkpoint import (
+    AdversarialRound,
+    Checkpoint,
+    CheckpointStore,
+    RunPreferences,
+)
 from core.state.machine import (
     TERMINAL_STATES,
     PublishGateError,
@@ -35,6 +40,7 @@ class WorkflowRun:
         store: CheckpointStore,
         theme: str = "default",
         account: str = "default",
+        preferences: RunPreferences | None = None,
     ) -> None:
         self.run_id = run_id
         self.intent = intent
@@ -46,6 +52,7 @@ class WorkflowRun:
             state=WorkflowState.INIT,
             theme=theme,
             account=account,
+            preferences=preferences or RunPreferences(),
         )
         self._artifacts: dict[str, ArtifactBase] = {}
 
@@ -106,6 +113,7 @@ class WorkflowRun:
             store=store,
             theme=checkpoint.theme,
             account=checkpoint.account,
+            preferences=checkpoint.preferences,
         )
         run.machine = StateMachine(checkpoint.state)
         run.checkpoint = checkpoint
@@ -123,6 +131,7 @@ class Orchestrator:
         run_id: str | None = None,
         theme: str = "default",
         account: str = "default",
+        preferences: RunPreferences | None = None,
     ) -> WorkflowRun:
         run = WorkflowRun(
             run_id=run_id or new_run_id(),
@@ -130,6 +139,7 @@ class Orchestrator:
             store=self.store,
             theme=theme,
             account=account,
+            preferences=preferences,
         )
         self.store.save_checkpoint(run.checkpoint)
         return self._drive(run)

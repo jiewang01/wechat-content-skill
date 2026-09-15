@@ -257,11 +257,19 @@ def _theme_or_render_error(name: str) -> Theme:
         raise RenderError(f"主题「{name}」加载失败：{exc}") from exc
 
 
-def _insert_images(markdown: str, images: list[ImageSpec], theme: Theme | None = None) -> str:
-    """插图入文：有资产插 `![purpose](asset)`；无资产且主题启用 figure 组件时，
+def _insert_images(
+    markdown: str,
+    images: list[ImageSpec],
+    theme: Theme | None = None,
+    figure_placeholders: bool = True,
+) -> str:
+    """插图入文：有资产插 `![purpose](asset)`；无资产且主题启用 figure 组件、
+    用户偏好允许（checkpoint.preferences.figure_placeholders，intake 收集）时，
     以 :::figure 占位块把生图 prompt 呈现在正文（供读者取用、生图后回填替换）。
     先移除既有 figure 块再插入，保证幂等。"""
-    placeholders = bool(theme is not None and theme.components_enabled.get("figure"))
+    placeholders = (
+        bool(theme is not None and theme.components_enabled.get("figure")) and figure_placeholders
+    )
     return insert_images(strip_figure_blocks(markdown), images, placeholders=placeholders)
 
 
@@ -561,7 +569,12 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         title=draft.title,
         digest=draft.digest,
         author=deps.author,
-        semantic_markdown=_insert_images(base_markdown, images, theme),
+        semantic_markdown=_insert_images(
+            base_markdown,
+            images,
+            theme,
+            figure_placeholders=run.checkpoint.preferences.figure_placeholders,
+        ),
         visual=VisualPlan(
             cover=CoverSpec(prompt=cover_prompt, asset_path=cover_asset),
             images=images,

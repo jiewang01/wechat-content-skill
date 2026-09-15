@@ -27,7 +27,7 @@ from core.artifacts.models import (
     ValidationReport,
     WechatDocument,
 )
-from core.state.checkpoint import CheckpointStore
+from core.state.checkpoint import Checkpoint, CheckpointStore, RunPreferences
 from core.state.machine import WorkflowState
 from core.workflow import pipeline
 from core.workflow.imagery import strip_figure_blocks
@@ -245,9 +245,12 @@ def _deps(
     )
 
 
-def _start(tmp_path, deps: PipelineDeps, intent: str = _INTENT):
+def _start(tmp_path, deps: PipelineDeps, intent: str = _INTENT, preferences=None):
     store = CheckpointStore(tmp_path / "runs")
-    return build_pipeline(store, deps).start(intent), store
+    return (
+        build_pipeline(store, deps).start(intent, preferences=preferences),
+        store,
+    )
 
 
 def _only_run_id(store: CheckpointStore) -> str:
@@ -494,6 +497,79 @@ def test_graceful_degradation_research_brief_design(tmp_path):
     assert package.visual.degraded is True
     assert "![概念图]" not in package.semantic_markdown
     assert len(llm.calls) == 4
+
+
+# ---------------------------------------------------------------------------
+# Intake 占位开关（RunPreferences → 规划层消费）
+# ---------------------------------------------------------------------------
+
+
+def test_preferences_opt_out_suppresses_figure_blocks(tmp_path):
+    """intake 收集 figure_placeholders=False → design 降级时正文无 :::figure 占位块，
+    prompt 仅保留在 VisualPlan.images 供回填；degraded 审计信号不受影响。"""
+    llm = StubLLM([None, None, _DRAFT_MD, None])  # research/brief/design 全降级
+    image = StubImage(url="http://img.example.com/insecure.png")
+    prefs = RunPreferences(figure_placeholders=False)
+    run, store = _start(tmp_path, _deps(llm, image=image), preferences=prefs)
+
+    assert run.state == WorkflowState.DRAFT_CREATED
+    draft = run.artifact_typed("article_draft", ArticleDraft)
+    package = run.artifact_typed("content_package", ContentPackage)
+    assert package.semantic_markdown == draft.markdown  # 正文干净：无图也无占位块
+    assert ":::figure" not in package.semantic_markdown
+    assert len(package.visual.images) == 1  # prompt 仍保留在 VisualPlan 层
+    assert package.visual.images[0].asset_path == ""
+    assert package.visual.images[0].prompt
+    assert package.visual.degraded is True  # 事实与策略分离：降级信号不因 opt-out 消失
+
+    checkpoint = store.load_checkpoint(_only_run_id(store))
+    assert checkpoint.preferences.figure_placeholders is False  # 偏好随 checkpoint 持久化
+
+
+def test_preferences_opt_in_default_keeps_figure_blocks(tmp_path):
+    """figure_placeholders=True（默认）→ 降级时维持既有行为：成品必有图或占位符。"""
+    llm = StubLLM([None, None, _DRAFT_MD, None])
+    image = StubImage(url="http://img.example.com/insecure.png")
+    run, store = _start(tmp_path, _deps(llm, image=image))
+
+    package = run.artifact_typed("content_package", ContentPackage)
+    assert ":::figure" in package.semantic_markdown
+    checkpoint = store.load_checkpoint(_only_run_id(store))
+    assert checkpoint.preferences.figure_placeholders is True  # 未传偏好 → 安全默认
+
+
+def test_preferences_resume_restored_and_consumed(tmp_path):
+    """中断后 resume：intake 偏好随 checkpoint 恢复，并在规划层继续被消费。"""
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, None])  # draft 阶段 LLM 故障 → 停在 DRAFTING
+    store = CheckpointStore(tmp_path / "runs")
+    prefs = RunPreferences(figure_placeholders=False)
+    with pytest.raises(DraftGenerationError):
+        build_pipeline(store, _deps(llm)).start(_INTENT, preferences=prefs)
+
+    # resume：draft 成功、design 降级（无图资产）→ 恢复的偏好决定占位块去留
+    resumed = build_pipeline(store, _deps(StubLLM([_DRAFT_MD, None]))).resume(_only_run_id(store))
+    assert resumed.state == WorkflowState.DRAFT_CREATED
+    assert resumed.checkpoint.preferences.figure_placeholders is False
+    package = resumed.artifact_typed("content_package", ContentPackage)
+    assert ":::figure" not in package.semantic_markdown
+    assert package.visual.degraded is True
+
+
+def test_checkpoint_legacy_json_without_preferences_defaults_true():
+    """旧版 checkpoint JSON（无 preferences 字段）可解析，偏好取安全默认 True。"""
+    legacy = json.dumps(
+        {
+            "run_id": "run_legacy",
+            "intent": "旧运行",
+            "state": "INIT",
+            "theme": "default",
+            "account": "default",
+            "artifacts": {},
+            "adversarial_history": [],
+        }
+    )
+    checkpoint = Checkpoint.model_validate_json(legacy)
+    assert checkpoint.preferences.figure_placeholders is True
 
 
 def test_draft_llm_failure_raises_without_degradation(tmp_path):

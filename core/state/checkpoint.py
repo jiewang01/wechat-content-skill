@@ -30,6 +30,21 @@ class AdversarialRound(BaseModel):
     verdict: Verdict
 
 
+class RunPreferences(BaseModel):
+    """Intake 层收集的 run 级偏好（AskQuestion），随 checkpoint 持久化、可 resume。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    figure_placeholders: bool = Field(
+        default=True,
+        description=(
+            "生图失败时是否在正文以 :::figure 占位块呈现生图 prompt。"
+            "True 为既有默认（成品必有图或占位符）；False 时正文不出现占位块，"
+            "prompt 仅保留在 VisualPlan.images 供回填重渲染。"
+        ),
+    )
+
+
 class Checkpoint(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -38,6 +53,7 @@ class Checkpoint(BaseModel):
     state: WorkflowState = WorkflowState.INIT
     theme: str = "default"
     account: str = "default"
+    preferences: RunPreferences = Field(default_factory=RunPreferences)
     artifacts: dict[str, str] = Field(
         default_factory=dict,
         description="Artifact name -> filename inside the run directory.",
@@ -99,4 +115,4 @@ def _atomic_write_json(path: Path, payload: dict) -> None:
     os.replace(tmp, path)
 
 
-__all__ = ["AdversarialRound", "Checkpoint", "CheckpointStore"]
+__all__ = ["AdversarialRound", "Checkpoint", "CheckpointStore", "RunPreferences"]
