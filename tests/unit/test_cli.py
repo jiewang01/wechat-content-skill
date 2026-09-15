@@ -8,6 +8,8 @@
 
 另补三路分支：--max-html-bytes 体积门禁、未知主题 exit 2、
 lint.py 的 .json → ContentPackage 回退分派（H5：无 PASS 不发布）。
+Visual Gate（v0.4.1）：content gate 强制「成品必有图或占位符」，
+make_package 默认带合规 visual（封面 prompt + 1 张带 prompt 的插图）。
 """
 
 from __future__ import annotations
@@ -37,8 +39,29 @@ SEMANTIC_MARKDOWN = (
     ":::note\n水温影响萃取率。\n:::\n\n"
     ':::quote cite="《冲煮手册》"\n闷蒸 30 秒，之后分两段注水。\n:::\n\n'
     ':::callout type="warning" title="注意"\n水温别超过 96 度。\n:::\n\n'
-    ':::card title="参数速记" footer="共 3 条"\n- 水温 92 度\n- 粉水比 1 比 15\n- 闷蒸 30 秒\n:::'
+    ':::card title="参数速记" footer="共 3 条"\n- 水温 92 度\n- 粉水比 1 比 15\n'
+    '- 闷蒸 30 秒\n:::\n\n'
+    "## 冲煮步骤\n"
 )
+
+
+def make_visual() -> dict:
+    return {
+        "cover": {
+            "style": "editorial",
+            "ratio": "2.35:1",
+            "prompt": "手冲咖啡器具与蒸汽的扁平概念插画，低饱和暖色",
+        },
+        "images": [
+            {
+                "position": 1,
+                "purpose": "concept",
+                "prompt": "注水闷蒸的手冲示意插画",
+                "asset_path": "",
+            }
+        ],
+        "degraded": False,
+    }
 
 
 def run_cli(script: str, *argv: str) -> subprocess.CompletedProcess[str]:
@@ -64,8 +87,13 @@ def error_types(report: dict) -> list[str]:
     return [issue["type"] for issue in report["errors"]]
 
 
-def make_package(semantic_markdown: str) -> dict:
-    return {"title": "手冲咖啡入门", "semantic_markdown": semantic_markdown, "theme": "default"}
+def make_package(semantic_markdown: str, *, visual: dict | None = None) -> dict:
+    return {
+        "title": "手冲咖啡入门",
+        "semantic_markdown": semantic_markdown,
+        "theme": "default",
+        "visual": make_visual() if visual is None else visual,
+    }
 
 
 def test_validate_good_package_passes_and_writes_artifacts(tmp_path):
@@ -90,7 +118,7 @@ def test_validate_good_package_passes_and_writes_artifacts(tmp_path):
 def test_validate_unknown_marker_fails_fast_at_content_gate(tmp_path):
     pkg = write_json(
         tmp_path / "bad_marker.json",
-        make_package("# 手冲咖啡入门\n\n:::spoiler\n内容\n:::"),
+        make_package("# 手冲咖啡入门\n\n## 冲煮步骤\n\n:::spoiler\n内容\n:::"),
     )
     result = run_cli("validate.py", str(pkg))
     assert result.returncode == 1
@@ -104,7 +132,7 @@ def test_validate_unknown_marker_fails_fast_at_content_gate(tmp_path):
 def test_validate_http_image_blocked_at_publish_gate(tmp_path):
     pkg = write_json(
         tmp_path / "bad_img.json",
-        make_package("# 手冲咖啡入门\n\n![配图](http://example.com/i.png)"),
+        make_package("# 手冲咖啡入门\n\n## 冲煮步骤\n\n![配图](http://example.com/i.png)"),
     )
     result = run_cli("validate.py", str(pkg))
     assert result.returncode == 1
@@ -112,6 +140,30 @@ def test_validate_http_image_blocked_at_publish_gate(tmp_path):
     assert report["status"] == "failed"
     assert report["gate"] == "publish"
     assert error_types(report) == ["insecure_image_url"]
+
+
+def test_validate_empty_visual_rejected_at_content_gate(tmp_path):
+    # 空 VisualPlan（无封面 / 无插图 / 无 prompt）不再静默通过（回归：run_20260915_001）
+    pkg = write_json(tmp_path / "no_visual.json", make_package(SEMANTIC_MARKDOWN, visual={}))
+    result = run_cli("validate.py", str(pkg))
+    assert result.returncode == 1
+    assert "FAIL" in result.stderr
+    report = report_of(result)
+    assert report["status"] == "failed"
+    assert report["gate"] == "content"
+    assert "visual_cover_missing" in error_types(report)
+    assert "visual_no_images" in error_types(report)
+
+
+def test_validate_image_without_prompt_rejected_at_content_gate(tmp_path):
+    visual = make_visual()
+    visual["images"][0]["prompt"] = ""
+    pkg = write_json(tmp_path / "no_prompt.json", make_package(SEMANTIC_MARKDOWN, visual=visual))
+    result = run_cli("validate.py", str(pkg))
+    assert result.returncode == 1
+    report = report_of(result)
+    assert report["gate"] == "content"
+    assert error_types(report) == ["visual_image_prompt_missing"]
 
 
 def test_validate_html_size_limit_flag(tmp_path):
@@ -177,13 +229,24 @@ def test_lint_empty_title_draft_fails(tmp_path):
 def test_lint_package_json_falls_back_to_component_lint(tmp_path):
     pkg = write_json(
         tmp_path / "pkg.json",
-        make_package("# 手冲咖啡入门\n\n:::spoiler\n内容\n:::"),
+        make_package("# 手冲咖啡入门\n\n## 冲煮步骤\n\n:::spoiler\n内容\n:::"),
     )
     result = run_cli("lint.py", str(pkg))
     assert result.returncode == 1
     report = report_of(result)
     assert report["gate"] == "content"
     assert error_types(report) == ["unknown_component"]
+
+
+def test_lint_package_empty_visual_fails(tmp_path):
+    # lint.py 的 ContentPackage 分支同样挂载 Visual Gate（成品必有图或占位符）
+    pkg = write_json(tmp_path / "no_visual.json", make_package(SEMANTIC_MARKDOWN, visual={}))
+    result = run_cli("lint.py", str(pkg))
+    assert result.returncode == 1
+    report = report_of(result)
+    assert report["gate"] == "content"
+    assert "visual_cover_missing" in error_types(report)
+    assert "visual_no_images" in error_types(report)
 
 
 def test_lint_html_file_checks_both_layers(tmp_path):

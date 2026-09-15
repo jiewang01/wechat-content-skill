@@ -39,6 +39,15 @@ description: wechat-content-skill 的视觉子技能：在任何渲染发生之�
 - 成品必有图或占位符：`asset_path` 为空的插图在主题启用 `figure` 组件时，以 `:::figure` 占位块把生图 prompt 呈现在正文（虚线卡片样式，六主题内置）；生图后回填 `asset_path` 重渲染即替换为真图。`--apply` 先清后插，幂等可重跑。
 - 兜底产物同样遵守本技能全部规则（自包含、无指代、无文字水印收尾）。
 
+## 门禁强制（v0.4.1）
+
+「成品必有图或占位符」不再只是约定，[validators/content/visual.py](../../validators/content/visual.py) 的 `lint_visual` 在三个入口以 error 级强制（空 VisualPlan 会被拒，不再静默通过）：
+
+- `scripts/validate.py` 与 `scripts/lint.py` 的 content gate（发布前校验 / 单产物快速 lint）；
+- pipeline `_stage_render_document` 渲染门（design 缺 images 时先回落 imagery 兜底，再过门禁；LLM 规划的 `position` 越界会收敛到锚点范围内）。
+
+强制项：封面必填且 prompt 非空；正文至少一张插图或图表；每张插图 prompt 非空（空 `asset_path` 时是占位与再生成的唯一依据）；`position` 落在正文锚点范围内（跳过首个标题，1-based；越界插图会被 `insert_images` 静默丢弃）。
+
 ## 规则（Defender 职责）
 
 - 绝不以原始 HTML 形式内嵌图片；只给位置与提示词。

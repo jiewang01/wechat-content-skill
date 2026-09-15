@@ -42,6 +42,7 @@ from integrations.errors import ProviderError
 from integrations.image.base import ImageAsset
 from integrations.llm.base import LLMResult
 from integrations.search.base import SearchHit, SearchOutcome
+from validators.content import lint_visual
 
 _IMG_URL = "https://img.example.com/asset.png"
 _INTENT = "写一篇讲清缓存穿透的公众号文章"
@@ -494,6 +495,25 @@ def test_graceful_degradation_research_brief_design(tmp_path):
     assert package.visual.degraded is True
     assert "![概念图]" not in package.semantic_markdown
     assert len(llm.calls) == 4
+
+
+def test_design_without_images_falls_back_to_imagery(tmp_path):
+    # design JSON 缺 images（dict 非空但无插图，回归：兜底曾不触发）→ imagery 补齐
+    design = json.dumps(
+        {"semantic_markdown": _SEMANTIC_MD, "cover_prompt": "深蓝色数据流动抽象插画"},
+        ensure_ascii=False,
+    )
+    llm = StubLLM([_RESEARCH_JSON, _BRIEF_JSON, _DRAFT_MD, design])
+    run, _ = _start(tmp_path, _deps(llm))
+
+    assert run.state == WorkflowState.DRAFT_CREATED
+    package = run.artifact_typed("content_package", ContentPackage)
+    assert package.visual.cover is not None
+    assert package.visual.cover.prompt == "深蓝色数据流动抽象插画"
+    assert package.visual.images  # design 缺 images → 确定性兜底，插图非空
+    assert all(spec.prompt.strip() for spec in package.visual.images)
+    assert lint_visual(package) == []  # 渲染门禁视角：成品必有图或占位符
+    assert ":::figure" in package.semantic_markdown
 
 
 def test_draft_llm_failure_raises_without_degradation(tmp_path):

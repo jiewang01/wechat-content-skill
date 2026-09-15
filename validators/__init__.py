@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 
 from validators.component.lint import lint_components
 from validators.content.qa import lint_content
+from validators.content.visual import lint_visual
 from validators.html.checks import lint_html
 from validators.wechat.gzh import lint_gzh
 
@@ -27,5 +28,6 @@ __all__ = [
     "lint_content",
     "lint_html",
     "lint_gzh",
+    "lint_visual",
     "validate_wechat_html",
 ]

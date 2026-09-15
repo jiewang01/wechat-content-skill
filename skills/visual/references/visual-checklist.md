@@ -31,3 +31,12 @@
 
 - [ ] 视觉计划没有偷跑去改正文——位置调整只能反馈给 content 技能，不能自己改稿。
 - [ ] 被攻击（素材损坏、比例错误）时只修复被点名条目（H3）。
+
+## 机器强制（v0.4.1，lint_visual）
+
+以下检查已由 [validators/content/visual.py](../../../validators/content/visual.py) 在 content gate（validate.py / lint.py / pipeline 渲染门）以 error 级强制，违反即拒绝：
+
+- [ ] `cover` 非空且 `cover.prompt` 非空（`visual_cover_missing` / `visual_cover_prompt_missing`）。
+- [ ] `images` 与 `diagrams` 至少一项非空（`visual_no_images`；配额下限 1 张）。
+- [ ] 每张插图 `prompt` 非空（`visual_image_prompt_missing`；空 `asset_path` 时 prompt 是 :::figure 占位与再生成的唯一依据）。
+- [ ] 每张插图 `position` 落在 1..锚点数 内（`visual_image_position_out_of_range`；锚点 = 非首标题，越界插图会被 `insert_images` 静默丢弃）。

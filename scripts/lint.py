@@ -3,7 +3,7 @@
 用法：
     python scripts/lint.py draft.json                       # ArticleDraft → Content QA
     python scripts/lint.py draft.json --research r.json --brief b.json
-    python scripts/lint.py package.json                     # ContentPackage → 组件 lint
+    python scripts/lint.py package.json                     # ContentPackage → 组件 + 视觉 lint
     python scripts/lint.py doc.md                           # 语义 Markdown → 组件 lint
     python scripts/lint.py page.html                        # HTML → html + gzh 双层
 
@@ -34,7 +34,7 @@ from renderer.themes import Theme, ThemeError, load_theme
 from skills.content.humanize.detector import load_rules
 from validators import validate_wechat_html
 from validators.component import lint_components
-from validators.content import lint_content
+from validators.content import lint_content, lint_visual
 
 
 def _split(issues: list[ValidationIssue]) -> tuple[list[ValidationIssue], list[ValidationIssue]]:
@@ -95,7 +95,8 @@ def _lint_draft(path: Path, args: argparse.Namespace) -> ValidationReport:
 def _lint_package(path: Path, args: argparse.Namespace) -> ValidationReport:
     package = _load_model(path, ContentPackage, "ContentPackage ")
     theme = _load_theme(args.theme or package.theme or "default")
-    return _report("content", lint_components(package.semantic_markdown, theme=theme))
+    issues = lint_components(package.semantic_markdown, theme=theme) + lint_visual(package)
+    return _report("content", issues)
 
 
 def _lint_markdown(path: Path, args: argparse.Namespace) -> ValidationReport:

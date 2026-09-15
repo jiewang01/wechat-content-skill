@@ -16,7 +16,9 @@
 - research：LLM 提炼失败 → 只保留搜索来源，facts 为空
 - brief / design：LLM 失败 → 确定性模板 / 纯正文（VisualPlan.degraded=True）
 - draft：LLM 失败 → DraftGenerationError（正文不可伪造，不做降级）
-- image：封面与插图经 fallback provider 兜底；非 https 资产不进入正文
+- image：封面与插图经 fallback provider 兜底；非 https 资产不进入正文；
+  design 缺 images 时回落确定性配图（imagery），渲染门以 lint_visual
+  强制「成品必有图或占位符」（封面 prompt / 插图 prompt 占位 / 锚点范围）
 
 门禁与状态机约束（core/state/machine.py）：
 - DRAFTED / RENDERING 无通往 REJECTED 的转移，内容/组件门禁失败以异常中断，
@@ -58,7 +60,7 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
-from core.workflow.imagery import insert_images, plan_visual, strip_figure_blocks
+from core.workflow.imagery import extract_anchors, insert_images, plan_visual, strip_figure_blocks
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -79,7 +81,7 @@ from renderer.ast.parser import ParseError, parse
 from renderer.html.renderer import HtmlRenderer
 from renderer.themes import Theme, ThemeError, load_theme
 from skills.content.humanize.detector import analyze_text
-from validators import lint_components, lint_content, lint_gzh
+from validators import lint_components, lint_content, lint_gzh, lint_visual
 
 _MAX_PUBLISH_ROUNDS = 3
 _DIGEST_MAX_CHARS = 54
@@ -499,9 +501,12 @@ def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
         return {}
 
 
-def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageSpec]:
-    """LLM 规划的正文插图：provider 失败时保留 prompt（asset_path 留空，
-    主题启用 figure 时由 _insert_images 以占位块呈现，防 broken image）。"""
+def _plan_body_images(
+    deps: PipelineDeps, design: dict[str, Any], anchor_count: int
+) -> list[ImageSpec]:
+    """LLM 规划的正文插图：position 收敛到锚点范围内（越界插图会静默丢失）；
+    provider 失败时保留 prompt（asset_path 留空，主题启用 figure 时由
+    _insert_images 以占位块呈现，防 broken image）。"""
     specs: list[ImageSpec] = []
     for item in _as_list(design.get("images"))[:2]:
         if not isinstance(item, dict):
@@ -514,6 +519,8 @@ def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageS
         purpose = str(item.get("purpose", "")).strip() or "concept"
         if not prompt:
             continue
+        if anchor_count > 0:
+            position = min(max(position, 1), anchor_count)
         asset_path = ""
         try:
             asset = deps.image.generate(prompt)
@@ -556,7 +563,10 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         cover_asset = deps.image.generate(cover_prompt).url
     except ProviderError:
         cover_asset = ""
-    images = _plan_body_images(deps, design) if design else fallback.images
+    # design 缺 images（或全部插图被过滤）时回落确定性兜底，保证「成品必有图或占位符」
+    images = _plan_body_images(deps, design, len(extract_anchors(base_markdown)))
+    if not images:
+        images = fallback.images
     package = ContentPackage(
         title=draft.title,
         digest=draft.digest,
@@ -595,18 +605,22 @@ def _stage_render_document(run: WorkflowRun, deps: PipelineDeps) -> None:
     package = run.artifact_typed("content_package", ContentPackage)
     theme = _theme_or_render_error(package.theme)
     component_errors = lint_components(package.semantic_markdown, theme)
-    if component_errors:
-        attacks = _attacks_from(component_errors, prefix="component")
+    visual_errors = lint_visual(package)
+    if component_errors or visual_errors:
+        gate_errors = component_errors + visual_errors
+        attacks = _attacks_from(component_errors, prefix="component") + _attacks_from(
+            visual_errors, prefix="visual"
+        )
         _record_round(
             run,
             gate="content",
             round_no=1,
             attacks=attacks,
             decision="REJECT",
-            reason=f"组件门禁发现 {len(component_errors)} 个错误",
+            reason=f"组件/视觉门禁发现 {len(gate_errors)} 个错误",
             unresolved=[a.attack_id for a in attacks],
         )
-        raise ContentGateError(f"组件校验失败：{len(component_errors)} 个错误", component_errors)
+        raise ContentGateError(f"组件/视觉校验失败：{len(gate_errors)} 个错误", gate_errors)
     html, ast, outcome, renderer = _render_package(package)
     run.save("validation_report", outcome.report)
     render_errors = [issue for issue in outcome.report.errors if issue.severity == "error"]

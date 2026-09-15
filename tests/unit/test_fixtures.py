@@ -34,6 +34,7 @@ from renderer.html.renderer import HtmlRenderer
 from renderer.themes import load_theme
 from skills.content.humanize.detector import analyze_text
 from validators.content.qa import lint_content
+from validators.content.visual import lint_visual
 from validators.wechat.gzh import lint_gzh
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
@@ -110,6 +111,12 @@ def test_draft_passes_content_gate() -> None:
     assert draft.humanize is not None
     assert draft.humanize.passed
     assert draft.humanize.humanize_score == analyze_text(draft.markdown).humanize_score
+
+
+def test_package_passes_visual_gate() -> None:
+    # Visual Gate：示例成稿必须自带封面 prompt 与插图 prompt 占位（成品必有图或占位符）
+    package = ContentPackage.model_validate(_load("content_package"))
+    assert lint_visual(package) == []
 
 
 def test_package_renders_into_gzh_clean_html() -> None:
