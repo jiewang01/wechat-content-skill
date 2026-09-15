@@ -102,7 +102,12 @@ def main() -> int:
         return 1
 
     try:
-        ast = parse(package.semantic_markdown, title=package.title, digest=package.digest)
+        ast = parse(
+            package.semantic_markdown, 
+            title=package.title, 
+            digest=package.digest,
+            visual_plan=package.visual,
+        )
         theme = load_theme(args.theme or package.theme or "default")
         renderer = HtmlRenderer(theme)
         html = renderer.render(ast, include_title=args.include_title)

@@ -9,6 +9,9 @@
 
 标记语法常量（MARKER_RE / ATTR_RE / 列表正则）公开导出：
 组件 lint 复用同一份语法定义，保证 lint 与 parser 永不漂移。
+
+图片占位注入：当传入 visual_plan 时，根据 ImageSpec.position 在对应位置前插入
+FigureNode，用于展示图片生成的 prompt 占位框 (非实际图片)。
 """
 
 from __future__ import annotations
@@ -129,7 +132,17 @@ def _is_block_boundary(s: str) -> bool:
     )
 
 
-def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> ContentAST:
+def parse(
+    semantic_markdown: str, 
+    *, 
+    title: str = "", 
+    digest: str = "",
+    visual_plan: Any | None = None,
+) -> ContentAST:
+    """语义 Markdown → ContentAST 解析器（确定性，支持往返序列化）。
+
+    visual_plan: VisualPlan 对象，包含 images/diagrams 配置；None 时不注入占位。
+    """
     """把语义 Markdown 解析为 ContentAST；非法输入抛 ParseError / MarkerValidationError。"""
     lines = semantic_markdown.split("\n")
     nodes: list[AnyASTNode] = []
@@ -326,6 +339,22 @@ def parse(semantic_markdown: str, *, title: str = "", digest: str = "") -> Conte
         raise ParseError(
             "unclosed_marker", f":::{unclosed.name} 标记未闭合（缺少结束的 :::）", i
         )
+
+    # 从 visual_plan 中注入图片占位符 (FigureNode)
+    # images 按 position 升序排列，在对应节点前插入 FigureNode
+    if visual_plan and hasattr(visual_plan, "images") and visual_plan.images:
+        from renderer.ast.nodes import FigureNode
+        
+        image_specs = sorted(visual_plan.images, key=lambda x: x.position)
+        for idx, img_spec in enumerate(image_specs, 1):
+            if img_spec.prompt.strip():
+                # 计算插入位置：position 是 1-based 的章节索引
+                insert_pos = min(img_spec.position - 1, len(nodes))
+                figure_node = FigureNode(
+                    node_id=f"figure_{idx}",
+                    prompt=img_spec.prompt,
+                )
+                nodes.insert(insert_pos, figure_node)
 
     texts: list[str] = []
     for node in nodes:

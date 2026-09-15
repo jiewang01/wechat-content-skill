@@ -381,6 +381,7 @@ class HtmlRenderer:
         return f'<section style="{outer}">\n' + "\n".join(parts) + "\n</section>"
 
     def _figure_html(self, prompt: str) -> str:
+        """渲染图片 prompt 占位框 (非实际图片)。"""
         if not prompt.strip():
             return ""
         f = self._comp("figure")
@@ -392,27 +393,60 @@ class HtmlRenderer:
                 ("margin-top", _px(f.get("margin_top", 16))),
                 ("margin-bottom", _px(f.get("margin_bottom", 16))),
                 ("background", f.get("background")),
+                ("box-shadow", "0 2px 8px rgba(0,0,0,0.06)"),
+                ("font-family", "inherit"),
             ]
         )
         label_css = _css(
             [
                 ("display", "block"),
-                ("margin-bottom", "6px"),
+                ("margin-bottom", "10px"),
                 ("font-size", _px(f.get("label_size", 12))),
-                ("color", f.get("label_color", "#999999")),
+                ("color", f.get("label_color", "#667788")),
+                ("font-weight", "500"),
+            ]
+        )
+        icon_css = _css(
+            [
+                ("display", "inline-block"),
+                ("width", "18px"),
+                ("height", "18px"),
+                ("vertical-align", "middle"),
+                ("margin-right", "6px"),
+                ("background", "linear-gradient(135deg, #07c160 0%, #06b355 100%)"),
+                ("border-radius", "50%"),
+                ("line-height", "18px"),
+                ("text-align", "center"),
+                ("font-size", "12px"),
+                ("color", "#ffffff"),
+                ("font-weight", "bold"),
             ]
         )
         prompt_css = _css(
             [
                 ("font-size", _px(f.get("prompt_size", 14))),
-                ("color", f.get("prompt_color", "#4a5568")),
+                ("color", f.get("prompt_color", "#3d4a58")),
                 ("line-height", f.get("line_height", 1.7)),
+                ("font-family", "-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif"),
+                ("word-break", "break-word"),
+                ("white-space", "pre-wrap"),
+            ]
+        )
+        hint_css = _css(
+            [
+                ("display", "block"),
+                ("margin-top", "12px"),
+                ("font-size", "12px"),
+                ("color", "#9aaabf"),
+                ("font-style", "italic"),
+                ("letter-spacing", "0.5px"),
             ]
         )
         return (
             f'<section style="{outer}">\n'
-            f'<span style="{label_css}">配图 · 生图提示词</span>\n'
+            f'<span style="{label_css}"><span style="{icon_css}">P</span>配图 · 生图提示词</span>\n'
             f'<span style="{prompt_css}">{html.escape(prompt)}</span>\n'
+            f'<span style="{hint_css}">（待生成图片后替换）</span>\n'
             "</section>"
         )
 
