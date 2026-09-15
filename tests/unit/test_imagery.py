@@ -11,6 +11,7 @@ from core.workflow.imagery import (
     figure_block,
     image_quota,
     insert_images,
+    optimize_prompt,
     plan_visual,
     section_prompt,
     strip_figure_blocks,
@@ -148,6 +149,29 @@ def test_profile_default_fallback():
     assert profile.negative == "画面中不出现任何文字、无水印、无 logo"
 
 
+def test_optimize_prompt_five_elements(orange: Theme):
+    profile = ImageryProfile.from_theme(orange)
+    prompt = optimize_prompt("「成长型思维」概念插画", profile)
+    assert prompt.startswith("「成长型思维」概念插画。")
+    assert profile.style in prompt
+    assert "横构图（16:9）" in prompt
+    assert profile.palette in prompt
+    assert profile.primary in prompt
+    assert prompt.endswith(f"{profile.negative}。")
+
+
+def test_optimize_prompt_idempotent(orange: Theme):
+    profile = ImageryProfile.from_theme(orange)
+    once = optimize_prompt("山巅日出", profile)
+    assert once.endswith(f"{profile.negative}。")
+    assert optimize_prompt(once, profile) == once  # 已含约束收尾，不重复包裹
+
+
+def test_optimize_prompt_blank_subject(orange: Theme):
+    profile = ImageryProfile.from_theme(orange)
+    assert optimize_prompt("   ", profile) == ""
+
+
 def test_build_brief_structure(orange: Theme):
     brief = build_brief(_package(), orange)
     assert brief.startswith("# 《测试文章》配图方案")
@@ -191,9 +215,10 @@ def test_insert_images_placeholders_true_inserts_figure_blocks():
         ImageSpec(position=3, prompt="   "),
     ]
     out = insert_images(MARKDOWN, images, placeholders=True)
-    assert ":::figure\np1\n:::" in out  # 空 asset → 占位块
-    assert "![concept](https://example.com/a.png)" in out  # 有 asset 仍优先真图
-    assert out.count(":::figure") == 1  # 越界与空白 prompt 均不插
+    assert ":::figure\np1\n:::" in out
+    assert ":::figure\np2\n:::" in out  # 有 asset 也一律占位块
+    assert "![" not in out  # 成品正文不出现图片行（无 <img>）
+    assert out.count(":::figure") == 2  # 越界与空白 prompt 均不插
 
 
 def test_insert_images_placeholders_false_keeps_skip_semantics():

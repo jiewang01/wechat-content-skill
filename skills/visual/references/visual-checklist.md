@@ -23,9 +23,9 @@
 
 ## 素材与降级（asset_path / degraded）
 
-- [ ] 配置了图片 provider 时 `asset_path` 已填充；否则留空（发布前补齐）。
-- [ ] 生成失败走 [降级路径](../prompts/image-prompt-guide.md#降级路径graceful-degradation)，且 `degraded: true`。
-- [ ] 资产文件真实存在、可读、格式为 png/jpg、单张 < 10MB（公众号上限）。
+- [ ] 仅封面 `asset_path` 由图片 provider 填充；正文插图 `asset_path` 恒为空（成品以 `:::figure` 文本占位块呈现优化后的五要素 prompt，正文无 `<img>` 标签）。
+- [ ] 封面生成失败走 [降级路径](../prompts/image-prompt-guide.md#降级路径graceful-degradation)，且 `degraded: true`。
+- [ ] 封面资产真实存在、可读、格式为 png/jpg、单张 < 10MB（公众号上限）。
 
 ## 一致性
 

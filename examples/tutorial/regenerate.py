@@ -63,7 +63,7 @@ def main() -> None:
             SearchHit(url="https://blog.example.com/bloom-filter.html", title="布隆过滤器入门"),
         ]
     )
-    image = e2e.RoleImage(e2e._fixture("visual_plan")["cover"]["prompt"], cover_uri, e2e.IMG_URL)
+    image = e2e.RoleImage(e2e._fixture("visual_plan")["cover"]["prompt"], cover_uri)
     client, _tokens, _requests, _state = e2e.make_wechat_api()
     publisher = WeChatPublisher(
         client,

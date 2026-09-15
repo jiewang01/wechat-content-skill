@@ -148,19 +148,21 @@ class StaticSearch:
 
 
 class RoleImage:
-    """封面 prompt 返回 data URI（Facade 可直接上传）；其余 prompt 返回 https 插图 URL。"""
+    """仅封面生图：封面 prompt 返回 data URI（Facade 可直接上传）。
 
-    def __init__(self, cover_prompt: str, cover_uri: str, body_url: str) -> None:
+    回归防护：正文插图不得触发生图 provider——收到非封面 prompt 直接失败。
+    """
+
+    def __init__(self, cover_prompt: str, cover_uri: str) -> None:
         self._cover_prompt = cover_prompt
         self._cover_uri = cover_uri
-        self._body_url = body_url
         self.prompts: list[str] = []
 
     def generate(self, prompt: str, *, size: str = "1024x1024") -> ImageAsset:
         self.prompts.append(prompt)
-        if prompt == self._cover_prompt:
-            return ImageAsset(url=self._cover_uri, source="generated", prompt=prompt)
-        return ImageAsset(url=self._body_url, source="generated", prompt=prompt)
+        if prompt != self._cover_prompt:
+            raise AssertionError(f"正文 prompt 不应触发生图 provider：{prompt}")
+        return ImageAsset(url=self._cover_uri, source="generated", prompt=prompt)
 
 
 # ---------------------------------------------------------------------------
@@ -211,7 +213,7 @@ def run_e2e(tmp_path: Path, *, api_status: int | None = None):
             SearchHit(url="https://blog.example.com/bloom-filter.html", title="布隆过滤器入门"),
         ]
     )
-    image = RoleImage(_fixture("visual_plan")["cover"]["prompt"], cover_uri, IMG_URL)
+    image = RoleImage(_fixture("visual_plan")["cover"]["prompt"], cover_uri)
     client, tokens, requests, state = make_wechat_api(api_status=api_status)
     publisher = WeChatPublisher(
         client,
@@ -270,9 +272,14 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert draft.word_count == fixture_draft["word_count"]
     assert draft.humanize.humanize_score == fixture_draft["humanize"]["humanize_score"]
 
-    # 插图由 stub 注入语义稿（fixtures 语义稿中的图片行已剥离）
+    # 正文插图：设计稿主体经 optimize_prompt 优化后以 :::figure 文本占位注入语义稿
     package = run.artifact_typed("content_package", ContentPackage)
-    assert f"![解法示意]({IMG_URL})" in package.semantic_markdown
+    body_spec = package.visual.images[0]
+    assert body_spec.asset_path == ""  # 正文不生图，无资产
+    assert ":::figure" in package.semantic_markdown
+    assert f":::figure\n{body_spec.prompt}\n:::" in package.semantic_markdown
+    assert body_spec.prompt.endswith("画面中不出现任何文字、无水印、无 logo。")
+    assert "![解法示意]" not in package.semantic_markdown
     assert package.visual.cover is not None
     assert package.visual.cover.asset_path.startswith("data:image/png;base64,")
     assert package.visual.degraded is False
@@ -281,8 +288,10 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     doc = run.artifact_typed("wechat_document", WechatDocument)
     assert lint_gzh(doc.html) == []
     assert doc.size_bytes == len(doc.html.encode("utf-8"))
-    assert IMG_URL in doc.html
-    assert doc.image_assets == [IMG_URL]
+    assert "<img" not in doc.html  # 正文成品无 <img> 标签
+    assert IMG_URL not in doc.html  # 回归：插图 URL 不得进入正文
+    assert "配图 · 生图提示词" in doc.html  # figure 占位块渲染为文本区块
+    assert doc.image_assets == []
     assert doc.plain_text and "<" not in doc.plain_text
 
     report = run.artifact_typed("validation_report", ValidationReport)
@@ -300,7 +309,8 @@ def test_one_sentence_intent_to_wechat_draft(tmp_path: Path):
     assert article["author"] == AUTHOR
     assert article["digest"] == draft.digest
     assert article["thumb_media_id"] == "MEDIA-9"
-    assert IMG_URL in article["content"]
+    assert body_spec.prompt in article["content"]  # 草稿正文含优化后 prompt 文本占位
+    assert IMG_URL not in article["content"]
 
     # 草稿创建结果 + 本地 HTML 留档
     result = run.artifact_typed("publish_result", PublishResult)

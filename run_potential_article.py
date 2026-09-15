@@ -30,6 +30,7 @@ OUTPUT_DIR = Path(__file__).resolve().parent / "artifacts" / "potential"
 RUN_ID = "run_potential_001"
 INTENT = "写一篇如何判断一个人是否有潜力的公众号文章"
 AUTHOR = "潜力观察者"
+# 回归标记：旧流程的正文 <img> 占位 URL，新流程成品 HTML 中不得出现
 IMG_URL = "https://mmbiz.qpic.cn/mmbiz_png/potential_growth_001.png"
 PNG_BYTES = b"\x89PNG\r\n\x1a\nfake-cover-data"
 
@@ -204,11 +205,11 @@ def main() -> None:
         ]
     )
 
-    # 封面 prompt → data URI，正文插图 → https URL
+    # 仅封面生图：封面 prompt → data URI；正文插图不触发生图 provider
     import json
     design_data = json.loads(DESIGN_JSON)
     cover_prompt = design_data["cover_prompt"]
-    image = e2e.RoleImage(cover_prompt, cover_uri, IMG_URL)
+    image = e2e.RoleImage(cover_prompt, cover_uri)
 
     client, _tokens, _requests, _state = e2e.make_wechat_api()
     publisher = WeChatPublisher(
@@ -267,7 +268,10 @@ def main() -> None:
             pkg = run.artifact_typed("content_package", ContentPackage)
             print(f"\n  语义稿字数: {pkg.word_count}")
             print(f"  封面: {pkg.visual.cover.prompt[:50]}...")
-            print(f"  配图: {len(pkg.visual.images)} 张")
+            print(f"  配图: {len(pkg.visual.images)} 张（文本占位，asset_path 均为空）")
+            for img in pkg.visual.images:
+                assert img.asset_path == ""
+                print(f"    [位置{img.position}] {img.prompt[:60]}...")
 
         if "wechat_document" in run.checkpoint.artifacts:
             doc = run.artifact_typed("wechat_document", WechatDocument)
@@ -275,6 +279,12 @@ def main() -> None:
             html_path = OUTPUT_DIR / f"{RUN_ID}.html"
             html_path.write_text(doc.html, encoding="utf-8-sig")
             print(f"  HTML 已保存: {html_path}")
+
+            # 回归断言：成品正文无 <img> 标签，配图为含生图 prompt 的文本占位块
+            assert "<img" not in doc.html
+            assert IMG_URL not in doc.html
+            assert "配图 · 生图提示词" in doc.html
+            print("  ✓ 回归验证: 正文无 <img> 标签，配图为文本占位块（含优化后生图 prompt）")
 
             # 打印纯文本预览
             print(f"\n  --- 正文预览 ---")

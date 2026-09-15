@@ -16,7 +16,8 @@
 - research：LLM 提炼失败 → 只保留搜索来源，facts 为空
 - brief / design：LLM 失败 → 确定性模板 / 纯正文（VisualPlan.degraded=True）
 - draft：LLM 失败 → DraftGenerationError（正文不可伪造，不做降级）
-- image：封面与插图经 fallback provider 兜底；非 https 资产不进入正文
+- image：仅封面经 fallback provider 兜底；正文插图不调用生图 provider，
+  一律以 :::figure 文本占位块呈现优化后的生图 prompt（成品正文无 <img> 标签）
 
 门禁与状态机约束（core/state/machine.py）：
 - DRAFTED / RENDERING 无通往 REJECTED 的转移，内容/组件门禁失败以异常中断，
@@ -58,7 +59,13 @@ from core.config.config import load_account, resolve_credentials
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.utils import estimate_word_count
-from core.workflow.imagery import insert_images, plan_visual, strip_figure_blocks
+from core.workflow.imagery import (
+    ImageryProfile,
+    insert_images,
+    optimize_prompt,
+    plan_visual,
+    strip_figure_blocks,
+)
 from core.workflow.orchestrator import Orchestrator, Stage, WorkflowRun
 from core.workflow.repair import (
     HtmlSegment,
@@ -258,8 +265,9 @@ def _theme_or_render_error(name: str) -> Theme:
 
 
 def _insert_images(markdown: str, images: list[ImageSpec], theme: Theme | None = None) -> str:
-    """插图入文：有资产插 `![purpose](asset)`；无资产且主题启用 figure 组件时，
-    以 :::figure 占位块把生图 prompt 呈现在正文（供读者取用、生图后回填替换）。
+    """插图入文：主题启用 figure 组件时，一律以 :::figure 占位块把优化后的
+    生图 prompt 呈现在正文（成品正文无 <img> 标签，即使有 asset 也不插真图）；
+    未启用 figure 时才允许 `![purpose](asset)` 真图插入（人工编排场景）。
     先移除既有 figure 块再插入，保证幂等。"""
     placeholders = bool(theme is not None and theme.components_enabled.get("figure"))
     return insert_images(strip_figure_blocks(markdown), images, placeholders=placeholders)
@@ -499,9 +507,11 @@ def _design_with_llm(deps: PipelineDeps, draft: ArticleDraft) -> dict[str, Any]:
         return {}
 
 
-def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageSpec]:
-    """LLM 规划的正文插图：provider 失败时保留 prompt（asset_path 留空，
-    主题启用 figure 时由 _insert_images 以占位块呈现，防 broken image）。"""
+def _plan_body_images(design: dict[str, Any], theme: Theme) -> list[ImageSpec]:
+    """LLM 规划的正文插图：不调用生图 provider，设计稿主体经 optimize_prompt
+    优化为五要素 prompt（主体/风格/构图/色调/约束），asset_path 恒为空——
+    正文成品以 :::figure 文本占位块呈现 prompt，无 <img> 标签。"""
+    profile = ImageryProfile.from_theme(theme)
     specs: list[ImageSpec] = []
     for item in _as_list(design.get("images"))[:2]:
         if not isinstance(item, dict):
@@ -510,23 +520,17 @@ def _plan_body_images(deps: PipelineDeps, design: dict[str, Any]) -> list[ImageS
             position = int(item.get("position", 1))
         except (TypeError, ValueError):
             continue
-        prompt = str(item.get("prompt", "")).strip()
+        subject = str(item.get("prompt", "")).strip()
         purpose = str(item.get("purpose", "")).strip() or "concept"
+        prompt = optimize_prompt(subject, profile)
         if not prompt:
             continue
-        asset_path = ""
-        try:
-            asset = deps.image.generate(prompt)
-        except ProviderError:
-            asset = None
-        if asset and asset.url.startswith("https://"):
-            asset_path = asset.url
         specs.append(
             ImageSpec(
                 position=max(position, 1),
                 purpose=purpose,
                 prompt=prompt,
-                asset_path=asset_path,
+                asset_path="",
             )
         )
     return specs
@@ -556,7 +560,7 @@ def _stage_plan_visual(run: WorkflowRun, deps: PipelineDeps) -> None:
         cover_asset = deps.image.generate(cover_prompt).url
     except ProviderError:
         cover_asset = ""
-    images = _plan_body_images(deps, design) if design else fallback.images
+    images = _plan_body_images(design, theme) if design else fallback.images
     package = ContentPackage(
         title=draft.title,
         digest=draft.digest,
@@ -636,7 +640,7 @@ def _stage_render_document(run: WorkflowRun, deps: PipelineDeps) -> None:
         html=html,
         plain_text=renderer.render_plain_text(ast),
         cover_asset=package.visual.cover.asset_path if package.visual.cover else "",
-        image_assets=[img.asset_path for img in package.visual.images],
+        image_assets=[img.asset_path for img in package.visual.images if img.asset_path],
         size_bytes=len(html.encode("utf-8")),
     )
     run.save("wechat_document", doc)

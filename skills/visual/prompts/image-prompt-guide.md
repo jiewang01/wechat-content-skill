@@ -1,6 +1,6 @@
 # 图片提示词指南（visual/prompts/image-prompt-guide.md）
 
-> VisualPlan 中 `cover.prompt` / `images[].prompt` 的写法。提示词会原样交给图片 provider，所以必须**自包含**——不得出现「如上文那种」「同前文风格」类指代。
+> VisualPlan 中 `cover.prompt` / `images[].prompt` 的写法。封面提示词会原样交给图片 provider；插图提示词经五要素优化后以 `:::figure` 文本占位块呈现在正文（供后续生图直接取用），所以必须**自包含**——不得出现「如上文那种」「同前文风格」类指代。
 
 ## 提示词五要素
 
@@ -32,11 +32,11 @@
 ## 降级路径（graceful degradation）
 
 ```text
-图片 provider 生成失败
-    → 换 prompt 重试 1 次（只改「风格」要素）
-    → 图片搜索（以主体描述为查询词）
-    → 占位图（纯色 + 主题色图形）
-任一降级发生时置 VisualPlan.degraded = true
+封面：图片 provider 生成失败
+    → fallback provider 兜底
+    → 仍失败则 asset_path 留空，置 VisualPlan.degraded = true
+正文插图：不调用生图 provider
+    → 优化后的五要素 prompt 以 :::figure 文本占位块呈现在正文，即成品形态（非降级）
 ```
 
 降级不阻塞管线：正文完整性优先于视觉完整性。

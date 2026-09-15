@@ -30,7 +30,11 @@ from core.artifacts.models import (
 from core.state.checkpoint import CheckpointStore
 from core.state.machine import WorkflowState
 from core.workflow import pipeline
-from core.workflow.imagery import strip_figure_blocks
+from core.workflow.imagery import (
+    ImageryProfile,
+    optimize_prompt,
+    strip_figure_blocks,
+)
 from core.workflow.orchestrator import WorkflowRun
 from core.workflow.pipeline import (
     ContentGateError,
@@ -42,6 +46,7 @@ from integrations.errors import ProviderError
 from integrations.image.base import ImageAsset
 from integrations.llm.base import LLMResult
 from integrations.search.base import SearchHit, SearchOutcome
+from renderer.themes import load_theme
 
 _IMG_URL = "https://img.example.com/asset.png"
 _INTENT = "写一篇讲清缓存穿透的公众号文章"
@@ -281,12 +286,21 @@ def test_happy_path_full_pipeline(tmp_path):
 
     package = run.artifact_typed("content_package", ContentPackage)
     assert ":::note" in package.semantic_markdown
-    assert f"![概念图]({_IMG_URL})" in package.semantic_markdown
+    body_spec = package.visual.images[0]
+    expected_prompt = optimize_prompt(
+        "布隆过滤器示意", ImageryProfile.from_theme(load_theme(package.theme))
+    )
+    assert body_spec.prompt == expected_prompt  # 设计稿主体 → 五要素优化 prompt
+    assert body_spec.asset_path == ""  # 正文不生图，无资产
+    assert f":::figure\n{expected_prompt}\n:::" in package.semantic_markdown
+    assert "![概念图]" not in package.semantic_markdown
 
     doc = run.artifact_typed("wechat_document", WechatDocument)
     assert doc.html and doc.plain_text
     assert doc.cover_asset == _IMG_URL
-    assert doc.image_assets == [_IMG_URL]
+    assert doc.image_assets == []
+    assert "<img" not in doc.html  # 正文成品无 <img> 标签
+    assert image.prompts == ["深蓝色数据流动抽象插画"]  # 仅封面触发生图 provider
 
     report = run.artifact_typed("validation_report", ValidationReport)
     assert report.status == "passed"
@@ -481,7 +495,7 @@ def test_graceful_degradation_research_brief_design(tmp_path):
     assert draft.fact_ids == []  # 无 facts → 无引用
 
     package = run.artifact_typed("content_package", ContentPackage)
-    # design 降级 → imagery 确定性兜底：插图保留 prompt，非 https 资产不进入正文
+    # design 降级 → imagery 确定性兜底：插图保留优化后 prompt，正文以 :::figure 占位
     assert len(package.visual.images) == 1
     fallback_spec = package.visual.images[0]
     assert fallback_spec.purpose == "concept"

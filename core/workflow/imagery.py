@@ -12,6 +12,7 @@ Prompt 模板遵循 skills/visual/prompts/image-prompt-guide.md 的五要素规�
 硬规则：图内不要求可读文字（prompt 以「无文字、无水印」收尾）；封面 2.35:1、
 正文 16:9；风格与主题色系锁定（theme.colors.primary 动态注入）；每 600 字
 最多 1 张、全文至多 4 张；每条 prompt 自包含，可直接粘贴到任意文生图工具。
+正文成品以 :::figure 文本占位块呈现 prompt，不以 <img> 资产占位。
 """
 
 from __future__ import annotations
@@ -130,12 +131,23 @@ def cover_prompt(title: str, digest: str, profile: ImageryProfile) -> str:
     )
 
 
-def section_prompt(anchor: SectionAnchor, profile: ImageryProfile) -> str:
-    subject = f"{anchor.title}：{anchor.summary}" if anchor.summary else anchor.title
+def optimize_prompt(subject: str, profile: ImageryProfile) -> str:
+    """把主体描述优化为五要素自包含生图 prompt（主体 / 风格 / 构图 / 色调 / 约束）。
+
+    幂等：subject 已含约束收尾（负向要素）时原样返回，避免重复包裹。
+    """
+    core = subject.strip()
+    if not core or profile.negative in core:
+        return core
     return (
-        f"「{subject}」概念插画。{profile.style}，横构图（16:9），视觉焦点居中、留白充足。"
+        f"{core}。{profile.style}，横构图（16:9），视觉焦点居中、留白充足。"
         f"{profile.palette}，以主题色 {profile.primary} 为点缀。{profile.negative}。"
     )
+
+
+def section_prompt(anchor: SectionAnchor, profile: ImageryProfile) -> str:
+    subject = f"{anchor.title}：{anchor.summary}" if anchor.summary else anchor.title
+    return optimize_prompt(f"「{subject}」概念插画", profile)
 
 
 def plan_visual(package: ContentPackage, theme: Theme) -> VisualPlan:
@@ -150,7 +162,11 @@ def plan_visual(package: ContentPackage, theme: Theme) -> VisualPlan:
             prompt=cover_prompt(package.title, package.digest, profile),
         ),
         images=[
-            ImageSpec(position=anchor.position, purpose="concept", prompt=section_prompt(anchor, profile))
+            ImageSpec(
+                position=anchor.position,
+                purpose="concept",
+                prompt=section_prompt(anchor, profile),
+            )
             for anchor in picked
         ],
         diagrams=[],
@@ -192,9 +208,10 @@ def insert_images(
 ) -> str:
     """把插图插到第 N 个小节标题之前（首标题视为文章标题，不作为锚点）。
 
-    有资产的插图插入 `![purpose](asset)`；无资产的插图在 placeholders=True
-    时插入 :::figure 占位块（prompt 直接呈现给读者，供生图替换），
-    否则跳过（防 broken image）。
+    placeholders=True（主题启用 figure 组件）：一律插入 :::figure 文本占位块，
+    把优化后的生图 prompt 直接呈现在正文——即使已有 asset_path 也不插
+    `![...](...)`（成品正文无 <img> 标签）。placeholders=False：有资产插
+    `![purpose](asset)`，无资产跳过（防 broken image，人工编排场景）。
     """
     if not images:
         return markdown
@@ -206,10 +223,11 @@ def insert_images(
         index = spec.position - 1
         if not 0 <= index < len(anchors):
             continue
-        if spec.asset_path:
+        if placeholders:
+            if spec.prompt.strip():
+                insertions[anchors[index]] = figure_block(spec.prompt)
+        elif spec.asset_path:
             insertions[anchors[index]] = f"![{spec.purpose}]({spec.asset_path})"
-        elif placeholders and spec.prompt.strip():
-            insertions[anchors[index]] = figure_block(spec.prompt)
     if not insertions:
         return markdown
     out: list[str] = []
@@ -231,7 +249,8 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         f"- 主题：{theme.name}（主色 {profile.primary}）",
         f"- 风格：{profile.style}",
         f"- 篇幅：{package.word_count} 字 ｜ 小节 {len(anchors)} 个 ｜ 配图 {len(picked)} 张",
-        "- 规范：skills/visual/prompts/image-prompt-guide.md 五要素（主体 / 风格 / 构图 / 色调 / 约束）",
+        "- 规范：skills/visual/prompts/image-prompt-guide.md "
+        "五要素（主体 / 风格 / 构图 / 色调 / 约束）",
         "",
         "## 封面（2.35:1 · editorial）",
         "",
@@ -253,7 +272,10 @@ def build_brief(package: ContentPackage, theme: Theme) -> str:
         "## 使用说明",
         "",
         "1. 以上 prompt 均自包含，可直接粘贴到任意文生图工具（即梦、DALL·E、SDXL 等）。",
-        "2. 成图后把 https:// 图片链接回填到 content_package.json 的 `visual.images[i].asset_path`，重跑 render.py 即可入文。",
-        "3. 未回填 asset_path 时，管线以 :::figure 占位块把 prompt 呈现在正文占位（主题启用 figure 组件时），回填重渲染即替换为真图。",
+        "2. 正文成品不以 <img> 占位：管线把优化后的 prompt 以 :::figure 文本占位块"
+        "直接呈现在正文，读者可自行取用生图。",
+        "3. 若确需 HTML 出真图：把 `![purpose](https://...)` 图片行手动写入 "
+        "semantic_markdown 后用 scripts/render.py 重渲染"
+        "（<img> 渲染能力保留给人工编排内容）。",
     ]
     return "\n".join(lines)
