@@ -6,7 +6,7 @@
   "raw_task": "价格高！文案温和！不伤粉！\n推广时间：2025-10-07 至 2027-05-01\n结算周期：推文后 48小时结算\n阅读单价：0.5025元\n要求：\n公众号类型：财富\n男女比例：男粉多\n阅读数门槛：不低于100\n接单频率：允许接过该广告主其他项目的公众号隔30天再接单",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-021",
-    "source": { "platform": "newbang", "source_url": "https://a.newrank.cn/center/#/detail/tender?fakeId=41EF5E4C9D9848001CB68E9ED881CB36", "captured_at": null },
+    "source": { "platform": "公众号", "source_url": "https://a.newrank.cn/center/#/detail/tender?fakeId=41EF5E4C9D9848001CB68E9ED881CB36", "captured_at": null },
     "brand": { "name": "新榜项目（广告主未署名）", "product": null, "category": "财富" },
     "campaign": {
       "objective": null,

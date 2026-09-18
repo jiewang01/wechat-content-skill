@@ -1,0 +1,46 @@
+{
+  "account_id": "ACCOUNT-WX-001",
+  "platform": "公众号",
+  "account": {
+    "name": "示例财富号",
+    "category": "财富",
+    "followers": null
+  },
+  "audience": {
+    "age_distribution": {},
+    "gender_distribution": { "male": 0.72, "female": 0.28 },
+    "location_distribution": {},
+    "interest_tags": ["财经", "理财", "投资", "财富管理", "房产"]
+  },
+  "content": {
+    "niches": ["财富管理", "理财科普"],
+    "preferred_topics": ["基金", "理财", "宏观"],
+    "forbidden_topics": ["荐股", "内幕消息"],
+    "content_formats": ["公众号图文"],
+    "style": "温和科普"
+  },
+  "performance": {
+    "avg_views": 1500,
+    "median_views": 1200,
+    "avg_engagement_rate": 0.04,
+    "conversion_rate": null,
+    "historical_campaigns": ["财富类金融科普广告 ×3", "理财 APP 推广 ×2"]
+  },
+  "commercial": {
+    "historical_revenue": null,
+    "historical_cpm": 0.45,
+    "historical_cpe": null,
+    "preferred_categories": ["金融", "财富", "财经工具"],
+    "rejected_categories": ["医美", "借贷催收", "博彩"]
+  },
+  "production": {
+    "avg_production_hours": 2.5,
+    "ai_generation_capability": "中等",
+    "available_formats": ["公众号图文"]
+  },
+  "risk": {
+    "brand_risk_tolerance": "低",
+    "restricted_categories": ["医美", "借贷催收", "博彩"],
+    "platform_risk_tolerance": "低"
+  }
+}

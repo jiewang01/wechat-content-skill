@@ -1631,12 +1631,31 @@ Decision Optimization
 - 校验入口：python3 tools/validate.py → 20 例 PASS
 ```
 
+## 2026-09-18 — M2 决策引擎落地（task-021 跑通）
+
+```text
+- knowledge/ 新增 5 份规则文档：
+  ├── account-fit-rules.md      (Audience/Content/Brand/Historical 四子项加权)
+  ├── economics-rules.md        (Revenue 五态判定 / 生产成本 / 机会成本)
+  ├── risk-rules.md             (Platform/Brand/Claim/Copyright/Reputation 五类)
+  ├── hard-constraint-rules.md  (H1~H6，评分前执行)
+  └── decision-engine-rules.md  (权重 30/30/15/5/20 + Confidence 公式 + Action 四态)
+- tools/decision_engine.py：可执行引擎（硬约束先行 → 五维软评分 → Score+Confidence → Action）
+- data/account-example.json：示例账号画像（财富公众号，男粉 72%）
+- task-021 决策输出：observe / 62.2 / confidence 0.795 high；六条硬约束全 pass；
+  5 条 Evidence 全链路回引，Schema 关键约束 PASS
+- 试用例提示：task-012（医美）触发 H5 → reject；修复 gender_distribution 比例/百分比语义
+- 运行：python3 tools/decision_engine.py run-<id> --adtask tests/cases/task-XXX.json --account data/account-example.json --out tests/task-XXX.decision.json
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
-- [ ] task-010 bonus 上限字段是否单列（M2 前决定）
+- [x] M2 决策引擎 v1：规则文档 + 可执行引擎 + task-021 跑通
+- [ ] M2 验收：对测试集后续用例执行 Blind Decision Test / 决策解释可读性检查
+- [ ] M2 待决：task-010 bonus 上限字段是否单列（decision 输出前定）
 - [ ] 真实任务继续补充（用户提供）
-- [ ] M2：Decision Engine 规则细化（Account Fit / Economics / Risk / Hard Constraint / 权重）
+- [ ] M3：Content Copilot（Brief Generator 等，plan §5）
 
 ---
 
