@@ -6,7 +6,7 @@
   "raw_task": "家电品牌『清欢』空气净化器公众号贴片广告：推文内嵌贴片图，头条或二条均可；正文600-800字软文围绕'母婴适用'展开；报价：新榜指数700-800档50元/条；图片由品牌提供2张；截止时间未注明；抢单后3天内推送。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-018",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "公众号", "source_url": null, "captured_at": null },
     "brand": { "name": "清欢", "product": "空气净化器", "category": "家电" },
     "campaign": {
       "objective": "贴片广告投放",

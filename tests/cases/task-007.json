@@ -6,7 +6,7 @@
   "raw_task": "某母婴品牌直播预告宣发招募小红书博主：合作形式为图文预告，需露出直播时间（9月22日20:00）、直播福利关键词『半价尿裤』与直播间入口链接；不可使用今晚等模糊时间描述；费用60元；发布后2小时内不可删除。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-007",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "某母婴品牌", "product": null, "category": "母婴" },
     "campaign": {
       "objective": "直播预告宣发",
@@ -18,7 +18,7 @@
     },
     "commercial": { "creator_fee": 60, "commission": null, "bonus": null, "estimated_total_income": 60, "settlement_rule": null },
     "production": {
-      "deadline": "2026-09-22T20:00:00Z",
+      "deadline": "2026-10-22T20:00:00Z",
       "estimated_hours": null,
       "content_format": "图文",
       "word_count": null,

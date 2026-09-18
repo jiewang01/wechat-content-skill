@@ -6,7 +6,7 @@
   "raw_task": "健身App『燃动』线上训练营课程推广：抖音短视频60秒内，口播引导评论区领取30元优惠券；限发布区域：一线城市优先（测试人群）；报价300元+按转化人数5元/人；课程为虚拟商品无实物；需用官方提供的素材包（含口播脚本可选）；禁止使用'减脂必瘦''一周见效'等承诺性表述。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-017",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "抖音", "source_url": null, "captured_at": null },
     "brand": { "name": "燃动", "product": "线上训练营课程", "category": "健身" },
     "campaign": {
       "objective": "课程转化引流",

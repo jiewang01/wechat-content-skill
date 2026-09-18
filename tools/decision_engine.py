@@ -77,11 +77,15 @@ def hard_constraints(adtask, account) -> list[dict]:
     h5_fail = cat in sensitive and risk_high and not compliance_guard
     result.append({"constraint": "H5 compliance_acceptable", "status": "fail" if h5_fail else "pass"})
 
-    # H6 账号能力门槛（platform_rules 中含数字门槛，与 performance 对照；规则抽象为粉丝/平均播放）
-    avg = (account.get("performance") or {}).get("avg_views")
-    if avg is None and any("播放" in r or "粉丝" in r for r in (adtask.get("requirements") or {}).get("platform_rules", [])):
+    # H6 账号能力门槛（扫描 platform_rules / mandatory_points / special_requirements 中的数字门槛）
+    req_texts = (adtask.get("requirements") or {}).get("platform_rules") or []
+    req_texts += (adtask.get("campaign") or {}).get("mandatory_points") or []
+    req_texts += (adtask.get("production") or {}).get("special_requirements") or []
+    gate_hint = any(("播放" in t or "粉丝" in t or "门槛" in t or "≥" in t or "以上" in t) for t in req_texts)
+    avg_views = (account.get("performance") or {}).get("avg_views")
+    if gate_hint and avg_views is None:
         result.append({"constraint": "H6 capability_gate", "status": "unknown",
-                        "detail": "任务有播放/粉丝门槛且账号无 performance 数据，需人工确认"})
+                        "detail": "任务含播放/粉丝门槛且账号无 performance 基线，需人工确认"})
     else:
         result.append({"constraint": "H6 capability_gate", "status": "pass"})
     return result
@@ -227,6 +231,22 @@ def compute_confidence(unknown_in: int, avg_reliability: float = 0.9) -> tuple[f
 
 
 # ---------- 4. 引擎 ----------
+ACCOUNT_BY_PLATFORM = {
+    "公众号": "data/account-example.json",
+    "小红书": "data/account-example-xhs.json",
+    "抖音": "data/account-example-dy.json",
+    "知乎": "data/account-example-zh.json",
+    "B站": "data/account-example-bz.json",
+}
+
+
+def select_account(adtask) -> dict:
+    """按任务平台自动选择示例账号（无命中平台则回退小红书）。"""
+    plat = adtask.get("source", {}).get("platform") or "小红书"
+    path = ACCOUNT_BY_PLATFORM.get(plat, "data/account-example-xhs.json")
+    return load_json(path)
+
+
 def build_decision(adtask, account, evidence_list=None) -> dict:
     evidence_list = evidence_list or []
     ev_refs = [e.get("evidence_id") for e in evidence_list if e.get("evidence_id")]
@@ -247,10 +267,14 @@ def build_decision(adtask, account, evidence_list=None) -> dict:
     unknown_dim = len(all_unc)
     confidence, c_level, _ = compute_confidence(unknown_dim)
 
-    # Action 判定
-    blockers = [h["detail"] or h["constraint"] for h in failed]
+    # Action 判定（reject > need_information(未知约束/缺收益) > accept/observe）
+    unknown_hc = [h for h in hc if h["status"] == "unknown"]
+    blockers = [(h.get("detail") or h["constraint"]) for h in failed]
     if failed:
         action = "reject"
+    elif unknown_hc:
+        action = "need_information"
+        blockers.extend([(h.get("detail") or h["constraint"]) for h in unknown_hc])
     elif (adtask.get("commercial") or {}).get("creator_fee") is None and \
          not (adtask.get("commercial") or {}).get("settlement_rule"):
         action = "need_information"
@@ -270,7 +294,7 @@ def build_decision(adtask, account, evidence_list=None) -> dict:
         "accept": ["生成 Campaign Brief", "确认品牌审核规则"],
         "observe": ["补齐缺失信息后再决策", "确认账号是否有同类历史样本"],
         "reject": ["记录拒绝原因入回归用例"],
-        "need_information": ["获取账号画像 performance 基线", "确认报酬结构（固定/CPM/置换）"],
+        "need_information": ["确认账号 performance 基线（播放/粉丝门槛）", "确认报酬结构（固定/CPM/置换）", "确认硬性门槛是否满足"],
     }[action]
 
     reasons = []
@@ -304,13 +328,36 @@ def build_decision(adtask, account, evidence_list=None) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("run_id")
-    ap.add_argument("--adtask", required=True)
-    ap.add_argument("--account", required=True)
+    ap.add_argument("run_id", nargs="?", default="")
+    ap.add_argument("--adtask", required=False)
+    ap.add_argument("--account", required=False)
     ap.add_argument("--evidence", nargs="*", default=[])
     ap.add_argument("--out", default=None)
+    ap.add_argument("--batch", action="store_true", help="批量跑 tests/cases/*.json，按平台选账号，输出 tests/decisions/")
     args = ap.parse_args()
 
+    if args.batch:
+        import pathlib
+        out_dir = pathlib.Path("tests/decisions")
+        out_dir.mkdir(exist_ok=True)
+        summary = []
+        for p in sorted(pathlib.Path("tests/cases").glob("task-*.json")):
+            case = load_json(p)
+            adtask = case["expected_adtask"]
+            evs = case.get("expected_evidence") or []
+            account = select_account(adtask)
+            d = build_decision(adtask, account, evs)
+            out = out_dir / f"{p.stem}.decision.json"
+            with open(out, "w", encoding="utf-8") as f:
+                json.dump(d, f, ensure_ascii=False, indent=2)
+            summary.append((p.stem, d["action"], d["decision_score"],
+                            round(d["confidence"]["value"], 2), d.get("blockers", [])))
+        print(f"{'case':12} {'action':16} {'score':>6} {'conf':>6}  blockers")
+        for row in summary:
+            print(f"{row[0]:12} {row[1]:16} {row[2]:6.1f} {row[3]:6.2f}  {row[4]}")
+        return 0
+
+    assert args.adtask and args.account, "--batch 之外需要 --adtask 与 --account"
     adtask = load_json(args.adtask)
     account = load_json(args.account)
     evs = [load_json(p) for p in args.evidence]

@@ -6,7 +6,7 @@
   "raw_task": "女装店『MOMO』寄拍合作：寄送当季新款连衣裙，发布小红书图文需3张以上上身展示图+15秒穿搭视频；款式与尺码由店铺指定；以置换形式结算（衣服归博主），无额外稿费；笔记保留3个月；风格需与店铺日系风格一致，禁过度修图。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-008",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "MOMO", "product": "当季新款连衣裙", "category": "服饰" },
     "campaign": {
       "objective": "新品穿搭展示",

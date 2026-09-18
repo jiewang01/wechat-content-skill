@@ -1,0 +1,42 @@
+{
+  "account_id": "ACCOUNT-BZ-001",
+  "platform": "B站",
+  "account": { "name": "示例UP主", "category": "数码/科技", "followers": 120000 },
+  "audience": {
+    "age_distribution": { "18-24": 0.45, "25-34": 0.4, "35-44": 0.15 },
+    "gender_distribution": { "male": 0.7, "female": 0.3 },
+    "location_distribution": {},
+    "interest_tags": ["数码", "硬件", "开箱", "评测", "游戏"]
+  },
+  "content": {
+    "niches": ["数码测评", "硬件"],
+    "preferred_topics": ["深度测评", "参数实测"],
+    "forbidden_topics": ["医美项目体验", "借贷推广", "荐股"],
+    "content_formats": ["长视频", "图文"],
+    "style": "深度专业"
+  },
+  "performance": {
+    "avg_views": 60000,
+    "median_views": 45000,
+    "avg_engagement_rate": 0.07,
+    "conversion_rate": 0.02,
+    "historical_campaigns": ["数码商单 ×8", "硬件评测 ×5"]
+  },
+  "commercial": {
+    "historical_revenue": null,
+    "historical_cpm": 40,
+    "historical_cpe": null,
+    "preferred_categories": ["数码", "家电", "游戏"],
+    "rejected_categories": ["医美", "借贷催收", "博彩"]
+  },
+  "production": {
+    "avg_production_hours": 8,
+    "ai_generation_capability": "中等",
+    "available_formats": ["长视频"]
+  },
+  "risk": {
+    "brand_risk_tolerance": "中",
+    "restricted_categories": ["医美", "借贷催收", "博彩"],
+    "platform_risk_tolerance": "中"
+  }
+}

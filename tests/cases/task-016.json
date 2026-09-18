@@ -6,7 +6,7 @@
   "raw_task": "彩妆品牌『雾感』小红书任务：图文笔记标注2个商品链接（粉底液+定妆喷雾）；无固定稿费，佣金按成交额10%；笔记保留6个月；须带话题#雾感底妆#；可选露肤度不设限；佣金结算以次月15日为准。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-016",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "雾感", "product": "粉底液+定妆喷雾", "category": "美妆" },
     "campaign": {
       "objective": "CPS带货",

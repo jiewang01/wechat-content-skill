@@ -1,0 +1,121 @@
+{
+  "decision_id": "DEC-20260918-0001",
+  "task_id": "TASK-NB-20260918-021",
+  "action": "observe",
+  "decision_score": 62.2,
+  "dimensions": {
+    "revenue": 65,
+    "account_fit": 64,
+    "production_cost": 60,
+    "opportunity_cost": 70,
+    "risk": 55
+  },
+  "reasons": [
+    {
+      "statement": "收益维度 65 分：计价方式: 阅读单价 0.5025 元/阅读；推文后 48 小时结算（CPM 计费形态，收入=阅读数×0.5025）",
+      "evidence_refs": [
+        "EVD-20260918-0068",
+        "EVD-20260918-0069",
+        "EVD-20260918-0070",
+        "EVD-20260918-0071",
+        "EVD-20260918-0072"
+      ]
+    },
+    {
+      "statement": "账号匹配 64 分：受众匹配评估(品类=财富, 目标人群='男女比例：男粉多')",
+      "evidence_refs": [
+        "EVD-20260918-0068",
+        "EVD-20260918-0069",
+        "EVD-20260918-0070",
+        "EVD-20260918-0071",
+        "EVD-20260918-0072"
+      ]
+    },
+    {
+      "statement": "不确定性：预估工时未写明",
+      "evidence_refs": [
+        "EVD-20260918-0068",
+        "EVD-20260918-0069",
+        "EVD-20260918-0070",
+        "EVD-20260918-0071",
+        "EVD-20260918-0072"
+      ]
+    },
+    {
+      "statement": "不确定性：修改轮次未写明",
+      "evidence_refs": [
+        "EVD-20260918-0068",
+        "EVD-20260918-0069",
+        "EVD-20260918-0070",
+        "EVD-20260918-0071",
+        "EVD-20260918-0072"
+      ]
+    },
+    {
+      "statement": "不确定性：敏感性品类：财富",
+      "evidence_refs": [
+        "EVD-20260918-0068",
+        "EVD-20260918-0069",
+        "EVD-20260918-0070",
+        "EVD-20260918-0071",
+        "EVD-20260918-0072"
+      ]
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "补齐缺失信息后再决策",
+    "确认账号是否有同类历史样本"
+  ],
+  "confidence": {
+    "value": 0.795,
+    "status": "high",
+    "evidence_refs": [
+      "EVD-20260918-0068",
+      "EVD-20260918-0069",
+      "EVD-20260918-0070",
+      "EVD-20260918-0071",
+      "EVD-20260918-0072"
+    ],
+    "uncertainty_reasons": [
+      "预估工时未写明",
+      "修改轮次未写明",
+      "敏感性品类：财富"
+    ]
+  },
+  "evidence_refs": [
+    "EVD-20260918-0068",
+    "EVD-20260918-0069",
+    "EVD-20260918-0070",
+    "EVD-20260918-0071",
+    "EVD-20260918-0072"
+  ],
+  "hard_constraints": [
+    {
+      "constraint": "H1 account_rejects_category",
+      "status": "pass"
+    },
+    {
+      "constraint": "H2 platform_mismatch",
+      "status": "pass"
+    },
+    {
+      "constraint": "H3 mandatory_forbidden_clash",
+      "status": "pass",
+      "detail": null
+    },
+    {
+      "constraint": "H4 deadline_feasible",
+      "status": "pass"
+    },
+    {
+      "constraint": "H5 compliance_acceptable",
+      "status": "pass"
+    },
+    {
+      "constraint": "H6 capability_gate",
+      "status": "pass"
+    }
+  ],
+  "created_at": "2026-09-18T07:03:36.960350Z"
+}

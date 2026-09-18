@@ -6,7 +6,7 @@
   "raw_task": "手游『星野物语』抖音推广：口播+实机试玩60秒以上，需露出游戏昵称『星野物语』与下载承接位（左下角组件）；话术侧面烘托『公测福利』；指定标签#星野物语#；报价500元+按真实下载量每千1元；需账号近30天平均播放≥5000方可报名；禁止测评/吐槽向内容。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-013",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "抖音", "source_url": null, "captured_at": null },
     "brand": { "name": "星野物语", "product": "手游", "category": "游戏" },
     "campaign": {
       "objective": "新游推广引流下载",

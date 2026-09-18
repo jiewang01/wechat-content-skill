@@ -6,7 +6,7 @@
   "raw_task": "某母婴品牌招募小红书博主：项目为新品湿巾宣发，合作形式为素材代发（提供全部文案+图片）；费用30元；要求：不可修改文案与图片内容，不可删除笔记（保留12个月）；无需真人出镜；交付后24小时内发布。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-015",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "某母婴品牌", "product": "湿巾", "category": "母婴" },
     "campaign": {
       "objective": "新品宣发",

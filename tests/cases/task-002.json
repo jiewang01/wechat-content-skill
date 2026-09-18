@@ -6,7 +6,7 @@
   "raw_task": "【护肤品类】XX妍肌：限小红书图文，需真人出镜（可协商），重点突出『敏感肌可用』卖点，不得提竞品；广告费 800 元 + 佣金按链接成交 5%；截止 9月20日；需品牌审核通过后发布。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-002",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "XX妍肌", "product": null, "category": "护肤" },
     "campaign": {
       "objective": "图文种草",

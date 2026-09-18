@@ -6,7 +6,7 @@
   "raw_task": "【彩妆】XX蜜粉饼抖音短视频任务：30-60秒，需上脸实测（持妆对比），口播必含『控油12小时』『隐形毛孔』两个卖点，标题带话题#XX蜜粉饼#，可挂小黄车；报价1200元，修改不超过2次；48小时内交付。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-005",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "抖音", "source_url": null, "captured_at": null },
     "brand": { "name": "XX", "product": "蜜粉饼", "category": "美妆" },
     "campaign": {
       "objective": "新品曝光与带货",

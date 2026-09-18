@@ -6,7 +6,7 @@
   "raw_task": "【餐饮探店】城西新开的川菜馆『辣么旺』招募小红书/抖音探店博主：到店体验，提供双人餐+车马费补贴100元，发布1条视频（60秒以上）+1条图文笔记；需拍摄店内环境、招牌菜特写、排队现场；可挂定位，禁止提及类竞品店名。9月25日前到店体验。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-003",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "辣么旺", "product": null, "category": "餐饮" },
     "campaign": {
       "objective": "新店开业探店引流",

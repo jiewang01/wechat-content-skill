@@ -6,7 +6,7 @@
   "raw_task": "某银行理财子公司『橙子理财』公众号图文任务：产品科普向软文，禁止出现'保本''稳赚''收益率可达X%'等承诺性表述，禁止引导私下加群/添加个人微信导流；可引导至官方App下载页（需用官方短链）；报价800元；内容发布前需银行合规部门审核；修改次数未注明。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-020",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "公众号", "source_url": null, "captured_at": null },
     "brand": { "name": "橙子理财", "product": "理财产品", "category": "金融" },
     "campaign": {
       "objective": "产品科普与品牌曝光",

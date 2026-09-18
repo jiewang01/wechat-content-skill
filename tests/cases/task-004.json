@@ -6,7 +6,7 @@
   "raw_task": "知乎好物任务：某国产降噪耳机『静界 Pro』，图文回答形式，需真实使用场景与听感描述，字数1200字以上，插入商品链接，纯软文不标广告；稿费300元，7日内完成，稿费到账时间以知乎提现规则为准。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-004",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "知乎", "source_url": null, "captured_at": null },
     "brand": { "name": "静界", "product": "静界 Pro 降噪耳机", "category": "数码" },
     "campaign": {
       "objective": "知乎好物带货",

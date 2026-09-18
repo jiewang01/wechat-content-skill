@@ -1652,8 +1652,8 @@ Decision Optimization
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
 - [x] M2 决策引擎 v1：规则文档 + 可执行引擎 + task-021 跑通
-- [ ] M2 验收：对测试集后续用例执行 Blind Decision Test / 决策解释可读性检查
-- [ ] M2 待决：task-010 bonus 上限字段是否单列（decision 输出前定）
+- [x] M2 验收：21 例盲测 + Schema 结构校验 + 决策解释检查（详见 tests/m2-report.md）
+- [ ] M2 遗留：task-010 bonus 单列；"账号缺基线"对抗用例；Phase 4 数据回填后校准权重/阈值
 - [ ] 真实任务继续补充（用户提供）
 - [ ] M3：Content Copilot（Brief Generator 等，plan §5）
 

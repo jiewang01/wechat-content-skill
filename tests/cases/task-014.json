@@ -6,7 +6,7 @@
   "raw_task": "海外度假酒店『蓝湾』招募小红书探店博主（限常驻东南亚/可自付机票者）：3天2晚住宿体验置换+交通补贴800元；需发布图文2篇（含酒店外观/泳池/房内细节/早餐），视频1条30秒以上；酒店位于泰国普吉；发布前需酒店市场部审核；需配合官方拍摄时间表。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-014",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "蓝湾", "product": "度假酒店", "category": "旅游" },
     "campaign": {
       "objective": "酒店种草引流",

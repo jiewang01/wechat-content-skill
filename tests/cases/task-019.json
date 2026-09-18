@@ -6,7 +6,7 @@
   "raw_task": "高端宠物粮『鲜本』招募小红书博主：主粮1.5kg寄样（价值约350元）+稿费200元；图文或视频任选其一（图文≥400字含喂食对比，视频20秒以上含宠物体态展示）；需宠物自然出镜；禁止宣称'治疗/治疗皮肤病'等医疗功效；发布后笔记保留4个月；需添加官方链接。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-019",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "小红书", "source_url": null, "captured_at": null },
     "brand": { "name": "鲜本", "product": "主粮1.5kg", "category": "宠物" },
     "campaign": {
       "objective": "种草带货",

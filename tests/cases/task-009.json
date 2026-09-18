@@ -6,7 +6,7 @@
   "raw_task": "新榜贴片广告需求：任务名『XX知识付费产品推广』；投放时间：抢单后3日内完成带广告的文章推送，否则不予结算；推送位置：图文必须为公众号推送的头条或二条，否则视为无效推送，不予结算，图片在图文内位置不限；指定广告成交价：新榜指数500-650为20元/条，650-800为50元/条，800分以上为80元/条；提供广告图片最多4张（单张≤2M）。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-009",
-    "source": { "platform": "newbang", "source_url": "https://www.newrank.cn/account/ade/application.html", "captured_at": null },
+    "source": { "platform": "公众号", "source_url": "https://www.newrank.cn/account/ade/application.html", "captured_at": null },
     "brand": { "name": "XX知识付费", "product": null, "category": "知识付费" },
     "campaign": {
       "objective": "贴片广告投放",

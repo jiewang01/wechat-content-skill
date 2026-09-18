@@ -6,7 +6,7 @@
   "raw_task": "B站UP主商单：『智测』显示器测评视频，5-8分钟，需开箱、面板参数实测（色域/漏光）、游戏帧率测试三个环节；报价2000元+按播放量阶梯加成（1万播+100元，上限500元）；需提供发票；商业授权范围：站内视频授权6个月；60天内发布。",
   "expected_adtask": {
     "task_id": "TASK-NB-20260918-010",
-    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "source": { "platform": "B站", "source_url": null, "captured_at": null },
     "brand": { "name": "智测", "product": "显示器", "category": "数码" },
     "campaign": {
       "objective": "产品测评种草",
