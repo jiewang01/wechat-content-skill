@@ -1,2 +1,2 @@
-# wechat-ad-skill
+# wechat-topic-skill
 
