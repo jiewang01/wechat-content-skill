@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/evidence.schema.json",
+  "title": "Evidence",
+  "description": "事实/证据层。任何重要判断都必须能够回溯到 Evidence → Source。版本：v1",
+  "type": "object",
+  "required": [
+    "evidence_id",
+    "type",
+    "source",
+    "content",
+    "reliability"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string"
+    },
+
+    "type": {
+      "type": "string",
+      "enum": [
+        "task_fact",
+        "account_fact",
+        "historical_data",
+        "platform_rule",
+        "brand_requirement",
+        "model_inference",
+        "user_input"
+      ]
+    },
+
+    "source": {
+      "type": "object",
+      "required": ["origin"],
+      "properties": {
+        "origin": {
+          "type": "string"
+        },
+        "url": {
+          "type": ["string", "null"]
+        },
+        "captured_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    },
+
+    "content": {
+      "type": "string"
+    },
+
+    "data": {
+      "type": ["object", "array", "string", "number", "boolean", "null"]
+    },
+
+    "reliability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

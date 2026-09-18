@@ -2,7 +2,7 @@
 
 ## Implementation Plan v0.1
 
-> 本文基于 `blueprint.md` 制定，用于指导 Skill 的分阶段实现、验收与后续演进。
+> 本文基于 `BLUEPRINT.md` 制定，用于指导 Skill 的分阶段实现、验收与后续演进。
 >
 > 核心原则：
 >
@@ -1593,7 +1593,36 @@ Decision Optimization
 
 ---
 
-# 19. Definition of Done
+# 19. Implementation Log
+
+## 2026-09-18 — Phase 0 + Phase 1 基础落地
+
+已完成：
+
+```text
+- BLUEPRINT.md（原 BULEPRINT.md，已重命名）
+- schemas/
+  ├── ad-task.schema.json          (AdTask@v1)
+  ├── account-profile.schema.json  (AccountProfile@v1)
+  ├── evidence.schema.json         (Evidence@v1)
+  └── decision.schema.json         (Decision@v1，reasons[].evidence_refs 与 confidence.evidence_refs 设为必填)
+- knowledge/
+  ├── id-rules.md                  (TASK-*/ACCOUNT-*/EVD-*/DEC-*)
+  ├── evidence-rules.md            (追溯链、type、reliability 给分、Rule 05)
+  ├── confidence-rules.md          (Reliability ≠ Confidence、四档分级)
+  ├── task-parser-rules.md         (Phase 1：抽取字段清单、金额/时间、缺失处理)
+  └── requirement-normalizer-rules.md (Phase 1：mandatory/optional/forbidden/unknown)
+- tests/cases/task-001.example.json (演示/校验用虚构示例)
+```
+
+待办：
+
+- [ ] M1 验收：20 个真实广告任务测试集
+- [ ] M2：Decision Engine 规则细化（Account Fit / Economics / Risk / Hard Constraint / 权重）
+
+---
+
+# 20. Definition of Done
 
 整个 Skill 的最终完成标准不是“功能全部自动化”。
 

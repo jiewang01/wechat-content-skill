@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/decision.schema.json",
+  "title": "Decision",
+  "description": "运营决策。回答『在当前证据、当前账号状态和当前运营目标下，应该采取什么行动』。版本：v1",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "task_id",
+    "action",
+    "decision_score",
+    "dimensions",
+    "reasons",
+    "confidence",
+    "evidence_refs"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string"
+    },
+
+    "task_id": {
+      "type": "string"
+    },
+
+    "action": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "observe",
+        "reject",
+        "need_information"
+      ]
+    },
+
+    "decision_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100
+    },
+
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "revenue": {
+          "type": ["number", "null"]
+        },
+        "account_fit": {
+          "type": ["number", "null"]
+        },
+        "production_cost": {
+          "type": ["number", "null"]
+        },
+        "opportunity_cost": {
+          "type": ["number", "null"]
+        },
+        "risk": {
+          "type": ["number", "null"]
+        }
+      }
+    },
+
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "statement",
+          "evidence_refs"
+        ],
+        "properties": {
+          "statement": {
+            "type": "string"
+          },
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "confidence": {
+      "type": "object",
+      "required": [
+        "value",
+        "status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "status": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

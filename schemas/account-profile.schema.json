@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/account-profile.schema.json",
+  "title": "AccountProfile",
+  "description": "账号运营数字画像。描述当前账号的人群、内容、历史表现、商业能力、生产能力与风险边界。版本：v1",
+  "type": "object",
+  "required": [
+    "account_id",
+    "platform",
+    "audience",
+    "content",
+    "performance",
+    "commercial",
+    "production",
+    "risk"
+  ],
+  "properties": {
+    "account_id": {
+      "type": "string"
+    },
+
+    "platform": {
+      "type": "string"
+    },
+
+    "account": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": ["string", "null"]
+        },
+        "category": {
+          "type": ["string", "null"]
+        },
+        "followers": {
+          "type": ["integer", "null"]
+        }
+      }
+    },
+
+    "audience": {
+      "type": "object",
+      "properties": {
+        "age_distribution": {
+          "type": "object"
+        },
+        "gender_distribution": {
+          "type": "object"
+        },
+        "location_distribution": {
+          "type": "object"
+        },
+        "interest_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "content": {
+      "type": "object",
+      "properties": {
+        "niches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preferred_topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "style": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+
+    "performance": {
+      "type": "object",
+      "properties": {
+        "avg_views": {
+          "type": ["number", "null"]
+        },
+        "median_views": {
+          "type": ["number", "null"]
+        },
+        "avg_engagement_rate": {
+          "type": ["number", "null"]
+        },
+        "conversion_rate": {
+          "type": ["number", "null"]
+        },
+        "historical_campaigns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "commercial": {
+      "type": "object",
+      "properties": {
+        "historical_revenue": {
+          "type": ["number", "null"]
+        },
+        "historical_cpm": {
+          "type": ["number", "null"]
+        },
+        "historical_cpe": {
+          "type": ["number", "null"]
+        },
+        "preferred_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rejected_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "production": {
+      "type": "object",
+      "properties": {
+        "avg_production_hours": {
+          "type": ["number", "null"]
+        },
+        "ai_generation_capability": {
+          "type": ["string", "null"]
+        },
+        "available_formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "risk": {
+      "type": "object",
+      "properties": {
+        "brand_risk_tolerance": {
+          "type": ["string", "null"]
+        },
+        "restricted_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platform_risk_tolerance": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}
