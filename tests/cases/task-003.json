@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-003",
+  "version": "0.1",
+  "description": "新店开业探店，固定费+到店免单，需视频+图文，场景与排队素材要求",
+  "source": "synthetic",
+  "raw_task": "【餐饮探店】城西新开的川菜馆『辣么旺』招募小红书/抖音探店博主：到店体验，提供双人餐+车马费补贴100元，发布1条视频（60秒以上）+1条图文笔记；需拍摄店内环境、招牌菜特写、排队现场；可挂定位，禁止提及类竞品店名。9月25日前到店体验。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-003",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "辣么旺", "product": null, "category": "餐饮" },
+    "campaign": {
+      "objective": "新店开业探店引流",
+      "target_audience": null,
+      "content_type": "视频+图文",
+      "key_messages": [],
+      "mandatory_points": ["拍摄店内环境", "招牌菜特写", "排队现场", "可挂定位"],
+      "forbidden_points": ["禁止提及类竞品店名"]
+    },
+    "commercial": { "creator_fee": 100, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "提供双人餐+a车马费补贴100元" },
+    "production": {
+      "deadline": "2026-09-25T00:00:00Z",
+      "estimated_hours": null,
+      "content_format": "视频+图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": true,
+      "special_requirements": ["视频60秒以上", "1条视频+1条图文"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0009", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "提供双人餐+车马费补贴100元（实物代偿，非纯现金）", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0010", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "需在9月25日前到店体验", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0011", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改轮次未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

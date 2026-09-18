@@ -1613,11 +1613,28 @@ Decision Optimization
   ├── task-parser-rules.md         (Phase 1：抽取字段清单、金额/时间、缺失处理)
   └── requirement-normalizer-rules.md (Phase 1：mandatory/optional/forbidden/unknown)
 - tests/cases/task-001.example.json (演示/校验用虚构示例)
+- tests/cases/README.md + task-001~020.json（M1 测试集，20 个用例：19 synthetic + 1 public_source 锚点）
+- schemas/test-case.schema.json（用例数据契约）
+- tools/validate.py（用例 Schema 校验脚本，`python3 tools/validate.py`）
+```
+
+## 2026-09-18 — M1 测试集建立
+
+```text
+- 20 个广告任务用例（tests/cases/task-001.json ~ task-020.json），覆盖母婴/护肤/餐饮/数码/美妆/
+  家清/服饰/教育/游戏/旅游/健身/家电/宠物/金融(敏感) 等品类，图文/视频/贴片/代发/寄拍/置换/
+  CPS 等多结算形态
+- 覆盖要点（plan §3.6）：金额（固定/佣金/置换/未报价）、截止（明确/相对/未写）、
+  mandatory/optional/forbidden/unknown 识别，特别强化 unknown 用例（revision_limit 等）
+- 来源说明：从公开渠道（新榜贴片广告规则页、问卷网招募帖等）提取真实格式锚点；
+  19 个为合成样例（synthetic），1 个为 public_source（task-009）；用户提供真实任务后按 real- 前缀补充
+- 校验入口：python3 tools/validate.py → 20 例 PASS
 ```
 
 待办：
 
-- [ ] M1 验收：20 个真实广告任务测试集
+- [ ] M1 验收执行：对 20 例执行 Task Parser，记录字段提取完整率 / 金额准确率 / unknown 识别率
+- [ ] 用户提供真实新榜任务后补充 real- 用例
 - [ ] M2：Decision Engine 规则细化（Account Fit / Economics / Risk / Hard Constraint / 权重）
 
 ---

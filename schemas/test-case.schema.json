@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/test-case.schema.json",
+  "title": "TestCase",
+  "description": "评估数据集用例。每个用例包含 Raw Task、Expected AdTask、Expected Evidence、AccountProfile、Expected Decision 与 Actual Outcome（plan §14）。版本：v1",
+  "type": "object",
+  "required": [
+    "case_id",
+    "version",
+    "description",
+    "source",
+    "raw_task",
+    "expected_adtask",
+    "expected_evidence",
+    "account_profile",
+    "expected_decision",
+    "actual_outcome"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["user_provided", "synthetic", "public_source"]
+    },
+    "raw_task": {
+      "type": "string"
+    },
+    "expected_adtask": {
+      "type": "object"
+    },
+    "expected_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "account_profile": {
+      "type": ["object", "null"],
+      "properties": {
+        "ref": {
+          "type": "string"
+        }
+      }
+    },
+    "expected_decision": {
+      "type": ["object", "null"]
+    },
+    "actual_outcome": {
+      "type": ["object", "null"]
+    }
+  }
+}

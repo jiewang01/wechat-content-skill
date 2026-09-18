@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-015",
+  "version": "0.1",
+  "description": "母婴纯代发任务：素材全提供、禁止二次修改，报价低（真实招募模式锚点）",
+  "source": "synthetic",
+  "raw_task": "某母婴品牌招募小红书博主：项目为新品湿巾宣发，合作形式为素材代发（提供全部文案+图片）；费用30元；要求：不可修改文案与图片内容，不可删除笔记（保留12个月）；无需真人出镜；交付后24小时内发布。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-015",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "某母婴品牌", "product": "湿巾", "category": "母婴" },
+    "campaign": {
+      "objective": "新品宣发",
+      "target_audience": null,
+      "content_type": "图文代发",
+      "key_messages": [],
+      "mandatory_points": ["不可修改文案与图片内容", "笔记保留12个月", "无需真人出镜"],
+      "forbidden_points": ["不可修改文案与图片内容"]
+    },
+    "commercial": { "creator_fee": 30, "commission": null, "bonus": null, "estimated_total_income": 30, "settlement_rule": null },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文代发",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": ["交付后24小时内发布", "提供全部文案+图片"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": 0,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0049", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "费用30元", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0050", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "不可修改文案与图片内容（revision_limit=0）", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0051", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "笔记保留12个月", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

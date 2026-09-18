@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-016",
+  "version": "0.1",
+  "description": "美妆佣金制任务：无固定费，多链接+CPS为主，结算是核心不确定性",
+  "source": "synthetic",
+  "raw_task": "彩妆品牌『雾感』小红书任务：图文笔记标注2个商品链接（粉底液+定妆喷雾）；无固定稿费，佣金按成交额10%；笔记保留6个月；须带话题#雾感底妆#；可选露肤度不设限；佣金结算以次月15日为准。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-016",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "雾感", "product": "粉底液+定妆喷雾", "category": "美妆" },
+    "campaign": {
+      "objective": "CPS带货",
+      "target_audience": null,
+      "content_type": "图文",
+      "key_messages": [],
+      "mandatory_points": ["标注2个商品链接", "带话题#雾感底妆#", "笔记保留6个月"],
+      "forbidden_points": []
+    },
+    "commercial": { "creator_fee": null, "commission": 10, "bonus": null, "estimated_total_income": null, "settlement_rule": "佣金按成交额10%，次月15日结算" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": []
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0052", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "无固定稿费，纯佣金制（预期收入不确定性高）", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0053", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "佣金率10%，次月15日结算", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0054", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

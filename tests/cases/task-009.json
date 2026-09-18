@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-009",
+  "version": "0.1",
+  "description": "公众号贴片广告任务：按新榜指数分级定价，推送位置头条/二条硬性要求，图片位置不限",
+  "source": "public_source",
+  "raw_task": "新榜贴片广告需求：任务名『XX知识付费产品推广』；投放时间：抢单后3日内完成带广告的文章推送，否则不予结算；推送位置：图文必须为公众号推送的头条或二条，否则视为无效推送，不予结算，图片在图文内位置不限；指定广告成交价：新榜指数500-650为20元/条，650-800为50元/条，800分以上为80元/条；提供广告图片最多4张（单张≤2M）。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-009",
+    "source": { "platform": "newbang", "source_url": "https://www.newrank.cn/account/ade/application.html", "captured_at": null },
+    "brand": { "name": "XX知识付费", "product": null, "category": "知识付费" },
+    "campaign": {
+      "objective": "贴片广告投放",
+      "target_audience": null,
+      "content_type": "图文贴片",
+      "key_messages": [],
+      "mandatory_points": ["图文必须为头条或二条"],
+      "forbidden_points": []
+    },
+    "commercial": { "creator_fee": null, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "按新榜指数分级：20/50/80 元每条" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文贴片",
+      "word_count": null,
+      "image_count": 4,
+      "video_required": false,
+      "special_requirements": ["投放时间：抢单后3日内完成推送"]
+    },
+    "requirements": {
+      "platform_rules": ["推送位置须为头条或二条，否则不结算", "图片单张不超过2M"],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0029", "type": "platform_rule", "source": { "origin": "newrank_ade_application_page" }, "content": "推送位置须为头条或二条，否则视为无效推送，不予结算", "reliability": 0.95 },
+    { "evidence_id": "EVD-20260918-0030", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "成交价按指数分级：20/50/80元每条", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0031", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

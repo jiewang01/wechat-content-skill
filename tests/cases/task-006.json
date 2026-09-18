@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-006",
+  "version": "0.1",
+  "description": "家清洗护寄样笔记，无明确现金报价需询价，要求保留期与拍摄角度",
+  "source": "synthetic",
+  "raw_task": "家清品牌『净澈』洗碗块招募小红书笔记：寄样测评，图文形式，需包含产品开箱、使用前/后对比图；笔记保留至少6个月；报价以私信询价为准（平台未显示）；禁止夸大去污效果描述为'杀菌99%'以外的表述。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-006",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "净澈", "product": "洗碗块", "category": "家清洗护" },
+    "campaign": {
+      "objective": "测评种草",
+      "target_audience": null,
+      "content_type": "图文",
+      "key_messages": [],
+      "mandatory_points": ["产品开箱照", "使用前/后对比图", "笔记保留至少6个月"],
+      "forbidden_points": ["禁止夸大去污效果"]
+    },
+    "commercial": { "creator_fee": null, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "报价以私信询价为准" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": ["寄样测评"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": { "claim_risk": "去污效果宣称需以'杀菌99%'为限，不得夸大" }
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0020", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "报价未公开，需私信询价", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0021", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "笔记保留至少6个月", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0022", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-013",
+  "version": "0.1",
+  "description": "手游新游推广抖音口播+试玩，挂载承接、昵称露出，效果要求高（展示数据门槛）",
+  "source": "synthetic",
+  "raw_task": "手游『星野物语』抖音推广：口播+实机试玩60秒以上，需露出游戏昵称『星野物语』与下载承接位（左下角组件）；话术侧面烘托『公测福利』；指定标签#星野物语#；报价500元+按真实下载量每千1元；需账号近30天平均播放≥5000方可报名；禁止测评/吐槽向内容。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-013",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "星野物语", "product": "手游", "category": "游戏" },
+    "campaign": {
+      "objective": "新游推广引流下载",
+      "target_audience": null,
+      "content_type": "短视频",
+      "key_messages": ["公测福利"],
+      "mandatory_points": ["口播+实机试玩60秒以上", "露出游戏昵称与下载承接位", "带#星野物语#标签"],
+      "forbidden_points": ["禁止测评/吐槽向内容"]
+    },
+    "commercial": { "creator_fee": 500, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "按真实下载量每千1元另计" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "短视频",
+      "word_count": null,
+      "image_count": null,
+      "video_required": true,
+      "special_requirements": ["需账号近30天平均播放≥5000"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0042", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "报价500元+按下载量另计", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0043", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "报名门槛：近30天平均播放≥5000", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0044", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

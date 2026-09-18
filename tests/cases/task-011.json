@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-011",
+  "version": "0.1",
+  "description": "食品试吃寄样，无稿费纯置换，未提修改轮次与审核（重点 unknown 用例）",
+  "source": "synthetic",
+  "raw_task": "零食品牌『脆脆星球』新品薯脆试吃招募：寄样2袋，小红书图文自由发挥即可，需真实试吃感受；无稿费，产品归博主；一篇笔记即可；不限制发布时间。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-011",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "脆脆星球", "product": "薯脆", "category": "食品" },
+    "campaign": {
+      "objective": "试吃种草",
+      "target_audience": null,
+      "content_type": "图文",
+      "key_messages": ["真实试吃感受"],
+      "mandatory_points": ["真实试吃感受"],
+      "forbidden_points": []
+    },
+    "commercial": { "creator_fee": null, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "无稿费，实物置换（寄样2袋）" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": ["寄样2袋"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": null,
+      "revision_limit": null,
+      "approval_required": null
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0035", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "无稿费，实物置换（寄样）", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0036", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "不限制发布时间（无截止时间）", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0037", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改轮次与审核规则未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

@@ -1,0 +1,49 @@
+{
+  "case_id": "CASE-020",
+  "version": "0.1",
+  "description": "金融类敏感任务：合规硬约束（不承诺收益、导流限制）、品牌审核",
+  "source": "synthetic",
+  "raw_task": "某银行理财子公司『橙子理财』公众号图文任务：产品科普向软文，禁止出现'保本''稳赚''收益率可达X%'等承诺性表述，禁止引导私下加群/添加个人微信导流；可引导至官方App下载页（需用官方短链）；报价800元；内容发布前需银行合规部门审核；修改次数未注明。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-020",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "橙子理财", "product": "理财产品", "category": "金融" },
+    "campaign": {
+      "objective": "产品科普与品牌曝光",
+      "target_audience": null,
+      "content_type": "公众号图文",
+      "key_messages": [],
+      "mandatory_points": ["产品科普向软文", "引导至官方App下载页（官方短链）"],
+      "forbidden_points": ["禁止保本/稳赚/收益率可达等承诺性表述", "禁止引导私下加群、添加个人微信导流"]
+    },
+    "commercial": { "creator_fee": 800, "commission": null, "bonus": null, "estimated_total_income": 800, "settlement_rule": null },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "公众号图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": []
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": "内容发布前需银行合规部门审核",
+      "revision_limit": null,
+      "approval_required": true
+    },
+    "risk": {
+      "policy_risk": "金融广告受严格监管，承诺收益与导流行为有高合规风险",
+      "claim_risk": "禁止保本/稳赚等承诺性表述"
+    }
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0064", "type": "platform_rule", "source": { "origin": "raw_task" }, "content": "禁止承诺收益、禁止私下导流（合规硬约束）", "reliability": 0.95 },
+    { "evidence_id": "EVD-20260918-0065", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "报价800元", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0066", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "需银行合规部门审核", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0067", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数明确未注明（unknown，非零）", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

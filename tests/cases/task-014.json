@@ -1,0 +1,46 @@
+{
+  "case_id": "CASE-014",
+  "version": "0.1",
+  "description": "境外酒店探店，体验置换+部分补贴，需行程配合与素材清单",
+  "source": "synthetic",
+  "raw_task": "海外度假酒店『蓝湾』招募小红书探店博主（限常驻东南亚/可自付机票者）：3天2晚住宿体验置换+交通补贴800元；需发布图文2篇（含酒店外观/泳池/房内细节/早餐），视频1条30秒以上；酒店位于泰国普吉；发布前需酒店市场部审核；需配合官方拍摄时间表。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-014",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "蓝湾", "product": "度假酒店", "category": "旅游" },
+    "campaign": {
+      "objective": "酒店种草引流",
+      "target_audience": null,
+      "content_type": "图文+视频",
+      "key_messages": [],
+      "mandatory_points": ["图文2篇（外观/泳池/房内/早餐）", "视频1条30秒以上", "配合官方拍摄时间表"],
+      "forbidden_points": []
+    },
+    "commercial": { "creator_fee": 800, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "住宿置换+交通补贴800元" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文+视频",
+      "word_count": null,
+      "image_count": null,
+      "video_required": true,
+      "special_requirements": ["限常驻东南亚或可自付机票者", "地点：泰国普吉"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": "发布前需酒店市场部审核",
+      "revision_limit": null,
+      "approval_required": true
+    },
+    "risk": {}
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0045", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "住宿置换+交通补贴800元，报销上限未写明", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0046", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "需自付机票的外地博主含隐形成本", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0047", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "发布前需酒店市场部审核", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0048", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}

@@ -1,0 +1,49 @@
+{
+  "case_id": "CASE-012",
+  "version": "0.1",
+  "description": "医美类敏感任务：功效宣称合规红线、需资质证明、审核严格（风险用例）",
+  "source": "synthetic",
+  "raw_task": "【医美】某光电美容中心体验招募小红书笔记：提供项目体验（光子嫩肤单次），需真实体验分享；禁止出现『祛斑/永久/根治/一次见效』等绝对化与医疗功效表述，只能用手感+场景描述；需附带体验前后对比图（打码）；报价以到店核销后结算，需持执业资质账号优先；内容发布前需机构法务审核。",
+  "expected_adtask": {
+    "task_id": "TASK-NB-20260918-012",
+    "source": { "platform": "newbang", "source_url": null, "captured_at": null },
+    "brand": { "name": "某光电美容中心", "product": "光子嫩肤体验", "category": "医美" },
+    "campaign": {
+      "objective": "体验分享种草",
+      "target_audience": null,
+      "content_type": "图文",
+      "key_messages": ["真实体验分享"],
+      "mandatory_points": ["体验前后对比图（打码）", "内容发布前需机构法务审核"],
+      "forbidden_points": ["禁止绝对化与医疗功效表述", "禁止祛斑/永久/根治/一次见效等词"]
+    },
+    "commercial": { "creator_fee": null, "commission": null, "bonus": null, "estimated_total_income": null, "settlement_rule": "到店核销后结算" },
+    "production": {
+      "deadline": null,
+      "estimated_hours": null,
+      "content_format": "图文",
+      "word_count": null,
+      "image_count": null,
+      "video_required": false,
+      "special_requirements": ["到店体验"]
+    },
+    "requirements": {
+      "platform_rules": [],
+      "brand_review": "内容发布前需机构法务审核",
+      "revision_limit": null,
+      "approval_required": true
+    },
+    "risk": {
+      "policy_risk": "医美类广告受广告法严格监管，绝对化用语与功效宣称有高合规风险",
+      "claim_risk": "禁止祛斑/永久/根治等医疗功效表述"
+    }
+  },
+  "expected_evidence": [
+    { "evidence_id": "EVD-20260918-0038", "type": "platform_rule", "source": { "origin": "raw_task" }, "content": "禁止绝对化与医疗功效表述", "reliability": 0.95 },
+    { "evidence_id": "EVD-20260918-0039", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "结算方式为到店核销后结算，金额未公开", "reliability": 0.9 },
+    { "evidence_id": "EVD-20260918-0040", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "需机构法务审核（approval_required=true）", "reliability": 0.98 },
+    { "evidence_id": "EVD-20260918-0041", "type": "task_fact", "source": { "origin": "raw_task" }, "content": "修改次数未写明", "reliability": 0.98 }
+  ],
+  "account_profile": null,
+  "expected_decision": null,
+  "actual_outcome": null
+}
