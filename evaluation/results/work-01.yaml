@@ -1,0 +1,256 @@
+# 冒烟测试结果：work-01（职场沟通/向上管理账号）
+# 输入："职场沟通与向上管理的实战经验，帮打工人少走弯路"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 职场沟通与向上管理的实战经验，帮打工人少走弯路
+  source: explicit
+  audience: { primary: [职场 1-5 年员工, 基层管理者], secondary: [应届生] }
+  domain: [职场沟通, 向上管理, 职业发展]
+  value_proposition: [可复用的沟通方法, 向上管理避坑经验]
+  content_style: { tone: 「实战、务实 〔inferred〕」, format: [图文, 场景对话拆解, 清单] }
+  authority:
+    strengths: [一线职场经验, 沟通方法论]
+    limitations: [非 HR/管理咨询机构官方]
+  boundaries: [技术教程, 八卦娱乐, 时政评论]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 汇报是向上管理的核心杠杆
+    signals: { trend: PREP/金字塔等结构化表达被反复验证, demand: 「干得好不如汇报得好」成高频痛点 }
+    evidence:
+      - source: 36氪（职场汇报万能模板）
+        source_type: social
+        date: 2026-04-14
+        claim: PREP 模型（观点-依据-案例-重申）可套用口头汇报/周报/晋升汇报；金字塔原理结论先行；"职场 80% 的信任来自同步"
+        confidence: high
+      - source: Confidence Playbook（向上沟通规则）
+        source_type: other
+        date: 2026-03-21
+        claim: 汇报先给推荐结论、围绕业务影响展开、预判问题提前回答（What-So What-Now What 框架）
+        confidence: medium
+    content_gap: 把模型讲成"领导视角"，并从场景出发给逐字稿的内容稀缺
+    candidate_angles: [PREP 逐字稿, 汇报的五个漏斗]
+
+  - topic: 向上管理不越界的边界感
+    signals: { demand: 很多人把向上管理误读为「做领导喜欢的」，又怕越界 }
+    evidence:
+      - source: Niagara Institute（Managing Up 指南）
+        source_type: other
+        date: 2026-06-28
+        claim: 向上管理=替自己这侧的关系负责；明确期望（"好的交付长什么样"）可化解大部分分歧；不要替领导做决定/公开纠正
+        confidence: medium
+      - source: Yogen（Managing Up 手册）
+        source_type: other
+        date: 2026-01-01
+        claim: 先给证据再给结论、提供三个可选方案+推荐、用中性解决问题的语言避免防御感
+        confidence: medium
+    content_gap: "‘不 PUA 自己也不讨好领导’的中道操作指南"
+    candidate_angles: [管理领导期望, 提出选项而非问题]
+
+  - topic: 职场边界与"静默离职"文化
+    signals: { trend: 拒绝加班/工作边界成为社交媒体高热度议题, discussion: 微博「职场生存法则」话题阅读 7.2 亿 }
+    evidence:
+      - source: 复旦《管理视野》（36kr 转载）
+        source_type: analytics
+        date: 2026-07-16
+        claim: 静默离职（只做职责内最低限度工作）成群体共识；微博"职场生存法则"话题阅读量突破 7.2 亿；Gallup 59% 劳动者不敬业
+        confidence: medium
+      - source: 职场内耗实操文（get to know）
+        source_type: social
+        date: 2026-05-02
+        claim: 内耗化解=边界感+钝感力+优先级；学会温和坚定拒绝"不属于自己的任务"
+        confidence: low
+    content_gap: 把"表态"升级为"方法"：怎么温和拒绝、怎么守住边界且不被穿小鞋
+    candidate_angles: [温和拒绝的话术, 边界感的落地动作]
+
+  - topic: 新生代 vs 传统领导的代际沟通
+    signals: { demand: 年轻员工与上司预期不一致，冲突变公开话题 }
+    evidence:
+      - source: LinkedIn 病毒话题（Entertales 转述）
+        source_type: social
+        date: 2026-06-14
+        claim: Gen Z 员工拒绝 9PM 会议（"那就安排在上班时间"，"大家都 burnout 了，我不想burnout"）引发全球关于工作边界的辩论
+        confidence: medium
+    content_gap: 不打"代际战争"标签、双向理解与协商话术的内容
+    candidate_angles: [拒绝加班的协商话术, 领导视角的期待管理]
+
+candidates:
+  - core_topic: PREP 万能汇报模板：今天就能用
+    user_problem: 汇报被说"没重点"
+    target_audience: 1-5 年职场人
+    content_angle: P-观点/R-依据/E-案例/P-重申四步拆解 + 三种场景逐字稿
+    content_type: tutorial
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 周报是向上管理的隐藏机会
+    user_problem: 周报只当流水账交差
+    target_audience: 职场人
+    content_angle: 把周报从"记录"变"同步+求资源"的结构
+    content_type: practice
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 结论先行：为什么领导没耐心听完
+    user_problem: 讲了很多但领导不耐烦
+    target_audience: 职场人
+    content_angle: 从领导的时间与认知负担解释金字塔原理
+    content_type: opinion
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 汇报的五个漏斗：说给领导听的顺序
+    user_problem: 不知道哪些信息该说哪些不该说
+    target_audience: 基层管理者
+    content_angle: 结论-影响-风险-方案-建议五层过滤框架
+    content_type: methodology
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 管理领导的期望：开工前问三句话
+    user_problem: 干完才发现标准不一样
+    target_audience: 职场人
+    content_angle: 好的交付长什么样/优先级/谁验收三问
+    content_type: practice
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 提出选项，而不是只报问题
+    user_problem: 汇报问题被问"那你的方案呢"
+    target_audience: 职场人
+    content_angle: 三个方案+推荐+理由的模板
+    content_type: tutorial
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 向上管理≠拍马屁：边界在哪
+    user_problem: 怕被认为钻营/讨好
+    target_audience: 职场新人
+    content_angle: 明确"对关系负责"与"替领导做事"的分界
+    content_type: opinion
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 温和而坚定地说不：拒绝加活的话术
+    user_problem: 不敢拒绝同事甩来的活
+    target_audience: 职场人
+    content_angle: 边界+优先级表达 + 拒绝后给替代方案的句式
+    content_type: tutorial
+    source_signals: [职场边界与"静默离职"文化]
+  - core_topic: 拒绝 9 点会议：可执行的协商话术
+    user_problem: 想守边界又怕得罪领导
+    target_audience: 年轻员工
+    content_angle: 用"影响-替代-承诺"三段式替代硬刚
+    content_type: practice
+    source_signals: [新生代 vs 传统领导的代际沟通]
+  - core_topic: 静默离职之外：划边界的第三条路
+    user_problem: 不想消极怠工也不想被压榨
+    target_audience: 职场人
+    content_angle: 主动沟通边界而非被动躺平的做法
+    content_type: opinion
+    source_signals: [职场边界与"静默离职"文化]
+  - core_topic: 领导视角：为什么 TA 显得"没边界"
+    user_problem: 总觉得领导压榨
+    target_audience: 基层员工
+    content_angle: 从领导职责与压力理解行为，谈而非吵
+    content_type: opinion
+    source_signals: [新生代 vs 传统领导的代际沟通]
+  - core_topic: 1on1 怎么聊才有价值
+    user_problem: 一对一不知道聊什么/怕暴露短板
+    target_audience: 职场人
+    content_angle: 给 1on1 的议程模板与提问清单
+    content_type: practice
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 跨部门沟通的目标对齐术
+    user_problem: 跨部门推不动、互相甩锅
+    target_audience: 职场人
+    content_angle: 先对齐目标再对齐动作的沟通框架
+    content_type: methodology
+    source_signals: [职场边界与"静默离职"文化]
+  - core_topic: 被批评时的不防御沟通
+    user_problem: 被批评就解释，越描越黑
+    target_audience: 职场新人
+    content_angle: 区分解释与辩护，用"确认-接受-下一步"
+    content_type: practice
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 会议发言的三分钟结构
+    user_problem: 会议被点名讲不清
+    target_audience: 职场人
+    content_angle: 观点-数据-诉求的结构，3 分钟内讲完
+    content_type: tutorial
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 高情商不再是玄学：情绪颗粒度
+    user_problem: 情商被讲成天赋
+    target_audience: 职场人
+    content_angle: 把情商拆成可练习的观察/回应动作
+    content_type: opinion
+    source_signals: [新生代 vs 传统领导的代际沟通]
+  - core_topic: 晋升汇报：从做事到讲价值
+    user_problem: 业绩很好但晋升答辩老挂
+    target_audience: 晋升候选者
+    content_angle: 用结果思维重组材料 + 突击问答准备
+    content_type: methodology
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 新人入职 90 天的向上管理路线
+    user_problem: 新人期不知如何建立存在感
+    target_audience: 应届生
+    content_angle: 同步节奏/求助姿势/展示窗口三步走
+    content_type: methodology
+    source_signals: [向上管理不越界的边界感]
+  - core_topic: 书面沟通：微信/邮件回复的艺术
+    user_problem: 线上沟通被误读/回复没重点
+    target_audience: 职场人
+    content_angle: 结论前置 + 最小化回复句式
+    content_type: tutorial
+    source_signals: [汇报是向上管理的核心杠杆]
+  - core_topic: 把内耗变成成长：职场情绪复盘法
+    user_problem: 被一句话内耗一整天
+    target_audience: 职场人
+    content_angle: 边界感+钝感力+优先级的复盘框架
+    content_type: practice
+    source_signals: [职场边界与"静默离职"文化]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: PREP 万能汇报模板：今天就能用, market_score: 85, score_breakdown: { demand: 90, pain: 84, trend: 80, novelty: 76, content_gap: 88, evidence: 88 } }
+    - { rank: 2, topic: 温和而坚定地说不：拒绝加活的话术, market_score: 83, score_breakdown: { demand: 88, pain: 84, trend: 82, novelty: 80, content_gap: 84, evidence: 74 } }
+    - { rank: 3, topic: 管理领导的期望：开工前问三句话, market_score: 80, score_breakdown: { demand: 84, pain: 82, trend: 74, novelty: 82, content_gap: 82, evidence: 74 } }
+    - { rank: 4, topic: 提出选项，而不是只报问题, market_score: 79, score_breakdown: { demand: 84, pain: 80, trend: 72, novelty: 80, content_gap: 82, evidence: 76 } }
+    - { rank: 5, topic: 新生代拒绝加班：可执行的协商话术, market_score: 77, score_breakdown: { demand: 82, pain: 78, trend: 84, novelty: 76, content_gap: 78, evidence: 62 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖模板/拒绝/期望管理/方案意识/代际，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: PREP 万能汇报模板：今天就能用
+    angle: 把 P-观点/R-依据/E-案例/P-重申 拆成三种场景逐字稿
+    market_score: 85
+    account_fit: 88
+    fit_breakdown: { audience: 90, problem: 88, authority: 84, value: 90, differentiation: 86, style: 86 }
+    why_selected:
+      market_reason: 汇报是职场最高频、最硬的需求；方法成熟（PREP/金字塔）但逐字稿型产出少
+      audience_reason: 核心读者（1-5 年员工）最大痛点之一
+      account_reason: 定位"职场沟通与向上管理"，此题为定位直接对应用
+      differentiation_reason: 多数内容讲模型概念，缺"照抄可用"的场景化内容
+    risks: [模型类内容竞争多，需靠逐字稿与场景差异取胜]
+    confidence: high
+  rejected:
+    - { topic: 温和而坚定地说不, reason: beat_by_top1, detail: 高潜备用，适合第二期 }
+    - { topic: 管理领导的期望, reason: beat_by_top1, detail: 偏进阶，先建立汇报基础 }
+    - { topic: 提出选项而不是只报问题, reason: beat_by_top1, detail: 可作为 PREP 的延伸篇 }
+    - { topic: 新生代拒绝加班, reason: beat_by_top1, detail: 话题热但话术证据较弱（low） }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝」, fit_summary: 「Top1 在 audience/value 领先」 }
+
+article_brief:
+  account: { positioning: 职场沟通与向上管理的实战经验，帮打工人少走弯路, audience: 1-5 年职场人, value_proposition: [可复用沟通方法, 避坑经验] }
+  selected_topic: { topic: PREP 万能汇报模板：今天就能用, angle: 三场景逐字稿, confidence: high }
+  target_reader: 下周就要汇报/述职、担心又被说"没重点"的职场人
+  pain_points: { efficiency: 加班做了很多但汇报体现不出来, cognitive: 不知道领导想听什么, emotional: 「努力被低估」的委屈 }
+  core_insight:
+    misconception: 大多数人以为汇报是把工作过程讲完整
+    evidence: ["PREP/金字塔在职场被普遍验证有效（36kr 2026-04-14）", "80% 的信任来自同步（36kr）"]
+    insight: 汇报的本质是"给领导确定性"，结构（观点先行）比内容量更重要；PREP 是可照抄的最小结构
+  key_arguments: [结论先行是尊重领导时间, PREP 四步覆盖口头/书面/晋升, 逐字稿降低上手门槛, 周报/1on1 可复用同一结构]
+  title_candidates: ["领导说我没重点：PREP 三句话救回来", "周报只会记流水账？试试 PREP", "汇报不是交差，是向上管理", "给你 3 分钟，怎么说领导才点头"]
+  outline:
+    - { section: Hook, purpose: 复现「被批没重点」场景, key_points: [讲半小时领导问「你到底想说什么」, 干得好不如汇报好的案例] }
+    - { section: Problem, purpose: 说明汇报是向上管理核心, key_points: [80% 信任来自同步, 汇报决定价值被看见的程度] }
+    - { section: Misconception, purpose: 破除「讲完整过程」误区, key_points: [领导要的是确定性不是过程, 内容量不等于说服力] }
+    - { section: Core Insight, purpose: 提出「给确定性」本质, key_points: [结论先行=高级的职业尊重, PREP 是最小结构] }
+    - { section: Mechanism, purpose: 讲金字塔原理为什么有效, key_points: [认知负担/时间稀缺, 结果思维] }
+    - { section: Solution, purpose: PREP 四步+三种场景逐字稿, key_points: [口头汇报/周报/晋升各给一版, 常见错误对照] }
+    - { section: Example, purpose: 改写前后对比, key_points: [同一件事流水账版 vs PREP 版, 领导反应差异] }
+    - { section: Action, purpose: 今天能做的三件事, key_points: [把下周汇报改写成 PREP, 收集一个数据例证, 30 秒结论先行练习] }
+  evidence:
+    - { source: 36氪, source_type: social, date: 2026-04-14, claim: PREP/金字塔模型在各类汇报中普遍有效, confidence: high }
+    - { source: Confidence Playbook, source_type: other, date: 2026-03-21, claim: 汇报先给推荐结论、围绕业务影响、预判问题, confidence: medium }

@@ -1,0 +1,250 @@
+# 冒烟测试结果：parent-02（二胎妈妈养育账号）
+# 输入："二胎妈妈的家庭养育手记，分享亲子共读与习惯养成"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 二胎妈妈的家庭养育手记，分享亲子共读与习惯养成
+  source: explicit
+  audience: { primary: [二胎/多孩家长], secondary: [0-6 岁新手家长] }
+  domain: [家庭养育, 亲子共读, 习惯养成, 手足关系]
+  value_proposition: [真实二胎养育体验, 可操作的家庭方案]
+  content_style: { tone: 「亲历、温暖、不焦虑 〔inferred〕」, format: [图文手记, 场景实录, 清单] }
+  authority:
+    strengths: [二胎一手养育经验, 习惯养成实践]
+    limitations: [非儿科/心理专业人士身份]
+  boundaries: [医学/健康处方类内容, 教育政策解读, 泛社会热点评论]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 亲子共读的科学与方法
+    signals: { demand: 家长普遍买书多、会读的少; 存在「为什么孩子不爱听」困惑 }
+    evidence:
+      - source: 京学附属实验幼儿园（育儿科普）
+        source_type: other
+        date: 2025-10-09
+        claim: 0 岁起可开始阅读；固定的绘本选择原则（按 2-3/3-4/4-5/5-6 岁分龄）；固定阅读时间+阅读角+身教
+        confidence: medium
+      - source: 新浪育儿（绘本正确阅读）
+        source_type: other
+        date: 2014-07-16
+        claim: 耳朵×眼睛双通道是儿童进入书的方式；关键误区是"指着文字读"而非引导读图；呼吁抛弃功利目的
+        confidence: medium
+      - source: 台湾幼教资料（亲子共读妙点子）
+        source_type: official_doc
+        date: 2016-01-01
+        claim: 分龄共读：2-3 岁化整为零分段读，4-6 岁把共读变成家庭仪式；共读精髓是共享生命经验的温暖联结
+        confidence: low
+    content_gap: 把"分龄共读+读图+仪式感"整合成一套家庭可执行的方案
+    candidate_angles: [分龄共读法, 读图而非指字, 共读仪式化]
+
+  - topic: 二孩家庭的公平与争宠
+    signals: { trend: 二胎家庭普遍纠结「一碗水端平」, discussion: 「你们太偏心了」是高频场面 }
+    evidence:
+      - source: 《民生周刊》（多子女教育）
+        source_type: analytics
+        date: 2022-01-24
+        claim: 心理学副研究员周洁提出"公平≠平等"：公平是按个体需求定制化满足（给小个子孩子两个垫子），而非给每人一个垫子
+        confidence: medium
+      - source: 人民网（二孩平衡）
+        source_type: news
+        date: 2015-11-06
+        claim: 大宝"争宠"本质是被忽视的恐惧；建议让大宝参与照顾二宝获得身份认同，父母分别陪伴
+        confidence: medium
+      - source: 山西晚报（二胎必修课）
+        source_type: news
+        date: 2025-04-17
+        claim: 实录：用"母爱充电"（每天单独陪伴 30 分钟）+ 谈话开导化解大宝不安全感；避免"比赛式"比较
+        confidence: medium
+    content_gap: 把"公平≠平等"提炼成可实践的家规（陪伴安排/夸法/冲突仲裁）
+    candidate_angles: [公平≠平等怎么落地, 大宝单独陪伴机制]
+
+  - topic: 习惯养成的正确打开方式
+    signals: { demand: 家长在「立规矩」与「尊重天性」间摇摆 }
+    evidence:
+      - source: 澎湃/路桥妇联（高质量陪伴）
+        source_type: other
+        date: 2021-04-12
+        claim: 固定时间（睡前）+仪式感让阅读成为习惯；成人的榜样示范是关键（父母先远离手机）
+        confidence: low
+    content_gap: 把"习惯=固定时间+仪式+榜样"讲成家庭养育框架
+    candidate_angles: [仪式化习惯养成, 榜样机制]
+
+candidates:
+  - core_topic: 分龄共读法：2-6 岁各阶段怎么读
+    user_problem: 书买回来孩子坐不住/听不懂
+    target_audience: 1-6 岁家长
+    content_angle: 2-3 岁化整为零、4-6 岁仪式化的分龄方案+选书原则
+    content_type: tutorial
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 读图而不是指字：绘本正确的打开方式
+    user_problem: 孩子只盯字/不感兴趣
+    target_audience: 1-6 岁家长
+    content_angle: 耳朵×眼睛双通道原理 + 引导读图的话术
+    content_type: tutorial
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 睡前 15 分钟的共读仪式化
+    user_problem: 读了几天坚持不下去
+    target_audience: 2-6 岁家长
+    content_angle: 用固定时间+仪式细节（选书权/灯光/姿势）养成习惯
+    content_type: practice
+    source_signals: [亲子共读的科学与方法, 习惯养成的正确打开方式]
+  - core_topic: 共读别太功利：先让孩子爱上书
+    user_problem: 把共读变成识字训练，孩子抗拒
+    target_audience: 3-6 岁家长
+    content_angle: 0-6 岁目标是"让容器变大"而非"装多少东西"
+    content_type: opinion
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 公平≠平等：二胎家庭怎么分爱
+    user_problem: 你们太偏心了天天听到
+    target_audience: 二胎家长
+    content_angle: 按需满足（垫子理论）替代"一人一份"的假公平
+    content_type: opinion
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 大宝单独陪伴计划："母爱充电"
+    user_problem: 大宝总跟老二抢关注
+    target_audience: 二胎家长
+    content_angle: 每天 30 分钟固定单独陪伴的具体安排与话术
+    content_type: practice
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 让大宝参与照顾二宝：身份认同法
+    user_problem: 大宝排斥弟弟/妹妹
+    target_audience: 二胎家长
+    content_angle: 从"竞争者"变"照顾者"的参与任务设计
+    content_type: practice
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 别让孩子活在比较里
+    user_problem: 全家总拿两个孩子互相比
+    target_audience: 二胎家长
+    content_angle: 比赛式奖惩的反作用与就事论事的夸法
+    content_type: opinion
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 大宝行为退化的真相
+    user_problem: 大宝突然尿床/要抱抱/装小宝宝
+    target_audience: 二胎家长
+    content_angle: 用心理学解释"退化"是在争夺安全感，给应对三步
+    content_type: opinion
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 习惯养成三要素：固定时间+仪式+榜样
+    user_problem: 立规矩总失败
+    target_audience: 2-6 岁家长
+    content_angle: 把习惯拆成可操作的三个机制
+    content_type: methodology
+    source_signals: [习惯养成的正确打开方式]
+  - core_topic: 收玩具：从代劳到自主的阶梯
+    user_problem: 玩具收一次吵一次
+    target_audience: 2-5 岁家长
+    content_angle: 先陪收→再提醒→最后自主的分级退让
+    content_type: practice
+    source_signals: [习惯养成的正确打开方式]
+  - core_topic: 睡前程序：刷牙-洗澡-故事的固定顺序
+    user_problem: 睡前拉锯战
+    target_audience: 2-6 岁家长
+    content_angle: 固定程序降低抗拒的机制与清单
+    content_type: practice
+    source_signals: [习惯养成的正确打开方式]
+  - core_topic: 父母先放下手机：身教的启动
+    user_problem: 让孩子少看屏幕自己却刷手机
+    target_audience: 二胎家长
+    content_angle: 从家长电子习惯启动的家庭阅读氛围改造
+    content_type: opinion
+    source_signals: [习惯养成的正确打开方式]
+  - core_topic: 二孩家庭的一天时间表
+    user_problem: 两个娃作息冲突、顾此失彼
+    target_audience: 二胎家长
+    content_angle: 错峰陪伴的具体时间安排示例
+    content_type: case_study
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 手足冲突的仲裁原则
+    user_problem: 两个孩子抢玩具打架
+    target_audience: 二胎家长
+    content_angle: 先情绪后规则、不判对错只给解决方案
+    content_type: methodology
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 绘本推荐清单：按年龄不踩雷
+    user_problem: 不知道买什么书
+    target_audience: 家长
+    content_angle: 2-6 岁分龄书单+选书原则（贴近生活/重复/互动）
+    content_type: tooling
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 亲子共读环境布置：一个小书架就够
+    user_problem: 家里没阅读氛围
+    target_audience: 家长
+    content_angle: 矮书架+封面朝外+地毯角的布置方案
+    content_type: practice
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 用共读代替说教：情绪绘本的使用
+    user_problem: 讲道理孩子不听
+    target_audience: 3-6 岁家长
+    content_angle: 借绘本角色谈感受的对话式育办法
+    content_type: practice
+    source_signals: [亲子共读的科学与方法]
+  - core_topic: 二胎家庭如何给每个孩子"专属时刻"
+    user_problem: 精力有限没法都顾到
+    target_audience: 二胎家长
+    content_angle: 每周专属时刻设计（各 30 分钟轮流制）
+    content_type: practice
+    source_signals: [二孩家庭的公平与争宠]
+  - core_topic: 我的二胎带娃的一天：真实手记
+    user_problem: 想看到真实家庭怎么运转
+    target_audience: 二胎家长
+    content_angle: 结合共读与习惯养成的全天实录
+    content_type: case_study
+    source_signals: [二孩家庭的公平与争宠, 习惯养成的正确打开方式]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 公平≠平等：二胎家庭怎么分爱, market_score: 84, score_breakdown: { demand: 88, pain: 84, trend: 78, novelty: 86, content_gap: 86, evidence: 76 } }
+    - { rank: 2, topic: 分龄共读法：2-6 岁各阶段怎么读, market_score: 83, score_breakdown: { demand: 84, pain: 80, trend: 76, novelty: 78, content_gap: 88, evidence: 88 } }
+    - { rank: 3, topic: 大宝单独陪伴计划：「母爱充电」, market_score: 80, score_breakdown: { demand: 84, pain: 82, trend: 72, novelty: 82, content_gap: 80, evidence: 78 } }
+    - { rank: 4, topic: 睡前 15 分钟的共读仪式化, market_score: 78, score_breakdown: { demand: 82, pain: 76, trend: 70, novelty: 78, content_gap: 84, evidence: 76 } }
+    - { rank: 5, topic: 让大宝参与照顾二宝：身份认同法, market_score: 77, score_breakdown: { demand: 80, pain: 80, trend: 70, novelty: 80, content_gap: 78, evidence: 74 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖理念/方法/陪伴机制/仪式/参与协作，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 公平≠平等：二胎家庭怎么分爱
+    angle: 用"垫子理论"重构公平观，给陪伴/夸法/仲裁的家规落地方案
+    market_score: 84
+    account_fit: 87
+    fit_breakdown: { audience: 90, problem: 86, authority: 80, value: 90, differentiation: 88, style: 86 }
+    why_selected:
+      market_reason: 二胎家庭最大痛点（"你们太偏心"），触及深度需求
+      audience_reason: 核心读者正是二胎家长，100% 匹配
+      account_reason: 定位"二胎妈妈养育手记"，手足关系是该定位最自然的选题
+      differentiation_reason: 绝大多数内容讲"别偏心"，缺把"公平≠平等"讲透并落地的
+    risks: [观点易被断章取义为"可以偏心"，需反复澄清]
+    confidence: high
+  rejected:
+    - { topic: 分龄共读法, reason: beat_by_top1, detail: 与定位关键词匹配度高，作为第二篇主推 }
+    - { topic: 大宝单独陪伴计划, reason: beat_by_top1, detail: 作为 Top1 的落地工具篇 }
+    - { topic: 睡前 15 分钟共读仪式化, reason: beat_by_top1, detail: 共读系列成员 }
+    - { topic: 让大宝参与照顾二宝, reason: beat_by_top1, detail: Top1 的姊妹篇 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；医学/处方类未进入候选」, fit_summary: 「Top1 在 audience/value 领先」 }
+
+article_brief:
+  account: { positioning: 二胎妈妈的家庭养育手记，分享亲子共读与习惯养成, audience: 二胎/多孩家长, value_proposition: [真实体验, 可操作方案] }
+  selected_topic: { topic: 公平≠平等：二胎家庭怎么分爱, angle: 垫子理论 + 家规落地方案, confidence: high }
+  target_reader: 天天听到"你们太偏心了"、为一碗水端平焦虑的二胎家长
+  pain_points: { functional: 两个娃诉求不同顾此失彼, efficiency: 端平「两碗水」耗费大量精力, cognitive: 分不清公平与平等的区别, risk: 怕偏心伤到一个孩子, emotional: 被说偏心时的委屈与自责 }
+  core_insight:
+    misconception: 大多数家长以为"公平=给每个孩子一样的东西（平等）"
+    evidence: ["心理学视角：公平是按个体需求定制满足，给矮个子孩子两个垫子（民生周刊 2022）", "大宝争宠本质是恐惧被忽视（人民网）"]
+    insight: 真正的公平是按需满足而非平均分配；定制的机会均等（都获得被倾听）比结果均等更重要
+  key_arguments: [公平是机会均等不是结果均等, 每个孩子不同阶段需求不同, 陪伴也可"定制"：给大宝专属时刻, 家规三件套：陪伴/夸法/仲裁落地]
+  title_candidates: ["别再一碗水端平了：二胎家庭的公平真相", "小个子孩子需要两个垫子", "孩子说偏心不可怕，可怕的是你真端平了", "二胎家庭怎么分爱：公平≠平等"]
+  outline:
+    - { section: Hook, purpose: 复现「你们太偏心了」场景, key_points: [大宝发现练习本留言的案例, 家长的委屈与自责] }
+    - { section: Problem, purpose: 说明「端平」是错误目标, key_points: [绝对平均不可行, 平均反而制造新的不公平] }
+    - { section: Misconception, purpose: 拆解公平与平等, key_points: [垫子理论, 机会均等 vs 结果均等] }
+    - { section: Core Insight, purpose: 提出按需满足框架, key_points: [不同年龄不同需求, 定制化满足=真正公平] }
+    - { section: Mechanism, purpose: 讲争宠的心理学机制, key_points: [行为退化/抢关注是安全感诉求, 平均给所有人=没给任何人] }
+    - { section: Solution, purpose: 家规三件套, key_points: [每日单独陪伴（母爱充电）, 就事论事的夸法, 冲突仲裁先情绪后规则] }
+    - { section: Example, purpose: 实录案例, key_points: [实录：30 分钟充电后大宝转变, 参与照顾妹妹获得认同] }
+    - { section: Action, purpose: 今天开始的行动, key_points: [设计每日大宝专属 30 分钟, 把「一样」改成「轮流」, 一次冲突用新规则仲裁] }
+  evidence:
+    - { source: 民生周刊, source_type: analytics, date: 2022-01-24, claim: 公平≠平等：按个体需求定制化满足, confidence: medium }
+    - { source: 人民网, source_type: news, date: 2015-11-06, claim: 大宝争宠源于被忽视恐惧；参与照顾可获得身份认同, confidence: medium }

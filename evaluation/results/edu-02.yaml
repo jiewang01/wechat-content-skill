@@ -1,0 +1,234 @@
+# 冒烟测试结果：edu-02（留学申请规划账号）
+# 输入："留学申请规划指南，从选校到文书的完整攻略"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 留学申请规划指南，从选校到文书的完整攻略
+  source: explicit
+  audience: { primary: [高中生/大学生, 计划出国家庭], secondary: [申请硕士人群] }
+  domain: [留学申请, 选校, 文书, 规划]
+  value_proposition: [全流程攻略, 一手经验]
+  content_style: { tone: 「规划向、数据向 〔inferred〕」, format: [长文, 清单, 案例] }
+  authority:
+    strengths: [申请流程全流程知识, 政策与数据追踪]
+    limitations: [非官方院校/移民机构, 无法代替个案咨询]
+  boundaries: [签证法律事务实操, 移民政策解读, 商业广告与中介推销]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 2026 全球留学新政：主流收紧、新兴放宽
+    signals: { trend: 2026 下半年英美澳加集中收紧，港新德释放利好, demand: 2027Fall 申请者选校逻辑被颠覆 }
+    evidence:
+      - source: 新东方前途出国（2026 全球留学新政盘点）
+        source_type: other
+        date: 2026-08-28
+        claim: 加拿大学签年度配额从 29 万份减至 15.5 万、担保金从 1 万加元升至 20635 加元；英美澳加集体抬高门槛，港/新/德放宽；2027Fall 拒签率预计 35%+
+        confidence: medium
+      - source: 新东方前途出国（2026 秋季入学趋势）
+        source_type: other
+        date: 2026-09-11
+        claim: 2025-2026 申请季全美本科申请量同比增长 9%，Common App 新注册者 +16.43%，头部院校国际生录取率不足 4%
+        confidence: medium
+      - source: British Council/UCAS 数据
+        source_type: analytics
+        date: 2026-07-23
+        claim: 2026 周期 UCAS 国际本科申请 148,350 人（+7.1%，超 2020 峰值）；中国 +12.2% 居首；高要求院校国际申请 +8.2%，72% 国际申请集中于高选拔院校
+        confidence: high
+    content_gap: 把"政策分散变化"整合成选校决策逻辑的内容
+    candidate_angles: [2027Fall 选校逻辑重写, 新兴赛道红利]
+
+  - topic: 申请竞争维度升级：从材料到规划
+    signals: { trend: 录取逻辑转向「前置规划+差异化」, demand: 同质化材料泛滥，普通背景压力大 }
+    evidence:
+      - source: 中国教育在线/及第留学行业观察（头条）
+        source_type: other
+        date: 2025-03-01
+        claim: 72.3% 申请者看重"申请逻辑与决策依据"，68.7% 将职业发展纳入目标；TOP30 招生官年均审阅超 5000 份，对套路化文书识别度高
+        confidence: medium
+      - source: 启德《2026 中国留学白皮书》（中国日报）
+        source_type: analytics
+        date: 2026-03-14
+        claim: 硕士申请占 83.59%；理工/医科申请持续上升，商科人文回落；美国前 50 与加拿大医博类录取者 GPA 超半数 ≥86
+        confidence: medium
+    content_gap: 普通背景（双非/低GPA）如何差异化的可执行内容
+    candidate_angles: [普通背景差异化, 文书反套路]
+
+candidates:
+  - core_topic: 2027Fall 选校逻辑重写：新政下的赛道分化
+    user_problem: 各国政策大改，往年选校经验失效
+    target_audience: 2027Fall 申请者
+    content_angle: 用新政数据给"主流收紧/新兴放宽"的选校决策表
+    content_type: trend
+    source_signals: [2026 全球留学新政]
+  - core_topic: 加拿大学签减半：还要不要去加拿大
+    user_problem: 配额腰斩、拒签率飙升，纠结是否换赛道
+    target_audience: 原计划赴加家庭
+    content_angle: 客观拆解配额/担保金/工签变化与替代方案
+    content_type: opinion
+    source_signals: [2026 全球留学新政]
+  - core_topic: 香港/新加坡/德国：分流的新红利与隐性门槛
+    user_problem: 想抓新赛道红利但不知深浅
+    target_audience: 申请者
+    content_angle: 咨询量 +52% 背后的竞争与就业现实
+    content_type: trend
+    source_signals: [2026 全球留学新政]
+  - core_topic: 马来西亚等低成本新兴目的地
+    user_problem: 预算有限想留学
+    target_audience: 中等收入家庭
+    content_angle: 用 6 万中国学生数据讲高性价路径与学历含金量
+    content_type: trend
+    source_signals: [2026 全球留学新政]
+  - core_topic: 英美申请量暴涨下的录取真相
+    user_problem: 申请基数 +9%，怕没书读
+    target_audience: 英美申请者
+    content_angle: 用 Common App/+16.43% 与 UCAS 高选拔集中度讲清结构
+    content_type: opinion
+    source_signals: [2026 全球留学新政]
+  - core_topic: 双非/低 GPA 的差异化路线
+    user_problem: 背景普通怕被同质化淹没
+    target_audience: 双非/低 GPA 申请者
+    content_angle: 用"决策依据+职业叙事"替代堆经历
+    content_type: methodology
+    source_signals: [申请竞争维度升级]
+  - core_topic: 文书反套路：招生官怎么看 5000 份文书
+    user_problem: 文书写得像模板
+    target_audience: 申请者
+    content_angle: 从招生官视角拆"同质化识别"与真实叙事
+    content_type: opinion
+    source_signals: [申请竞争维度升级]
+  - core_topic: 选校梯度法：冲稳保的科学配比
+    user_problem: 选校全靠排名瞎冲
+    target_audience: 本科/硕士申请者
+    content_angle: 用录取率分层做梯度选择
+    content_type: methodology
+    source_signals: [2026 全球留学新政]
+  - core_topic: 暑期规划为什么是录取分水岭
+    user_problem: 总想九月再启动
+    target_audience: 准申请者
+    content_angle: 用"前置规划录取率高 40%"的数据论证提前量
+    content_type: opinion
+    source_signals: [申请竞争维度升级]
+  - core_topic: 硕士申请 83%：读研赛道怎么选
+    user_problem: 本科还是硕士申请、又该早准备哪条
+    target_audience: 大学生
+    content_angle: 用白皮书数据讲硕申主导的结构与机会
+    content_type: trend
+    source_signals: [申请竞争维度升级]
+  - core_topic: 理工科走强的申请策略
+    user_problem: 想申热门理工但竞争激烈
+    target_audience: 理工方向申请者
+    content_angle: 计算机稳居首位背景下的差异化路径
+    content_type: methodology
+    source_signals: [申请竞争维度升级]
+  - core_topic: 文书时间线：从素材到定稿的 90 天
+    user_problem: 文书拖到截止前赶工
+    target_audience: 申请者
+    content_angle: 素材库/经历挖掘/多稿打磨的排期
+    content_type: methodology
+    source_signals: [申请竞争维度升级]
+  - core_topic: GPA 86 的真相：不同目标院校的分差
+    user_problem: 不知道 GPA 够不够
+    target_audience: 申请者
+    content_angle: 用白皮书 GPA 梯次数据做目标对标
+    content_type: practice
+    source_signals: [申请竞争维度升级]
+  - core_topic: 低 GPA 补救：先修课与背景抬升
+    user_problem: 大一大二 GPA 已成定局
+    target_audience: 大三学生
+    content_angle: 补 GPA 之外的替代证明路径
+    content_type: practice
+    source_signals: [申请竞争维度升级]
+  - core_topic: 推荐信怎么要才加分量
+    user_problem: 推荐人随便找、模板化
+    target_audience: 申请者
+    content_angle: 谁写/写什么/怎么沟通的三段实操
+    content_type: practice
+    source_signals: [申请竞争维度升级]
+  - core_topic: 面试环节：从背稿到对话
+    user_problem: 面试像背书
+    target_audience: 名校申请者
+    content_angle: 把面试当"决策对话"的训练法
+    content_type: practice
+    source_signals: [申请竞争维度升级]
+  - core_topic: 签证与行前：录取后的隐形风险
+    user_problem: 拿 offer 以为万事大吉
+    target_audience: 拿到 offer 的申请者
+    content_angle: 新政下的签证材料与资金链（担保金 20635 加元等）
+    content_type: practice
+    source_signals: [2026 全球留学新政]
+  - core_topic: 一次真实的申请季时间轴复盘
+    user_problem: 想看到完整流程怎么排
+    target_audience: 申请者
+    content_angle: 从选校到出结果的全程复盘与关键决策点
+    content_type: case_study
+    source_signals: [申请竞争维度升级]
+  - core_topic: 家长视角：如何科学陪跑申请季
+    user_problem: 家长焦虑干预过多
+    target_audience: 家长
+    content_angle: 角色分工与信息同步的边界
+    content_type: practice
+    source_signals: [申请竞争维度升级]
+  - core_topic: 申请顾问该不该请：判断清单
+    user_problem: 被中介销售轰炸
+    target_audience: 申请者家庭
+    content_angle: 需要决策支持还是代办，用清单自查
+    content_type: tooling
+    source_signals: [申请竞争维度升级]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 2027Fall 选校逻辑重写：新政下的赛道分化, market_score: 87, score_breakdown: { demand: 90, pain: 84, trend: 94, novelty: 84, content_gap: 86, evidence: 88 } }
+    - { rank: 2, topic: 加拿大学签减半：还要不要去加拿大, market_score: 84, score_breakdown: { demand: 88, pain: 82, trend: 88, novelty: 76, content_gap: 84, evidence: 84 } }
+    - { rank: 3, topic: 双非/低 GPA 的差异化路线, market_score: 82, score_breakdown: { demand: 86, pain: 84, trend: 78, novelty: 84, content_gap: 84, evidence: 74 } }
+    - { rank: 4, topic: 文书反套路：招生官怎么看 5000 份文书, market_score: 80, score_breakdown: { demand: 84, pain: 80, trend: 78, novelty: 82, content_gap: 82, evidence: 72 } }
+    - { rank: 5, topic: 暑期规划为什么是录取分水岭, market_score: 78, score_breakdown: { demand: 82, pain: 78, trend: 76, novelty: 78, content_gap: 82, evidence: 74 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖趋势/政策/策略/文书/节奏，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 2027Fall 选校逻辑重写：新政下的赛道分化
+    angle: 用政策与 UCAS/Common App 数据，把"选校"重构成"赛道决策"
+    market_score: 87
+    account_fit: 87
+    fit_breakdown: { audience: 90, problem: 86, authority: 84, value: 90, differentiation: 86, style: 86 }
+    why_selected:
+      market_reason: 2026 是政策大年（近五年最大的全球新政周期），时效红利极大
+      audience_reason: 2027Fall 申请者是最焦虑、最有付费意愿的人群
+      account_reason: 定位"选校→文书"攻略，选校是其第一环节且被新政直接冲击
+      differentiation_reason: 多数内容仍按旧逻辑谈选校，缺"政策-赛道-决策"的整合框架
+    risks: [政策信息更新快，需标注日期与来源，避免过期误导]
+    confidence: high
+  rejected:
+    - { topic: 加拿大学签减半, reason: beat_by_top1, detail: 作为 Top1 的深度单篇 }
+    - { topic: 双非/低 GPA 差异化, reason: beat_by_top1, detail: 常青需求第二篇 }
+    - { topic: 文书反套路, reason: beat_by_top1, detail: 文书系列启动篇 }
+    - { topic: 暑期规划分水岭, reason: beat_by_top1, detail: 时点性内容 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；签证法律实操类未深挖（boundaries 生效）」, fit_summary: 「Top1 在 audience/value 领先」 }
+
+article_brief:
+  account: { positioning: 留学申请规划指南，从选校到文书完整攻略, audience: 大学生/家庭, value_proposition: [全流程攻略, 一手经验] }
+  selected_topic: { topic: 2027Fall 选校逻辑重写：新政下的赛道分化, angle: 政策-赛道-决策框架, confidence: high }
+  target_reader: 准备 2027Fall、正在按旧经验选校的学生与家庭
+  pain_points: { functional: 各国政策突变不知道按什么选校, cognitive: 新旧信息打架判断不了, risk: 选错赛道浪费一年, emotional: 被「拒签率 35%」吓得不敢报 }
+  core_insight:
+    misconception: 大多数申请者仍用"排名+往年录取经验"选校，忽略政策变量的系统影响
+    evidence: ["加拿大学签配额 29万→15.5万、担保金翻倍（新东方 2026-08-28）", "UCAS 中国申请 +12.2%、高选拔院校集中 72% 国际申请（British Council 2026-07-23）", "港新咨询量 +52% vs 英美 -18%（行业统计）"]
+    insight: 选校的本质是赛道决策：政策收紧会改录取结构，语境上"主流收紧、新兴放宽"的分化要求用政策-成本-就业三维替代单一排名
+  key_arguments: [政策是选校的新第一变量, 分化格局的三维决策表, 数据（配额/拒签率/录取集中度）可量化, 给不同预算与风险的 3-4 套组合]
+  title_candidates: ["2027Fall 选校逻辑：新政下的赛道分化", "学签配额减半，加拿大还去吗", "别再用旧经验选校了：2026 新政盘点", "留学赛道大洗牌：谁收紧、谁放宽"]
+  outline:
+    - { section: Hook, purpose: 抛出新政冲击, key_points: [配额腰斩的震惊数据, 申请者群里的恐慌] }
+    - { section: Problem, purpose: 说明旧逻辑失效, key_points: [按排名选校的老方法撞上新政策, 同质化申请泛滥] }
+    - { section: Misconception, purpose: 破除「只盯排名」直觉, key_points: [政策改变录取结构, 湾区-成本-就业变量] }
+    - { section: Core Insight, purpose: 提出三维决策框架, key_points: [政策风险/预算成本/职业收益, 赛道分化图] }
+    - { section: Mechanism, purpose: 讲清各国新政机制, key_points: [配额/担保金/工签/审核标准, 收敛与放宽的供需逻辑] }
+    - { section: Solution, purpose: 给选校组合, key_points: [保守/均衡/进取三套组合, 新兴赛道（港新德马）适配画像] }
+    - { section: Example, purpose: 一个真实改选案例, key_points: [从加拿大改道香港的决策复盘, 成本与风险对比] }
+    - { section: Action, purpose: 本周可做, key_points: [更新目标国政策清单, 用三维表重排 10 所学校, 标记签证风险项] }
+  evidence:
+    - { source: 新东方前途出国, source_type: other, date: 2026-08-28, claim: 全球新政落地：加拿大配额减半、担保金翻倍等, confidence: medium }
+    - { source: British Council/UCAS, source_type: analytics, date: 2026-07-23, claim: 国际本科申请 148,350（+7.1%），中国 +12.2%, confidence: high }

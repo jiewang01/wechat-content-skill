@@ -1,0 +1,240 @@
+# 冒烟测试结果：life-01（极简生活/整理收纳账号）
+# 输入："极简生活与整理收纳，打造物少而美的家"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 极简生活与整理收纳，打造物少而美的家
+  source: explicit
+  audience: { primary: [家居爱好者, 极简主义者], secondary: [小户型家庭] }
+  domain: [极简主义, 整理收纳, 家居生活]
+  value_proposition: [具体整理方法, 极简理念落地]
+  content_style: { tone: 「治愈、实用 〔inferred〕」, format: [图文, 前后对比, 清单] }
+  authority:
+    strengths: [整理收纳实践经验, 极简生活方式践行]
+    limitations: [非专业收纳机构/心理咨询师身份]
+  boundaries: [硬装装修深度话题, 泛生活鸡汤, 带货软广]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 为什么我们舍不得扔：断舍离的心理机制
+    signals: { demand: 「知道该扔却下不了手」是最高频卡点 }
+    evidence:
+      - source: 光明网（年底断舍离大扫除·无痛版）
+        source_type: news
+        date: 2026-02-09
+        claim: 断舍离难源于三个心理效应：厌恶损失（失去痛苦约为获得的两倍）、禀赋效应（拥有的会被高估）、沉没成本（不舍已付出的成本）
+        confidence: high
+      - source: 光明网引《人格与社会心理学通报》研究
+        source_type: analytics
+        date: 2026-02-09
+        claim: 30 对夫妻皮质醇研究：描述家为"杂乱"的人全天皮质醇偏高、抑郁情绪上升；杂乱环境会被大脑解读为慢性低度威胁
+        confidence: medium
+    content_gap: 把"为什么难扔"讲成心理学机制，并给出对治方法的内容
+    candidate_angles: [三个心理效应对治, 杂乱压力说]
+
+  - topic: 收纳方法谱系：四箱法/怦然心动/一进一出
+    signals: { demand: 方法很多不知选哪个 }
+    evidence:
+      - source: DeclutterNow（2026 断舍离方法）
+        source_type: other
+        date: 2026-01-30
+        claim: 四箱法（Keep/Donate/Relocate/Trash）+ 一进一出规则 + 30 天等待期，用于打破决策瘫痪
+        confidence: medium
+      - source: HomeStyle & Beyond
+        source_type: other
+        date: 2026-04-13
+        claim: 每日 15 分钟整理优于一次性大扫除；"一天一小步"比追求完美的囤积清空更持久
+        confidence: medium
+    content_gap: 按"启动-断舍离-维持"三阶段选择方法的向导
+    candidate_angles: [四箱法实操, 15 分钟日常整理]
+
+  - topic: 收纳的悖论：收纳工具本身成为新杂物
+    signals: { trend: 买收纳工具上瘾反增乱, discussion: 「花 11 万请人收拾 300 平」案例引热议 }
+    evidence:
+      - source: 搜狐（上海 300 平收纳案例）
+        source_type: news
+        date: 2026-09-06
+        claim: 案例：十年囤货养成"仓库迷宫"，清出 7 车杂物；收纳团队诊断"不是懒，是舍不得断舍离"；此前越买收纳工具越乱
+        confidence: medium
+    content_gap: 先减量再收纳（没减少之前别买收纳工具）的纠偏内容
+    candidate_angles: [收纳工具上瘾戒断, 先清空再收纳]
+
+candidates:
+  - core_topic: 断舍离卡点自救：三个心理效应对治法
+    user_problem: 理性知道该扔，手就是不听
+    target_audience: 想整理但纠结的普通人
+    content_angle: 厌恶损失/禀赋效应/沉没成本各配一个对治动作
+    content_type: methodology
+    source_signals: [为什么我们舍不得扔]
+  - core_topic: 杂乱的家在偷偷消耗你
+    user_problem: 觉得乱一点没事
+    target_audience: 家居爱好者
+    content_angle: 用皮质醇研究讲清杂乱→压力机制
+    content_type: opinion
+    source_signals: [为什么我们舍不得扔]
+  - core_topic: 四箱法：今天就能开始的断舍离
+    user_problem: 面对整屋不知从哪动手
+    target_audience: 整理新手
+    content_angle: Keep/Donate/Relocate/Trash 四箱实操，先易后难
+    content_type: tutorial
+    source_signals: [收纳方法谱系]
+  - core_topic: 一进一出与 30 天等待期
+    user_problem: 刚清完又买回来
+    target_audience: 极简践行者
+    content_angle: 把"防回流"做成机制而非意志力
+    content_type: methodology
+    source_signals: [收纳方法谱系]
+  - core_topic: 每天 15 分钟：比大扫除更持久的整理
+    user_problem: 每周大扫除一次累且复乱
+    target_audience: 上班族
+    content_angle: 微习惯替代突击整理的原理与动线
+    content_type: practice
+    source_signals: [收纳方法谱系]
+  - core_topic: 先清空再收纳：别急着买收纳盒
+    user_problem: 收纳工具买一堆家更乱
+    target_audience: 家居爱好者
+    content_angle: 用"收纳工具=新杂物"的案例纠偏
+    content_type: opinion
+    source_signals: [收纳的悖论]
+  - core_topic: 11 万收拾 300 平：为什么钱买不来整洁
+    user_problem: 想一劳永逸请人收拾
+    target_audience: 中产家庭
+    content_angle: 案例拆解：问题在决策习惯而非清洁
+    content_type: case_study
+    source_signals: [收纳的悖论]
+  - core_topic: 衣柜断舍离：为现在的你留衣
+    user_problem: 衣服堆满但总觉得没得穿
+    target_audience: 女性读者为主
+    content_angle: 为过去的自己留衣机制与处置清单
+    content_type: practice
+    source_signals: [为什么我们舍不得扔]
+  - core_topic: 重复件治理：五把锅铲只留一把
+    user_problem: 同一样物品囤了 N 件
+    target_audience: 家庭整理者
+    content_angle: 按"留最好的一件"原则清重复件
+    content_type: practice
+    source_signals: [收纳方法谱系]
+  - core_topic: 厨房收纳动线改造
+    user_problem: 做饭找东西耽误时间
+    target_audience: 家庭
+    content_angle: 高频随手放/低频高处收的动线原则
+    content_type: methodology
+    source_signals: [收纳方法谱系]
+  - core_topic: 用小盒子治理玄关杂物
+    user_problem: 玄关堆满钥匙快递杂物
+    target_audience: 小户型家庭
+    content_angle: 一篮一盒给每类物品固定的"家"
+    content_type: tutorial
+    source_signals: [收纳的悖论]
+  - core_topic: 儿童玩具的断舍离
+    user_problem: 玩具泛滥且孩子不珍惜
+    target_audience: 有孩家庭
+    content_angle: 轮换制+限量原则，让孩子参与选择
+    content_type: practice
+    source_signals: [收纳的悖论]
+  - core_topic: 纪念品断舍离：拍照代替保留
+    user_problem: 感情物品扔不下手
+    target_audience: 重感情的人
+    content_angle: 限量保留 N 件 + 拍照留念的心理路径
+    content_type: practice
+    source_signals: [为什么我们舍不得扔]
+  - core_topic: 极简不是空房间：三个蔓延误区
+    user_problem: 极简成执念反而焦虑
+    target_audience: 极简主义者
+    content_angle: 区分"极简"与"苦行"的三条边界
+    content_type: opinion
+    source_signals: [收纳方法谱系]
+  - core_topic: 小户型空间改造：向上要空间
+    user_problem: 房子小东西放不下
+    target_audience: 小户型家庭
+    content_angle: 竖向空间/多功能家具的用法
+    content_type: practice
+    source_signals: [收纳方法谱系]
+  - core_topic: 一个抽屉的整理课：最小可重复单元
+    user_problem: 全屋整理总失败
+    target_audience: 整理新手
+    content_angle: 用"一个抽屉"练成体系的启动法
+    content_type: tutorial
+    source_signals: [收纳方法谱系]
+  - core_topic: 家庭分区整理清单：客厅/卧室/厨房/卫生间
+    user_problem: 不知道各区域清什么
+    target_audience: 家庭
+    content_angle: 按空间给断舍离清单与收纳建议
+    content_type: tooling
+    source_signals: [收纳方法谱系]
+  - core_topic: 断舍离后：让家"呼吸"的留白原则
+    user_problem: 清完还是没"极简感"
+    target_audience: 极简爱好者
+    content_angle: 留白/同色收纳/低频高处的整体视觉
+    content_type: methodology
+    source_signals: [收纳的悖论]
+  - core_topic: 搬家式整理：逼自己做一次彻底决策
+    user_problem: 平时下不了狠心
+    target_audience: 想彻底改变的人
+    content_angle: 模拟"只带走用得上的"完成全屋筛选
+    content_type: case_study
+    source_signals: [为什么我们舍不得扔]
+  - core_topic: 整理成瘾者的刹车：收纳不是人生的全部
+    user_problem: 一天不清就难受
+    target_audience: 极简过度者
+    content_angle: 设定"够好"标准，防止极简变焦虑
+    content_type: opinion
+    source_signals: [收纳方法谱系]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 断舍离卡点自救：三个心理效应对治法, market_score: 85, score_breakdown: { demand: 88, pain: 84, trend: 78, novelty: 86, content_gap: 88, evidence: 84 } }
+    - { rank: 2, topic: 四箱法：今天就能开始的断舍离, market_score: 82, score_breakdown: { demand: 84, pain: 80, trend: 76, novelty: 78, content_gap: 88, evidence: 82 } }
+    - { rank: 3, topic: 先清空再收纳：别急着买收纳盒, market_score: 80, score_breakdown: { demand: 82, pain: 80, trend: 78, novelty: 82, content_gap: 82, evidence: 76 } }
+    - { rank: 4, topic: 杂乱的家在偷偷消耗你, market_score: 78, score_breakdown: { demand: 78, pain: 76, trend: 76, novelty: 82, content_gap: 80, evidence: 80 } }
+    - { rank: 5, topic: 每天 15 分钟：比大扫除更持久的整理, market_score: 77, score_breakdown: { demand: 80, pain: 76, trend: 72, novelty: 80, content_gap: 80, evidence: 74 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖心理/方法/悖论/理念/习惯，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 断舍离卡点自救：三个心理效应对治法
+    angle: 用行为经济学解释"扔不下手"，每个效应给一个可执行动作
+    market_score: 85
+    account_fit: 87
+    fit_breakdown: { audience: 88, problem: 86, authority: 82, value: 90, differentiation: 88, style: 86 }
+    why_selected:
+      market_reason: 想扔扔不掉是断舍离最高频卡点，覆盖所有潜在读者
+      audience_reason: 核心读者（家居/极简爱好者）的入门第一关
+      account_reason: 定位"极简落地"，把理念讲成可执行正是账号价值主张
+      differentiation_reason: 大多内容讲"扔什么"，极少讲"为什么下不了手"的机制与对治
+    risks: [效应解释需避免过度心理学化，保持落地]
+    confidence: high
+  rejected:
+    - { topic: 四箱法, reason: beat_by_top1, detail: 作为 Top1 的实操篇 }
+    - { topic: 先清空再收纳, reason: beat_by_top1, detail: 高潜第二篇 }
+    - { topic: 杂乱的家在偷偷消耗你, reason: beat_by_top1, detail: 理念支撑篇 }
+    - { topic: 每天 15 分钟, reason: beat_by_top1, detail: 习惯维持篇 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；装修/软广类未进入候选」, fit_summary: 「Top1 在 value/differentiation 领先」 }
+
+article_brief:
+  account: { positioning: 极简生活与整理收纳，打造物少而美的家, audience: 家居爱好者/极简主义者, value_proposition: [具体方法, 理念落地] }
+  selected_topic: { topic: 断舍离卡点自救：三个心理效应对治法, angle: 心理机制+对治动作, confidence: high }
+  target_reader: 想整理但每次面对满屋物品就下不了手的普通人
+  pain_points: { functional: 想扔又舍不得，整理了多年仍复乱, cognitive: 说不清自己在怕什么, emotional: 「狠不下心」的自我责怪 }
+  core_insight:
+    misconception: 大多数以为"舍不得扔"是意志力问题，逼自己狠心就行
+    evidence: ["厌恶损失/禀赋效应/沉没成本是进化与认知特性（光明网 2026-02-09）", "杂乱环境与更高皮质醇水平相关（《人格与社会心理学通报》）"]
+    insight: 扔不下手不是意志力缺陷而是心理机制；用机制对治（两倍代价清单/旁观者视角/先拍照）比硬逼更有效
+  key_arguments: [厌恶损失→损失可视化对治, 禀赋效应→旁观者视角练习, 沉没成本→只问"以后还有用吗", 小步启动减少决策瘫痪]
+  title_candidates: ["不是你不自律：舍不得扔的三个心理学真相", "三效应对治法：今天能扔掉的 10 样东西", "扔东西为什么比买还难", "杂乱的家，正在偷偷消耗你"]
+  outline:
+    - { section: Hook, purpose: 复现「扔不下手」瞬间, key_points: [旧玩具/三千块的包/朋友送的摆件], notes: 「」 }
+    - { section: Problem, purpose: 说明不是个例, key_points: [断舍离年年失败, 自我责怪循环] }
+    - { section: Misconception, purpose: 破除「意志力论」, key_points: [大脑天生讨厌失去, 逼自己只会更痛苦] }
+    - { section: Core Insight, purpose: 三个心理机制, key_points: [厌恶损失/禀赋效应/沉没成本的定义与例证] }
+    - { section: Mechanism, purpose: 讲机制为何成立, key_points: [损失两倍于获得的比较, 拥有即增值滤镜] }
+    - { section: Solution, purpose: 三效应对治动作, key_points: [「它占用 5 平米→显失可视清单」, 「朋友视角看它」, 「只问以后还有用吗」] }
+    - { section: Example, purpose: 一次真实取舍, key_points: [用机制处理纪念品/闲置家电的过程, 结果与感受] }
+    - { section: Action, purpose: 今天开始的三步, key_points: [挑一个抽屉, 三效应清单选 3 样, 拍照留念后处理] }
+  evidence:
+    - { source: 光明网, source_type: news, date: 2026-02-09, claim: 断舍离难源于厌恶损失/禀赋效应/沉没成本, confidence: high }
+    - { source: 《人格与社会心理学通报》(转引), source_type: analytics, date: 2026-02-09, claim: 杂乱环境与皮质醇升高相关, confidence: medium }

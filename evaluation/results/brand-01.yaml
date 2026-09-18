@@ -1,0 +1,234 @@
+# 冒烟测试结果：brand-01（个人IP/自媒体账号）
+# 输入："个人 IP 打造与自媒体运营，普通人的内容创业路径"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 个人 IP 打造与自媒体运营，普通人的内容创业路径
+  source: explicit
+  audience: { primary: [内容创作者, 想做副业的打工人], secondary: [自媒体新手] }
+  domain: [个人 IP, 自媒体运营, 内容创业, 变现]
+  value_proposition: [可执行路径, 增长实操]
+  content_style: { tone: 「务实、个体视角 〔inferred〕」, format: [复盘, 方法清单, 数据拆解] }
+  authority:
+    strengths: [内容创作与账号运营经验, 中小体量增长方法论]
+    limitations: [非 MCN/平台官方, 无法保证收益]
+  boundaries: [时政评论, 金融投资建议, 灰色变现手段]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 人机协同成为 2026 内容创业分水岭
+    signals: { trend: 「AI+人」取代「纯 AI 或纯人」的二元叙事, demand: 创作者既怕被 AI 取代又怕不用 AI 落后 }
+    evidence:
+      - source: 新浪看点（2026 自媒体逆势增长赛道）
+        source_type: community
+        date: 2026-08-09
+        claim: 84% 创作者已将 AI 用于文案/剪辑；纯人类内容流量是纯 AI 内容 5.44 倍，纯 AI 内容 3 秒划走率超 73%；"活人感"是 AI 无法复制的护城河
+        confidence: medium
+      - source: DuckDBLab（AI 个人品牌副业指南）
+        source_type: other
+        date: 2026-06-26
+        claim: AI 让单人即可做团队的事（AI 写稿/出图/视频/分析）；成功核心从"会写会设计"变成"知道什么内容能共鸣+如何变现"
+        confidence: medium
+    content_gap: 不空谈"人味"，给出"AI 干脏活、人出观点"的具体分工
+    candidate_angles: [人机分工清单, 纯 AI 内容失效真相]
+
+  - topic: 从流量扩张到价值沉淀
+    signals: { trend: 平台治理非真人/低质 AI 内容，纯信息差搬运失效, demand: 创作者迷茫「红利期是否已过」 }
+    evidence:
+      - source: 新浪看点（同一篇）
+        source_type: community
+        date: 2026-08-09
+        claim: 自媒体进入"价值沉淀"阶段；微信/小红书对非真人自动化与低质 AI 内容专项治理；四个逆势赛道：深度内容IP/AI垂直服务/本地生活/情绪疗愈
+        confidence: medium
+    content_gap: 红利期已过的焦虑之下，什么赛道仍可做 + 如何从钱的流向倒推定位
+    candidate_angles: [四大赛道对照, 从钱的流向倒推]
+
+  - topic: 内容经济的数据真相
+    signals: { demand: 创作者想知道「哪个赛道赚钱、赚多少」 }
+    evidence:
+      - source: Fourthwall（2026 创作者获利赛道）
+        source_type: other
+        date: 2026-06-29
+        claim: 个人理财 CPM $15-22 居首（联盟/广告变现强）；利基选择四步法（热情×需求×窄化×竞品研究）
+        confidence: medium
+      - source: AI 短剧从业者报道（红星新闻）
+        source_type: news
+        date: 2026-08-01
+        claim: 上半年各平台上线微短剧 36.7 万部，AI 新剧占比超 74%；抖音端原生 AI 剧 98.7% 处于盈亏线以下（DataEye）
+        confidence: medium
+    content_gap: 把"热门赛道"幻觉戳破：供给爆炸vs真正盈利的清醒数据
+    candidate_angles: [赛道 ROI 真相, 警惕追逐热点]
+
+candidates:
+  - core_topic: 纯 AI 内容为什么不行了
+    user_problem: 想用 AI 批量产内容省力
+    target_audience: 创作者
+    content_angle: 用 5.44 倍/73% 数据讲"AI 做底稿、人来点睛"的分工
+    content_type: opinion
+    source_signals: [人机协同成为 2026 内容创业分水岭]
+  - core_topic: 人机分工清单：AI 干脏活，你出观点
+    user_problem: 不知道哪些环节该交给 AI
+    target_audience: 个人创作者
+    content_angle: 文案草稿/剪辑/数据分析交 AI，观点与共鸣留给自己
+    content_type: methodology
+    source_signals: [人机协同成为 2026 内容创业分水岭]
+  - core_topic: 活人感到底是什么：可练习的护城河
+    user_problem: 被说内容"太 AI"
+    target_audience: 创作者
+    content_angle: 把"人味"拆成可练习的具体动作（真实经历/口语化/瑕疵保留）
+    content_type: methodology
+    source_signals: [人机协同成为 2026 内容创业分水岭]
+  - core_topic: 红利期过了？四大赛道还能逆势增长
+    user_problem: 想做但怕入场太晚
+    target_audience: 观望者
+    content_angle: 深度IP/AI垂直服务/本地生活/情绪疗愈的对照与适配
+    content_type: trend
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 从钱的流向倒推内容定位
+    user_problem: 追热点做了几年不赚钱
+    target_audience: 创作者
+    content_angle: 选"有稳定消费需求"的领域（经营型/决策型）而非流量
+    content_type: methodology
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 平台治理解读：非真人内容的红线在哪
+    user_problem: 用 AI 被限流
+    target_audience: 使用 AI 的创作者
+    content_angle: 微信/小红书治理逻辑与合规使用方式
+    content_type: trend
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 单人内容工厂：用 AI 做到 5-10 人产能
+    user_problem: 一个人时间不够用
+    target_audience: 单人创作者
+    content_angle: 文本-图像-视频-数据分析的 AI 流水线
+    content_type: practice
+    source_signals: [人机协同成为 2026 内容创业分水岭]
+  - core_topic: 赛道 ROI 真相：别被"热门"骗了
+    user_problem: 听说 AI 短剧很火想进场
+    target_audience: 创作者
+    content_angle: 用 AI 剧 98.7% 盈亏线以下的数据讲结构性真相
+    content_type: opinion
+    source_signals: [内容经济的数据真相]
+  - core_topic: 高 CPM 赛道怎么选：以个人理财为例
+    user_problem: 不知道什么赛道广告价值高
+    target_audience: 创作者
+    content_angle: 用 CPM $15-22 数据讲商业价值与匹配成本
+    content_type: trend
+    source_signals: [内容经济的数据真相]
+  - core_topic: 利基四步法：热情×需求×窄化×竞品
+    user_problem: 选定位像大海捞针
+    target_audience: 新手
+    content_angle: 四步法实操（含反例示范）
+    content_type: methodology
+    source_signals: [内容经济的数据真相]
+  - core_topic: 内容创业的第一单：如何定义产品
+    user_problem: 有流量不知道卖什么
+    target_audience: 有基础粉丝者
+    content_angle: 咨询/社群/课程的从轻到重路线
+    content_type: methodology
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 从 0 到 1：个人 IP 的 90 天启动表
+    user_problem: 不知道第一步做什么
+    target_audience: 新手
+    content_angle: 定位-内容-分发-反馈的节奏安排
+    content_type: methodology
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 数据复盘：每天/每周看什么指标
+    user_problem: 只会看播放量
+    target_audience: 创作者
+    content_angle: 完读/互动/涨粉/转化的指标面板
+    content_type: practice
+    source_signals: [内容经济的数据真相]
+  - core_topic: 变现路径盘点：广告/联盟/知识付费/定制
+    user_problem: 收入单一依赖平台分成
+    target_audience: 创作者
+    content_angle: 四类变现的适配阶段与 CPM/利润结构
+    content_type: methodology
+    source_signals: [内容经济的数据真相]
+  - core_topic: 避免"AI 同质化"：拥有可辨识的声音
+    user_problem: 内容都长一样留不住人
+    target_audience: 使用 AI 的创作者
+    content_angle: 观点母题+语气锚点的个人化方法
+    content_type: opinion
+    source_signals: [人机协同成为 2026 内容创业分水岭]
+  - core_topic: 普通人副业起步：从 500 粉到稳定变现
+    user_problem: 怕小号没希望
+    target_audience: 打工人
+    content_angle: 用"精准 5000 粉可稳定变现"案例破除粉量迷信
+    content_type: practice
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 本地生活内容：离钱最近的赛道
+    user_problem: 同质内容太多做不下去
+    target_audience: 创作者
+    content_angle: 同城探店/便民/本地文化的打法与平台扶持
+    content_type: practice
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 情绪价值经济：疗愈类内容怎么做
+    user_problem: 懂技术不懂情感共鸣
+    target_audience: 内容创作者
+    content_angle: 25-49 岁高压人群的真实需求与内容形态
+    content_type: opinion
+    source_signals: [从流量扩张到价值沉淀]
+  - core_topic: 我的自媒体第一年复盘：数据与教训
+    user_problem: 想看到真实增长过程
+    target_audience: 新手
+    content_angle: 完整一年数据（涨粉/内容/变现）与踩坑
+    content_type: case_study
+    source_signals: [从流量扩张到价值沉淀, 内容经济的数据真相]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 纯 AI 内容为什么不行了, market_score: 85, score_breakdown: { demand: 88, pain: 80, trend: 90, novelty: 86, content_gap: 84, evidence: 80 } }
+    - { rank: 2, topic: 人机分工清单：AI 干脏活，你出观点, market_score: 82, score_breakdown: { demand: 86, pain: 78, trend: 84, novelty: 82, content_gap: 84, evidence: 76 } }
+    - { rank: 3, topic: 红利期过了？四大赛道还能逆势增长, market_score: 80, score_breakdown: { demand: 84, pain: 76, trend: 86, novelty: 78, content_gap: 82, evidence: 74 } }
+    - { rank: 4, topic: 从钱的流向倒推内容定位, market_score: 79, score_breakdown: { demand: 82, pain: 80, trend: 76, novelty: 84, content_gap: 80, evidence: 72 } }
+    - { rank: 5, topic: 赛道 ROI 真相：别被「热门」骗了, market_score: 78, score_breakdown: { demand: 80, pain: 78, trend: 82, novelty: 80, content_gap: 78, evidence: 74 } }
+  analysis: { pool_size: 19, deduplicated: 2, diversity_note: "Top5 覆盖理念/分工/赛道/定位/真相，互补" }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 纯 AI 内容为什么不行了
+    angle: 用 5.44 倍/73% 数据揭穿"纯 AI 批量生产"幻觉，给出人机分工
+    market_score: 85
+    account_fit: 87
+    fit_breakdown: { audience: 88, problem: 86, authority: 84, value: 90, differentiation: 88, style: 86 }
+    why_selected:
+      market_reason: AI 是 2026 内容行业最大变量，纯 AI 内容失效是反常识高讨论度话题
+      audience_reason: 核心读者（个人创作者）正面对"用不用 AI"的焦虑
+      account_reason: 定位"普通人内容创业路径"，人机分工是其核心命题
+      differentiation_reason: 多数内容吹 AI 提效，缺"纯 AI 内容为何失效"的数据视角
+    risks: [数据来自自媒体观察口径，需标注来源与局限]
+    confidence: high
+  rejected:
+    - { topic: 人机分工清单, reason: beat_by_top1, detail: 作为 Top1 的实操落地篇 }
+    - { topic: 四大赛道, reason: beat_by_top1, detail: 战略选题后续产出 }
+    - { topic: 从钱的流向倒推, reason: beat_by_top1, detail: 定位方法论 }
+    - { topic: 赛道 ROI 真相, reason: beat_by_top1, detail: 数据警示篇 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；时政/金融/灰产类未进入候选」, fit_summary: 「Top1 在 value/differentiation 领先」 }
+
+article_brief:
+  account: { positioning: 个人 IP 打造与自媒体运营，普通人内容创业路径, audience: 创作者/副业者, value_proposition: [可执行路径, 增长实操] }
+  selected_topic: { topic: 纯 AI 内容为什么不行了, angle: 数据真相 + 人机分工, confidence: high }
+  target_reader: 正考虑用 AI 批量产内容"省力起飞"的个人创作者
+  pain_points: { efficiency: 一人产能有限想走捷径, cognitive: 分不清 AI 提效与 AI 替代, risk: 用错方法被限流/掉粉, emotional: 「不追 AI 是不是就落后」的焦虑 }
+  core_insight:
+    misconception: 大多数创作者以为"AI 生成得越多越好"，把产量当增长
+    evidence: ["纯人类内容流量是纯 AI 的 5.44 倍、纯 AI 3 秒划走率 73%（新浪看点 2026-08-09）", "平台对非真人自动化与低质 AI 内容专项治理", "84% 创作者已用 AI 做脏活"]
+    insight: 失效的不是"用 AI"，而是"只有 AI"；平台算法与用户都要"活人感"——AI 该当放大器，价值内核仍来自人
+  key_arguments: [纯 AI 内容有数据劣势, 平台治理收紧了自动化红线, 人机分工保住"活人感", 观点/共鸣是复利资产]
+  title_candidates: ["纯 AI 内容为什么不行了", "AI 让你快 10 倍，也让你死 10 倍", "内容创业的护城河：活人感", "别用 AI 省掉你最值钱的部分"]
+  outline:
+    - { section: Hook, purpose: 用反差数据开场, key_points: [5.44 倍流量差距, 3 秒划走 73%] }
+    - { section: Problem, purpose: 说明批量生产的诱惑与陷阱, key_points: [单人想走捷径, 平台治理收紧] }
+    - { section: Misconception, purpose: 破除「AI 越多越好」, key_points: [产能≠价值, 同质化加速] }
+    - { section: Core Insight, purpose: 提出「人机分工」模型, key_points: [AI 干脏活, 人供观点与共鸣] }
+    - { section: Mechanism, purpose: 讲平台与用户为何偏爱真人, key_points: [算法要互动, 用户要信任] }
+    - { section: Solution, purpose: 分工清单, key_points: [草稿/剪辑/数据交 AI, 经历/观点/语气留人] }
+    - { section: Example, purpose: 正反对照, key_points: [纯 AI 号 vs 人机协作号的增长对比] }
+    - { section: Action, purpose: 本周可做, key_points: [列出可自动化环节, 建立个人观点母题, 下一期带「活人感」重做] }
+  evidence:
+    - { source: 新浪看点, source_type: community, date: 2026-08-09, claim: 纯人类流量 5.44 倍、3 秒划走 73%、84% 用 AI, confidence: medium }
+    - { source: DuckDBLab, source_type: other, date: 2026-06-26, claim: AI 使一人达成团队产能；核心是共鸣与变现认知, confidence: medium }

@@ -1,0 +1,251 @@
+# 冒烟测试结果：tech-03（后端分布式系统账号）
+# 输入："后端分布式系统实战，从单机到微服务的演进之路"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 后端分布式系统实战，从单机到微服务的演进之路
+  source: explicit
+  audience: { primary: [后端工程师, 系统架构师], secondary: [技术负责人] }
+  domain: [分布式系统, 微服务, 后端架构, 服务演进]
+  value_proposition: [真实演进经验与决策框架, 系统设计避坑]
+  content_style: { tone: 「实战、决策向 〔inferred〕」, format: [长文, 架构复盘, 决策清单] }
+  authority:
+    strengths: [一线分布式系统实战, 架构演进经验]
+    limitations: [非云厂商官方, 非大规模超一线企业视角]
+  boundaries: [纯前端话题, 泛互联网新闻, 业务软广]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 微服务回潮与模块化单体
+    signals: { trend: 2026 行业从盲目微服务转向「模块化单体优先」, demand: 中小团队纠结要不要拆/要不要合 }
+    evidence:
+      - source: CSDN（2026 团队回归实践）
+        source_type: social
+        date: 2026-09-17
+        claim: 中文团队记录 18 个月微服务挣扎后回归模块化单体：23 个服务部署协调地狱、接口耗时 450ms→80ms、一致性代码比业务还复杂
+        confidence: high
+      - source: bytepane（架构对比研究）
+        source_type: other
+        date: 2026-05-26
+        claim: 2025 Gartner 调查 60% 工程团队后悔对中小应用采用微服务；42% 组织正把服务合并回更大部署单元；微服务基础设施成本约为单体 3.75-6 倍
+        confidence: medium
+      - source: 亚马逊 Prime Video 案例（多来源引用）
+        source_type: analytics
+        date: 2023-01-01
+        claim: Prime Video 将部分视频监控服务从微服务迁回单体后基础设施成本下降 90%
+        confidence: high
+    content_gap: 什么规模的团队/系统应该选哪种架构的量化决策框架
+    candidate_angles: [决策框架（团队/流量/运维三维）, 微服务回归的复盘]
+
+  - topic: 分布式一致性地狱
+    signals: { demand: 分布式事务、幂等、补偿反复踩坑 }
+    evidence:
+      - source: CSDN 回归实践案例
+        source_type: social
+        date: 2026-09-17
+        claim: 订单-库存-支付一致性场景引入 Saga/事件溯源/补偿后，"保证一致的代码比业务逻辑还复杂"，模块化单体本地事务即可
+        confidence: high
+    content_gap: 把一致性解决方案按"要不要分布式"分级的选型文章
+    candidate_angles: [先别分布式：本地事务优先, Saga 选型清单]
+
+  - topic: 服务治理与可观测性
+    signals: { trend: 微服务治理平台（熔断/限流/灰度）产品化, demand: 线上变更风险与故障范围控制 }
+    evidence:
+      - source: 阿里云 MSE 官方文档
+        source_type: official_doc
+        date: 2026-05-18
+        claim: 微服务治理基于阿里大规模生产实践，提供无损上下线、全链路灰度、限流熔断隔离等能力，无侵入接入
+        confidence: medium
+    content_gap: 小团队无成熟平台的"轻量治理清单"
+    candidate_angles: [治理最小集, 无损上下线实践]
+
+  - topic: Agentic 微服务与 AI 化系统
+    signals: { trend: 2026 出现 agentic microservice 相关讨论（认知解耦/非确定性可靠性）, demand: 后端工程师面对 AI 系统不确定性的可靠性方法 }
+    evidence:
+      - source: Software Curated（架构文章）
+        source_type: other
+        date: 2026-09-14
+        claim: 以思维风格而非数据域拆服务边界；agent 非确定性使 95% 成功率也成为生产事故（可靠性危机）
+        confidence: low
+    content_gap: 后端视角首次系统性理解 agentic 系统可靠性
+    candidate_angles: [agent 系统的可靠性框架, 认知解耦的边界设计]
+
+candidates:
+  - core_topic: 中小团队为什么该选模块化单体
+    user_problem: 团队小但被"微服务才算现代"裹挟
+    target_audience: 技术负责人、中小团队
+    content_angle: 团队<20 人等三个量化条件 + 决策树
+    content_type: opinion
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 微服务回归复盘：我们拆掉 23 个服务学到什么
+    user_problem: 已微服务化但维护不动
+    target_audience: 后端工程师、架构师
+    content_angle: 真实 18 个月踩坑→回归的完整复盘
+    content_type: case_study
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 微服务与单体的真实成本账
+    user_problem: 老板问"拆了要花多少钱"
+    target_audience: 技术负责人
+    content_angle: 用 3.75-6x 基础设施成本 + 团队人力账做决策
+    content_type: practice
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 什么时候真的该拆：五个拆分信号
+    user_problem: 不知道「痛得值不值得拆」
+    target_audience: 架构师
+    content_angle: 独立扩容/合规边界/团队交付阻塞等信号清单
+    content_type: methodology
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 模块化单体的模块边界纪律
+    user_problem: 想回归单体又怕变成大泥球
+    target_audience: 后端工程师
+    content_angle: 模块边界+依赖规则+build 强制检查的做法
+    content_type: methodology
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 分布式事务四件套，什么时候才需要
+    user_problem: Saga/补偿/幂等等何时引入
+    target_audience: 后端工程师
+    content_angle: 先判断是否需要分布式，再选方案
+    content_type: opinion
+    source_signals: [分布式一致性地狱]
+  - core_topic: 订单-库存-支付一致性实录
+    user_problem: 跨服务扣减场景天天出问题
+    target_audience: 电商后端
+    content_angle: 单体本地事务 vs 分布式方案的对比复盘
+    content_type: case_study
+    source_signals: [分布式一致性地狱, 微服务回潮与模块化单体]
+  - core_topic: 幂等与重试的正确姿势
+    user_problem: 重试导致重复扣款/重复下单
+    target_audience: 后端工程师
+    content_angle: 幂等键设计、重试策略与补偿边界
+    content_type: tutorial
+    source_signals: [分布式一致性地狱]
+  - core_topic: 事件溯源与补偿事务的坑
+    user_problem: 上了 Saga 反而更乱
+    target_audience: 中高级后端
+    content_angle: 哪些场景跟风上了不该上的方案
+    content_type: pitfall
+    source_signals: [分布式一致性地狱]
+  - core_topic: 小团队的轻量服务治理最小集
+    user_problem: 没有治理平台，熔断限流全靠手写
+    target_audience: 中小团队后端
+    content_angle: 熔断/限流/重试的最小实现清单
+    content_type: tooling
+    source_signals: [服务治理与可观测性]
+  - core_topic: 无损上下线与全链路灰度
+    user_problem: 发布总引起流量损失和故障
+    target_audience: 架构师
+    content_angle: 延迟注册/预热/泳道发布原理与落地
+    content_type: practice
+    source_signals: [服务治理与可观测性]
+  - core_topic: 分布式日志与链路追踪排查
+    user_problem: 报错分散在 N 个服务找不到根因
+    target_audience: 后端工程师
+    content_angle: trace-id 全链路方案与常见断点
+    content_type: practice
+    source_signals: [服务治理与可观测性]
+  - core_topic: 从单机到微服务的演进路线图
+    user_problem: 想规划长远架构演进
+    target_audience: 架构师
+    content_angle: 单机→模块化单体→按需拆分的渐进路线
+    content_type: methodology
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 分布式系统读书与实践顺序
+    user_problem: 分布式知识浩如烟海
+    target_audience: 初中级后端
+    content_angle: 从可观测性→一致性→容错的实践导向路径
+    content_type: tutorial
+    source_signals: [分布式一致性地狱, 服务治理与可观测性]
+  - core_topic: Agent 系统也是分布式系统：可靠性框架
+    user_problem: 后端工程师面对 agent 不确定性发怵
+    target_audience: 后端、AI 应用工程师
+    content_angle: 把 95% 成功率当生产事故的可靠性设计
+    content_type: opinion
+    source_signals: [Agentic 微服务与 AI 化系统]
+  - core_topic: 认知解耦：按思维风格拆 agent 服务
+    user_problem: agent 架构边界怎么画
+    target_audience: 架构师
+    content_angle: researcher/executor 按认知角色拆的边界模式
+    content_type: methodology
+    source_signals: [Agentic 微服务与 AI 化系统]
+  - core_topic: 云原生监控体系从零搭建
+    user_problem: 监控乱、告警噪音大
+    target_audience: 平台/后端团队
+    content_angle: 指标-日志-追踪三柱的落地与告警分级
+    content_type: practice
+    source_signals: [服务治理与可观测性]
+  - core_topic: 服务拆分的康威定律反思
+    user_problem: 架构与组织一直打架
+    target_audience: 技术负责人
+    content_angle: 用团队边界推架构边界的现实逻辑
+    content_type: opinion
+    source_signals: [微服务回潮与模块化单体]
+  - core_topic: 网关、注册中心与发现机制
+    user_problem: 服务多了路由与发现混乱
+    target_audience: 后端工程师
+    content_angle: 服务发现的演进与注册中心健康检查
+    content_type: tutorial
+    source_signals: [服务治理与可观测性]
+  - core_topic: 架构评审清单：拆前问自己五个问题
+    user_problem: 拆服务前心里没底
+    target_audience: 架构师
+    content_angle: 评估治理成本/一致性成本/性能税的清单
+    content_type: tooling
+    source_signals: [微服务回潮与模块化单体, 分布式一致性地狱]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 中小团队为什么该选模块化单体, market_score: 86, score_breakdown: { demand: 90, pain: 84, trend: 88, novelty: 86, content_gap: 84, evidence: 82 } }
+    - { rank: 2, topic: 微服务回归复盘：我们拆掉 23 个服务学到什么, market_score: 83, score_breakdown: { demand: 84, pain: 82, trend: 84, novelty: 84, content_gap: 82, evidence: 78 } }
+    - { rank: 3, topic: 分布式事务四件套，什么时候才需要, market_score: 80, score_breakdown: { demand: 84, pain: 82, trend: 76, novelty: 78, content_gap: 80, evidence: 76 } }
+    - { rank: 4, topic: 什么时候真的该拆：五个拆分信号, market_score: 77, score_breakdown: { demand: 80, pain: 78, trend: 74, novelty: 80, content_gap: 76, evidence: 70 } }
+    - { rank: 5, topic: Agent 系统也是分布式系统：可靠性框架, market_score: 75, score_breakdown: { demand: 76, pain: 72, trend: 80, novelty: 86, content_gap: 74, evidence: 56 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖决策/复盘/一致性/选型/前沿，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 中小团队为什么该选模块化单体
+    angle: 团队规模/流量/运维三维量化决策，破除"微服务=现代"迷思
+    market_score: 86
+    account_fit: 87
+    fit_breakdown: { audience: 88, problem: 90, authority: 84, value: 88, differentiation: 86, style: 84 }
+    why_selected:
+      market_reason: 2026 微服务回潮是行业级热点，中文团队实证案例 + Gartner/成本数据支撑强
+      audience_reason: 核心读者（后端/架构师）正处于"拆不拆"的真实决策点
+      account_reason: 账号定位"架构演进之路"，该题是演进决策的关键节点
+      differentiation_reason: 已有内容多为概念对比，缺量化决策框架
+    risks: [观点可能被读成"反微服务"绝对化]
+    confidence: high
+  rejected:
+    - { topic: 微服务回归复盘, reason: beat_by_top1, detail: 作为 Top1 的案例支撑篇 }
+    - { topic: 分布式事务四件套, reason: beat_by_top1, detail: 次优先内容池 }
+    - { topic: 什么时候真的该拆, reason: beat_by_top1, detail: 与 Top1 互补并列 }
+    - { topic: Agent 系统也是分布式系统, reason: beat_by_top1, detail: 前沿但证据弱（confidence low），待素材补足 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝」, fit_summary: 「Top1 在 problem/value 领先」 }
+
+article_brief:
+  account: { positioning: 后端分布式系统实战，从单机到微服务的演进之路, audience: 后端工程师/架构师, value_proposition: [演进经验, 决策框架] }
+  selected_topic: { topic: 中小团队为什么该选模块化单体, angle: 三维量化决策框架, confidence: high }
+  target_reader: 团队规模 10-50 人、正为"要不要微服务化"开会的技术负责人
+  pain_points: { functional: 团队被微服务运维拖垮、发布协调地狱, efficiency: 拆服 23 个组件的构建/部署/监控成本指数上升, cognitive: 说不清「拆的收益究竟何时兑现」, risk: 拆错后回归成本高 }
+  core_insight:
+    misconception: 大多数团队以为"微服务=高可用+可扩展"，评审时只看技术不吃成本
+    evidence: ["Gartner：60% 团队后悔对中小应用微服务化（bytepane 2026-05-26）", "真实案例：接口 450ms→80ms，一致性代码比业务复杂（CSDN 2026-09-17）", "Prime Video 迁回单体成本 -90%"]
+    insight: 架构决策的第一变量不是"技术先进性"，而是团队能否独立部署的边界数量；<20 人的团队几乎都该模块化单体起步
+  key_arguments: [康威定律决定架构, 微服务成本 3.75-6x 但收益常被夸大, 模块化单体保留拆分路径, 三个量化条件给决策树]
+  title_candidates: ["我们不是 Netflix：中小团队为什么该选模块化单体", "60% 的团队后悔拆了微服务", "3.75 倍成本：微服务账单到底有多贵", "先模块化单体，再谈拆分"]
+  outline:
+    - { section: Hook, purpose: 用团队煎熬场景开头, key_points: [周五上线 23 个服务协调事故, 凌晨 3 点手推回滚] }
+    - { section: Problem, purpose: 摆出回潮大势, key_points: [Gartner 60% 后悔, 42% 组织正在合并回归] }
+    - { section: Misconception, purpose: 拆解「现代=微服务」, key_points: [把 Netflix 当模板的幻觉, 技术先进≠适合当前规模] }
+    - { section: Core Insight, purpose: 提出「独立部署边界」标准, key_points: [康威定律：架构镜像组织, 决策变量是团队边界数] }
+    - { section: Mechanism, purpose: 讲清成本结构, key_points: [基础设施 3.75-6x, 一致性/可观测性人力成本] }
+    - { section: Solution, purpose: 三维决策树, key_points: [团队人数/流量/运维能力三问, 模块化单体起步 + 按需拆] }
+    - { section: Example, purpose: 具体案例对照, key_points: [真实团队 23 服务回归对比数据, Prime Video -90% 成本] }
+    - { section: Action, purpose: 给出决议模板, key_points: [组织一次架构评审, 输出一页决策单] }
+  evidence:
+    - { source: bytepane, source_type: other, date: 2026-05-26, claim: 60% 后悔、42% 回归、成本 3.75-6x, confidence: medium }
+    - { source: CSDN, source_type: social, date: 2026-09-17, claim: 真实团队 18 个月微服务→模块化单体复盘, confidence: high }

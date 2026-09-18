@@ -1,0 +1,253 @@
+# 冒烟测试结果：biz-02（跨境电商独立站账号）
+# 输入："跨境电商独立站运营日记，数据驱动的选品与投放"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 跨境电商独立站运营日记，数据驱动的选品与投放
+  source: explicit
+  audience: { primary: [跨境电商从业者, 独立站卖家], secondary: [转型卖家] }
+  domain: [跨境电商, 独立站, 选品, 投放, 运营]
+  value_proposition: [数据化运营方法, 真实复盘]
+  content_style: { tone: 「实操、日记式 〔inferred〕」, format: [运营复盘, 数据拆解, 清单] }
+  authority:
+    strengths: [独立站一线运营经验, 选品与投放数据能力]
+    limitations: [非平台官方, 非支付/物流服务商]
+  boundaries: [代运营软广, 灰产/黑五类, 个股与融资话题]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: TikTok 开环与全域联动成为主流打法
+    signals: { trend: 2026 平台力推开环电商与「内容+货架+独立站」联动, demand: 独立站缺流量入口 }
+    evidence:
+      - source: TikTok for Business 2026 开环电商峰会报道
+        source_type: analytics
+        date: 2026-09-11
+        claim: 2026 全球出海开环电商 GMV 超千亿美元（年增 10%），独立站数量 +13%，广告支出 +16%；开环生意靠爆品，区域选品差异显著（美：女装/珠宝，中东：美妆）
+        confidence: high
+      - source: 雨果网（ACE 全域经营）
+        source_type: community
+        date: 2026-07-01
+        claim: 约 70% 流量溢出至站外；实例：TikTok 单店月销 200 万美金可带动亚马逊月销 80-100 万；2026 主流策略=TikTok+亚马逊+独立站三位一体
+        confidence: medium
+    content_gap: 流量溢出的承接：独立站如何接住站外流量并沉淀数据 的方法论
+    candidate_angles: [三位一体打法, 溢出流量承接]
+
+  - topic: 收款合规是生死线
+    signals: { demand: 「有订单进不来钱」比没订单更难受, trend: 独立站无平台担保，风控更严 }
+    evidence:
+      - source: 2cshop（独立站收款防冻指南）
+        source_type: community
+        date: 2026-07-24
+        claim: 独立站收款核心原则"合规＞方便"；PayPal 关联风险高、申诉 30-90 天；Stripe 需境外主体；本地化支付可提升转化 15%-25%
+        confidence: medium
+      - source: 谷桥科技（2026 独立站合规要点）
+        source_type: community
+        date: 2026-05-20
+        claim: 62% 跨境卖家因合规问题遭遇账号受限/货款冻结，平均单次损失超 2 万元；欧盟 Cookie/CE、泰国取消免税起征、沙特地址短码等地区差异
+        confidence: medium
+    content_gap: 把"合规红线"按市场拆解成开店前自查清单
+    candidate_angles: [收款方式选型, 合规自查清单]
+
+  - topic: 新手建站避坑
+    signals: { demand: 新手第一站常被套路 }
+    evidence:
+      - source: 建站100（独立站避坑指南）
+        source_type: community
+        date: 2026-05-17
+        claim: 低价全包建站是割韭菜套路；域名/服务器务必自持（案例：被锁域名要"赎金"）；先选品定位于定位再建站
+        confidence: medium
+    content_gap: 把关"钱与数据命脉"的建站决策清单
+    candidate_angles: [建站避坑清单, 域名自持红线]
+
+  - topic: 跨境大盘：竞争与合规双升级
+    signals: { trend: 跨境占线上零售 22%（2023 的 15%→2026 22%）, discussion: 红利仍在但门槛升 }
+    evidence:
+      - source: eMarketer（via Ecommerce Times）
+        source_type: analytics
+        date: 2026-07-20
+        claim: 跨境电商业 2026 占全球线上零售 22%；68% 发达市场消费者近 12 个月有过跨境购买（2024：54%）；EU ViDA 增值税新规 2026-01 生效
+        confidence: medium
+    content_gap: 门槛升级后的"红利在哪、坑在哪"的导航内容
+    candidate_angles: [2026 入局评估, 合规税改地图]
+
+candidates:
+  - core_topic: 流量溢出：独立站怎么接住 TikTok 的 70%
+    user_problem: 内容平台有流量但转化在站外
+    target_audience: 独立站卖家
+    content_angle: 用 200 万→100 万案例讲溢出承接与数据回传
+    content_type: methodology
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: TikTok+亚马逊+独立站三位一体打法
+    user_problem: 单平台依赖风险大
+    target_audience: 成熟卖家
+    content_angle: 内容种草/货架承接/独立站沉淀的分工与节奏
+    content_type: methodology
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 开环与闭环：独立站商家该选哪条路
+    user_problem: TikTok 开环 vs 自家店铺模式选择困难
+    target_audience: 卖家
+    content_angle: 门槛/定价权/数据归属三阶对比
+    content_type: opinion
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 2026 开环选品地图：区域差异怎么看
+    user_problem: 不知道卖什么市场
+    target_audience: 选品阶段卖家
+    content_angle: 美/中东/日本/东南亚的区域品类热力图
+    content_type: trend
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 收款方式选型：PayPal vs Stripe vs 本地支付
+    user_problem: 收款总被冻/到账少
+    target_audience: 独立站卖家
+    content_angle: 五方案对比+费率与风险矩阵
+    content_type: tooling
+    source_signals: [收款合规是生死线]
+  - core_topic: 防冻账清单：收款合规的第一课
+    user_problem: 有订单进不来钱
+    target_audience: 新卖家
+    content_angle: 独立 IP/描述一致/客服响应/交易稳定四件事
+    content_type: practice
+    source_signals: [收款合规是生死线]
+  - core_topic: 欧盟/美国/东南亚合规自查表
+    user_problem: 各国规则复杂怕踩坑
+    target_audience: 出海卖家
+    content_angle: Cookie/CE/税号/地址标准的市场化清单
+    content_type: tooling
+    source_signals: [收款合规是生死线]
+  - core_topic: 域名与服务器：命脉必须自持
+    user_problem: 建站公司代管遭反噬
+    target_audience: 新手卖家
+    content_angle: 用"锁域名赎金"案例讲自持红线
+    content_type: pitfall
+    source_signals: [新手建站避坑]
+  - core_topic: 低价全包建站的套路拆解
+    user_problem: 被 8000 元"全包"话术吸引
+    target_audience: 新手
+    content_angle: 后期加价/空壳站/垃圾询盘的识别
+    content_type: pitfall
+    source_signals: [新手建站避坑]
+  - core_topic: 先定品再建站：选品前置的运营逻辑
+    user_problem: 网站做出来了没人买
+    target_audience: 新手
+    content_angle: 用选品定位推导店铺结构
+    content_type: methodology
+    source_signals: [新手建站避坑]
+  - core_topic: 独立站归因：ROI 为什么算不清
+    user_problem: 投放数据与真实盈利对不上
+    target_audience: 有投放经验的卖家
+    content_angle: 归因窗口/多触点/落地页数据回传
+    content_type: methodology
+    source_signals: [跨境大盘]
+  - core_topic: 商品库广告与素材量产
+    user_problem: 素材不够跑量
+    target_audience: 投放运营
+    content_angle: 单广告组 6 条视频/单品 20 素材的产能体系
+    content_type: practice
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 大促基建：黑五前的新建计划量
+    user_problem: 大促抢不到量
+    target_audience: 卖家
+    content_angle: 计划 1.7x/创意 2.4x/预算 15-85 分配节奏
+    content_type: practice
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 独立站定位：DTC 精品 vs 站群走量
+    user_problem: 不知道做精品还是铺量
+    target_audience: 卖家
+    content_angle: 达人内容 vs AI 素材快迭代的两条路径
+    content_type: opinion
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 落地页与 TIP 中间页的转化优化
+    user_problem: 点击很多不成交
+    target_audience: 投放运营
+    content_angle: 确认意图中间页/加载速度/支付选项
+    content_type: practice
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 2026 入局评估：还有红利吗
+    user_problem: 犹豫现在做跨境晚不晚
+    target_audience: 观望者
+    content_angle: 用 22% 渗透率/千亿美元 GMV 与门槛数据给判断
+    content_type: opinion
+    source_signals: [跨境大盘]
+  - core_topic: 增值税新规地图：EU ViDA 与英国回潮
+    user_problem: 税改影响定价与利润
+    target_audience: 欧洲市场卖家
+    content_angle: ViDA 2026 生效后非欧盟卖家的义务
+    content_type: trend
+    source_signals: [跨境大盘]
+  - core_topic: 打造 DTC 爆品的 18 维选品框架
+    user_problem: 选品靠拍脑袋
+    target_audience: 选品阶段卖家
+    content_angle: 需求/竞争/物流/利润的多维打分表
+    content_type: tooling
+    source_signals: [TikTok 开环与全域联动成为主流打法]
+  - core_topic: 我的独立站冷启动 90 天复盘
+    user_problem: 想看真实过程
+    target_audience: 新卖家
+    content_angle: 选品-建站-投放-合规的完整时间线与数据
+    content_type: case_study
+    source_signals: [新手建站避坑, 收款合规是生死线]
+  - core_topic: 数据驱动不是口号：每天看什么数
+    user_problem: 数据太多不知道该盯什么
+    target_audience: 运营
+    content_angle: 转化率/回传质量/LTV 的核心指标面板
+    content_type: practice
+    source_signals: [跨境大盘]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 流量溢出：独立站怎么接住 TikTok 的 70%, market_score: 84, score_breakdown: { demand: 88, pain: 80, trend: 88, novelty: 84, content_gap: 84, evidence: 78 } }
+    - { rank: 2, topic: 收款方式选型：PayPal vs Stripe vs 本地支付, market_score: 83, score_breakdown: { demand: 86, pain: 88, trend: 78, novelty: 76, content_gap: 84, evidence: 80 } }
+    - { rank: 3, topic: TikTok+亚马逊+独立站三位一体打法, market_score: 81, score_breakdown: { demand: 84, pain: 76, trend: 86, novelty: 80, content_gap: 82, evidence: 76 } }
+    - { rank: 4, topic: 2026 开环选品地图：区域差异怎么看, market_score: 79, score_breakdown: { demand: 82, pain: 74, trend: 84, novelty: 78, content_gap: 80, evidence: 74 } }
+    - { rank: 5, topic: 防冻账清单：收款合规的第一课, market_score: 77, score_breakdown: { demand: 80, pain: 82, trend: 74, novelty: 74, content_gap: 80, evidence: 74 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖增长/资金/联动/选品/合规，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 流量溢出：独立站怎么接住 TikTok 的 70%
+    angle: 用"200 万→100 万"溢出案例，把站外流量沉淀成独立站资产
+    market_score: 84
+    account_fit: 85
+    fit_breakdown: { audience: 86, problem: 84, authority: 84, value: 88, differentiation: 84, style: 84 }
+    why_selected:
+      market_reason: 2026 开环电商是官方主推方向（千亿美元 GMV 大会），趋势与数据俱足
+      audience_reason: 独立站卖家最大的增长焦虑就是流量来源
+      account_reason: 定位"数据驱动运营"，溢出承接正是数据化命题
+      differentiation_reason: 多数内容讲站内运营，少有人把"溢出→承接→沉淀"串成一个体系
+    risks: [平台策略迭代快，标注数据时点]
+    confidence: high
+  rejected:
+    - { topic: 收款方式选型, reason: beat_by_top1, detail: 痛点极硬，作为第二篇主推 }
+    - { topic: 三位一体打法, reason: beat_by_top1, detail: Top1 的扩展篇 }
+    - { topic: 开环选品地图, reason: beat_by_top1, detail: 选品系列 }
+    - { topic: 防冻账清单, reason: beat_by_top1, detail: 收款系列细节篇 }
+  analysis:
+    boundary_filter_summary: "0 个被 HIGH 拒绝；黑五类/灰产类选题未进入候选（boundaries 生效）"
+    fit_summary: "Top1 在 value 领先；收款类与定位（选品投放）匹配度次之"
+
+article_brief:
+  account: { positioning: 跨境电商独立站运营日记，数据驱动选品与投放, audience: 跨境卖家/独立站卖家, value_proposition: [数据化运营, 真实复盘] }
+  selected_topic: { topic: 流量溢出：独立站怎么接住 TikTok 的 70%, angle: 溢出承接与数据沉淀, confidence: high }
+  target_reader: 已在内容平台有流量、想把用户沉淀到自有站的独立站卖家
+  pain_points: { functional: 站外流量看完就走不成交, efficiency: 多平台重复建店却互不相通, risk: 单平台依赖被限流就完蛋, cognitive: 说不清溢出流量价值在哪 }
+  core_insight:
+    misconception: 大多数独立站卖家以为 TikTok 只能种草、转化做不起来
+    evidence: ["约 70% 流量溢出至站外（雨果网 ACE）", "实例：TikTok 月销 200 万刀带动亚马逊月销 80-100 万刀", "开环电商 GMV 超千亿美元、独立站 +13%（TikTok 峰会）"]
+    insight: 溢出的本质是"内容平台的公域信任"被转成"独立站的私域资产"；承接的关键是数据回传、落地页与复购设计，而非简单导流
+  key_arguments: [溢出=公域信任转私域资产, 数据回传让模型越跑越准, 落地页与支付是承接漏斗, 三位一体降低单一依赖风险]
+  title_candidates: ["TikTok 流量的 70% 都溢出了，你接住了吗", "单店月销 200 万刀，怎么再带动 100 万", "独立站的流量焦虑：从种草到沉淀", "别把 TikTok 只当种草工具"]
+  outline:
+    - { section: Hook, purpose: 用溢出数据带入, key_points: [70% 流量溢出场景, 看完不买的痛] }
+    - { section: Problem, purpose: 说明单平台依赖风险, key_points: [平台规则一变生意归零, 数据全在别人手里] }
+    - { section: Misconception, purpose: 破除「TikTok 只种草」直觉, key_points: [溢出也是资产, 公域信任可转私域] }
+    - { section: Core Insight, purpose: 提出承接框架, key_points: [回传-转化-沉淀三段, 数据决定复发效率] }
+    - { section: Mechanism, purpose: 讲溢出机制, key_points: [兴趣推荐侧服务选择, 开环广告与 TIP 链路] }
+    - { section: Solution, purpose: 承接三件套, key_points: [像素/eAPI 回传, 中间页与站内转化优化, 复购与会员机制] }
+    - { section: Example, purpose: 200→100 案例复盘, key_points: [数据链路配置, 各环节表现] }
+    - { section: Action, purpose: 本周启动, key_points: [接通转化回传, 建 TIP 测试计划, 定义 LTV 指标] }
+  evidence:
+    - { source: 雨果网 ACE, source_type: community, date: 2026-07-01, claim: 70% 流量溢出、200万→100万实例, confidence: medium }
+    - { source: TikTok 开环峰会报道, source_type: analytics, date: 2026-09-11, claim: 开环 GMV 超千亿美元、独立站 +13%, confidence: high }

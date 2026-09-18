@@ -1,0 +1,251 @@
+# 冒烟测试结果：work-02（产品经理方法论账号）
+# 输入："产品经理方法论，从需求分析到落地执行的完整流程"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 产品经理方法论，从需求分析到落地执行的完整流程
+  source: explicit
+  audience: { primary: [产品经理, 产品新人], secondary: [转行 PM 学习者] }
+  domain: [产品方法论, 需求分析, 需求管理, 落地执行]
+  value_proposition: [完整实操流程, 踩坑复盘]
+  content_style: { tone: 「流程化、案例驱动 〔inferred〕」, format: [长文, 模板清单, 案例复盘] }
+  authority:
+    strengths: [产品全流程实操经验, 方法论沉淀]
+    limitations: [非咨询机构官方, 非大厂官方课程]
+  boundaries: [纯技术实现细节, 时政, 泛财经评论]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 需求分析的方法论体系
+    signals: { demand: 「这个需求能不能做、做成什么样」是 PM 最根基问题 }
+    evidence:
+      - source: 人人都是产品经理（需求分析方法论）
+        source_type: community
+        date: 2026-01-01
+        claim: 需求分析分需求收集（产品/功能/迭代三类）、真实性分析、优先级排序三阶段；竞品分直接/间接/替代三类
+        confidence: medium
+      - source: 人人都是产品经理（B 端工具箱）
+        source_type: community
+        date: 2026-01-01
+        claim: 需求分析分宏观市场/中观竞品/微观客户需求三层面；配套信息源与报告平台清单
+        confidence: medium
+    content_gap: 把经典方法论做成"新人可照做的模板"而非理论概述
+    candidate_angles: [需求真实性三问, 竞品三分法]
+
+  - topic: AI 正在重构 PM 工作流
+    signals: { trend: GPT-5.5 能完成文档型工作，AI 成为 PM 日常工具, demand: 「AI vs PM」焦虑与能力迁移讨论激烈 }
+    evidence:
+      - source: 人人都是产品经理（GPT-5.5 后 PM 价值）
+        source_type: community
+        date: 2026-04-23
+        claim: OpenAI 2026-04-23 发布 GPT-5.5（面向复杂真实工作）；文档型 PM 价值正被压缩，PM 核心向"判断能力"迁移
+        confidence: medium
+      - source: FourthRev（GenAI for PM）
+        source_type: other
+        date: 2026-05-28
+        claim: 2025 Productboard 调查 94% 企业产品人员每天依赖 AI 工具；PM 平均每任务省 4 小时（PRD/竞品分析/路线图）
+        confidence: medium
+    content_gap: 把"AI 焦虑"变成"人机协作分工清单"的中文实操内容
+    candidate_angles: [AI 时代的 PM 分工, Prompt 即新 PRD]
+
+  - topic: 竞品分析的正确姿势
+    signals: { demand: PM 常把竞品分析做成功能罗列 }
+    evidence:
+      - source: 墨刀（竞品分析方法论）
+        source_type: community
+        date: 2026-09-12
+        claim: 竞品分析先明确目标与范围（直接/间接），再从官方渠道/第三方平台/数据分析平台多源收集，避免信息过载
+        confidence: medium
+    content_gap: 竞品分析从"抄功能表"到"判断定位差异"的升级
+    candidate_angles: [竞品分析的五个层级, 别把竞品分析做成清单]
+
+  - topic: 从功能驱动到模型驱动
+    signals: { trend: AI 产品设计范式转变（PRD→Prompt、确定性→不确定性）, demand: 做 AI 产品的 PM 缺新方法 }
+    evidence:
+      - source: 人人都是产品经理（思维跃迁）
+        source_type: community
+        date: 2026-06-01
+        claim: Prompt 就是新的 PRD；AI 产品从确定性设计转向拥抱不确定性的模型引导，PM 从功能车间变为模型工坊
+        confidence: low
+    content_gap: 一线 PM 转型 AI 产品的具体方法论（评价体系/边界设计）
+    candidate_angles: [模型驱动产品的验收怎么做, AI 产品的不确定性管理]
+
+candidates:
+  - core_topic: 需求真实性三问：学会质疑需求
+    user_problem: 领导拍脑袋/业务提一堆需求，全都要做
+    target_audience: 产品新人
+    content_angle: 谁要/什么时候要/不做的代价三问过滤虚假需求
+    content_type: methodology
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 竞品三分法：直接/间接/替代
+    user_problem: 竞品分析做成功能罗列
+    target_audience: PM
+    content_angle: 用三分法找真正参照系，替代品反而藏机会
+    content_type: opinion
+    source_signals: [需求分析的方法论体系, 竞品分析的正确姿势]
+  - core_topic: 需求优先级排序清单
+    user_problem: 什么都想做什么都做不好
+    target_audience: PM
+    content_angle: 价值/成本/风险三维度打分模板
+    content_type: tooling
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 把用户访谈变成可决策的证据
+    user_problem: 访谈完只会记流水账
+    target_audience: PM
+    content_angle: 访谈-聚类-验证的证据链方法
+    content_type: methodology
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 竞品分析防过载：目标先行
+    user_problem: 信息收集到停不下来
+    target_audience: PM
+    content_angle: 先定义分析目标与范围，再收集（直接/间接两维）
+    content_type: opinion
+    source_signals: [竞品分析的正确姿势]
+  - core_topic: AI 时代的 PM：哪些工作会被压缩
+    user_problem: 怕被 AI 替代
+    target_audience: PM
+    content_angle: 文档/整理类被压缩，判断/对齐/治理类升值
+    content_type: opinion
+    source_signals: [AI 正在重构 PM 工作流]
+  - core_topic: 会用 AI 的 PM 怎么工作：人机协作分工清单
+    user_problem: 只会把 prompt 丢给 AI，质量不稳
+    target_audience: PM
+    content_angle: AI 初稿+人工精修（60-80% 采纳率）的分工与校验法
+    content_type: methodology
+    source_signals: [AI 正在重构 PM 工作流]
+  - core_topic: Prompt 即新 PRD：AI 产品需求怎么写
+    user_problem: 功能说明书对 AI 产品失效
+    target_audience: AI 产品 PM
+    content_angle: 用提示词+评估集替代传统 PRD 的做法
+    content_type: methodology
+    source_signals: [从功能驱动到模型驱动]
+  - core_topic: AI 产品的不确定性管理：接受黑箱
+    user_problem: 模型输出不稳定不知道怎么验收
+    target_audience: AI 产品 PM
+    content_angle: 概率性验收：评估集/降级路径/灰度指标
+    content_type: methodology
+    source_signals: [从功能驱动到模型驱动]
+  - core_topic: 从需求到落地的 7 步流程
+    user_problem: 需求总在开发中变卦
+    target_audience: 产品新人
+    content_angle: 需求-评审-排期-验收-复盘的关键节点清单
+    content_type: tutorial
+    source_signals: [需求分析的方法论体系]
+  - core_topic: PRD 怎么写得开发不骂
+    user_problem: PRD 逻辑漏洞被开发打回
+    target_audience: 产品新人
+    content_angle: 异常分支/边界/埋点三类必写章节模板
+    content_type: tooling
+    source_signals: [从需求到落地的 7 步流程]
+  - core_topic: 需求评审会打架怎么控场
+    user_problem: 评审会变成口水战
+    target_audience: PM
+    content_angle: 评审前对齐/会上分歧处理/会后结论沉淀三步
+    content_type: practice
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 数据分析驱动需求：指标先行的立项
+    user_problem: 需求没数据支撑，被挑战
+    target_audience: PM
+    content_angle: 立项书里指标怎么定义（北极星+过程指标）
+    content_type: methodology
+    source_signals: [从需求到落地的 7 步流程]
+  - core_topic: 上线后需求效果评估模板
+    user_problem: 上线了不知道成没成
+    target_audience: PM
+    content_angle: 按指标-数据-结论-下一步的复盘模板
+    content_type: tooling
+    source_signals: [从需求到落地的 7 步流程]
+  - core_topic: 用户反馈的优先级判断
+    user_problem: 用户说要功能就做，需求池爆炸
+    target_audience: PM
+    content_angle: 区分"用户要的"与"用户需要的"，四象限分诊
+    content_type: methodology
+    source_signals: [需求分析的方法论体系]
+  - core_topic: B 端 vs C 端需求分析的差异
+    user_problem: C 端经验搬到 B 端失灵
+    target_audience: 转型 PM
+    content_angle: 采购者/使用者分离与关键人决策逻辑
+    content_type: opinion
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 产品新人第一年避坑清单
+    user_problem: 需求照单全收/文档不闭环
+    target_audience: 产品新人
+    content_angle: 十个高频错误与自查清单
+    content_type: pitfall
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 用故事地图梳理需求全景
+    user_problem: 大需求拆不清
+    target_audience: PM
+    content_angle: 用户旅程-任务-功能的拆解画布
+    content_type: tooling
+    source_signals: [需求分析的方法论体系]
+  - core_topic: 产品评审的决策记录法
+    user_problem: 同一需求反复讨论
+    target_audience: PM
+    content_angle: 决策记录（ADR）让口水战变存档
+    content_type: practice
+    source_signals: [从需求到落地的 7 步流程]
+  - core_topic: 从需求到上线：一个完整案例复盘
+    user_problem: 学了理论不会串
+    target_audience: 产品新人
+    content_angle: 用端到端案例把方法论串成流程
+    content_type: case_study
+    source_signals: [需求分析的方法论体系, 从需求到落地的 7 步流程]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: AI 时代的 PM：哪些工作会被压缩, market_score: 84, score_breakdown: { demand: 86, pain: 80, trend: 92, novelty: 84, content_gap: 84, evidence: 78 } }
+    - { rank: 2, topic: 会用 AI 的 PM 怎么工作：人机协作分工清单, market_score: 82, score_breakdown: { demand: 86, pain: 78, trend: 88, novelty: 82, content_gap: 82, evidence: 74 } }
+    - { rank: 3, topic: 需求真实性三问：学会质疑需求, market_score: 81, score_breakdown: { demand: 84, pain: 82, trend: 76, novelty: 78, content_gap: 84, evidence: 76 } }
+    - { rank: 4, topic: AI 产品的不确定性管理：接受黑箱, market_score: 78, score_breakdown: { demand: 80, pain: 76, trend: 86, novelty: 84, content_gap: 78, evidence: 64 } }
+    - { rank: 5, topic: Prompt 即新 PRD：AI 产品需求怎么写, market_score: 77, score_breakdown: { demand: 80, pain: 74, trend: 84, novelty: 82, content_gap: 76, evidence: 66 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 但 AI 主题占 4 席——趋势红利大，需在 Filter 阶段考虑主线平衡」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: AI 时代的 PM：哪些工作会被压缩
+    angle: 用 GPT-5.5 与使用率数据，把"AI 焦虑"变成"能力迁移清单"
+    market_score: 84
+    account_fit: 84
+    fit_breakdown: { audience: 86, problem: 82, authority: 82, value: 86, differentiation: 84, style: 84 }
+    why_selected:
+      market_reason: 趋势红利最大（GPT-5.5 刚发布、94% 使用率数据），高讨论度
+      audience_reason: 核心读者（PM）对"被替代"焦虑最强烈
+      account_reason: 定位"方法论"，用数据讨论角色重构正是方法论账号的题中之义
+      differentiation_reason: 已有内容多为焦虑吐槽，缺"压缩/保留/升值"的清晰分层
+    risks: [AI 动态变化快，数据易过期，需标日期]
+    confidence: high
+  rejected:
+    - { topic: 会用 AI 的 PM 怎么工作, reason: beat_by_top1, detail: 作为 Top1 的姊妹篇（先讲趋势再讲方法） }
+    - { topic: 需求真实性三问, reason: beat_by_top1, detail: 经典方法论内容作为系列蓄水池 }
+    - { topic: AI 产品的不确定性管理, reason: beat_by_top1, detail: 细分人群（AI 产品 PM）证据偏弱 }
+    - { topic: Prompt 即新 PRD, reason: beat_by_top1, detail: 同细分赛道，材料需更扎实 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；未选择纯技术/AI 底层工程选题」, fit_summary: 「Top1 粒度均衡；注意 Top5 中 4 个 AI 主题，已在 rejected 说明平衡策略」 }
+
+article_brief:
+  account: { positioning: 产品经理方法论，从需求分析到落地执行完整流程, audience: PM/产品新人, value_proposition: [完整流程, 踩坑复盘] }
+  selected_topic: { topic: AI 时代的 PM：哪些工作会被压缩, angle: 压缩/保留/升值三层清单, confidence: high }
+  target_reader: 每天用 AI 提效、又担心被它替代的产品经理
+  pain_points: { cognitive: 说不清 AI 到底动了 PM 的哪部分价值, risk: 怕自己成为被压缩的那个人, emotional: 「文档型 PM 还有没有活路」的焦虑 }
+  core_insight:
+    misconception: 大多数 PM 以为 AI 会"全面替代"，或者反过来否认变化
+    evidence: ["GPT-5.5 可胜任文档/代码/研究等复杂任务（人人都是产品经理 2026-04-23）", "94% 企业产品人员每天用 AI 工具（Productboard via FourthRev 2026-05-28）"]
+    insight: 被压缩的是"产出型工作"，被放大的是"判断型工作"；判断、对齐、治理是 AI 时代 PM 的护城河
+  key_arguments: [文档/整理类价值被压缩是事实, 价值上移：从 feature 协调到系统编排, 判断能力不可外包（定义问题≠回答问题）, 组织治理与数据治理成新职责]
+  title_candidates: ["GPT-5.5 之后，产品经理还剩下什么", "文档型 PM 正在贬值：你的护城河是什么", "AI 越强，PM 越要回到定义问题", "94% 的 PM 都在用 AI，差距在哪"]
+  outline:
+    - { section: Hook, purpose: 抛出替代焦虑, key_points: [GPT-5.5 能写 PRD 的冲击, 文档型 PM 的恐慌] }
+    - { section: Problem, purpose: 用数据说明变化是真实的, key_points: [94% 日活/每任务省 4 小时, 产出型工作被压缩] }
+    - { section: Misconception, purpose: 破除「全面替代」与「毫无变化」, key_points: [替代只集中在产出型, 否认变化=被拉开差距] }
+    - { section: Core Insight, purpose: 给出三层迁移框架, key_points: [压缩：文档/整理, 保留：判断/对齐, 升值：治理/编排] }
+    - { section: Mechanism, purpose: 讲清为什么价值上移, key_points: [AI 解决「怎么做」，定义问题是稀缺的, 采纳率 60-80% 需人校验] }
+    - { section: Solution, purpose: 能力迁移清单, key_points: [判断能力训练, 人机协作流程设计, 数据治理参与] }
+    - { section: Example, purpose: 一个转型案例, key_points: [从功能 PM 到模型驱动产品 PM 的路径, 收入/责任变化] }
+    - { section: Action, purpose: 本周可做三件事, key_points: [盘点你 20% 可自动化工作, 立一个人机协作流程, 学一个 AI 产品评估方法] }
+  evidence:
+    - { source: 人人都是产品经理, source_type: community, date: 2026-04-23, claim: GPT-5.5 面向复杂工作；文档型 PM 价值被压缩, confidence: medium }
+    - { source: FourthRev/Productboard, source_type: analytics, date: 2026-05-28, claim: 94% 企业产品人员每天依赖 AI 工具, confidence: medium }

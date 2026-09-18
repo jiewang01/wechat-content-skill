@@ -14,14 +14,14 @@ account_profile:
   source: explicit
   audience:
     primary: ["0-6 岁孩子的家长", "学龄前儿童父母"]
-    secondary: ["准父母", "隔代养育中的祖辈 [inferred]"]
+    secondary: ["准父母", "隔代养育中的祖辈 〔inferred〕"]
   domain: ["科学育儿", "儿童心理学", "早期教育", "亲子关系"]
   value_proposition:
     - 用儿童心理学的依据解释孩子行为背后的原因
     - 给出家长当下可执行、可坚持的具体互动方法
   content_style:
-    tone: "理性、共情、去焦虑 [inferred]"
-    format: ["长文", "图文", "案例式讲解 [inferred]"]
+    tone: "理性、共情、去焦虑 〔inferred〕"
+    format: ["长文", "图文", "案例式讲解 〔inferred〕"]
   authority:
     strengths: ["儿童发展心理学的知识框架", "面向 0-6 岁阶段的专业视野"]
     limitations: ["非儿科医生 / 非临床心理治疗师身份（无法提供医疗/诊断建议）"]
@@ -305,7 +305,7 @@ ranking_result:
       core_problem: 新规刷屏，不知道和自家孩子有什么关系
       content_angle: 从“旨意”落到“家庭动作”
       market_score: 73
-      score_breakdown: { demand: 76, pain: 66, trend: 90, novelty: 76, content_gap: 72, evidence: 72 }
+      score_breakdown: { demand: 76, pain: 66, trend: 76, novelty: 76, content_gap: 72, evidence: 72 }
   analysis:
     pool_size: 20
     deduplicated: 3

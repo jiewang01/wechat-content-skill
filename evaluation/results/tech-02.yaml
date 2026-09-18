@@ -1,0 +1,251 @@
+# 冒烟测试结果：tech-02（前端架构/性能优化账号）
+# 输入："前端架构与工程化实践，专注大前端性能优化与团队提效"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录（profile / findings / candidates20 / top5 / top1 / brief）
+
+account_profile:
+  description: 前端架构与工程化实践，专注大前端性能优化与团队提效
+  source: explicit
+  audience: { primary: [前端工程师, 前端团队负责人], secondary: [全栈工程师] }
+  domain: [前端架构, 工程化, 性能优化, 团队提效]
+  value_proposition: [可复用的性能优化方法, 工程化落地与团队规范]
+  content_style: { tone: 「工程向、数据向 〔inferred〕」, format: [长文, 复盘, 配置清单] }
+  authority:
+    strengths: [一线前端架构与性能治理经验, 团队工程化实践]
+    limitations: [非框架官方维护者, 非专项性能测试机构]
+  boundaries: [后端深度话题, 泛互联网新闻, 工具评测软广]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: INP 取代 FID 成为最难 Web 指标
+    signals: { trend: INP 成为 Core Web Vital 与谷歌排名信号，四分之一站点仍未达「好」标准, demand: 页面流畅但指标不合格的困惑案例增多 }
+    evidence:
+      - source: webperfclinic（INP 指南）
+        source_type: official_doc
+        date: 2026-05-27
+        claim: INP 阈值：<200ms 好 / 200-500ms 待改进 / >500ms 差（75 分位）；约四分之一的站点仍不达标
+        confidence: high
+      - source: 掘金（真实项目实战）
+        source_type: social
+        date: 2026-05-18
+        claim: 中文开发者记录真实项目 INP 380ms 治理，用 scheduler.yield / useTransition / content-visibility 将交互延迟压到 50ms 内
+        confidence: medium
+    content_gap: 从"指标不达标"到"定位哪个交互、哪个阶段慢"的完整诊断路径内容稀缺
+    candidate_angles: [INP 诊断三部曲, 交互级性能预算]
+
+  - topic: JS bundle 预算
+    signals: { trend: 2026 推荐首屏 JS 预算收紧至 ~170KB 压缩, demand: 大包拖慢首屏与 INP 无法根治 }
+    evidence:
+      - source: TheSimplifiedTech（bundling 指南）
+        source_type: other
+        date: 2026-06-01
+        claim: 内容/落地页推荐首屏 JS ≤~170KB（压缩）；可在 CI 中设预算门槛防回归
+        confidence: medium
+      - source: webperfclinic（2026 bundle 优化）
+        source_type: other
+        date: 2026-07-13
+        claim: 把 JS 预算拆成 critical(<80KB)/deferred(<60KB)/on-demand(<30KB) 三档跟踪
+        confidence: medium
+    content_gap: 团队如何把"体积预算"变成 CI 门槛与评审规则的落地方案
+    candidate_angles: [JS 预算三档法, CI 体积门禁]
+
+  - topic: 构建工具 Rust 化
+    signals: { trend: Rspack/Turbopack/Farm 等 Rust 系构建器提速 5-20x, demand: Webpack 大项目构建慢 }
+    evidence:
+      - source: Rspack 官方博客
+        source_type: official_doc
+        date: 2026-08-26
+        claim: Rspack 2.2 发布，30+ 性能优化，部分场景构建提速 ~5%，HMR 大 stylesheet 场景热更新从 385ms 降至 ~6ms
+        confidence: high
+    content_gap: 迁移决策：什么时候值得从 Webpack 迁到 Rust 系工具
+    candidate_angles: [迁移决策树, 渐进迁移方案]
+
+  - topic: 性能度量文化
+    signals: { demand: 团队想要「指标驱动」但没人推进 }
+    evidence:
+      - source: Nodesify（Core Web Vitals 指南）
+        source_type: other
+        date: 2026-07-09
+        claim: 强调真实用户数据（field）与诊断数据（lab）分离使用；流量不足时如实记录限制而非用单次 lab 当证据
+        confidence: medium
+    content_gap: 小团队无埋点也能做性能度量与验收的方式
+    candidate_angles: [轻量级 RUM 方案, 性能验收清单]
+
+candidates:
+  - core_topic: INP 诊断三部曲：从指标到交互
+    user_problem: Lighthouse 满分但用户说"点了没反应"
+    target_audience: 前端工程师
+    content_angle: input delay / processing / presentation 三阶段定位法
+    content_type: tutorial
+    source_signals: [INP 取代 FID 成为最难 Web 指标]
+  - core_topic: scheduler.yield 与 yield 型交互优化
+    user_problem: 输入卡顿，setTimeout 拆不干净
+    target_audience: 中高级前端
+    content_angle: 用 2026 现代 API 替代旧的拆帧写法
+    content_type: practice
+    source_signals: [INP 取代 FID 成为最难 Web 指标]
+  - core_topic: 交互级性能预算
+    user_problem: 不知道"多慢算慢"，优化无目标
+    target_audience: 前端团队
+    content_angle: 给交互动作设预算（点击 <100ms 等）的指标体系
+    content_type: methodology
+    source_signals: [INP 取代 FID 成为最难 Web 指标, 性能度量文化]
+  - core_topic: JS 预算三档法（critical/deferred/on-demand）
+    user_problem: 包体大且说不清哪里超支
+    target_audience: 前端团队负责人
+    content_angle: 三档预算拆解 + 各自跟踪方式
+    content_type: methodology
+    source_signals: [JS bundle 预算]
+  - core_topic: 在 CI 里设体积门禁：让回归无处可逃
+    user_problem: 性能优化上线两月又变差
+    target_audience: 前端团队
+    content_angle: 预算写进 CI 与 PR 评审的具体做法
+    content_type: practice
+    source_signals: [JS bundle 预算, 性能度量文化]
+  - core_topic: tree shaking 为什么没生效
+    user_problem: 配了 sideEffects 包还是那么大
+    target_audience: 中高级前端
+    content_angle: CommonJS 依赖、模块副作用等真实失效原因
+    content_type: pitfall
+    source_signals: [JS bundle 预算]
+  - core_topic: content-visibility 一行 CSS 治大表格
+    user_problem: 大列表/大表格渲染卡顿
+    target_audience: 前端工程师
+    content_angle: 视口外跳过布局绘制的实战与踩坑
+    content_type: practice
+    source_signals: [INP 取代 FID 成为最难 Web 指标]
+  - core_topic: 从 Webpack 迁 Rspack：什么时候值得
+    user_problem: 构建 2 分钟，动还是不动
+    target_audience: 团队技术负责人
+    content_angle: 迁移收益/风险决策树 + 渐进迁移路径
+    content_type: methodology
+    source_signals: [构建工具 Rust 化]
+  - core_topic: HMR 为什么慢：一场热更新排查
+    user_problem: 改个样式等 2 秒
+    target_audience: 前端工程师
+    content_angle: 从请求依赖到 CSS 变更链路的排查
+    content_type: case_study
+    source_signals: [构建工具 Rust 化]
+  - core_topic: 小团队无埋点的性能度量方案
+    user_problem: 没有 RUM 平台，性能全靠猜
+    target_audience: 中小前端团队
+    content_angle: CrUX + 开源工具组合的轻量方案
+    content_type: practice
+    source_signals: [性能度量文化]
+  - core_topic: field 与 lab 数据分离的正确姿势
+    user_problem: 本地测 100 分线上还是慢
+    target_audience: 前端团队
+    content_angle: 讲清 lab/filed 分工与"别拿 lab 当证据"
+    content_type: opinion
+    source_signals: [性能度量文化]
+  - core_topic: 第三脚本身负担：统计/广告拖累 INP
+    user_problem: 页面自己的代码很轻但指标差
+    target_audience: 前端工程师
+    content_angle: 第三脚本的量化影响与加载策略
+    content_type: pitfall
+    source_signals: [INP 取代 FID 成为最难 Web 指标]
+  - core_topic: 前端性能优化排期冲突怎么谈
+    user_problem: 需求永远优先，优化没排期
+    target_audience: 团队负责人
+    content_angle: 把性能量化成业务语言争取排期
+    content_type: opinion
+    source_signals: [性能度量文化]
+  - core_topic: 图片与字体：被忽略的首屏大头
+    user_problem: 大图大字体拖慢 LCP
+    target_audience: 前端工程师
+    content_angle: 资源预算与加载优先级实操
+    content_type: practice
+    source_signals: [JS bundle 预算]
+  - core_topic: 组件库体积治理
+    user_problem: 引入组件库首屏多几百 KB
+    target_audience: 中高级前端
+    content_angle: 按需加载/拆包/裁剪三条路
+    content_type: methodology
+    source_signals: [JS bundle 预算]
+  - core_topic: React 19 的 hydration 优化对照
+    user_problem: 服务端渲染后交互还是慢
+    target_audience: React 团队
+    content_angle: 用 INP 视角看 hydration 与 useTransition
+    content_type: practice
+    source_signals: [INP 取代 FID 成为最难 Web 指标, JS bundle 预算]
+  - core_topic: 性能回归的唯一解：把预算当规范
+    user_problem: 优化成果持续被新需求侵蚀
+    target_audience: 团队负责人
+    content_angle: 把性能预算写入团队规范与验收标准
+    content_type: methodology
+    source_signals: [性能度量文化, JS bundle 预算]
+  - core_topic: 移动端弱网性能专项
+    user_problem: 手机 4G 上体验远差于桌面
+    target_audience: 前端团队
+    content_angle: 以 Moto G/慢 4G 为基线做验收
+    content_type: practice
+    source_signals: [JS bundle 预算, INP 取代 FID 成为最难 Web 指标]
+  - core_topic: 性能那点事：一张团队 Checklist
+    user_problem: 团队水平参差无从下手
+    target_audience: 前端新人到骨干
+    content_angle: 从 LCP/INP/CLS 到体积/资源的验收清单
+    content_type: tooling
+    source_signals: [性能度量文化]
+  - core_topic: 一次真实页面 INP 380ms 治理实录
+    user_problem: 想看到完整治理链路
+    target_audience: 前端工程师
+    content_angle: 完整复盘：定位-方案-复测-监测
+    content_type: case_study
+    source_signals: [INP 取代 FID 成为最难 Web 指标]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: INP 诊断三部曲：从指标到交互, market_score: 85, score_breakdown: { demand: 88, pain: 84, trend: 90, novelty: 82, content_gap: 84, evidence: 78 } }
+    - { rank: 2, topic: JS 预算三档法（critical/deferred/on-demand）, market_score: 81, score_breakdown: { demand: 84, pain: 80, trend: 80, novelty: 82, content_gap: 82, evidence: 76 } }
+    - { rank: 3, topic: 从 Webpack 迁 Rspack：什么时候值得, market_score: 79, score_breakdown: { demand: 82, pain: 78, trend: 76, novelty: 80, content_gap: 76, evidence: 80 } }
+    - { rank: 4, topic: 性能回归的唯一解：把预算当规范, market_score: 76, score_breakdown: { demand: 78, pain: 82, trend: 72, novelty: 74, content_gap: 80, evidence: 70 } }
+    - { rank: 5, topic: 一次真实页面 INP 380ms 治理实录, market_score: 75, score_breakdown: { demand: 76, pain: 78, trend: 76, novelty: 80, content_gap: 72, evidence: 72 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖方法/预算/迁移/规范/案例，角度互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: INP 诊断三部曲：从指标到交互
+    angle: 从"指标不达标"拆到"具体交互的三阶段耗时"，给完整诊断路径
+    market_score: 85
+    account_fit: 86
+    fit_breakdown: { audience: 88, problem: 86, authority: 84, value: 88, differentiation: 82, style: 86 }
+    why_selected:
+      market_reason: INP 是 2026 最难的 Core Web Vital（web.dev 口径），四分之一站点不达标，需求覆盖面大
+      audience_reason: 核心读者是前端工程师，这是他们最具体的日常痛点
+      account_reason: 账号定位"性能优化"，该题是性能主线的典型代表
+      differentiation_reason: 现有内容多讲"指标是什么"，缺"如何定位具体交互"的诊断路径
+    risks: [话题门槛偏高，需前置概念地图]
+    confidence: high
+  rejected:
+    - { topic: JS 预算三档法, reason: beat_by_top1, detail: 可作为 Top1 系列第二篇 }
+    - { topic: 从 Webpack 迁 Rspack, reason: beat_by_top1, detail: 受众窄化到构建场景 }
+    - { topic: 性能回归的唯一解, reason: beat_by_top1, detail: 定位偏管理者，次优先 }
+    - { topic: 一次真实页面 INP 380ms 治理实录, reason: beat_by_top1, detail: 与 Top1 同主题，作为后续案例篇 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝」, fit_summary: 「Top1 在 audience/value 领先」 }
+
+article_brief:
+  account: { positioning: 前端架构与工程化实践，专注性能优化与团队提效, audience: 前端工程师/团队负责人, value_proposition: [性能方法, 工程化落地] }
+  selected_topic: { topic: INP 诊断三部曲：从指标到交互, angle: 三阶段定位法, confidence: high }
+  target_reader: 遇到过"Lighthouse 100 分但用户说卡"的前端工程师
+  pain_points: { functional: 页面 FPS 正常但交互感觉粘, cognitive: 不知道 INP 高在哪一步, emotional: 「优化无从下手」的无力感 }
+  core_insight:
+    misconception: 大多数人盯着 FPS 和整体耗时
+    evidence: ["INP 是全部交互的 75 分位而非首交互（webperfclinic 2026-05-27）", "真实项目 INP 380ms → 50ms 的治理案例（掘金 2026-05-18）"]
+    insight: INP 高≠主线程堵，要用 input delay / processing / presentation 三阶段定位；一个交互一个交互修
+  key_arguments: [INP 度量的是体感而非帧率, 三个阶段各有不同解法, Performance event API 可精准圈定慢交互, 每个修复都要带回测与监测]
+  title_candidates: ["Lighthouse 满分，为什么用户还是说卡", "INP 诊断三部曲：找到真正慢的那一步", "你的页面很流畅，但 INP 380ms", "把交互延迟压到 50ms 的三个 API"]
+  outline:
+    - { section: Hook, purpose: 复现「100 分但卡」矛盾, key_points: [FPS 60 但点击粘手, 用户狂点按钮] }
+    - { section: Problem, purpose: 说明 INP 是什么与为什么难, key_points: [取代 FID 的响应指标, 四分之一站点不达标] }
+    - { section: Misconception, purpose: 破除盯 FPS/整体耗时, key_points: [帧率≠交互体感, 只看整体耗时找不到元凶] }
+    - { section: Core Insight, purpose: 提出三阶段框架, key_points: [input delay/processing/presentation, 与各自成因对应] }
+    - { section: Mechanism, purpose: 讲三阶段微观机制, key_points: [主线程抢占导致 input delay, 渲染与布局导致 presentation] }
+    - { section: Solution, purpose: 给诊断路径与工具, key_points: [Performance event API 圈慢交互, LoAF 定位长任务] }
+    - { section: Example, purpose: 真实治理案例, key_points: [380ms→50ms 三步, 每个修法的前后数据] }
+    - { section: Action, purpose: 今天就能开始, key_points: [给三个高频交互打点, 截取最差一条开始诊断] }
+  evidence:
+    - { source: webperfclinic, source_type: official_doc, date: 2026-05-27, claim: INP 阈值 200/500ms；约 1/4 站点不达标, confidence: high }
+    - { source: 掘金, source_type: social, date: 2026-05-18, claim: 实战将 INP 从 380ms 降至 50ms 内, confidence: medium }

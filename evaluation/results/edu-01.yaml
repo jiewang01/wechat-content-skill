@@ -1,0 +1,250 @@
+# 冒烟测试结果：edu-01（高考数学账号）
+# 输入："高考数学冲刺提分，方法比刷题更重要"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 高考数学冲刺提分，方法比刷题更重要
+  source: explicit
+  audience: { primary: [高中生, 考生家长], secondary: [复读生] }
+  domain: [高考数学, 提分方法, 备考策略]
+  value_proposition: [提分方法, 解题策略]
+  content_style: { tone: 「教研向、实用 〔inferred〕」, format: [方法长文, 清单, 案例分析] }
+  authority:
+    strengths: [高考数学一线备考方法论, 试卷与考点研究]
+    limitations: [非教育考试院官方, 无法覆盖全国卷/自主命题全部细节]
+  boundaries: [非本学科（语文/英语等）教学, 教育政策解读, 商业押题营销]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 2026 高考数学命题转型：反刷题
+    signals: { trend: 命题从「考熟练度」转向「考思维」，弱化二级结论与套路, demand: 刷题党突然不适应，家长考生焦虑 }
+    evidence:
+      - source: 光明网（命题专家详解，教育部教育考试院）
+        source_type: news
+        date: 2026-06-08
+        claim: 2026 高考数学打破"背题型"模式，创新情境+开放设问，考查重心转向思维品质与核心素养；贯彻"多想少算"
+        confidence: high
+      - source: 掌上高考（教育在线总编辑陈志文）
+        source_type: news
+        date: 2026-06-09
+        claim: #数学难 话题阅读超 10 亿；改革本质是"反刷题"，从 2020 年教育评价改革起持续推进；题目顺序调整+情境题致肌肉记忆式考生不适
+        confidence: high
+      - source: 教育在线（2026 高考数学试题评析）
+        source_type: news
+        date: 2026-06-11
+        claim: 官方评析：从解题熟练度转向思维能力，从固化题型转向灵活情境；"原因是长期依赖刷题套路难适应创新题型"
+        confidence: high
+    content_gap: 把"反刷题"翻译成具体的备考动作（如何练思维、怎么用真题）
+    candidate_angles: [反刷题时代的学习法, 真题的思维训练用法]
+
+  - topic: 错题管理的科学做法
+    signals: { demand: 错题本人人有，会用的人少 }
+    evidence:
+      - source: 北京市第三十五中学付海龙（分阶段复习）
+        source_type: official_doc
+        date: 2025-01-01
+        claim: 按"模块+错误类型"（概念不清/方法错误/计算失误/审题失误）整理错题；每周复盘 1 次，月做一次"错题重组测试"
+        confidence: medium
+      - source: 东北师大附中庄乾岭（冲刺提分）
+        source_type: news
+        date: 2026-06-03
+        claim: 错题表格四要素（题型/知识点/失分原因）；单选错=基础弱需推公式，多选错=概念辨析，计算错=限时定点训练
+        confidence: high
+    content_gap: 把错题本从"抄题本"升级为"诊断表"的操作标准
+    candidate_angles: [错题四分类诊断法, 错题重组测试]
+
+  - topic: 考场节奏与状态管理
+    signals: { demand: 会做但考不好（时间/心态） }
+    evidence:
+      - source: 新黄河（安庆一中吴礼琴）
+        source_type: news
+        date: 2026-04-27
+        claim: 选填 45-50 分钟、压轴超过 3 分钟无思路果断跳过；前三道大题 30-35 分钟"一遍过"；草稿纸分区、步骤分策略
+        confidence: medium
+      - source: 华商报（名师压箱底建议）
+        source_type: news
+        date: 2026-05-21
+        claim: 我易人易不大意、我难人难不慌张；会做的题全做对=颗粒归仓
+        confidence: medium
+    content_gap: 把"节奏"做成可训练的目标时间表
+    candidate_angles: [选填 45 分钟节奏表, 步骤分最大化]
+
+candidates:
+  - core_topic: 反刷题时代：刷题为什么没用了
+    user_problem: 刷了几千题，分还是上不去
+    target_audience: 高二高三学生
+    content_angle: 用 2026 命题转型数据讲"思维>套路"，给新练习法
+    content_type: opinion
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 真题的思维训练用法：一题三问
+    user_problem: 真题刷完就忘
+    target_audience: 高三学生
+    content_angle: 用"这题在考什么/还能怎么问我/我哪里卡"三步吃透真题
+    content_type: methodology
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 错题四分类诊断法
+    user_problem: 错题本只是抄题本
+    target_audience: 学生
+    content_angle: 概念/方法/计算/审题四分，每种配对应补救策略
+    content_type: methodology
+    source_signals: [错题管理的科学做法]
+  - core_topic: 错题重组测试：让错题真正过脑
+    user_problem: 订正完还是会错
+    target_audience: 学生
+    content_angle: 每周复盘+每月重组测试闭环
+    content_type: practice
+    source_signals: [错题管理的科学做法]
+  - core_topic: 计算不准：被低估的提分点
+    user_problem: 思路对但总算错
+    target_audience: 学生
+    content_angle: 每天 15 分钟纯计算训练 + "一步一回头"
+    content_type: practice
+    source_signals: [错题管理的科学做法]
+  - core_topic: 选填 45 分钟：考场节奏训练表
+    user_problem: 大题没时间做
+    target_audience: 高三学生
+    content_angle: 分题型时间分配 + 跳过策略
+    content_type: methodology
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 步骤分最大化：不会做也能拿分
+    user_problem: 压轴题做不出来就放弃
+    target_audience: 学生
+    content_angle: 定义域/求导/关键步骤的采分点策略
+    content_type: practice
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 抛题材：什么叫真正回归教材
+    user_problem: 不知道教材怎么用
+    target_audience: 学生
+    content_angle: 用"阅读与思考/探究与发现"预测新情境题（马尔可夫链等）
+    content_type: methodology
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 多想少算的实战：对称性与特值法
+    user_problem: 计算量大时间长
+    target_audience: 学生
+    content_angle: 2026 官方"多想少算"导向下的简化技巧
+    content_type: tutorial
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 情境题的应对逻辑
+    user_problem: 看到新场景就慌
+    target_audience: 学生
+    content_angle: 情境包装→数学模型的拆解路径（108 塔等真题）
+    content_type: tutorial
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 中档题保温：冲刺期的正确心态
+    user_problem: 冲刺期陷入偏难怪
+    target_audience: 高考临近考生
+    content_angle: 名师共识：日常中档题保温+回归基础
+    content_type: opinion
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 大考心态：把紧张变成专注
+    user_problem: 考场上手抖忘公式
+    target_audience: 考生
+    content_angle: 情绪调节+应试生物钟训练
+    content_type: practice
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 数学卷面分：规范步骤的回报
+    user_problem: 步骤简略被扣分
+    target_audience: 学生
+    content_angle: 关键步骤单独成行、不跳步的采分原则
+    content_type: practice
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 趋势题型的重心转移：统计与概率
+    user_problem: 题型在哪变
+    target_audience: 高三学生
+    content_angle: 新高考中概率统计地位上升的应对
+    content_type: opinion
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 家长陪考指南：别把焦虑传给孩子
+    user_problem: 家长比孩子还慌
+    target_audience: 家长
+    content_angle: 家长可做的三个支持动作与闭嘴话术
+    content_type: practice
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 一轮复习的模块清单
+    user_problem: 复习没规划
+    target_audience: 高二学生
+    content_angle: 函数/三角/数列/立几/解几/概率的模块目标
+    content_type: tooling
+    source_signals: [2026 高考数学命题转型]
+  - core_topic: 从 90 到 120：中分段提分路径
+    user_problem: 卡在 90-110 上不去
+    target_audience: 中分段学生
+    content_angle: 基础题零失误+中档题突破而非钻压轴
+    content_type: methodology
+    source_signals: [错题管理的科学做法]
+  - core_topic: 压轴题的心理博弈：攻防取舍
+    user_problem: 总在压轴题死磕浪费时间
+    target_audience: 学生
+    content_angle: 用"颗粒归仓"策略决定何时放弃
+    content_type: opinion
+    source_signals: [考场节奏与状态管理]
+  - core_topic: 模考的正确用法：诊断而非判刑
+    user_problem: 模考一次崩心态天天崩
+    target_audience: 高三学生
+    content_angle: 模考=数据采集，关注错题分布而非分数
+    content_type: opinion
+    source_signals: [错题管理的科学做法]
+  - core_topic: 高考前 30 天冲刺清单
+    user_problem: 最后一个月不知道干什么
+    target_audience: 高考考生
+    content_angle: 回归教材+错题复盘+节奏定型的日程
+    content_type: tooling
+    source_signals: [考场节奏与状态管理, 错题管理的科学做法]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 反刷题时代：刷题为什么没用了, market_score: 87, score_breakdown: { demand: 90, pain: 84, trend: 90, novelty: 84, content_gap: 88, evidence: 90 } }
+    - { rank: 2, topic: 错题四分类诊断法, market_score: 83, score_breakdown: { demand: 86, pain: 84, trend: 78, novelty: 78, content_gap: 86, evidence: 84 } }
+    - { rank: 3, topic: 选填 45 分钟：考场节奏训练表, market_score: 81, score_breakdown: { demand: 84, pain: 82, trend: 76, novelty: 78, content_gap: 84, evidence: 80 } }
+    - { rank: 4, topic: 真题的思维训练用法：一题三问, market_score: 80, score_breakdown: { demand: 82, pain: 78, trend: 82, novelty: 84, content_gap: 80, evidence: 78 } }
+    - { rank: 5, topic: 计算不准：被低估的提分点, market_score: 78, score_breakdown: { demand: 82, pain: 78, trend: 72, novelty: 74, content_gap: 82, evidence: 76 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖趋势/方法/节奏/思维/细节，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 反刷题时代：刷题为什么没用了
+    angle: 用 2026 官方命题转型与热搜数据，讲清新规则并给"练思维"的动作
+    market_score: 87
+    account_fit: 87
+    fit_breakdown: { audience: 90, problem: 88, authority: 84, value: 88, differentiation: 86, style: 86 }
+    why_selected:
+      market_reason: 2026 高考最大热点（#数学难 阅读 10 亿+），官方评析背书强
+      audience_reason: 核心读者（考生/家长）最担心"刷题失效"
+      account_reason: 定位"方法比刷题更重要"——此题就是账号主张的直接证明
+      differentiation_reason: 多数内容仍教刷题套路，站在"反刷题"方法论一侧的少
+    risks: [观点与部分"刷题派"冲突，需用官方数据支撑]
+    confidence: high
+  rejected:
+    - { topic: 错题四分类诊断法, reason: beat_by_top1, detail: 高潜第二篇，方法主线常青 }
+    - { topic: 选填 45 分钟, reason: beat_by_top1, detail: 节奏系列 }
+    - { topic: 真题一题三问, reason: beat_by_top1, detail: 与 Top1 互补后续 }
+    - { topic: 计算不准, reason: beat_by_top1, detail: 细节提分篇 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝；押题营销类未进入候选」, fit_summary: 「Top1 在 audience/problem 领先」 }
+
+article_brief:
+  account: { positioning: 高考数学冲刺提分，方法比刷题更重要, audience: 高中生/家长, value_proposition: [提分方法, 解题策略] }
+  selected_topic: { topic: 反刷题时代：刷题为什么没用了, angle: 官方转型解读 + 新备考动作, confidence: high }
+  target_reader: 刷了大量题但模考分数停滞的准高三/高三学生
+  pain_points: { efficiency: 题海战术投入巨大收益递减, cognitive: 题型一变就不会做, risk: 方向错误浪费关键时间, emotional: 「我刷题都这么努力了」的委屈 }
+  core_insight:
+    misconception: 大多数学生认为"题做得越多分越高"，把刷题等同于学习
+    evidence: ["2026 命题从考熟练度转向考思维、弱化二级结论（教育部教育考试院评析）", "反刷题改革从 2020 年教育评价改革起推进，题序调整与情境题让肌肉记忆式答题失效（陈志文）"]
+    insight: 高分拼的是"用原理破解新情境"的能力；刷题只该用于熟练，思维训练（真题追问/一题多变/回归教材）才是提分杠杆
+  key_arguments: [命题转型是官方明确方向, 刷题≠思维训练, 回归教材+一题三问的有效替代, 错题诊断让刷题有目的]
+  title_candidates: ["刷题为什么突然不灵了", "#数学难# 背后：高考正在反刷题", "题海战术失灵：2026 数学卷在考什么", "方法比刷题更重要：反刷题时代的学习法"]
+  outline:
+    - { section: Hook, purpose: 用热搜制造共鸣, key_points: ["#数学难 10 亿阅读", 考生「题目没见过」] }
+    - { section: Problem, purpose: 说明这不是偶然, key_points: [命题转型三年推进, 熟练度红利消失] }
+    - { section: Misconception, purpose: 破除刷题=学习, key_points: [题序调整考验真实思考, 背题型失灵] }
+    - { section: Core Insight, purpose: 提出思维>套路, key_points: [「多想少算」官方导向, 情境题考的是拆解] }
+    - { section: Mechanism, purpose: 讲命题逻辑, key_points: [从熟练度到思维品质, 情境创新+开放设问] }
+    - { section: Solution, purpose: 新备考动作, key_points: [一题三问的真题用法, 错题诊断表, 回归教材「阅读与思考」] }
+    - { section: Example, purpose: 正反对照, key_points: [肌肉记忆刷题 vs 原理破解学生的考场差异] }
+    - { section: Action, purpose: 本周可做, key_points: [把三张真题按「它考什么」重做, 建错题诊断表, 每天 20 分钟教材] }
+  evidence:
+    - { source: 光明网/教育部教育考试院评析, source_type: news, date: 2026-06-08, claim: 打破背题型模式、考查思维过程与素养, confidence: high }
+    - { source: 掌上高考（陈志文）, source_type: news, date: 2026-06-09, claim: 数学难话题阅读超 10 亿，反刷题改革持续推进, confidence: high }

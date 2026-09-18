@@ -14,14 +14,14 @@ account_profile:
   source: explicit
   audience:
     primary: ["新消费创业者", "品牌/市场运营从业者"]
-    secondary: ["电商操盘手", "内容营销从业者 [inferred]"]
+    secondary: ["电商操盘手", "内容营销从业者 〔inferred〕"]
   domain: ["新消费品牌增长", "品牌案例研究", "渠道与营销打法"]
   value_proposition:
     - 用真实案例拆解品牌从 0 到 1 的增长路径
     - 提供可直接复用的渠道、内容、投放方法论
   content_style:
-    tone: "数据向、案例向、不鸡汤 [inferred]"
-    format: ["案例复盘长文", "数据图表", "方法论清单 [inferred]"]
+    tone: "数据向、案例向、不鸡汤 〔inferred〕"
+    format: ["案例复盘长文", "数据图表", "方法论清单 〔inferred〕"]
   authority:
     strengths: ["案例研究与增长方法论框架", "跨品类视角"]
     limitations: ["非投资/财务顾问身份；无个股与资本市场观点", "非平台官方信息源"]
@@ -314,7 +314,7 @@ ranking_result:
       core_problem: 中端定位被上下夹击，不知往哪走
       content_angle: 三选一决策树
       market_score: 74
-      score_breakdown: { demand: 80, pain: 82, trend: 74, novelty: 70, content_gap: 72, evidence: 68 }
+      score_breakdown: { demand: 80, pain: 82, trend: 70, novelty: 64, content_gap: 72, evidence: 68 }
   analysis:
     pool_size: 20
     deduplicated: 2

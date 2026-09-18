@@ -1,0 +1,261 @@
+# 冒烟测试结果：life-02（轻断食/健康饮食账号）
+# 输入："轻断食与健康饮食实践，普通人也能坚持的减脂方案"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 轻断食与健康饮食实践，普通人也能坚持的减脂方案
+  source: explicit
+  audience: { primary: [想减脂的普通人, 上班族], secondary: [健身爱好者] }
+  domain: [健康饮食, 轻断食, 减脂, 营养]
+  value_proposition: [可坚持的方案, 个人实测]
+  content_style: { tone: 「科学、反焦虑 〔inferred〕」, format: [图文, 食谱方案, 实测记录] }
+  authority:
+    strengths: [健康饮食实践与方案设计, 营养学知识科普]
+    limitations: [非医师/营养师执业身份（不能给医疗处方）]
+  boundaries: [疾病治疗与药物建议, 极端节食/伤身方法, 医疗功效宣传]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 16+8 的争议：U 型曲线与"跌落神坛"
+    signals: { trend: 2025-2026 多项研究对 16+8 的长期收益提出质疑, discussion: 「16+8 跌落神坛」话题引发关注 }
+    evidence:
+      - source: Aging Cell 研究（维克森林/匹兹堡大学，NHANES 33052 人）
+        source_type: analytics
+        date: 2025-09-01
+        claim: 进食窗口与全因死亡呈 U 型：进食 ≤8 小时组全因死亡风险高 34%、心血管死亡风险高 50%+；11-12 小时窗口风险最低；系观察性研究
+        confidence: medium
+      - source: Clinical Nutrition 研究（土耳其 6 周试验）
+        source_type: analytics
+        date: 2025-04-01
+        claim: 31 名年轻男性 16+8 减重 2.8kg 中约 1.4kg 来自瘦体重（约半数为肌肉等），心血管代谢指标无显著改善
+        confidence: medium
+      - source: 新华网（德国 ChronoFast 试验，Science Translational Medicine）
+        source_type: news
+        date: 2026-01-06
+        claim: 31 名超重女性恒定热量下 16+8 对血糖血脂等心血管代谢指标无改善，益处可能来自无意减热量而非时间窗本身
+        confidence: high
+      - source: 澎湃（Nutrients 荟萃分析，宁夏医科大学）
+        source_type: news
+        date: 2026-06-09
+        claim: 28 项 RCT 荟萃：轻断食收益随年龄分化——30-44 岁几乎无代谢改善，30 岁以下 LDL-C 显著升高，45+ 有心血管收益但有肌肉流失风险
+        confidence: medium
+    existing_content:
+      saturation: high
+      summary: 喝彩与唱衰并存，信息矛盾让普通人无所适从
+    content_gap: 基于证据一致性的"普通人该用什么方法"的决策内容
+    candidate_angles: [16+8 的真相梳理, 减脂的真正机制=热量缺口]
+
+  - topic: 减脂的正确机制：热量缺口与可持续
+    signals: { trend: 官方指南强调「慢就是快」与生活方式改造, demand: 「反智速瘦」话术盛行 }
+    evidence:
+      - source: 国家卫健委《成人肥胖食养指南（2024 年版）》（北京市疾控转载 2026-04-24）
+        source_type: official_doc
+        date: 2026-04-24
+        claim: 科学减重=能量负平衡；推荐每周减 0.5-1kg，6 个月减体重的 5%-10%；饮食"红黑榜"+ 细嚼慢咽 + 睡眠与久坐管理
+        confidence: high
+      - source: 人民网（冯雪/阜外医院）
+        source_type: news
+        date: 2026-01-01
+        claim: 减重三大误区（快速减重≠有效减脂、突击高强度、只动不吃）；九成职场人制定过减重计划但坚持下来的不足两成；"慢就是快"
+        confidence: high
+    content_gap: 把官方指南翻译成"上班族可执行的日常方案"
+    candidate_angles: [官方指南落地版, 每周 0.5kg 现实目标法]
+
+  - topic: 上班族减脂的现实方案
+    signals: { demand: 打工人「外卖+久坐+熬夜」三难 }
+    evidence:
+      - source: 央广网（上海疾控朱珍妮）
+        source_type: news
+        date: 2026-05-14
+        claim: 致胖四陷阱=久坐/外卖/熬夜/压力；外卖"少油少盐"、碎片运动、零食健康替换、纠正"不吃早餐能减重"误区
+        confidence: high
+      - source: 福州市疾控（职业人群减肥攻略）
+        source_type: official_doc
+        date: 2026-04-03
+        claim: 工位微运动 + 外卖选择原则（一拳头主食+两拳头蔬菜+一掌心蛋白）+ 每周减 0.5kg 目标
+        confidence: medium
+    content_gap: 专门针对"没时间/没条件"的综合方案（而非单点建议）
+    candidate_angles: [外卖点单法, 碎片时间运动]
+
+candidates:
+  - core_topic: 16+8 没那么神：数字背后的科学真相
+    user_problem: 被"断食神化/跌落神坛"两派话术搞糊涂
+    target_audience: 关注轻断食的减脂者
+    content_angle: 用 U 型曲线+热量机制统一理解，避免极端化
+    content_type: opinion
+    source_signals: [16+8 的争议]
+  - core_topic: 减脂的真正机制：热量缺口，不是时间窗
+    user_problem: 试遍各种断食法都反弹
+    target_audience: 减脂者
+    content_angle: 用科学证据链说明机制，破除"仪式感"神话
+    content_type: opinion
+    source_signals: [16+8 的争议, 减脂的正确机制]
+  - core_topic: 每周 0.5kg：慢就是快的现实目标法
+    user_problem: 想一周瘦 5 斤，每次失败
+    target_audience: 普通人
+    content_angle: 权威指南的减重速度+为什么快减必反弹
+    content_type: methodology
+    source_signals: [减脂的正确机制]
+  - core_topic: 国家减肥指南"红黑榜"简化版
+    user_problem: 不知道具体吃什么
+    target_audience: 上班族
+    content_angle: 主食/蔬菜/水果/蛋白质的分类清单
+    content_type: tooling
+    source_signals: [减脂的正确机制]
+  - core_topic: 外卖点单法：一拳头+两拳头+一掌心
+    user_problem: 天天外卖不知道怎么减
+    target_audience: 上班族
+    content_angle: 量化点餐手势原则与避雷菜
+    content_type: practice
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 先吃菜再吃肉最后主食：吃饭顺序法
+    user_problem: 不节食也想少吃
+    target_audience: 不想立刻节食的人
+    content_angle: 官方指南的吃饭顺序机制
+    content_type: practice
+    source_signals: [减脂的正确机制]
+  - core_topic: 不吃早餐能减重吗：两个误区拆解
+    user_problem: 睡过头不吃早餐想省钱省热量
+    target_audience: 上班族
+    content_angle: 低血糖+午餐暴食机制（上海疾控）
+    content_type: opinion
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 轻断食分龄风险清单
+    user_problem: 30 岁上下不知道适不适合断食
+    target_audience: 30-45 岁人群
+    content_angle: 用花荟萃数据讲年龄差异+警示 LDL 与肌肉
+    content_type: opinion
+    source_signals: [16+8 的争议]
+  - core_topic: 断食期间怎么保住肌肉
+    user_problem: 怕减的都是肌肉
+    target_audience: 健身+断食者
+    content_angle: 蛋白摄入 1.2-1.5g/kg + 每周 2-3 次抗阻
+    content_type: practice
+    source_signals: [16+8 的争议]
+  - core_topic: 办公室随身零食替换清单
+    user_problem: 下午饿得只想吃饼干
+    target_audience: 上班族
+    content_angle: 原味坚果/无糖酸奶/水果替换高热量零食
+    content_type: tooling
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 1 小时起身 3 分钟：久坐族的微型运动
+    user_problem: 一天坐 10 小时没空运动
+    target_audience: 久坐族
+    content_angle: 微运动机制与碎片时间安排
+    content_type: practice
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 减重平台期：为什么越减越慢
+    user_problem: 前两周掉秤后停滞
+    target_audience: 减脂者
+    content_angle: 代谢适应机制 + 应对策略
+    content_type: methodology
+    source_signals: [减脂的正确机制]
+  - core_topic: 压力肥与情绪化进食
+    user_problem: 压力一大就想吃
+    target_audience: 职场人
+    content_angle: 压力→皮质醇→食欲机制 + 断链方式
+    content_type: methodology
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 睡眠与减脂：熬夜为什么瘦不下来
+    user_problem: 睡不够还想瘦
+    target_audience: 熬夜打工人
+    content_angle: 激素（瘦素/饥饿素）与代谢机制
+    content_type: opinion
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 轻断食适合谁？三问自测
+    user_problem: 不确定自己适不适合断食
+    target_audience: 减脂者
+    content_angle: 年龄/基础病/运动量三问+红线清单
+    content_type: tooling
+    source_signals: [16+8 的争议]
+  - core_topic: 家庭便当：七天减脂餐单模板
+    user_problem: 想自己做饭但不会配
+    target_audience: 愿意做饭的上班族
+    content_angle: 主食/蛋白/蔬菜配比 + 一周示例
+    content_type: tooling
+    source_signals: [减脂的正确机制]
+  - core_topic: 细嚼慢咽的 20 下：信号机制
+    user_problem: 吃饭快总觉得没饱
+    target_audience: 快食族
+    content_angle: 饱腹信号延迟机制 + 实操
+    content_type: practice
+    source_signals: [减脂的正确机制]
+  - core_topic: 我的 12 周减脂实测记录
+    user_problem: 想看真实案例跟练
+    target_audience: 普通人
+    content_angle: 每周 0.5kg 目标下的实际过程与波动
+    content_type: case_study
+    source_signals: [减脂的正确机制]
+  - core_topic: 欺骗餐的科学用法
+    user_problem: 周末破功就自暴自弃
+    target_audience: 减脂者
+    content_angle: 计划性欺骗餐 vs 情绪暴食的机制差异
+    content_type: practice
+    source_signals: [上班族减脂的现实方案]
+  - core_topic: 体重秤之外：腰围与体脂的观察法
+    user_problem: 体重不掉但感觉瘦了
+    target_audience: 减脂者
+    content_angle: 只盯体重的误区与多指标衡量
+    content_type: opinion
+    source_signals: [减脂的正确机制]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 16+8 没那么神：数字背后的科学真相, market_score: 86, score_breakdown: { demand: 88, pain: 82, trend: 92, novelty: 84, content_gap: 86, evidence: 88 } }
+    - { rank: 2, topic: 减脂的真正机制：热量缺口，不是时间窗, market_score: 83, score_breakdown: { demand: 84, pain: 80, trend: 82, novelty: 86, content_gap: 84, evidence: 86 } }
+    - { rank: 3, topic: 外卖点单法：一拳头+两拳头+一掌心, market_score: 81, score_breakdown: { demand: 86, pain: 82, trend: 76, novelty: 74, content_gap: 86, evidence: 84 } }
+    - { rank: 4, topic: 每周 0.5kg：慢就是快的现实目标法, market_score: 80, score_breakdown: { demand: 84, pain: 82, trend: 74, novelty: 72, content_gap: 84, evidence: 86 } }
+    - { rank: 5, topic: 轻断食分龄风险清单, market_score: 78, score_breakdown: { demand: 82, pain: 78, trend: 70, novelty: 78, content_gap: 78, evidence: 76 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖机制/方法/场景/目标/风险，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 16+8 没那么神：数字背后的科学真相
+    angle: 用多篇研究证据链揭示"神化与唱衰"的真相：机制是热量缺口而非时间窗
+    market_score: 86
+    account_fit: 86
+    fit_breakdown: { audience: 86, problem: 86, authority: 84, value: 88, differentiation: 88, style: 84 }
+    why_selected:
+      market_reason: 16+8 是全网最热减脂话题，2025-2026 争议研究密集，天然自带流量与讨论度
+      audience_reason: 核心读者（关注轻断食的减脂者）正被矛盾信息困扰
+      account_reason: 科学+反焦虑是账号定位的直接体现，用证据梳理代替站队
+      differentiation_reason: 多数内容要么吹要么黑，缺"证据链+普通人决策"的中立梳理
+    risks: [争议话题易被断章取义，需如实呈现研究局限（观察性/样本）]
+    confidence: high
+  rejected:
+    - { topic: 减脂的真正机制, reason: beat_by_top1, detail: 作为 Top1 的机制姊妹篇 }
+    - { topic: 外卖点单法, reason: beat_by_top1, detail: 实操系列高潜篇 }
+    - { topic: 每周 0.5kg, reason: beat_by_top1, detail: 目标管理篇 }
+    - { topic: 轻断食分龄风险, reason: beat_by_top1, detail: 风险特辑，素材同源 }
+  analysis:
+    boundary_filter_summary: "0 个被 HIGH 拒绝；未出现疾病治疗/药物类选题（boundaries 生效）"
+    fit_summary: "Top1 在 value/differentiation 领先；evidence 冲突按 evidence-policy 同时保留并呈现局限"
+
+article_brief:
+  account: { positioning: 轻断食与健康饮食实践，普通人也能坚持的减脂方案, audience: 减脂普通人/上班族, value_proposition: [可坚持方案, 个人实测] }
+  selected_topic: { topic: 16+8 没那么神：数字背后的科学真相, angle: 证据链梳理+普通人决策, confidence: high }
+  target_reader: 在"断食神化"与"跌落神坛"两派言论间摇摆的减脂者
+  pain_points: { cognitive: 信息矛盾不知道该信谁, risk: 用了错方法伤身/反弹, emotional: 试了又败的自我怀疑 }
+  core_insight:
+    misconception: 大多数以为 16+8 靠"时间窗本身"燃脂，越短越好
+    evidence: ["U 型曲线：≤8h 进食窗全因死亡风险 +34%（Aging Cell，观察性）", "恒热量下 16+8 无代谢改善，益处来自误减热量（Science Translational Medicine）", "6 周 16+8 减重中约半数来自瘦体重（Clinical Nutrition）"]
+    insight: 减脂的真正机制是热量缺口与可持续；时间窗更多是"让你少吃"的心理工具——健康的做法是适度窗口（11-12h）+ 营养密度 + 肌肉保护，而非极端
+  key_arguments: [研究证据链统一解读, 时间窗不是机制的迷信破除, 观察性研究的局限要讲清, 普通人该怎么做（适度+持续）]
+  title_candidates: ["16+8 跌落神坛？真相没那么极端", "减脂起作用的是热量缺口，不是时间窗", "研究告诉我们的：断食别走极端", "瘦身失败不是因为方法不够狠"]
+  outline:
+    - { section: Hook, purpose: 抛出「跌落神坛」热议, key_points: [热搜话题, 两头争吵让读者懵] }
+    - { section: Problem, purpose: 说明信息污染的危害, key_points: [极端断食风险, 普通人的决策瘫痪] }
+    - { section: Misconception, purpose: 点破「越短越好」直觉, key_points: [U 型曲线不是线性, 时间窗≠机制] }
+    - { section: Core Insight, purpose: 提出「机制是热量缺口」, key_points: [恒热试验证据, 心理工具价值] }
+    - { section: Mechanism, purpose: 讲清研究证据链, key_points: [Aging Cell/ChronoFast/Clinical Nutrition 各自回答什么, 观察性局限] }
+    - { section: Solution, purpose: 普通人方案, key_points: [11-12h 适度窗口, 保蛋白+抗阻, 以周为单位持续] }
+    - { section: Example, purpose: 一个正反对比, key_points: [极端断食 vs 适度窗口的真实身体差异] }
+    - { section: Action, purpose: 本周可做, key_points: [记录进食窗口, 蛋白质吃够量, 设周目标 0.5kg 而非极端] }
+  evidence:
+    - { source: Aging Cell (via CHTV), source_type: analytics, date: 2025-09-01, claim: ≤8h 窗口全因死亡 +34%（观察性）, confidence: medium }
+    - { source: 新华网/Science Translational Medicine, source_type: news, date: 2026-01-06, claim: 恒热 16+8 无代谢改善, confidence: high }
+    - { source: Clinical Nutrition, source_type: analytics, date: 2025-04-01, claim: 6 周 16+8 约半减重来自瘦体重, confidence: medium }

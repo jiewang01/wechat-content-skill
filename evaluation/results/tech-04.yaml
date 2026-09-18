@@ -1,0 +1,251 @@
+# 冒烟测试结果：tech-04（机器学习入门账号）
+# 输入："用 Python 讲清机器学习原理，数据科学入门与 Kaggle 实践笔记"
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 记录形态：紧凑评估记录
+
+account_profile:
+  description: 用 Python 讲清机器学习原理，数据科学入门与 Kaggle 实践笔记
+  source: explicit
+  audience: { primary: [数据科学入门者, 算法学习者], secondary: [转行学习者] }
+  domain: [机器学习原理, 数据科学, Python, Kaggle]
+  value_proposition: [把原理讲清, 给可上手的实践路径]
+  content_style: { tone: 「循序渐进、原理+代码 〔inferred〕」, format: [教程, 笔记, Kaggle 复盘] }
+  authority:
+    strengths: [Python/ML 教学视角, Kaggle 实践]
+    limitations: [非研究机构/非企业算法团队官方]
+  boundaries: [底层硬核计算框架源码, 纯工程运维, 模型鄙视链争论]
+  platform: unknown
+  constraints: []
+
+research_findings:
+  - topic: 入门路径噪音大：学什么、按什么顺序
+    signals: { trend: 2026 学习路线强调「数学与代码并行、别先啃完数学」, demand: 新手最常见的困惑是顺序与取舍 }
+    evidence:
+      - source: AIJobsGate（2026 Python for ML 指南）
+        source_type: other
+        date: 2026-05-23
+        claim: 明确 Python 只需子集（变量/控制流/函数/IO/基础 OOP），无需元类装饰器等进阶话题即可进入数据栈
+        confidence: medium
+      - source: Scaler（2026 ML Roadmap）
+        source_type: other
+        date: 2026-08-12
+        claim: 12 个月路线：Python 与数学基础→数据处理→核心算法→深度学习→部署/MLOps→项目→LLM 与持续学习
+        confidence: medium
+    content_gap: 把"别踩哪些坑"与"先学哪个工具"讲清楚的中文系统内容
+    candidate_angles: [学习顺序反直觉点, 工具最小集]
+
+  - topic: 常见失败模式：工具跳来跳去与数学前置
+    signals: { demand: 学了很久没产出、怀疑自己 }
+    evidence:
+      - source: InterviewQuery（2026 转行路线）
+        source_type: other
+        date: 2026-04-23
+        claim: 典型误区：Reddit 用户花 6 个月"tool-hopping"（学完几十个教程）仍无法搭建项目；广度≠进步
+        confidence: medium
+      - source: AITutorCode（career changers 指南）
+        source_type: other
+        date: 2026-06-09
+        claim: 80% 的应用数据科学工作用 scikit-learn 或更简单；把数学当前置而非同步会无限推迟学习
+        confidence: medium
+    content_gap: 用真实失败案例讲'怎么学'而非'学什么'的内容
+    candidate_angles: [tool-hopping 戒断, 数学是并修不是前置]
+
+  - topic: GenAI/LLM 进入核心课程
+    signals: { trend: 雇主期望加入 RAG/提示工程/预训练模型, demand: 新手怕「学传统 ML 还有用吗」 }
+    evidence:
+      - source: Axiora（2026 路线）
+        source_type: other
+        date: 2026-06-23
+        claim: GenAI 已成核心课程一部分；但基础（Python/统计/线性代数/模型如何学习）没有变，工具会变、基础会复利
+        confidence: medium
+    content_gap: 把"传统 ML 与生成式 AI"讲成连续谱而非替代关系的内容
+    candidate_angles: [传统 ML 与 LLM 的分工, 基础复利论]
+
+  - topic: Kaggle 实践与学习者焦虑
+    signals: { demand: 做了很多 notebook 却面试不过, discussion: 用案例来检验学习而非堆教程 }
+    evidence:
+      - source: MentorCruise（转行咨询）
+        source_type: other
+        date: 2026-01-01
+        claim: 转行失败最常卡在"证书收集"模式：没人确认你准备好；需要里程碑式验收（能从头到尾讲清一个端到端项目）
+        confidence: low
+    content_gap: 用"能独立讲清项目"替代"收集证书/教程"的验收方法
+    candidate_angles: [里程碑验收法, 面试式自查]
+
+candidates:
+  - core_topic: 学 ML 的正确顺序：打破四个直觉
+    user_problem: 不知道先学数学还是先写代码
+    target_audience: 入门者
+    content_angle: 数学并修、工具最小集、先 scikit-learn 后深度学习的反直觉顺序
+    content_type: methodology
+    source_signals: [入门路径噪音大]
+  - core_topic: 工具最小集：其实你只需要这五样
+    user_problem: 被 15 个库吓退
+    target_audience: 入门者
+    content_angle: Python/SQL/NumPy/Pandas/sklearn + 一个项目
+    content_type: tutorial
+    source_signals: [入门路径噪音大, 常见失败模式]
+  - core_topic: Tool-hopping 戒断指南
+    user_problem: 学完一堆教程还是不会做项目
+    target_audience: 自学者
+    content_angle: 用真实 Reddit 案例讲"广度≠进步"与止损方式
+    content_type: opinion
+    source_signals: [常见失败模式]
+  - core_topic: 数学是并修，不是前置
+    user_problem: 卡在线性代数/统计不敢开始
+    target_audience: 转行者
+    content_angle: 两小时数学+一小时代码的并修法
+    content_type: methodology
+    source_signals: [常见失败模式]
+  - core_topic: 先掌握 NumPy 还是直接 Pandas
+    user_problem: 学习路径上第一步工具选择
+    target_audience: 入门者
+    content_angle: 从"数据操作"视角给出最小必要量
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: 80% 的活都用 scikit-learn：为什么别急着学深度学习
+    user_problem: 教程都从神经网络讲起
+    target_audience: 入门者
+    content_angle: 从脏数据到可用模型，先走通经典管线
+    content_type: opinion
+    source_signals: [常见失败模式]
+  - core_topic: 从零手写一个线性回归（不调库）
+    user_problem: 只会调包不懂原理
+    target_audience: 入门者
+    content_angle: 用 50 行代码把梯度下降讲透
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: 过拟合、欠拟合到底长什么样
+    user_problem: 概念背了但不会识别
+    target_audience: 入门者
+    content_angle: 用可视化例子替代定义背诵
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: 特征工程：比模型选择更值钱
+    user_problem: 模型换遍也没涨分
+    target_audience: 有基础的学习者
+    content_angle: 用 Kaggle 案例讲特征改进第一
+    content_type: practice
+    source_signals: [Kaggle 实践与学习者焦虑]
+  - core_topic: 传统 ML 与 LLM：为什么是连续谱不是替代
+    user_problem: 怕学完就过时
+    target_audience: 学习者
+    content_angle: 基础复利论 + 两者分工
+    content_type: opinion
+    source_signals: [GenAI/LLM 进入核心课程]
+  - core_topic: 转行数据科学要多久：14-28 个月的真相
+    user_problem: 被"6 周速成"话术裹挟
+    target_audience: 转行者
+    content_angle: 用小时数拆解真实时间表
+    content_type: opinion
+    source_signals: [常见失败模式, Kaggle 实践与学习者焦虑]
+  - core_topic: 里程碑验收法：用三个项目证明你会了
+    user_problem: 学完无法确认自己"会了"
+    target_audience: 自学者
+    content_angle: 从"能建"到"能讲清"的验收标准
+    content_type: methodology
+    source_signals: [Kaggle 实践与学习者焦虑]
+  - core_topic: Kaggle 入门：选对第一个竞赛
+    user_problem: 一上来就被大神 baseline 劝退
+    target_audience: 新手
+    content_angle: 用什么标准选"练手级"竞赛
+    content_type: practice
+    source_signals: [Kaggle 实践与学习者焦虑]
+  - core_topic: 决策树与集成：新手第一个直观模型
+    user_problem: 算法选择无所适从
+    target_audience: 入门者
+    content_angle: 从决策树→随机森林→GBDT 的直观路径
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: 数据泄漏：分数虚高的头号元凶
+    user_problem: 线下高分线上崩溃
+    target_audience: 有基础学习者
+    content_angle: 泄漏种类与排查手法
+    content_type: pitfall
+    source_signals: [Kaggle 实践与学习者焦虑]
+  - core_topic: 训练/验证/测试划分为什么不能省
+    user_problem: 小数据集舍不得切
+    target_audience: 入门者
+    content_angle: 划分原则与交叉验证适用场景
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: SQL 是数据科学的第 0 课
+    user_problem: 忽略 SQL 直接学模型
+    target_audience: 转行者
+    content_angle: 用真实岗位数据讲 SQL 占比
+    content_type: opinion
+    source_signals: [常见失败模式]
+  - core_topic: 端到端小项目模板：从问题到部署
+    user_problem: 只会 notebook 不会完整项目
+    target_audience: 有基础学习者
+    content_angle: 问题定义-数据-建模-评估-部署五段式模板
+    content_type: methodology
+    source_signals: [Kaggle 实践与学习者焦虑]
+  - core_topic: 可视化只是"好看"吗：数据理解第一课
+    user_problem: 跳过探索性分析直接建模
+    target_audience: 入门者
+    content_angle: 用分布/相关图的决策价值讲 EDA
+    content_type: tutorial
+    source_signals: [入门路径噪音大]
+  - core_topic: 证书收集者为什么面不进
+    user_problem: 证书一堆但面试全挂
+    target_audience: 转行者
+    content_angle: 面试真正考的是"讲得清"，给自查话术
+    content_type: opinion
+    source_signals: [Kaggle 实践与学习者焦虑]
+
+ranking_result:
+  top_n: 5
+  ranked:
+    - { rank: 1, topic: 学 ML 的正确顺序：打破四个直觉, market_score: 84, score_breakdown: { demand: 88, pain: 82, trend: 80, novelty: 84, content_gap: 84, evidence: 80 } }
+    - { rank: 2, topic: Tool-hopping 戒断指南, market_score: 80, score_breakdown: { demand: 84, pain: 82, trend: 72, novelty: 84, content_gap: 80, evidence: 72 } }
+    - { rank: 3, topic: 传统 ML 与 LLM：为什么是连续谱不是替代, market_score: 79, score_breakdown: { demand: 82, pain: 74, trend: 86, novelty: 82, content_gap: 78, evidence: 74 } }
+    - { rank: 4, topic: 80% 的活都用 scikit-learn：为什么别急着学深度学习, market_score: 78, score_breakdown: { demand: 80, pain: 76, trend: 78, novelty: 82, content_gap: 76, evidence: 74 } }
+    - { rank: 5, topic: 里程碑验收法：用三个项目证明你会了, market_score: 76, score_breakdown: { demand: 78, pain: 80, trend: 68, novelty: 80, content_gap: 78, evidence: 68 } }
+  analysis: { pool_size: 20, deduplicated: 2, diversity_note: 「Top5 覆盖顺序/误区/时代观/聚焦/验收，互补」 }
+
+top1_selection:
+  status: selected
+  selected:
+    topic: 学 ML 的正确顺序：打破四个直觉
+    angle: 把"数学前置/先学深度学习/堆工具"等直觉逐一打破，给最小路径
+    market_score: 84
+    account_fit: 88
+    fit_breakdown: { audience: 92, problem: 88, authority: 84, value: 90, differentiation: 84, style: 88 }
+    why_selected:
+      market_reason: 入门群体最大、痛点最持久（顺序与取舍），2026 路线共识清晰
+      audience_reason: 核心读者就是"入门者"，100% 受众匹配
+      account_reason: 账号定位"讲清原理+入门实践"，学习路径是其立身主题
+      differentiation_reason: 现有中文内容多为"资源清单"，缺"决策与顺序"的视角
+    risks: [与众多路线图文章竞争，需靠"反直觉论点+真实案例"取胜]
+    confidence: high
+  rejected:
+    - { topic: Tool-hopping 戒断指南, reason: beat_by_top1, detail: 作为 Top1 的姊妹篇 }
+    - { topic: 传统 ML 与 LLM, reason: beat_by_top1, detail: 观念类内容作为后续支撑 }
+    - { topic: 80% 的活都用 scikit-learn, reason: beat_by_top1, detail: 观点偏激需谨慎处理 }
+    - { topic: 里程碑验收法, reason: beat_by_top1, detail: 适合后置阶段 }
+  analysis: { boundary_filter_summary: 「0 个被 HIGH 拒绝」, fit_summary: 「Top1 在 audience/value 领先」 }
+
+article_brief:
+  account: { positioning: 用 Python 讲清机器学习原理，入门与 Kaggle 实践, audience: 入门者/算法学习者, value_proposition: [原理讲清, 实践路径] }
+  selected_topic: { topic: 学 ML 的正确顺序：打破四个直觉, angle: 反直觉顺序论, confidence: high }
+  target_reader: 刚起步/卡在半路的数据科学自学者与转行者
+  pain_points: { functional: 学了几个月做不出完整项目, efficiency: 教程与路线图互相矛盾浪费时间, cognitive: 不知道该先啃数学还是先写代码, emotional: 自我怀疑「是不是我不适合」 }
+  core_insight:
+    misconception: Mainstream 认知=先学完数学→再学框架→最后才动手
+    evidence: ["Python 只需子集即可进入数据栈，无需完整语言（AIJobsGate 2026-05-23）", "80% 应用工作用 scikit-learn 或更简单（AITutorCode 2026-06-09）", "tool-hopping 6 个月仍不会搭项目（InterviewQuery 2026-04-23）"]
+    insight: 正确的顺序是「工具最小集 + 数学并修 + 先经典后深度 + 项目验收」；先动手跑通端到端，再回头补理论
+  key_arguments: [数学是并修不是前置, 工具控制在五件以内, 先 scikit-learn 后深度学习, 用项目验收代替教程计数]
+  title_candidates: ["学机器学习，90% 的人顺序都错了", "别先啃完数学：ML 入门的正确顺序", "5 个库 + 1 个项目：数据科学真正的最小集", "学了 6 个月还是不会做项目？"]
+  outline:
+    - { section: Hook, purpose: 复现学习者真实停滞, key_points: [Reddit 6 个月 tool-hopping 案例, 「学到哪了」的困惑] }
+    - { section: Problem, purpose: 指出路径噪音普遍性, key_points: [每周都有新工具/新路线图, 矛盾建议互相冲突] }
+    - { section: Misconception, purpose: 破除四个直觉, key_points: [数学前置, 先学深度学习, 工具要全, 教程=进度] }
+    - { section: Core Insight, purpose: 提出并修与最小集, key_points: [数学+代码并修, 五件套工具箱] }
+    - { section: Mechanism, purpose: 讲清为什么这些直觉是错的, key_points: [80% 工作用 sklearn, 广度≠进步] }
+    - { section: Solution, purpose: 给出 12 个月最小路线, key_points: [Python 子集→数据栈→sklearn→经典项目, 每阶段 1 个验收标准] }
+    - { section: Example, purpose: 一个成功学习者路径, key_points: [从分析岗位转行的案例, 项目讲清楚才叫会] }
+    - { section: Action, purpose: 今天开始的三步, key_points: [砍掉工具清单, 选第一个数据集, 两周内跑通首个模型] }
+  evidence:
+    - { source: AIJobsGate, source_type: other, date: 2026-05-23, claim: Python 只需子集即可进入数据栈, confidence: medium }
+    - { source: AITutorCode, source_type: other, date: 2026-06-09, claim: 80% 应用工作用 sklearn, confidence: medium }
