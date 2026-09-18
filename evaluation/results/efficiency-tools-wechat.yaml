@@ -1,0 +1,403 @@
+# ============================================================
+# 真实运行：效率工具分享公众号（efficiency-tools-wechat）
+# 输入（用户提供账号简介）：
+#   ✨ 好用的东西，值得分享
+#   AI工具｜办公软件｜手机电脑｜数码产品
+#   课程｜招聘｜企业服务｜实用互联网服务
+#   发现好东西，分享真实体验
+#   ⚡ 提升效率，少走弯路；⏳ 省下时间，留给真正重要的事
+#   🌱 多一点选择，慢慢走向更自由的生活
+# 日期：2026-09-18 ｜ Stage 2 为真实检索，evidence 可溯源
+# 执行器：SKILL.md + prompts/*（按调用顺序）
+# ============================================================
+
+# ------------------------------------------------------------
+# Stage 1 — Positioning Analysis（prompts/profile-parser.md）
+# ------------------------------------------------------------
+account_profile:
+  description: 好用的东西，值得分享——AI 工具、办公软件、数码产品、课程招聘企业服务等实用互联网服务的最优体验分享
+  source: explicit
+  audience:
+    primary: ["想提升效率的职场打工人", "数码与互联网服务尝鲜的用户"]
+    secondary: ["学生、中小创业者 [inferred]"]
+  domain: ["AI 工具", "办公软件", "效率工具", "数码产品", "实用互联网服务"]
+  value_proposition:
+    - 发现并实测"真好用"的工具与服务，帮读者少走弯路
+    - 把省下的时间留给更重要的事，让生活多一点选择
+  content_style:
+    tone: "真诚、实用、不吹不黑 [inferred]"
+    format: ["工具实测推文", "清单盘点", "避坑提醒"]
+  authority:
+    strengths: ["工具实测体验与横向对比", "跨领域工具选型经验"]
+    limitations: ["非厂商/机构官方视角", "预算与场景以个人和小团队为主"]
+  boundaries:
+    - 与"真实体验"冲突的纯软广/付费置换内容
+    - 泛 AI 技术科普与新闻评论（超出选型应用层）
+    - 时政与无依据的产品功效宣传
+  platform: wechat
+  constraints: [公众号单篇长度与推文频次约束〔inferred〕]
+
+# ------------------------------------------------------------
+# Stage 2 — Research（prompts/research.md，真实检索 2026-09-18）
+# ------------------------------------------------------------
+research_findings:
+  - topic: AI 工具盘的"收藏吃灰"困境
+    signals:
+      trend: AI 工具每周上新，"必须收藏"盘点文泛滥
+      demand: 用户收藏即吃灰、装了就删，缺"真正值得用"的判断
+      discussion: 「收藏，然后，再也没有打开过」成高频自嘲
+    evidence:
+      - source: 爱范儿（经新浪科技转载）
+        source_type: news
+        date: 2026-06-04
+        claim: AI 工具推荐已成"显学"，标题夸张、列表越来越长；真正留在工位天天用的只有几个；「能做什么」和「我会用它做什么」之间隔着一条河
+        confidence: high
+      - source: Izoate（Reddit 整理）
+        source_type: community
+        date: 2026-08-23
+        claim: Reddit 共识：好工具是"ambient"式融入现有习惯的工具；终极检验是三个月后是否还在用
+        confidence: medium
+      - source: TipsMafia
+        source_type: community
+        date: 2026-01-01
+        claim: 2026 更值得先试的工具是"只解决一个痛点"的窄工具（如 Wispr Flow 语音写作、Granola 会议纪要），而不是"接管全天"的大而全
+        confidence: medium
+    existing_content:
+      saturation: very_high
+      summary: 盘点/榜单内容极度饱和（中英文皆然）
+    content_gap: 从"推工具"转向"教大家怎么选、怎么防吃灰"的方法论稀缺
+    candidate_angles: [精用少工具, 两周测试法]
+
+  - topic: AI 推荐被"投喂"：GEO 软广乱象
+    signals:
+      trend: GEO（生成式引擎优化）商家批量发软文"喂养"AI 推荐结果
+      demand: 用户问 AI 买到坑产品，信任受损
+      discussion: 「AI 推荐藏广告」「种草式推荐」被集中吐槽
+    evidence:
+      - source: 工人日报（中国经济网转载）
+        source_type: news
+        date: 2026-01-19
+        claim: 用户质疑 AI 工具推荐被广告"精准投喂"；商家通过提示词诱导与批量发布结构化软文，把推广伪装成"客观推荐"；GEO 服务按曝光收费 5000-10000 元
+        confidence: high
+      - source: 京报网（中央广播电视总台中国之声）
+        source_type: news
+        date: 2026-01-25
+        claim: 消费者"问问 AI"遭遇隐性营销：AI 直接给出带预订链接的"推荐"；商家用角色扮演式提示词+榜单软文影响 AI 回答
+        confidence: high
+      - source: 新华网（AI 虚假广告）
+        source_type: news
+        date: 2026-06-09
+        claim: AI 生成广告夸大产品功能构成虚假宣传；「标注'AI 生成'不是免责牌」，误导消费者仍需担责
+        confidence: high
+    existing_content:
+      saturation: low
+      summary: 政策/维权报道多，把"如何识破、如何选"讲给普通用户的实用内容少
+    content_gap: 面向普通用户的"AI 推荐可信度"识破与自我保护指南
+    candidate_angles: [GEO 软广识别, AI 推荐防坑]
+
+  - topic: 订阅疲劳与免费平替
+    signals:
+      trend: 主流 AI 订阅 $20-100/月，功能重叠严重
+      demand: 用户想精简订阅、找免费平替
+    evidence:
+      - source: Izoate（Reddit 2026）
+        source_type: community
+        date: 2026-08-23
+        claim: 订阅疲劳是 2026 最大摩擦点；用户受够为重叠功能每月付 $20-100；不必为 50 个订阅才高效
+        confidence: medium
+      - source: CSDN 中文盘点
+        source_type: social
+        date: 2026-09-17
+        claim: 中文区出现"不折腾、真提效"的平替叙事（如 Windsurf 免费额度更多作 Cursor 平替、Trae 国内直连免翻墙）
+        confidence: medium
+    existing_content:
+      saturation: medium
+      summary: 平替清单已有，但多停留在单品罗列
+    content_gap: 按【免费额度-场景-迁移成本】做订阅精简决策的方法
+    candidate_angles: [订阅精简账, 免费平替清单]
+
+  - topic: AI 办公进入"嵌入式 + Agent"时代
+    signals:
+      trend: AI 内嵌进 Office/Workspace，Agent 承担多步任务
+      demand: 打工人想知道"现在还值不值得单独买工具"
+    evidence:
+      - source: Microsoft 365 官方博客
+        source_type: official_doc
+        date: 2026-03-09
+        claim: Copilot Wave 3 将 Agentic 能力直接嵌入 Word/Excel/PPT/Outlook；Copilot Cowork 可跨文件多步执行
+        confidence: high
+      - source: AI Tools DevPro（Workforce Labs）
+        source_type: analytics
+        date: 2026-01-01
+        claim: 每日使用 AI 的职场人生产力 +64%、专注 +58%；平均每位知识工作者为完成单件工作使用 5+ 个 AI 工具
+        confidence: medium
+    existing_content:
+      saturation: medium
+      summary: 厂商宣传多，普通用户"我该升级什么"的决策内容少
+    content_gap: 把"内嵌 vs 独立工具"的选择讲给普通办公用户的视角
+    candidate_angles: [先吃内嵌功能, 工作流拼装]
+
+# ------------------------------------------------------------
+# Stage 3 — Candidate Generation（prompts/topic-generator.md，20 条）
+# ------------------------------------------------------------
+candidates:
+  - core_topic: AI 推荐的工具真的靠谱吗：GEO 软广识别课
+    user_problem: 问 AI 买的工具/产品被坑，不知道 AI 推荐里藏了多少软广
+    target_audience: 依赖 AI 做消费决策的职场人
+    content_angle: 用 GEO 机制讲"AI 也可能说谎"，给四步自测（交叉验证/查处罚/看信源/延迟决策）
+    content_type: opinion
+    source_signals: [AI 推荐被「投喂」：GEO 软广乱象]
+  - core_topic: 收藏 100 个工具，不如精用 5 个
+    user_problem: 收藏吃灰、装了就删，工具越多越焦虑
+    target_audience: 工具收藏爱好者
+    content_angle: 用"三个月后还在用"标准反推精用流程
+    content_type: methodology
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+  - core_topic: 两周测试法：让工具先证明自己
+    user_problem: 判断不出一个工具值不值得留
+    target_audience: 职场打工人
+    content_angle: 两周内按"痛点×频率×成本"记测试日志，到期决定去留
+    content_type: practice
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+  - core_topic: 订阅疲劳自救：AI 订阅精简账
+    user_problem: 每月为重叠功能的 AI 订阅花几百块
+    target_audience: 多订阅用户
+    content_angle: 按功能重叠度与真实使用频率算"精简后省多少"
+    content_type: practice
+    source_signals: [订阅疲劳与免费平替]
+  - core_topic: 免费平替清单：不花钱也能提效
+    user_problem: 预算有限又想用上主流功能
+    target_audience: 学生与个人用户
+    content_angle: 主流付费工具的免费替代（含额度对比与迁移成本）
+    content_type: tooling
+    source_signals: [订阅疲劳与免费平替]
+  - core_topic: 「必须收藏」标题党的五个特征
+    user_problem: 分不清是真实用还是营销文
+    target_audience: 普通读者
+    content_angle: 从标题夸张度/榜单结构/无实测/返佣链接/时效模糊识破
+    content_type: pitfall
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+  - core_topic: 工具测评该看什么：从红毯指标到真实场景
+    user_problem: 看参数都强，用起来都不行
+    target_audience: 数码产品爱好者
+    content_angle: 把"场景匹配度"置于"参数"之上的一页评估法
+    content_type: methodology
+    source_signals: [订阅疲劳与免费平替]
+  - core_topic: 按痛点选工具：一张工作流地图
+    user_problem: 不知道先该装哪个工具
+    target_audience: 职场新人
+    content_angle: 从"你最常见的三个卡点"出发反向选工具
+    content_type: methodology
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+  - core_topic: 打工人 AI 工位：一套天天在用的组合
+    user_problem: 想要完整的单兵装备清单
+    target_audience: 知识工作者
+    content_angle: 复盘式：搜索/写作/会议/知识库各自留哪个（含取舍理由）
+    content_type: case_study
+    source_signals: [AI 办公进入「嵌入式 + Agent」时代]
+  - core_topic: 先吃内嵌 AI：Office/飞书自带能力盘点
+    user_problem: 不知道内置功能已够用，多买了独立工具
+    target_audience: 办公用户
+    content_angle: 主流办公套件内嵌 AI 能力与独立工具的重叠清单
+    content_type: practice
+    source_signals: [AI 办公进入「嵌入式 + Agent」时代]
+  - core_topic: AI 会议纪要工具怎么选
+    user_problem: 会议多、纪要磨人，工具五花八门
+    target_audience: 高频开会人群
+    content_angle: 录音硬件/纯软件/内嵌三类方案的对比与隐私提示
+    content_type: tooling
+    source_signals: [AI 办公进入「嵌入式 + Agent」时代]
+  - core_topic: AI 搜索 vs 传统搜索：什么时候该换
+    user_problem: 用了 AI 搜索反而更晕
+    target_audience: 检索高频用户
+    content_angle: 按任务类型给"用哪个"的决策表
+    content_type: opinion
+    source_signals: [AI 推荐被「投喂」：GEO 软广乱象]
+  - core_topic: 让 AI 理解你：个人知识库轻量搭法
+    user_problem: 笔记存了一堆但 AI 用不上
+    target_audience: 笔记用户
+    content_angle: 用两层（动态文档+长期笔记）+ 规则文件给 AI"人设"
+    content_type: methodology
+    source_signals: [AI 办公进入「嵌入式 + Agent」时代]
+  - core_topic: AI 生成广告与虚假宣传：消费者能怎么办
+    user_problem: 被 AI 广告骗了不知道怎么维权
+    target_audience: 普通消费者
+    content_angle: 政策口径（AI生成≠免责）+ 举证与投诉路径
+    content_type: trend
+    source_signals: [AI 推荐被「投喂」：GEO 软广乱象]
+  - core_topic: 手机电脑效率小工具：日常刚需清单
+    user_problem: 想要"小而稳"的不折腾工具
+    target_audience: 普通用户
+    content_angle: 按剪贴板/窗口/截图/输入法等高频场景盘点
+    content_type: tooling
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+  - core_topic: 学生装备包：零成本起步组合
+    user_problem: 预算有限想免费体验全套
+    target_audience: 学生
+    content_angle: 免费层工具组合与教育优惠路径
+    content_type: tooling
+    source_signals: [订阅疲劳与免费平替]
+  - core_topic: 盯官方渠道：新功能怎么不错过
+    user_problem: 功能更新多但永远不知道
+    target_audience: 尝鲜用户
+    content_angle: 用官方博客/更新日志/Release Note 清单代替二手信息
+    content_type: practice
+    source_signals: [AI 办公进入「嵌入式 + Agent」时代]
+  - core_topic: 企业服务选购：从免费版开始的三步试用法
+    user_problem: 中小企业买工具怕踩坑
+    target_audience: 中小企业主/采购
+    content_angle: 免费试用→小范围试点→正式付费的三段式
+    content_type: methodology
+    source_signals: [订阅疲劳与免费平替]
+  - core_topic: 招聘求职实用工具盘点
+    user_problem: 简历/背调/面经工具良莠不齐
+    target_audience: 求职者
+    content_angle: 简历优化/职位聚合/面试准备的可信工具清单与避坑
+    content_type: tooling
+    source_signals: [AI 推荐被「投喂」：GEO 软广乱象]
+  - core_topic: 数字极简：给工具做减法的三个信号
+    user_problem: 工具越装越多、效率反而下降
+    target_audience: 工具重度用户
+    content_angle: 冗余感知/切换成本/维护成本三个"该删"信号
+    content_type: opinion
+    source_signals: [AI 工具盘的「收藏吃灰」困境]
+
+# ------------------------------------------------------------
+# Stage 4 — Market Ranking（prompts/ranking.md；权重见 scoring-policy）
+# ------------------------------------------------------------
+ranking_result:
+  ranking_method: "Market Score = Demand×25% + Pain×20% + Trend×15% + Novelty×15% + ContentGap×15% + Evidence×10%"
+  top_n: 5
+  ranked:
+    - rank: 1
+      topic: AI 推荐的工具真的靠谱吗：GEO 软广识别课
+      core_problem: 问 AI 买工具被坑，不知道推荐里藏了多少软广
+      content_angle: 用 GEO 机制讲"AI 也会说谎"+ 四步自测
+      market_score: 87
+      score_breakdown: { demand: 90, pain: 84, trend: 90, novelty: 88, content_gap: 90, evidence: 84 }
+    - rank: 2
+      topic: 收藏 100 个工具，不如精用 5 个
+      core_problem: 收藏吃灰、装了就删
+      content_angle: 用"三个月后还在用"标准反推精用流程
+      market_score: 82
+      score_breakdown: { demand: 84, pain: 80, trend: 82, novelty: 86, content_gap: 86, evidence: 72 }
+    - rank: 3
+      topic: 订阅疲劳自救：AI 订阅精简账
+      core_problem: 每月为重叠功能的订阅花几百块
+      content_angle: 按重叠度与使用频率算精简账
+      market_score: 79
+      score_breakdown: { demand: 82, pain: 78, trend: 80, novelty: 80, content_gap: 82, evidence: 70 }
+    - rank: 4
+      topic: 两周测试法：让工具先证明自己
+      core_problem: 判断不出工具值不值得留
+      content_angle: 两周按痛点×频率×成本记日志决定去留
+      market_score: 78
+      score_breakdown: { demand: 80, pain: 78, trend: 76, novelty: 82, content_gap: 80, evidence: 68 }
+    - rank: 5
+      topic: 免费平替清单：不花钱也能提效
+      core_problem: 预算有限又想要主流功能
+      content_angle: 主流付费工具的免费替代（额度+迁移成本）
+      market_score: 77
+      score_breakdown: { demand: 78, pain: 74, trend: 82, novelty: 76, content_gap: 78, evidence: 70 }
+  analysis:
+    pool_size: 20
+    deduplicated: 2
+    diversity_note: "Top5 覆盖识别软广/方法论/成本/测试/预算五类角度，互补"
+
+# ------------------------------------------------------------
+# Stage 5 — Positioning Filter（prompts/positioning-filter.md）
+# ------------------------------------------------------------
+top1_selection:
+  status: selected
+  selected:
+    topic: AI 推荐的工具真的靠谱吗：GEO 软广识别课
+    angle: 从"AI 也可能被喂软广"讲起，给普通用户四步自测法
+    market_score: 87
+    account_fit: 90
+    fit_breakdown: { audience: 90, problem: 92, authority: 82, value: 92, differentiation: 92, style: 86 }
+    why_selected:
+      market_reason: 2026 上半年 GEO 软广被工人日报/央视/新华集中曝光，消费者被坑案例真实高频，需求与讨论都在上升
+      audience_reason: 核心读者正是"问 AI 选工具/选产品"的一代，痛点直接
+      account_reason: 账号以"真实体验、少走弯路"立身，此题是价值主张的元命题——先教读者别被推荐骗，再推荐好东西
+      differentiation_reason: 几乎没有人站在"反推荐"一侧；该选题同时为账号建立可信任度壁垒，与每天刷屏的盘点文形成鲜明反差
+    risks: [内容敏感但均引权威媒体报道；需避免点名具体疑似违规商家]
+    confidence: high
+  rejected:
+    - topic: 收藏 100 个工具，不如精用 5 个
+      reason: beat_by_top1
+      detail: 高潜第二篇，方法论常青选题
+    - topic: 订阅疲劳自救
+      reason: beat_by_top1
+      detail: 成本向内容作为系列延伸
+    - topic: 两周测试法
+      reason: beat_by_top1
+      detail: 与 Top1 同域（选择方法），后置发布
+    - topic: 免费平替清单
+      reason: beat_by_top1
+      detail: 清单类与"独立判断"主线互补但差异化弱
+  analysis:
+    boundary_filter_summary: "0 个被 HIGH 拒绝；泛 AI 技术科普与无依据功效宣传未进入候选池"
+    fit_summary: "Top1 在 problem/value/differentiation 三维领先，与账号信任定位强绑定"
+
+# ------------------------------------------------------------
+# Stage 6 — Editorial Development（prompts/editorial.md）
+# ------------------------------------------------------------
+article_brief:
+  account:
+    positioning: 好用的东西，值得分享——用真实体验帮读者少走弯路
+    audience: 想提升效率的职场打工人与工具尝鲜用户
+    value_proposition: [发现真好用的东西, 教你怎么选、怎么避坑]
+  selected_topic:
+    topic: AI 推荐的工具真的靠谱吗：GEO 软广识别课
+    angle: 机制拆解 + 四步自测（别让 AI 的"客观推荐"替你交学费）
+    why_selected:
+      market_reason: GEO 软广 2026 上半年被权威媒体集中曝光，案例真实高频
+      audience_reason: 核心读者正是依赖 AI 做选择的人
+      account_reason: 「真实体验、少走弯路」是本账号的立身价值，此题是信任定位的护城河
+      differentiation_reason: 竞品都在做"推荐"，几乎没人做"教你识破推荐"
+    confidence: high
+  target_reader: 习惯"大事小情先问 AI"、最近也买过 AI 推荐却踩坑的普通用户
+  pain_points:
+    functional: 按 AI 推荐买的工具/产品性能不符（"切丝刀切不了丝"式落差）
+    efficiency: 为甄别真伪反复查资料，反而更费时间
+    cognitive: 分不清"AI 客观推荐"与"被喂的软广"
+    risk: 买到三无/被处罚过的品牌，投诉无门
+    emotional: 对 AI 信任被透支："它是不是也收了钱？"
+  core_insight:
+    misconception: 大多数人以为 AI 的回答=海量数据计算的客观结论
+    evidence: ["商家用提示词诱导+批量发软文影响 AI 推荐（工人日报 2026-01-19）", "被推荐的品牌曾被监管处罚仍被荐（京报网 2026-01-25）", "AI 生成广告已构成虚假宣传且「标注 AI 生成不是免责牌」（新华网 2026-06-09）"]
+    insight: AI 的推荐质量取决于喂给它的语料，而语料正被 GEO 商业化污染；"问 AI"是新环节，"验证 AI"才是新技能——四步自测（交叉验证/查处罚/看信源/延迟决策）能挡掉大多数坑
+  key_arguments:
+    - GEO 机制：软文批量进语料→AI 引用→呈现为"客观"
+    - 被坑案例有据可查（处罚记录、消费者投诉）
+    - 「标注 AI 生成」不解除广告责任，但用户仍需自我保护
+    - 四步自测不花一分钱，能覆盖 80% 的坑
+  title_candidates:
+    - "问 AI 买的东西翻车了：推荐里藏了多少软广"
+    - "AI 也会说谎：GEO 时代怎么信 AI 推荐"
+    - "别再让 AI 替你交学费（附 4 步自测）"
+    - "被 AI 种草，然后被坑：一份识别指南"
+    - "工具推荐不是越多越好，是越真越好"
+  outline:
+    - { section: Hook, purpose: 用翻车案例开场, key_points: [按 AI 推荐买切丝刀切不了丝, 问 AI 选破壁机买到被处罚品牌] }
+    - { section: Problem, purpose: 说明这不是个例, key_points: [GEO 服务明码标价 5000-1 万, 多平台用户集中吐槽被投喂] }
+    - { section: Misconception, purpose: 破除"AI=客观"直觉, key_points: [AI 结论来自语料, 语料正被商业化] }
+    - { section: Core Insight, purpose: 提出"验证 AI"新技能, key_points: [问 AI 是新环节，验证 AI 才是新技能] }
+    - { section: Mechanism, purpose: 讲清 GEO 两条路径, key_points: [提示词诱导（角色扮演）, 投喂式优化（榜单软文）] }
+    - { section: Solution, purpose: 四步自测法, key_points: [交叉问多个 AI, 查官方处罚与备案, 追到一手信源, 延迟 24 小时再下单] }
+    - { section: Example, purpose: 完整演示一次自测, key_points: [同题问两个 AI 对比, 查到处罚记录后的决策变化] }
+    - { section: Action, purpose: 今天就能用, key_points: [把常用购物/选品问题重问一次并比答案, 收藏四步自测卡, 关注本账号的实测再入手] }
+  evidence:
+    - { source: 工人日报（中国经济网转载）, source_type: news, date: 2026-01-19, claim: 商家通过提示词与软文把推广伪装成 AI 客观推荐，GEO 按曝光收费 5000-10000 元, confidence: high }
+    - { source: 京报网（央视中国之声）, source_type: news, date: 2026-01-25, claim: 消费者遇"种草式"推荐，被荐品牌曾被监管处罚, confidence: high }
+    - { source: 新华网, source_type: news, date: 2026-06-09, claim: AI 生成虚假广告构成虚假宣传；标注 AI 生成不是免责牌, confidence: high }
+  risks:
+    - risk: 内容涉及"AI 推荐不可信"，可能被误读为反 AI
+      severity: medium
+      mitigation: 开头即声明"AI 仍是好工具"，批评的是投喂软广的商家而非 AI 本身
+    - risk: 举例需避免点名具体疑似违规商家
+      severity: high
+      mitigation: 只用已公开报道的案例并标注来源，不自行点名
+    - risk: 与"推荐工具"涨粉路线短期存在张力
+      severity: low
+      mitigation: 该篇强化信任人设，反哺后续所有推荐内容的可信度
