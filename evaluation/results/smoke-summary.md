@@ -62,7 +62,10 @@
 1. **Boundary Hard Filter 实际生效**：biz-01 检索中出现的良品铺子/敷尔佳半年报、life-02 的疾病治疗类内容、parent-01 的医疗处方类内容均被正确排除出候选池——边界硬过滤在多领域稳定工作。
 2. **Evidence 真实可溯源**：所有 case 的 evidence 均来自当天真实检索（教育部/央视/UCAS/光明网/36kr/期刊研究等），source/date/confidence 如实标注，无一编造。
 3. **Evidence 冲突保留**：life-02 的 16+8 争议（Aging Cell 观察性 vs ChronoFast 试验）按 evidence-policy 同时保留并呈现研究局限，未被强行取舍。
-4. **Research Insufficient / NO_VALID_TOP1**：15 个 case 均未触发（检索充分、Top1 有效）；异常分支仍建议用弱数据场景（如极冷门垂直账号）补测。
+4. **异常分支已补测（anomaly-01/02）**：
+   - `Research Insufficient`：极冷门中文垂直领域（飞蝇钓）检索仅 1 条有效中文信号，如实降级输出（results/anomaly-01.yaml）
+   - `NO_VALID_TOP1`：账号 boundaries 覆盖检索信号全部大类（探店/执法个案/标准科普/营养功效），Top5 全 REJECT，未强行挑选（results/anomaly-02.yaml）
+   - 两个分支均按 policy 验证通过，无编造。
 5. **Market/Account 阶段隔离**：所有 Ranking 阶段输出无账号匹配类理由；账号判断只出现在 Filter 阶段。
 
 ## 4. 冒烟暴露问题与处置状态
@@ -72,15 +75,15 @@
 | P1 | research.md 无检索停止规则 | ✅ 已修复（四 Lens 达标即停止） |
 | P2 | 候选 evidence 摘要化导致追溯断裂 | ✅ 已修复（必须内联） |
 | P3 | 内容饱和度缺刻度 | ✅ 已修复（五级锚点） |
-| P4 | 分数计算无校验 | ✅ 本轮已脚本复算 70 项 Top5 加权，0 偏差；可固化为评价脚本 |
+| P4 | 分数计算无校验 | ✅ 已修复：evaluation/score-check.py 固化，70 项 Top5 加权复算 0 偏差，全量 16 文件回归 PASS |
 | P5 | 结果 YAML 的 ASCII 引号/方括号会破坏 flow 语法 | ✅ 已修复（中文引号「」/〔inferred〕）并加入教训：结果文件统一用「」避免 YAML flow 歧义 |
 | P6 | 单一断点：`#` 开头文本在 flow 内被当注释 | ✅ 已修复（加引号）并纳入注意项 |
 
 ## 5. 结论与剩余事项
 
-- **DoD（plan §24）状态**：除"有至少 10 个 Evaluation Cases"（现已满足：15 个）外全部达成——15 个 case 完整跑通端到端。
+- **DoD（plan §24）状态**：全部达成——15 个 case 端到端 + 2 个异常分支补测 + 回归脚本。
 - 六维平均：Profile 88.5 / Research 85.7 / Candidate 85.1 / Ranking 82.9 / Fit 87.3 / Editorial 85.1；Research/Candidate/Editorial 达标，Profile/Fit 在"关键点口径"下达标（严格口径下为推断字段上限）。
+- **回归工具**：`evaluation/score-check.py` 已固化（结构/分数加权/排序/字段完整性校验，异常分支记录自动识别），对 16 个结果文件 PASS。
 - **建议后续**：
-  1. 把 P4 的复算脚本固化为 `evaluation/score-check.py`，作为回归检查；
-  2. 用弱数据场景补测 `Research Insufficient` / `NO_VALID_TOP1` 分支；
-  3. 上线后接入 plan §19.3 Feedback Loop，用真实发布数据反哺 ranking 权重。
+  1. 上线后接入 plan §19.3 Feedback Loop，用真实发布数据反哺 ranking 权重；
+  2. 将 score-check 接入 CI（如每日对新增结果执行）。

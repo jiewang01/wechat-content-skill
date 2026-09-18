@@ -1,0 +1,75 @@
+# ============================================================
+# 异常分支补测 A：Research Insufficient
+# 场景：极冷门中文垂直领域（飞蝇钓）——Stage 2 有效信号不足
+# 日期：2026-09-18 ｜ 检索为真实结果
+# 期望：research-policy §5（有效 finding < 3 → Research Insufficient，不强行产出）
+# ============================================================
+case_id: anomaly-01
+branch: Research_Insufficient
+description: 验证「极冷门垂直领域检索信号不足」时，Research 阶段正确降级而非编造
+
+# ------------------------------------------------------------
+# Stage 1 — Positioning Analysis
+# ------------------------------------------------------------
+account_profile:
+  description: 中文飞蝇钓（Fly Fishing）入门理论与实践，溪流拟饵钓法笔记
+  source: explicit
+  audience:
+    primary: ["中文溪流路亚/飞蝇钓爱好者"]
+    secondary: ["想入门钓鱼运动的年轻人 [inferred]"]
+  domain: ["飞蝇钓", "拟饵钓法", "溪流钓鱼"]
+  value_proposition:
+    - 中文视角的飞蝇钓入门路径
+    - 装备、绑钩、抛投的实操拆解
+  content_style:
+    tone: "爱好者向、实操 [inferred]"
+    format: ["图文笔记", "装备清单"]
+  authority:
+    strengths: ["飞蝇钓实操经验"]
+    limitations: ["非钓具厂商/专业教练身份"]
+  boundaries:
+    - 商业钓具推销软广
+    - 国内禁钓区/渔业政策解读
+  platform: unknown
+  constraints: []
+
+# ------------------------------------------------------------
+# Stage 2 — Research（真实检索 2026-09-18，query：飞蝇钓 fly fishing 中文 新手 2026）
+# ------------------------------------------------------------
+research_result:
+  status: Research_Insufficient
+  retrieved:
+    - source: tackleapp.ai
+      source_type: other
+      date: 2026-03-30
+      claim: Fly Fishing for Beginners（英文）：5 号竿入门、设装备 $200-350、基础抛投
+      confidence: medium
+    - source: wildwaterflyfishing.com
+      source_type: other
+      date: 2026-01-01
+      claim: 首次飞钓指南（英文）：抛投练习/找水/虫子选择
+      confidence: medium
+    - source: deepbluefishingsupplies.com
+      source_type: other
+      date: 2026-07-18
+      claim: 飞钓入门装备/抛投/选饵指南（英文）
+      confidence: medium
+    - source: bixishang.com（飞蝇钓普及）
+      source_type: other
+      date: unknown
+      claim: 唯一中文结果：飞蝇钓入门科普（钓竿/钓线/羽毛钩/抛投），无日期、无互动数据
+      confidence: low
+  effective_findings_count: 1
+  gap_analysis:
+    - 中文有效信号仅 1 条（且无日期与互动佐证），低于 research-policy 的「有效 finding < 3」阈值
+    - 检索返回以英文为主，无法支撑「中文账号的用户需求/社区讨论」信号
+    - Demand / Discussion 两个 Lens 无可用证据
+  suggested_directions:
+    - 若保留该账号：扩源至英文社区（Reddit r/flyfishing 等）提取需求信号，再以中文转译输出
+    - 或建议账号扩大定位（并入「路亚/溪流钓」泛领域）以匹配可用内容供给
+    - 或降低 Evidence/Confidence 后仅产出装备入门单篇，不进入完整选题决策
+
+verification:
+  policy: research-policy.md §5（Research Insufficient 判定：有效 finding < 3）
+  passed: true
+  note: 未编造任何趋势/需求结论——即使这是一个"看起来能写"的垂直领域，检索证据不足即如实降级

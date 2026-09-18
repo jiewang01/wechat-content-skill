@@ -1,0 +1,123 @@
+# ============================================================
+# 异常分支补测 B：NO_VALID_TOP1
+# 场景：账号定位极窄 + Boundary 全 REJECT —— Stage 5 不强行挑选
+# 日期：2026-09-18 ｜ 检索为真实结果
+# 期望：positioning-filter.md §硬性约束（TopN 全部 REJECT → NO_VALID_TOP1 + 建议重新 Research）
+# ============================================================
+case_id: anomaly-02
+branch: NO_VALID_TOP1
+description: 验证「检索信号全部落入账号边界」时，Filter 正确输出 NO_VALID_TOP1 而非矮子拔将军
+
+# ------------------------------------------------------------
+# Stage 1 — Positioning Analysis
+# ------------------------------------------------------------
+account_profile:
+  description: 三文鱼刺身的感官品鉴方法（色泽/纹理/口感），不涉及探店与标准解读
+  source: explicit
+  audience:
+    primary: ["日料爱好者"]
+    secondary: ["厨师、饮食内容作者 [inferred]"]
+  domain: ["刺身感官品鉴", "食材风味方法论"]
+  value_proposition:
+    - 用可训练的方法描述与判断刺身品质
+    - 感官维度（色/纹理/口感/余味）的评分框架
+  content_style:
+    tone: "专业、克制 [inferred]"
+    format: ["方法论长文", "评分卡"]
+  authority:
+    strengths: ["品鉴方法论", "日料食材知识"]
+    limitations: ["非食品安全监管/检测机构", "非营养师"]
+  boundaries:
+    - 门店探店与商户推荐（商业冲突）
+    - 食品安全执法个案报道（如具体品牌被罚事件）
+    - 食品标准（GB 10136 等）与寄生虫科学的科普解读（超出感官品鉴域）
+    - 营养功效类内容（避免医疗功效宣传）
+
+# ------------------------------------------------------------
+# Stage 2 — Research（真实检索 2026-09-18，query：刺身 日料 探店 卫生 2026 讨论）
+# ------------------------------------------------------------
+research_findings:
+  - topic: 三文鱼刺身选店指南
+    signals:
+      trend: 「正宗日料店怎么选」类内容高热
+      demand: 消费者想闭眼选到安全正宗的店
+    evidence:
+      - source: 新浪新闻（三文鱼刺身正宗日料店怎么选）
+        source_type: news
+        date: 2026-09-12
+        claim: 判断核心看 GB 10136 而非 GB 2733，全程冷链与门店溯源关键，配 3 家实测推荐
+        confidence: medium
+    content_gap: 无（信号为探店推荐向，见边界分析）
+  - topic: 寿司郎卫生执法个案
+    signals:
+      discussion: 平台热搜「寿司郎餐盘 10 抽 10 脏」
+      demand: 消费者对门店卫生的信任焦虑
+    evidence:
+      - source: 杭州网
+        source_type: news
+        date: 2026-05-22
+        claim: 杭州寿司郎门店因餐具清洗消毒不合格被罚，记者实探仍发现问题，话题上微博热搜
+        confidence: high
+      - source: 中国新闻网
+        source_type: news
+        date: 2026-05-19
+        claim: 北京寿司郎萧山分公司被没收违法所得 2.8 万余元并罚款 3.8 万；员工出入专间不洗手等
+        confidence: high
+    content_gap: 无（个案执法报道，见边界分析）
+  - topic: 生食标准 GB10136 与寄生虫科学
+    signals:
+      trend: 标准科普内容增长
+    evidence:
+      - source: 新浪新闻
+        source_type: news
+        date: 2026-09-10
+        claim: 供生食三文鱼需 -20℃ 冷冻 7 天或 -35℃ 15 小时灭活寄生虫；正宗店注重平切/现磨芥末等仪式感
+        confidence: medium
+    content_gap: 无（标准/科学科普向，见边界分析）
+
+# ------------------------------------------------------------
+# Stage 4 — Market Ranking（示意：按检索信号烈度给 TopN）
+# ------------------------------------------------------------
+ranking_result:
+  top_n: 5
+  ranked:
+    - rank: 1
+      topic: 三文鱼刺身选店指南（3 维避坑）
+      market_score: 86
+      score_breakdown: { demand: 90, pain: 84, trend: 84, novelty: 72, content_gap: 86, evidence: 84 }
+    - rank: 2
+      topic: 寿司郎卫生事件复盘：餐具清洗与食安监管
+      market_score: 83
+      score_breakdown: { demand: 86, pain: 84, trend: 86, novelty: 74, content_gap: 82, evidence: 80 }
+    - rank: 3
+      topic: GB10136 vs GB2733：刺身安全标准一次讲清
+      market_score: 82
+      score_breakdown: { demand: 84, pain: 80, trend: 80, novelty: 78, content_gap: 84, evidence: 82 }
+    - rank: 4
+      topic: 「活鱼现杀≠刺身级」：消费误区盘点
+      market_score: 79
+      score_breakdown: { demand: 82, pain: 78, trend: 78, novelty: 80, content_gap: 80, evidence: 76 }
+    - rank: 5
+      topic: 三文鱼营养解析：Omega-3 与维生素 D
+      market_score: 77
+      score_breakdown: { demand: 82, pain: 74, trend: 76, novelty: 74, content_gap: 78, evidence: 78 }
+
+# ------------------------------------------------------------
+# Stage 5 — Positioning Filter（Boundary Hard Filter 先行）
+# ------------------------------------------------------------
+top1_selection:
+  status: NO_VALID_TOP1
+  suggestion: 建议重新 Research（扩大/调整账号领域范围，或补充感官品鉴向的独立内容供给后重跑）
+  boundary_filter_summary: "Top5 全部触发 HIGH boundary_risk 被 REJECT：探店推荐（违反 门店探店边界）/ 执法个案（违反 个案报道边界）/ 标准与寄生虫科普（违反 标准科普边界）/ 营养功效（违反 营养功效边界）"
+  rejected:
+    - { topic: 三文鱼刺身选店指南, reason: boundary_high, detail: 属门店探店与商户推荐（边界 1） }
+    - { topic: 寿司郎卫生事件复盘, reason: boundary_high, detail: 属食品安全执法个案报道（边界 2） }
+    - { topic: GB10136 vs GB2733, reason: boundary_high, detail: 属食品标准解读科普（边界 3） }
+    - { topic: 「活鱼现杀≠刺身级」, reason: boundary_high, detail: 与标准/科学科普边界重叠（边界 3） }
+    - { topic: 三文鱼营养解析, reason: boundary_high, detail: 属营养功效类内容（边界 4） }
+  fit_summary: 无候选通过 Boundary，未进入 Account Fit 评分——不强行选择
+
+verification:
+  policy: positioning-filter.md（Boundary HIGH → REJECT；全 REJECT → NO_VALID_TOP1，禁止强行选择）
+  passed: true
+  note: 该场景为逻辑验证测试：账号 boundaries 刻意覆盖检索信号全部大类，验证 Filter 在「无可选」时如实拒绝而非降分放行

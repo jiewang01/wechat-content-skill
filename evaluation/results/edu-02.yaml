@@ -55,6 +55,22 @@ research_findings:
     content_gap: 普通背景（双非/低GPA）如何差异化的可执行内容
     candidate_angles: [普通背景差异化, 文书反套路]
 
+  - topic: 录取结构的分化数据
+    signals: { trend: 申请集中度高选拔院校，GPA 梯次分化明显, demand: 申请者想要可对标的"数据标尺" }
+    evidence:
+      - source: British Council/UCAS 数据
+        source_type: analytics
+        date: 2026-07-23
+        claim: 国际申请 72% 集中于高要求院校（high-tariff），其国际申请 +8.2% 而低要求院校 -3.3%；申请持续向上集中
+        confidence: high
+      - source: 启德《2026 中国留学白皮书》（中国日报）
+        source_type: analytics
+        date: 2026-03-14
+        claim: 美国 US News 前 50 与加拿大医博类超半数录取者 GPA≥86；英国 QS 前 100 与香港八大约半数 GPA 在 80-85
+        confidence: medium
+    content_gap: 把录取数据做成"按目标院校层级对标 GPA/背景"的工具型内容
+    candidate_angles: [GPA 梯次对标, 高选拔集中度解读]
+
 candidates:
   - core_topic: 2027Fall 选校逻辑重写：新政下的赛道分化
     user_problem: 各国政策大改，往年选校经验失效
