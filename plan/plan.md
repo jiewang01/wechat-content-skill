@@ -1648,14 +1648,29 @@ Decision Optimization
 - 运行：python3 tools/decision_engine.py run-<id> --adtask tests/cases/task-XXX.json --account data/account-example.json --out tests/task-XXX.decision.json
 ```
 
+## 2026-09-18 — M3 Content Copilot 骨架（Brief/Strategy/Self Review + task-021 跑通）
+
+```text
+- schemas/campaign-brief.schema.json：CampaignBrief@v1（含 evidence_refs 必填、角度/风格/风险清单）
+- knowledge/ 新增 3 份规则：
+  ├── brief-generator-rules.md   (字段来源映射 + 铁律：mandatory 完整搬运、unknown 显式)
+  ├── content-strategy-rules.md  (三角度 A/B/C + 选择规则 0.4/0.3/0.3)
+  └── self-review-rules.md       (5 项检查 PASS/WARN/FAIL；Human Review 为最终 Gate)
+- tools/brief_generator.py：Decision→Brief→Draft→Self Review 可执行工具
+- task-021 产物：tests/task-021.brief.json + tests/task-021.draft.json
+  Brief Schema 必填全 PASS；target_audience 由账号画像导出；self_review = WARN_PASS + 人工 Gate
+- 说明：draft 为骨架模板（非成稿），字数/原文按任务补齐；Human Review 不可省略（plan §5.5）
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
 - [x] M2 决策引擎 v1：规则文档 + 可执行引擎 + task-021 跑通
 - [x] M2 验收：21 例盲测 + Schema 结构校验 + 决策解释检查（详见 tests/m2-report.md）
+- [x] M3 Content Copilot 骨架：Brief Schema + 3 规则 + brief_generator + task-021 产物
 - [ ] M2 遗留：task-010 bonus 单列；"账号缺基线"对抗用例；Phase 4 数据回填后校准权重/阈值
-- [ ] 真实任务继续补充（用户提供）
-- [ ] M3：Content Copilot（Brief Generator 等，plan §5）
+- [ ] M3 验收：对 accept 案例生成完整 Brief/Draft 并人工抽查（plan §5.6：修改量/遗漏率/审校时长）
+- [ ] M4：Publish & Feedback Loop（plan §6）
 
 ---
 

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/campaign-brief.schema.json",
+  "title": "CampaignBrief",
+  "description": "广告创作简报：由 AdTask + AccountProfile + Decision 生成，指导内容生产。版本：v1",
+  "type": "object",
+  "required": [
+    "brief_id",
+    "task_id",
+    "decision_id",
+    "campaign_objective",
+    "target_audience",
+    "product_usp",
+    "mandatory_claims",
+    "forbidden_claims",
+    "content_angle",
+    "hook",
+    "storyline",
+    "cta",
+    "platform_style",
+    "account_style",
+    "risk_checklist",
+    "evidence_refs"
+  ],
+  "properties": {
+    "brief_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "campaign_objective": {
+      "type": "string"
+    },
+    "target_audience": {
+      "type": "string"
+    },
+    "product_usp": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "mandatory_claims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "forbidden_claims": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "content_angle": {
+      "type": "string"
+    },
+    "hook": {
+      "type": "string"
+    },
+    "storyline": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "string"
+    },
+    "platform_style": {
+      "type": "string"
+    },
+    "account_style": {
+      "type": "string"
+    },
+    "risk_checklist": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
