@@ -1,0 +1,428 @@
+# ============================================================
+# 端到端示例：AI Coding 账号（ILLUSTRATIVE）
+# 
+# 输入：账号简介 "分享 AI Coding 实践，帮助程序员提升研发效率"
+# 口径：plan/plan.md §21 MVP 验收示例
+#
+# 重要说明：本文件演示**整条链路的期望输出形态**，用于验收与冒烟测试。
+# 所有 evidence 均为示例占位（source 标注"示例占位"、date: unknown、
+# confidence: low），真实运行必须由 Stage 2 检索获得，
+# 来源 / 日期 / 置信度以实际检索结果为准（见 policies/evidence-policy.md）。
+# 示例中的边界 / 推断字段标注 [inferred]，与 profile-parser 约定一致。
+# ============================================================
+
+# ------------------------------------------------------------
+# Stage 1 输出
+# ------------------------------------------------------------
+account_profile:
+  description: 分享 AI Coding 实践，帮助程序员提升研发效率
+  source: explicit
+  audience:
+    primary: ["使用 AI Coding 工具的工程师", "团队技术负责人"]
+    secondary: ["前端/后端/全栈开发者"]
+  domain: ["AI Coding", "Agent 工程", "研发效率"]
+  value_proposition:
+    - 把 AI Coding 工具可靠地接入日常研发流程
+    - 解决「用了 AI 却变慢 / 产出不可控」的工程问题
+  content_style:
+    tone: "实战向、工程视角 [inferred]"
+    format: ["长文 [inferred]", "案例复盘 [inferred]", "踩坑记录 [inferred]"]
+  authority:
+    strengths: ["一线研发经验", "AI Coding 工具深度使用"]
+    limitations: ["非官方培训讲师 / 非学术机构身份"]
+  boundaries:
+    - 泛 AI 新闻评论（不涉及研发落地）
+    - 与研发无关的社会热点
+    - 模型能力排名 / 评测榜单
+  platform: unknown
+  constraints: []
+
+# ------------------------------------------------------------
+# Stage 2 输出（6 条 findings，示例精简）
+# ------------------------------------------------------------
+research_findings:
+  - topic: Agent 长时间运行后输出质量退化
+    signals:
+      trend: Context Engineering 成为新关注点
+      demand: 用户报告 agent 会话越长越健忘、越不可控
+      discussion: 高发提问「我的 agent 是不是越用越笨」
+    evidence:
+      - source: 示例占位（社区讨论）
+        source_type: discussion
+        date: unknown
+        claim: 存在大量「会话变长后输出质量下降」的用户反馈（示例）
+        confidence: low
+    existing_content:
+      saturation: medium
+      summary: 已有大量「Context Window 是什么」的入门内容
+    content_gap: 为什么变差、工程上如何治理上下文，缺乏系统性解释
+    candidate_angles: [上下文治理方法论, 上下文污染机制解释]
+  - topic: Prompt / 指令漂移
+    signals:
+      trend: 长会话遗忘指令的讨论增多
+      demand: 用户想让它一直按初始规则执行
+    evidence:
+      - source: 示例占位
+        source_type: discussion
+        date: unknown
+        claim: 指令在长对话中被遗忘是高频痛点（示例）
+        confidence: low
+    existing_content:
+      saturation: low
+    content_gap: 指令漂移的机制与缓解路径
+    candidate_angles: [漂移机制, 指令固化清单]
+  - topic: 代码上下文与仓库检索
+    signals:
+      trend: 仓库级索引/检索成为工具标配
+      demand: 大仓库里 AI 找不到文件、改错模块
+    evidence:
+      - source: 示例占位（产品文档）
+        source_type: product
+        date: unknown
+        claim: 主流工具均提供仓库索引能力（示例）
+        confidence: low
+    existing_content:
+      saturation: medium
+    content_gap: 检索质量如何影响生成质量的系统比较
+    candidate_angles: [索引配置实践, 检索策略对比]
+  - topic: MCP 与工具调用落地
+    signals:
+      trend: MCP 生态快速扩张
+      demand: 接入各种服务时失败率高
+    evidence:
+      - source: 示例占位（社区）
+        source_type: community
+        date: unknown
+        claim: 工具接入类报错与踩坑分享数量上升（示例）
+        confidence: low
+    existing_content:
+      saturation: medium
+    content_gap: 工程化接入清单（权限/限流/安全）
+    candidate_angles: [接入踩坑清单, 工具权限最小化]
+  - topic: AI 生成代码的安全与审计
+    signals:
+      trend: 生成代码正式进入生产
+      demand: 担心漏洞、许可证、过度信任
+    evidence:
+      - source: 示例占位（安全社区）
+        source_type: community
+        date: unknown
+        claim: 生成代码安全问题被持续讨论（示例）
+        confidence: low
+    existing_content:
+      saturation: medium
+    content_gap: 可落地的审计清单而非泛泛的「要小心」
+    candidate_angles: [审计清单, 风险分级]
+  - topic: 团队级 AI Coding 推广
+    signals:
+      trend: 企业强制/鼓励使用
+      demand: 管理者关心 ROI、一致性、组织阻力
+    evidence:
+      - source: 示例占位（行业报告）
+        source_type: analytics
+        date: unknown
+        claim: 企业级 AI 编程采用率上升（示例）
+        confidence: low
+    existing_content:
+      saturation: low
+    content_gap: 从工具到流程的组织落地经验
+    candidate_angles: [SOP 制定, 从个人到团队]
+
+# ------------------------------------------------------------
+# Stage 3 输出（22 个候选，示例紧凑展示）
+# 运行时每个候选必须携带 evidence（schemas/candidate-topic.yaml required）
+# ------------------------------------------------------------
+candidates:
+  - core_topic: Agent 上下文治理实践
+    user_problem: agent 跑久了输出质量下降，不知道从哪里改
+    target_audience: 深度使用者、团队技术骨干
+    content_angle: 从可观测的上下文污染讲起，给出治理清单
+    content_type: methodology
+    source_signals: [Agent 长时间运行后输出质量退化]
+  - core_topic: 为什么 agent 越用越笨
+    user_problem: 想理解退化背后的机制
+    target_audience: 中高级工程师
+    content_angle: 反常识判断：问题不在模型，在上下文管理
+    content_type: opinion
+    source_signals: [Agent 长时间运行后输出质量退化]
+  - core_topic: Context Engineering 是什么
+    user_problem: 概念新，入门路径模糊
+    target_audience: 刚接触 AI Coding 的开发者
+    content_angle: 澄清概念 + 与 Prompt Engineering 的分工
+    content_type: tutorial
+    source_signals: [Agent 长时间运行后输出质量退化]
+  - core_topic: MCP 服务接入踩坑清单
+    user_problem: 接 MCP 服务反复失败
+    target_audience: 全栈/平台工程师
+    content_angle: 权限、限流、安全三类的真实报错清单
+    content_type: pitfall
+    source_signals: [MCP 与工具调用落地]
+  - core_topic: AI Code Review 从怀疑到信任
+    user_problem: 不敢让 AI 审代码，又不想人工全审
+    target_audience: 团队技术负责人
+    content_angle: 一个团队的落地复盘与取舍
+    content_type: case_study
+    source_signals: [团队级 AI Coding 推广]
+  - core_topic: 用 agent 重构遗留代码复盘
+    user_problem: 遗留系统无人敢动，尝试用 agent 重构
+    target_audience: 后端工程师
+    content_angle: 分层渐进、验证优先的重构路径
+    content_type: case_study
+    source_signals: [代码上下文与仓库检索]
+  - core_topic: 指令漂移：遗忘的机制与对策
+    user_problem: 让它一直按初始规则执行很难
+    target_audience: 深度使用者
+    content_angle: 从注意力机制讲漂移，再给固化清单
+    content_type: methodology
+    source_signals: [Prompt / 指令漂移]
+  - core_topic: 上下文预算管理
+    user_problem: 上下文塞满后开始乱答
+    target_audience: 中高级工程师
+    content_angle: 量化 token 花在哪，教做法而非概念
+    content_type: practice
+    source_signals: [Agent 长时间运行后输出质量退化]
+  - core_topic: 任务拆解与验收：让 AI 干完一件小事
+    user_problem: AI 做多步任务经常中途跑偏
+    target_audience: 全栈工程师
+    content_angle: 把验收标准写进任务描述的方法
+    content_type: methodology
+    source_signals: [Prompt / 指令漂移]
+  - core_topic: 大仓库检索质量对生成的影响
+    user_problem: 大仓库里 AI 找不到文件、改错模块
+    target_audience: 平台/后端工程师
+    content_angle: 对比不同索引/检索配置下的生成质量
+    content_type: practice
+    source_signals: [代码上下文与仓库检索]
+  - core_topic: 检索策略：全局索引还是按需注入
+    user_problem: 不知道该把多少代码塞给模型
+    target_audience: 团队技术骨干
+    content_angle: 权衡检索召回率与上下文成本
+    content_type: opinion
+    source_signals: [代码上下文与仓库检索]
+  - core_topic: 自动测试生成能信到什么程度
+    user_problem: 生成大量假测试，覆盖率虚高
+    target_audience: 测试与全栈工程师
+    content_angle: 断言质量优先于覆盖率的观点与方法
+    content_type: opinion
+    source_signals: [AI 生成代码的安全与审计]
+  - core_topic: AI 代码的安全审计清单
+    user_problem: 担心漏洞、许可证、过度信任
+    target_audience: 团队技术负责人
+    content_angle: 可勾选的分级审计清单
+    content_type: practice
+    source_signals: [AI 生成代码的安全与审计]
+  - core_topic: 许可与合规：AI 生成代码的版权边界
+    user_problem: 不确定生成代码能否商用
+    target_audience: 管理者、法务对接工程师
+    content_angle: 用真实条款对比代替情绪化判断
+    content_type: trend
+    source_signals: [AI 生成代码的安全与审计]
+  - core_topic: 团队推行 AI Coding 的 SOP
+    user_problem: 团队用了但产出参差、无法评估
+    target_audience: 技术管理者
+    content_angle: 从个人使用到组织标准的四步落地
+    content_type: methodology
+    source_signals: [团队级 AI Coding 推广]
+  - core_topic: 企业推广 AI Coding 的组织阻力
+    user_problem: 自上而下推不动、抵制成常态
+    target_audience: 技术管理者
+    content_angle: 区分技术问题与组织问题，给试点策略
+    content_type: trend
+    source_signals: [团队级 AI Coding 推广]
+  - core_topic: 长会话记忆方案对比
+    user_problem: 会话一长就忘，不知道用哪种记忆方案
+    target_audience: 深度使用者、Agent 开发者
+    content_angle: 摘要 / RAG / 无记忆三方案的成本对比
+    content_type: practice
+    source_signals: [Agent 长时间运行后输出质量退化]
+  - core_topic: Debug 时让 agent 自己找根因
+    user_problem: 把报错丢给 AI 得到的建议都很泛
+    target_audience: 中高级工程师
+    content_angle: 记录复现路径的 prompt 模式
+    content_type: tutorial
+    source_signals: [Prompt / 指令漂移]
+  - core_topic: 避免 AI 重复造轮子
+    user_problem: 同一功能被反复生成、代码库里出现多个版本
+    target_audience: 团队技术骨干
+    content_angle: 代码组织与检索层面的治理
+    content_type: methodology
+    source_signals: [代码上下文与仓库检索]
+  - core_topic: 提示词还是坏了：什么时候是工具的问题
+    user_problem: 调了很久 prompt 仍然不行，怀疑工具
+    target_audience: 全栈工程师
+    content_angle: 建立「排除法」判断框架
+    content_type: opinion
+    source_signals: [Prompt / 指令漂移]
+  - core_topic: 本地模型做代码补全是否够用
+    user_problem: 数据敏感，想知道本地方案能到什么程度
+    target_audience: 平台工程师、安全敏感团队
+    content_angle: 用实测维度（补全质量/延迟/成本）回答
+    content_type: opinion
+    source_signals: [MCP 与工具调用落地]
+  - core_topic: 让 AI 维护文档与代码同步
+    user_problem: 文档总是过期，代码改了文档忘改
+    target_audience: 全栈工程师
+    content_angle: 把文档更新装进提交流程的钩子实践
+    content_type: practice
+    source_signals: [代码上下文与仓库检索]
+
+# ------------------------------------------------------------
+# Stage 4 输出（Top 5）
+# ------------------------------------------------------------
+ranking_result:
+  ranking_method: "Market Score = Demand×25% + Pain×20% + Trend×15% + Novelty×15% + ContentGap×15% + Evidence×10%"
+  top_n: 5
+  ranked:
+    - rank: 1
+      topic: Agent 上下文治理实践
+      core_problem: agent 跑久了输出质量下降，不知道从哪里改
+      content_angle: 从可观测的上下文污染讲起，给出治理清单
+      market_score: 86
+      score_breakdown: { demand: 92, pain: 90, trend: 86, novelty: 78, content_gap: 82, evidence: 74 }
+    - rank: 2
+      topic: 为什么 agent 越用越笨
+      core_problem: 想理解退化背后的机制
+      content_angle: 反常识判断：问题不在模型，在上下文管理
+      market_score: 83
+      score_breakdown: { demand: 88, pain: 84, trend: 85, novelty: 90, content_gap: 80, evidence: 68 }
+    - rank: 3
+      topic: 长会话记忆方案对比
+      core_problem: 会话一长就忘，不知道用哪种记忆方案
+      content_angle: 摘要 / RAG / 无记忆三方案的成本对比
+      market_score: 78
+      score_breakdown: { demand: 85, pain: 80, trend: 82, novelty: 72, content_gap: 75, evidence: 70 }
+    - rank: 4
+      topic: 指令漂移：遗忘的机制与对策
+      core_problem: 让它一直按初始规则执行很难
+      content_angle: 从机制讲漂移，再给固化清单
+      market_score: 76
+      score_breakdown: { demand: 82, pain: 78, trend: 78, novelty: 74, content_gap: 74, evidence: 66 }
+    - rank: 5
+      topic: 团队推行 AI Coding 的 SOP
+      core_problem: 团队用了但产出参差、无法评估
+      content_angle: 从个人使用到组织标准的四步落地
+      market_score: 74
+      score_breakdown: { demand: 80, pain: 76, trend: 80, novelty: 68, content_gap: 72, evidence: 62 }
+  analysis:
+    pool_size: 22
+    deduplicated: 2
+    diversity_note: "Top5 覆盖方法论 / 观点 / 对比 / 组织四类角度，满足多样性要求"
+
+# ------------------------------------------------------------
+# Stage 5 输出（Top1 选择）
+# ------------------------------------------------------------
+top1_selection:
+  status: selected
+  selected:
+    topic: Agent 上下文治理实践
+    angle: 从可观测的上下文污染讲起，给出治理清单
+    market_score: 86
+    account_fit: 88
+    fit_breakdown: { audience: 90, problem: 92, authority: 85, value: 90, differentiation: 82, style: 88 }
+    why_selected:
+      market_reason: 需求与痛点双高，现有内容停留在概念层（Context Window 是什么），缺少系统治理方法
+      audience_reason: 核心读者即深度使用者与技术骨干，是他们的直接痛点
+      account_reason: 账号定位于「AI Coding 实践落地」，与工具接入深度匹配；工程视角可建立权威
+      differentiation_reason: 多数内容讲概念、讲工具对比，本选题从机制讲治理，是该账号可占据的空白
+    risks:
+      - 话题夹杂新术语，需先给读者建立概念地图
+      - 现有同类内容随时间增多，需要用清晰框架保持差异化
+    confidence: high
+  rejected:
+    - topic: 为什么 agent 越用越笨
+      reason: beat_by_top1
+      detail: 话题与 Top1 同源，观点类适合后续篇目，先发方法论建立深度
+    - topic: 长会话记忆方案对比
+      reason: beat_by_top1
+      detail: 偏工具对比，与账号「工程落地」的主价值主张契合度略低
+    - topic: 指令漂移：遗忘的机制与对策
+      reason: beat_by_top1
+      detail: 是 Top1 的子问题，应作为后续延伸而非首篇
+    - topic: 团队推行 AI Coding 的 SOP
+      reason: beat_by_top1
+      detail: 面向管理者，受众偏离主 audience，可放入次优先级内容池
+  analysis:
+    boundary_filter_summary: "0 个候选被 Boundary 直接 REJECT（全部落在 AI Coding 工程实践域内）"
+    fit_summary: "通过 Boundary 的 5 个候选 fit 均 ≥ 70，Top1 在 audience / problem / value 三维领先"
+
+# ------------------------------------------------------------
+# Stage 6 输出（Article Brief）
+# ------------------------------------------------------------
+article_brief:
+  account:
+    positioning: 分享 AI Coding 实践，帮助程序员提升研发效率
+    audience: 使用 AI Coding 工具的工程师、团队技术负责人
+    value_proposition: [把 AI Coding 工具可靠地接入日常研发流程, 解决「用了 AI 却变慢/产出不可控」的工程问题]
+  selected_topic:
+    topic: Agent 上下文治理实践
+    angle: 从可观测的上下文污染讲起，给出治理清单
+    why_selected:
+      market_reason: 需求与痛点双高，现有内容停留在概念层，缺少系统性治理方法
+      audience_reason: 核心读者的直接痛点
+      account_reason: 账号「工程落地」定位的强匹配项
+      differentiation_reason: 从机制讲治理，占据内容空白
+    confidence: high
+  target_reader: 深度使用 AI Coding 工具 3 个月以上、发现 agent 会话越长越不可控的中高级工程师
+  pain_points:
+    functional: agent 无法稳定完成长链路任务，做一半就跑偏
+    efficiency: 反复重述上下文、重开会话，等效于重复劳动
+    cognitive: 不知道为什么输出越来越差，只能靠玄学调 prompt
+    risk: 担心 token 成本失控、代码被悄悄改错而不自知
+    emotional: 挫败感与「是不是我不会用」的自我怀疑
+  core_insight:
+    misconception: 大多数人认为输出质量下降是模型能力问题，解法是换更强的模型或写更好的 prompt
+    evidence: ["会话越长，上下文中的噪声与冲突规则越多（示例占位 evidence）", "已有内容集中在 Context Window 概念层，缺乏工程治理视角（research 结论）"]
+    insight: 真正的问题是上下文管理——把「模型看不全、看不准、规则互相打架」治理好，比换模型更有效
+  key_arguments:
+    - 上下文不是纯长度问题，是污染与冲突问题
+    - 治理的关键是「可观测」：先知道上下文里是什么
+    - 用分层策略（固化规则 / 压缩摘要 / 外置记忆）管理不同内容
+    - 效果可以量化：定义退化指标做回归测试
+  title_candidates:
+    - "你的 Agent 不是变笨了，是上下文被污染了"
+    - "Context Engineering 实战：把越用越笨的 Agent 救回来"
+    - "为什么你的 AI 编码助手越用越不可靠？"
+    - "我治理 Agent 上下文的 5 个步骤（附检查清单）"
+    - "换更强的模型前，先治理上下文"
+  outline:
+    - section: Hook
+      purpose: 让读者意识到「不是我一个人遇到」
+      key_points: [复现一个典型场景：会话开始很聪明，50 轮后开始遗忘指令]
+      notes: 用读者能立刻对号入座的描述
+    - section: Problem
+      purpose: 说明这是个影响面广泛的工程问题
+      key_points: [长任务必用 agent，输出退化导致返工, 成本与信任双损]
+    - section: Misconception
+      purpose: 破除「换模型/调 prompt」的直觉解法
+      key_points: [模型能力不是瓶颈, prompt 只是表层]
+    - section: Core Insight
+      purpose: 提出「上下文污染」视角
+      key_points: [上下文 = 规则 + 中间产出 + 噪声, 冲突与遗忘的机制]
+    - section: Mechanism
+      purpose: 解释为什么会发生
+      key_points: [指令漂移, 相关检索噪声, token 预算挤占]
+    - section: Solution
+      purpose: 给出治理清单
+      key_points: [固化规则段, 分层压缩, 外置记忆/检索, 会话边界]
+    - section: Example
+      purpose: 一个完整治理前后对比案例
+      key_points: [治理前指标, 治理步骤, 治理后指标的回归结果]
+    - section: Action
+      purpose: 让读者今天就能开始
+      key_points: [最小行动：记录一次会话的退化点, 附检查清单]
+  evidence:
+    - source: 示例占位（社区讨论）
+      source_type: discussion
+      date: unknown
+      claim: 存在大量「会话变长后输出质量下降」的用户反馈（示例）
+      confidence: low
+  risks:
+    - risk: 新术语（Context Engineering）可能让部分读者困惑
+      severity: medium
+      mitigation: 首段先给概念地图，与外文术语对照
+    - risk: 建议过于工程化，普通读者上手门槛高
+      severity: low
+      mitigation: 提供最小行动路径与检查清单
+    - risk: 观点可能被解读为「不需要更好模型」
+      severity: medium
+      mitigation: 明确是「先治理再升级」，二者互补

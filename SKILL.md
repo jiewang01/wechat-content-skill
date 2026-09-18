@@ -133,8 +133,15 @@ account-content-strategist/
 │   ├── ranking.md
 │   ├── positioning-filter.md
 │   └── editorial.md
-├── policies/             # 跨阶段基础规则（后续阶段补充）
-└── examples/             # 端到端示例（后续阶段补充）
+├── policies/             # 跨阶段基础规则
+│   ├── research-policy.md
+│   ├── evidence-policy.md
+│   └── scoring-policy.md
+├── examples/             # 端到端示例
+│   └── ai-coding.yaml
+└── evaluation/           # 评估数据集与指南（plan.md §14-16）
+    ├── evaluation-dataset.yaml
+    └── evaluation-guide.md
 ```
 
 ## 6. 调用顺序（Agent 运行约定）
@@ -159,6 +166,6 @@ account-content-strategist/
 ## 8. 输出格式
 
 - 所有中间产物与最终产出必须是 YAML 且遵循对应 schema（见 §4 表格）。
-- 评分类字段范围：0~100（见 policies/scoring-policy.md，后续阶段补充）。
+- 评分类字段范围：0~100（见 policies/scoring-policy.md）。
 - 证据统一用 `{ source, source_type, date, claim, confidence }` 结构（见 schemas/research-finding.yaml 的 `evidence` 定义）。
 - 最终交付：`article_brief` YAML，可直接作为下游 Writing Skill 的输入。

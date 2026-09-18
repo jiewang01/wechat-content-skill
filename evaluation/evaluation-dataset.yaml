@@ -1,0 +1,145 @@
+# ============================================================
+# Evaluation Dataset v1.0
+# 用途：验收 Skill（plan/plan.md §14-16）
+# 用法：对每个 case，把 account_brief 作为 Skill 输入跑完整链路，
+#       将输出与 expected_positioning 对照，按 evaluation-guide.md 打分。
+# 说明：expected_positioning 只标注「不应偏离」的关键点，非逐字段断言。
+# ============================================================
+dataset:
+  source: plan/plan.md §14（至少 10~20 个账号，覆盖技术/职场/育儿/生活方式/教育/商业/个人品牌）
+  size: 15
+
+cases:
+  # ---------- 技术（4） ----------
+  - id: tech-01
+    category: 技术
+    account_brief: "分享 AI Coding 实践，帮助程序员提升研发效率"
+    expected_positioning:
+      audience: [使用 AI Coding 工具的工程师, 开发者]
+      domain: [AI Coding, 研发效率]
+      value_proposition: [AI Coding 落地实践, 研发提效]
+      boundary: [泛 AI 新闻, 与研发无关话题]
+  - id: tech-02
+    category: 技术
+    account_brief: "前端架构与工程化实践，专注大前端性能优化与团队提效"
+    expected_positioning:
+      audience: [前端工程师, 前端团队负责人]
+      domain: [前端架构, 工程化, 性能优化]
+      value_proposition: [性能优化方法, 工程化落地]
+      boundary: [后端深度话题, 泛互联网新闻]
+  - id: tech-03
+    category: 技术
+    account_brief: "后端分布式系统实战，从单机到微服务的演进之路"
+    expected_positioning:
+      audience: [后端工程师, 系统架构师]
+      domain: [分布式系统, 微服务, 后端架构]
+      value_proposition: [系统设计经验, 演进路线]
+      boundary: [纯前端话题, 营销投放类热点]
+  - id: tech-04
+    category: 技术
+    account_brief: "用 Python 讲清机器学习原理，数据科学入门与 Kaggle 实践笔记"
+    expected_positioning:
+      audience: [数据科学入门者, 算法学习者]
+      domain: [机器学习, 数据科学, Python]
+      value_proposition: [原理讲清, 竞赛实操]
+      boundary: [AI 芯片/底层硬核话题, 纯工程运维]
+
+  # ---------- 职场（2） ----------
+  - id: work-01
+    category: 职场
+    account_brief: "职场沟通与向上管理的实战经验，帮打工人少走弯路"
+    expected_positioning:
+      audience: [职场 1-5 年员工, 基层管理者]
+      domain: [职场沟通, 向上管理, 职业发展]
+      value_proposition: [可复用的沟通方法, 避坑经验]
+      boundary: [技术教程, 娱乐八卦]
+  - id: work-02
+    category: 职场
+    account_brief: "产品经理方法论，从需求分析到落地执行的完整流程"
+    expected_positioning:
+      audience: [产品经理, 产品新人]
+      domain: [产品方法论, 需求管理, 项目管理]
+      value_proposition: [完整实操流程, 踩坑复盘]
+      boundary: [纯技术实现细节, 时政]
+
+  # ---------- 育儿（2） ----------
+  - id: parent-01
+    category: 育儿
+    account_brief: "科学育儿与儿童心理学，关注 0-6 岁早期教育与亲子关系"
+    expected_positioning:
+      audience: [0-6 岁孩子家长, 准父母]
+      domain: [儿童心理学, 早期教育, 亲子关系]
+      value_proposition: [科学依据 + 具体做法]
+      boundary: [过度医疗/用药建议（非医学身份）, 娱乐八卦]
+  - id: parent-02
+    category: 育儿
+    account_brief: "二胎妈妈的家庭养育手记，分享亲子共读与习惯养成"
+    expected_positioning:
+      audience: [家长, 二胎家庭]
+      domain: [家庭养育, 亲子共读, 习惯培养]
+      value_proposition: [真实体验, 可操作的家庭方案]
+      boundary: [医学/健康处方类内容, 泛社会热点评论]
+
+  # ---------- 生活方式（2） ----------
+  - id: life-01
+    category: 生活方式
+    account_brief: "极简生活与整理收纳，打造物少而美的家"
+    expected_positioning:
+      audience: [家居爱好者, 极简主义者]
+      domain: [极简主义, 整理收纳, 家居]
+      value_proposition: [具体整理方法, 理念落地]
+      boundary: [硬装装修深度话题, 泛生活鸡汤]
+  - id: life-02
+    category: 生活方式
+    account_brief: "轻断食与健康饮食实践，普通人也能坚持的减脂方案"
+    expected_positioning:
+      audience: [想减脂的普通人, 上班族]
+      domain: [健康饮食, 轻断食, 减脂]
+      value_proposition: [可坚持的方案, 个人实测]
+      boundary: [疾病治疗/用药建议（非医学身份）, 极端节食]
+
+  # ---------- 教育（2） ----------
+  - id: edu-01
+    category: 教育
+    account_brief: "高考数学冲刺提分，方法比刷题更重要"
+    expected_positioning:
+      audience: [高中生, 考生家长]
+      domain: [高考数学, 学习方法]
+      value_proposition: [提分方法, 解题策略]
+      boundary: [非本学科教学, 教育政策解读]
+  - id: edu-02
+    category: 教育
+    account_brief: "留学申请规划指南，从选校到文书的完整攻略"
+    expected_positioning:
+      audience: [高中生/大学生, 计划出国家庭]
+      domain: [留学申请, 选校, 文书]
+      value_proposition: [全流程攻略, 一手经验]
+      boundary: [签证法律事务, 移民政策]
+
+  # ---------- 商业（2） ----------
+  - id: biz-01
+    category: 商业
+    account_brief: "消费品牌增长案例拆解，从 0 到 1 做新消费"
+    expected_positioning:
+      audience: [创业者, 品牌运营, 市场从业者]
+      domain: [新消费, 品牌增长, 案例研究]
+      value_proposition: [案例拆解, 增长方法论]
+      boundary: [股市个股推荐, 泛财经宏观]
+  - id: biz-02
+    category: 商业
+    account_brief: "跨境电商独立站运营日记，数据驱动的选品与投放"
+    expected_positioning:
+      audience: [跨境电商从业者, 独立站卖家]
+      domain: [跨境电商, 独立站, 广告投放]
+      value_proposition: [数据化运营方法, 真实复盘]
+      boundary: [代运营软广, 灰产/黑五类]
+
+  # ---------- 个人品牌（1） ----------
+  - id: brand-01
+    category: 个人品牌
+    account_brief: "个人 IP 打造与自媒体运营，普通人的内容创业路径"
+    expected_positioning:
+      audience: [内容创作者, 想副业变现的打工人]
+      domain: [个人 IP, 自媒体运营, 内容创业]
+      value_proposition: [可执行路径, 增长实操]
+      boundary: [付费课程硬广以外的一般内容, 时政评论]
