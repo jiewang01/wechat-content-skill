@@ -2,10 +2,10 @@
   "decision_id": "DEC-20260918-0001",
   "task_id": "TASK-NB-20260918-012",
   "action": "reject",
-  "decision_score": 46.8,
+  "decision_score": 47.6,
   "dimensions": {
     "revenue": 45,
-    "account_fit": 48,
+    "account_fit": 50,
     "production_cost": 45,
     "opportunity_cost": 65,
     "risk": 45
@@ -21,7 +21,7 @@
       ]
     },
     {
-      "statement": "账号匹配 48 分：受众匹配评估(品类=医美, 目标人群='未指定')",
+      "statement": "账号匹配 50 分：受众匹配评估(品类=医美, 目标人群='未指定')",
       "evidence_refs": [
         "EVD-20260918-0038",
         "EVD-20260918-0039",
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "statement": "不确定性：命中账号拒绝品类",
+      "statement": "不确定性：无同类历史任务样本",
       "evidence_refs": [
         "EVD-20260918-0038",
         "EVD-20260918-0039",
@@ -55,20 +55,9 @@
         "EVD-20260918-0040",
         "EVD-20260918-0041"
       ]
-    },
-    {
-      "statement": "触发硬约束：H1 account_rejects_category",
-      "evidence_refs": [
-        "EVD-20260918-0038",
-        "EVD-20260918-0039",
-        "EVD-20260918-0040",
-        "EVD-20260918-0041"
-      ]
     }
   ],
-  "blockers": [
-    "账号拒绝品类 医美"
-  ],
+  "blockers": [],
   "next_actions": [
     "记录拒绝原因入回归用例"
   ],
@@ -83,7 +72,7 @@
     ],
     "uncertainty_reasons": [
       "报价未公开",
-      "命中账号拒绝品类",
+      "无同类历史任务样本",
       "预估工时未写明",
       "修改轮次未写明",
       "截止未写明或长窗口，机会成本按中性评估"
@@ -98,8 +87,7 @@
   "hard_constraints": [
     {
       "constraint": "H1 account_rejects_category",
-      "status": "fail",
-      "detail": "账号拒绝品类 医美"
+      "status": "pass"
     },
     {
       "constraint": "H2 platform_mismatch",
@@ -123,5 +111,5 @@
       "status": "pass"
     }
   ],
-  "created_at": "2026-09-18T07:38:47.201209Z"
+  "created_at": "2026-09-18T07:37:44.109046Z"
 }

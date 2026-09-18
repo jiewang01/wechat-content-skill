@@ -1,11 +1,11 @@
 {
   "decision_id": "DEC-20260918-0001",
   "task_id": "TASK-NB-20260918-008",
-  "action": "observe",
-  "decision_score": 59.0,
+  "action": "need_information",
+  "decision_score": 57.1,
   "dimensions": {
     "revenue": 45,
-    "account_fit": 56,
+    "account_fit": 50,
     "production_cost": 55,
     "opportunity_cost": 65,
     "risk": 85
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "statement": "账号匹配 56 分：受众匹配评估(品类=服饰, 目标人群='未指定')",
+      "statement": "账号匹配 50 分：受众匹配评估(品类=服饰, 目标人群='未指定')",
       "evidence_refs": [
         "EVD-20260918-0026",
         "EVD-20260918-0027",
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "statement": "不确定性：预估工时未写明",
+      "statement": "不确定性：无同类历史任务样本",
       "evidence_refs": [
         "EVD-20260918-0026",
         "EVD-20260918-0027",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "statement": "不确定性：修改轮次未写明",
+      "statement": "不确定性：预估工时未写明",
       "evidence_refs": [
         "EVD-20260918-0026",
         "EVD-20260918-0027",
@@ -52,14 +52,17 @@
       ]
     }
   ],
-  "blockers": [],
+  "blockers": [
+    "任务含播放/粉丝门槛且账号无 performance 基线，需人工确认"
+  ],
   "next_actions": [
-    "补齐缺失信息后再决策",
-    "确认账号是否有同类历史样本"
+    "确认账号 performance 基线（播放/粉丝门槛）",
+    "确认报酬结构（固定/CPM/置换）",
+    "确认硬性门槛是否满足"
   ],
   "confidence": {
-    "value": 0.735,
-    "status": "high",
+    "value": 0.675,
+    "status": "medium",
     "evidence_refs": [
       "EVD-20260918-0026",
       "EVD-20260918-0027",
@@ -67,6 +70,7 @@
     ],
     "uncertainty_reasons": [
       "实物置换价值需折算，未计现金收入",
+      "无同类历史任务样本",
       "预估工时未写明",
       "修改轮次未写明",
       "截止未写明或长窗口，机会成本按中性评估"
@@ -101,8 +105,9 @@
     },
     {
       "constraint": "H6 capability_gate",
-      "status": "pass"
+      "status": "unknown",
+      "detail": "任务含播放/粉丝门槛且账号无 performance 基线，需人工确认"
     }
   ],
-  "created_at": "2026-09-18T07:38:47.198898Z"
+  "created_at": "2026-09-18T07:37:44.106791Z"
 }

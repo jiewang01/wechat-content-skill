@@ -1,11 +1,11 @@
 {
   "decision_id": "DEC-20260918-0001",
   "task_id": "TASK-NB-20260918-009",
-  "action": "observe",
-  "decision_score": 58.8,
+  "action": "reject",
+  "decision_score": 57.9,
   "dimensions": {
     "revenue": 45,
-    "account_fit": 54,
+    "account_fit": 50,
     "production_cost": 60,
     "opportunity_cost": 65,
     "risk": 85
@@ -20,7 +20,7 @@
       ]
     },
     {
-      "statement": "账号匹配 54 分：受众匹配评估(品类=知识付费, 目标人群='未指定')",
+      "statement": "账号匹配 50 分：受众匹配评估(品类=知识付费, 目标人群='未指定')",
       "evidence_refs": [
         "EVD-20260918-0029",
         "EVD-20260918-0030",
@@ -36,6 +36,14 @@
       ]
     },
     {
+      "statement": "不确定性：无同类历史任务样本",
+      "evidence_refs": [
+        "EVD-20260918-0029",
+        "EVD-20260918-0030",
+        "EVD-20260918-0031"
+      ]
+    },
+    {
       "statement": "不确定性：预估工时未写明",
       "evidence_refs": [
         "EVD-20260918-0029",
@@ -44,7 +52,7 @@
       ]
     },
     {
-      "statement": "不确定性：修改轮次未写明",
+      "statement": "触发硬约束：H2 platform_mismatch",
       "evidence_refs": [
         "EVD-20260918-0029",
         "EVD-20260918-0030",
@@ -52,14 +60,15 @@
       ]
     }
   ],
-  "blockers": [],
+  "blockers": [
+    "任务平台 公众号 ≠ 账号平台 小红书"
+  ],
   "next_actions": [
-    "补齐缺失信息后再决策",
-    "确认账号是否有同类历史样本"
+    "记录拒绝原因入回归用例"
   ],
   "confidence": {
-    "value": 0.735,
-    "status": "high",
+    "value": 0.675,
+    "status": "medium",
     "evidence_refs": [
       "EVD-20260918-0029",
       "EVD-20260918-0030",
@@ -67,6 +76,7 @@
     ],
     "uncertainty_reasons": [
       "报价未公开",
+      "无同类历史任务样本",
       "预估工时未写明",
       "修改轮次未写明",
       "截止未写明或长窗口，机会成本按中性评估"
@@ -84,7 +94,8 @@
     },
     {
       "constraint": "H2 platform_mismatch",
-      "status": "pass"
+      "status": "fail",
+      "detail": "任务平台 公众号 ≠ 账号平台 小红书"
     },
     {
       "constraint": "H3 mandatory_forbidden_clash",
@@ -104,5 +115,5 @@
       "status": "pass"
     }
   ],
-  "created_at": "2026-09-18T07:38:47.199473Z"
+  "created_at": "2026-09-18T07:37:44.107376Z"
 }

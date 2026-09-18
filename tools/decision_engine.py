@@ -334,18 +334,22 @@ def main() -> int:
     ap.add_argument("--evidence", nargs="*", default=[])
     ap.add_argument("--out", default=None)
     ap.add_argument("--batch", action="store_true", help="批量跑 tests/cases/*.json，按平台选账号，输出 tests/decisions/")
+    ap.add_argument("--no-baseline", action="store_true",
+                    help="对抗回归：所有用例改用最小账号 data/account-minimal.json（无 performance 基线），验证 need_information")
     args = ap.parse_args()
 
     if args.batch:
         import pathlib
         out_dir = pathlib.Path("tests/decisions")
+        if args.no_baseline:
+            out_dir = pathlib.Path("tests/decisions_nobaseline")
         out_dir.mkdir(exist_ok=True)
         summary = []
         for p in sorted(pathlib.Path("tests/cases").glob("task-*.json")):
             case = load_json(p)
             adtask = case["expected_adtask"]
             evs = case.get("expected_evidence") or []
-            account = select_account(adtask)
+            account = load_json("data/account-minimal.json") if args.no_baseline else select_account(adtask)
             d = build_decision(adtask, account, evs)
             out = out_dir / f"{p.stem}.decision.json"
             with open(out, "w", encoding="utf-8") as f:

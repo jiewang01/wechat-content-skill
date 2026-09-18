@@ -1,0 +1,23 @@
+{
+  "account_id": "ACCOUNT-MIN-000",
+  "platform": "小红书",
+  "account": { "name": "对抗用例-最小账号", "category": null, "followers": null },
+  "audience": {
+    "age_distribution": {},
+    "gender_distribution": {},
+    "location_distribution": {},
+    "interest_tags": []
+  },
+  "content": { "niches": [], "preferred_topics": [], "forbidden_topics": [], "content_formats": [], "style": null },
+  "performance": {
+    "avg_views": null,
+    "median_views": null,
+    "avg_engagement_rate": null,
+    "conversion_rate": null,
+    "historical_campaigns": []
+  },
+  "commercial": { "historical_revenue": null, "historical_cpm": null, "historical_cpe": null,
+                  "preferred_categories": [], "rejected_categories": [] },
+  "production": { "avg_production_hours": null, "ai_generation_capability": null, "available_formats": [] },
+  "risk": { "brand_risk_tolerance": null, "restricted_categories": [], "platform_risk_tolerance": null }
+}

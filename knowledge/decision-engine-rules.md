@@ -48,10 +48,12 @@ Confidence = 0.75 − 0.06×(出现 unknown 的维度数) + 0.25×(平均 Eviden
 
 | 条件 | action |
 |---|---|
+| 任一 Hard Constraint fail | `reject` |
+| 任一 Hard Constraint 为 unknown（如 H6 无账号基线）| `need_information`（写入对应 blocker，不得静默 observe）|
+| 关键收益信息缺失（无固定费且无结算规则）| `need_information` |
 | score ≥ 70 且无 blockers | `accept` |
 | 50 ≤ score < 70 | `observe`（存在价值但条件不足）|
 | score < 50 | `reject` |
-| 关键决策输入缺失（无 AccountProfile 或 Revenue 完全 unknown 且无基线） | `need_information` |
 
 - **高分不覆盖 Hard Constraint**；score≥70 但 risk 维度 <45 ⇒ downgrade 到 `observe` 并列入 blockers。
 - `next_actions` 依据 action 给出（如 accept → 生成 Campaign Brief；need_information → 补齐哪些信息）。

@@ -17,11 +17,15 @@ M2 阶段 Expected Income / Production Cost / Opportunity Cost 均为 0-100 归�
 |---|---|---|
 | 固定费 | creator_fee 明确 | 区间映射：收入越高分越高；低于 100 元属低价引流 ⇒ 50-60 |
 | 固定费 + 佣金/CPS | creator_fee + commission | 在固定费基础上 +10（若佣金有明确比例） |
+| 固定费 + 加成上限 | creator_fee + bonus（有确定上限） | 加成上限计入预期收入区间；`estimated_total_income` 可记为 fee+bonus 上限 |
 | CPM / 按阅读计费 | settlement_rule 含「单价×阅读数」 | 用 预估阅读数×单价 估算（预估必须带 confidence，Rule 04）；阅读数取账号 performance 同类基线，无基线 ⇒ 中性 55 + uncertainty |
 | 置换 / 实物 | creator_fee=null + 实物说明 | 折算价值 >500 ⇒ 55-65；<500 ⇒ 40-55；无法折算 ⇒ 45 ± uncertainty |
 | 未报价 / 需询价 | null + unknown | 45 + uncertainty（**禁止默认正常**，Rule 05） |
 
 任何情况下都不允许把预测收入当作确定收入（blueprint §21.4）。
+
+> **bonus 语义（v1.1）**：`commercial.bonus` 仅用于记录「有确定金额上限/确定性奖金」的加成（如播放量阶梯加成上限 500 元）；
+> 按销量/下载量/转化数等依结果浮动、无固定上限的计费（每千/每人），一律留在 `settlement_rule`，bonus 保持 null。
 
 ## 3. Production Cost 判定
 

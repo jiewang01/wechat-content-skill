@@ -40,12 +40,34 @@
 4. **平台盲测账号补齐**：新增 account-example-dy/zh/bz.json，五平台可独立盲测。
 5. **合成用例日期修正**：task-001/007 deadline 早于运行日（2026-07-29 / 2026-09-22）触发 H4 误拒，已改为未来日期；提醒：真实运行须以接单当日为准核对 deadline。
 
-## 5. 遗留
+## 5. 遗留 / 已清理
 
-- [ ] task-010 bonus 上限（播放量加成 ≤500）是否单列 `commercial.bonus`（M2 结算前定；当前计入 settlement_rule 说明或合计上限）
-- [ ] "need_information 占比为 0"：需要设计"账号缺 performance 基线"的对抗用例再做一次回归
+- [x] ~~task-010 bonus 上限（播放量加成 ≤500）是否单列~~ → 已单列，见 §7.1
+- [x] ~~"need_information 占比为 0"对抗回归~~ → 已补 no-baseline 回归，见 §7.2
 - [ ] observe 占比偏高（19/21）：属 v1 权重预期的保守表现，待 Phase 4 真实数据回填后校准阈值/权重
 
 ## 6. 结论
 
 M2 决策引擎 v1 验收通过：**硬约束优先、分数可解释、unknown 显式、Evidence 全回引**。任务 021 真实用例及 21 例盲测均符合预期语义。下一步 M3（Content Copilot / Brief Generator）或先回填 Part 4 数据校准权重。
+
+## 7. M2 遗留清理（2026-09-18）
+
+### 7.1 bonus 字段单列（task-010）
+
+- task-010「播放量阶梯加成上限 500 元」显式落入 `commercial.bonus = 500`，`estimated_total_income = 2500`（fee+上限）。
+- 语义统一（economics-rules v1.1）：**有确定上限的加成 ⇒ bonus；依结果浮动无上限的计费（每千/每人）⇒ 留在 settlement_rule，bonus=null**。task-013/017 属后者，保持不变。
+- task-013/017 的表单识别结论不随之变化（已复核决策分布无偏移，task-010 仍 observe）。
+
+### 7.2 "账号缺基线"对抗回归
+
+- 新增 `data/account-minimal.json`（无 performance/无画像基线），引擎新增 `--no-baseline` 批量入口（输出到 tests/decisions_nobaseline/）。
+- 结果符合预期：
+  - 含视频/时长/拍摄门槛的用例升级 `need_information`：task-003、task-008、task-014、task-019（blocker=无 performance 基线需人工确认）✅
+  - 平台不符任务正常 H2 reject：task-004/005/009/010/013/017/018/020/021 ✅
+  - 无门槛用例维持 observe；task-002 因账号无历史基线从 accept 降级 observe（≈69.2，保守正确）✅
+- 回归入口：`python3 tools/decision_engine.py --batch --no-baseline`
+- decision-engine-rules §4 已明确 unknown 硬约束 ⇒ need_information（此前于引擎实现，本次固化为文档）。
+
+### 7.3 结论
+
+M2 遗留两项均已闭环；副作用：清理过程中未引入新的决策分布偏移（除对抗回归本身的预期变化）。

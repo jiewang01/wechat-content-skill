@@ -1662,13 +1662,25 @@ Decision Optimization
 - 说明：draft 为骨架模板（非成稿），字数/原文按任务补齐；Human Review 不可省略（plan §5.5）
 ```
 
+## 2026-09-18 — M2 遗留清理
+
+```text
+1. bonus 字段单列：task-010 播放量加成上限单列 commercial.bonus=500（economics-rules v1.1
+   语义：有确定上限⇒bonus；浮动计费⇒settlement_rule）。复核 task-010 决策分布无偏移。
+2. "账号缺基线"对抗回归：data/account-minimal.json + 引擎 --no-baseline 入口
+   （tests/decisions_nobaseline/）。结果符合预期：含视频/时长门槛用例升级 need_information
+   （task-003/008/014/019），平台不符正常 H2 reject，task-002 因无历史基线 accept→observe。
+3. decision-engine-rules §4 固化：unknown 硬约束⇒need_information。
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
 - [x] M2 决策引擎 v1：规则文档 + 可执行引擎 + task-021 跑通
 - [x] M2 验收：21 例盲测 + Schema 结构校验 + 决策解释检查（详见 tests/m2-report.md）
+- [x] M2 遗留清理：task-010 bonus 单列 + "账号缺基线"对抗回归
 - [x] M3 Content Copilot 骨架：Brief Schema + 3 规则 + brief_generator + task-021 产物
-- [ ] M2 遗留：task-010 bonus 单列；"账号缺基线"对抗用例；Phase 4 数据回填后校准权重/阈值
+- [ ] observe 占比校准：Phase 4 真实数据回填后校正阈值/权重
 - [ ] M3 验收：对 accept 案例生成完整 Brief/Draft 并人工抽查（plan §5.6：修改量/遗漏率/审校时长）
 - [ ] M4：Publish & Feedback Loop（plan §6）
 

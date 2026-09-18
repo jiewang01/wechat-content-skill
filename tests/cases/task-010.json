@@ -16,7 +16,7 @@
       "mandatory_points": ["开箱环节", "面板参数实测（色域/漏光）", "游戏帧率测试"],
       "forbidden_points": []
     },
-    "commercial": { "creator_fee": 2000, "commission": null, "bonus": null, "estimated_total_income": 2500, "settlement_rule": "播放量阶梯加成：1万播+100元上限500元；需发票" },
+    "commercial": { "creator_fee": 2000, "commission": null, "bonus": 500, "estimated_total_income": 2500, "settlement_rule": "播放量阶梯加成：1万播+100元，上限500元（bonus=500）；需发票" },
     "production": {
       "deadline": null,
       "estimated_hours": null,
