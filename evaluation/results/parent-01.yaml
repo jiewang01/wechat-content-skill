@@ -1,0 +1,435 @@
+# ============================================================
+# 冒烟测试结果：parent-01（科学育儿账号）
+# 输入：evaluation/evaluation-dataset.yaml -> parent-01.account_brief
+# "科学育儿与儿童心理学，关注 0-6 岁早期教育与亲子关系"
+# 日期：2026-09-18（Stage 2 检索为真实结果，evidence 可溯源）
+# 执行器：SKILL.md + prompts/*（按调用顺序）
+# ============================================================
+
+# ------------------------------------------------------------
+# Stage 1 — Positioning Analysis（prompts/profile-parser.md）
+# ------------------------------------------------------------
+account_profile:
+  description: 科学育儿与儿童心理学，关注 0-6 岁早期教育与亲子关系
+  source: explicit
+  audience:
+    primary: ["0-6 岁孩子的家长", "学龄前儿童父母"]
+    secondary: ["准父母", "隔代养育中的祖辈 [inferred]"]
+  domain: ["科学育儿", "儿童心理学", "早期教育", "亲子关系"]
+  value_proposition:
+    - 用儿童心理学的依据解释孩子行为背后的原因
+    - 给出家长当下可执行、可坚持的具体互动方法
+  content_style:
+    tone: "理性、共情、去焦虑 [inferred]"
+    format: ["长文", "图文", "案例式讲解 [inferred]"]
+  authority:
+    strengths: ["儿童发展心理学的知识框架", "面向 0-6 岁阶段的专业视野"]
+    limitations: ["非儿科医生 / 非临床心理治疗师身份（无法提供医疗/诊断建议）"]
+  boundaries:
+    - 医学诊断、用药与治疗建议（身份边界）
+    - 泛教育政策解读与择校博弈类话题（超出专业知识域）
+    - 贩卖焦虑的“神童/鸡娃”内容
+  platform: unknown
+  constraints: []
+
+# ------------------------------------------------------------
+# Stage 2 — Research（prompts/research.md，真实检索 2026-09-18）
+# ------------------------------------------------------------
+research_findings:
+  - topic: 「电子带娃」：屏幕时间之争
+    signals:
+      trend: 2026-05 教育部启动全国学前教育宣传月（主题“共同守护数字时代的童年”），“电子带娃”成社会热议；多地倡议数字产品使用底线
+      demand: 家长普遍“哄不住”，真实困境是双职工/隔代养育下精力不足
+      discussion: “总看屏幕不好但太累了”“不给就哭”是高频自白
+    evidence:
+      - source: 央视新闻（教育部宣传月启动仪式报道）
+        source_type: news
+        date: 2026-05-19
+        claim: 教育部启动 2026 全国学前教育宣传月，提醒防范“电子带娃”，要求幼儿园不得以数字产品替代图画书、玩具
+        confidence: high
+      - source: 人民日报海外版（经央广网转载）
+        source_type: news
+        date: 2026-08-03
+        claim: “电子带娃”成为不少家庭育儿常态，专家指出屏幕专注多为“假性专注”
+        confidence: high
+      - source: 湖南省教育厅公开信（教育部官网转载）
+        source_type: official_doc
+        date: 2026-05-28
+        claim: 倡议 3 岁以下婴幼儿禁用手机/平板等数字产品，3-6 岁非必要不使用
+        confidence: high
+    existing_content:
+      saturation: medium
+      summary: 官方倡议与警示类内容密集，但多为“要不要禁”的表态
+    content_gap: 从“禁止/放任”两极化走向“理解机制 + 家庭可执行的替代陪伴方案”的中间路线内容缺乏
+    candidate_angles: [假性专注机制, 替代陪伴方案, 规则制定了守不住怎么办]
+
+  - topic: 幼小衔接焦虑
+    signals:
+      trend: 每年 7-8 月机构借“不抢跑就落后”贩卖焦虑，官方连续发声“零起点教学”
+      demand: 家长高频问题：要不要报衔接班、识字量够不够、会不会跟不上
+      discussion: 社交平台上“同事家娃已会 100 以内加减法”类比较帖引发焦虑
+    evidence:
+      - source: 央视新闻
+        source_type: news
+        date: 2026-08-16
+        claim: 北京海淀摸底调研：65% 新生入学前进行过拼音/识字/算术超前培训，95% 教师明确反对超前报班
+        confidence: high
+      - source: 北京日报（北京市政府门户转载）
+        source_type: news
+        date: 2026-08-23
+        claim: “不抢跑就落后”说法流行，教育者普遍认为衔接核心是学习品质而非学科知识；超前学习可能透支求知欲
+        confidence: medium
+      - source: 教育部基础教育教学指导委员会致一年级新生家长信
+        source_type: official_doc
+        date: 2026-08-03
+        claim: 明确“小学一年级全面实行零起点教学”，建议家长重心放在生活自理、心理调节、习惯养成
+        confidence: high
+    existing_content:
+      saturation: high
+      summary: 官方文章与家长经验帖都很多，但家长仍被机构话术裹挟，说明理性内容未触达决策场景
+    content_gap: 有数据、有机制解释、并给出“不抢跑也不会落后”的具体行动清单的深度内容稀缺
+    candidate_angles: [用数据回应要不要提前学, 入学前 4 项准备的家庭版清单]
+
+  - topic: 儿童情绪管理与“发脾气”
+    signals:
+      trend: 3-6 岁被反复确认为情绪认知与调节关键期
+      demand: 家长高频问题：孩子哭闹/摔东西/“窝里横”怎么办，讲道理没用
+      discussion: “先接住情绪再处理问题”“给情绪起名字”等具体方法被广泛传播
+    evidence:
+      - source: 四川省卫生健康委妇幼保健专栏
+        source_type: official_doc
+        date: 2026-08-14
+        claim: 儿童情绪失控背后是未被看见的需求；建议先接纳情绪、用“我”开头沟通、每天 15 分钟只听不说
+        confidence: medium
+      - source: 央广网
+        source_type: news
+        date: 2026-08-24
+        claim: 儿童情绪能力从家庭互动中习得，3-6 岁是情绪认知与调节能力关键期；“禁止情绪”型家庭易养出压抑型孩子
+        confidence: high
+    existing_content:
+      saturation: high
+      summary: 方法论内容多但碎片化，观点相互打架（要不要安抚 vs 要不要立规矩）
+    content_gap: 把“接纳情绪不等于纵容行为”讲透、给出分年龄段做法的内容缺乏
+    candidate_angles: [接纳情绪≠纵容行为, 情绪命名法实操]
+
+  - topic: 未成年人网络新规（政策趋势）
+    signals:
+      trend: 国家网信办昨日发布未成年人健康使用网络规定（征求意见稿），强化“未成年人模式”、分类分层管理
+      demand: 家长关心：规定对家庭管教/屏幕时间意味着什么
+    evidence:
+      - source: 国家互联网信息办公室发布（专家解读通稿）
+        source_type: news
+        date: 2026-09-18
+        claim: 《国务院关于保障未成年人健康安全使用网络的规定（征求意见稿）》发布征求社会意见，聚焦未成年人用户识别、内容审核、算法管理、未成年人模式建设
+        confidence: high
+    existing_content:
+      saturation: low
+      summary: 解读多为转载通稿
+    content_gap: 面向 0-6 岁家长的“这条政策对你的家庭意味着什么”视角内容缺失
+    candidate_angles: [新规对学龄前家庭的 3 个影响]
+
+  - topic: 专注力的“假性专注”误读
+    signals:
+      demand: 家长误把“看屏幕一动不动”当专注力强
+    evidence:
+      - source: 人民日报海外版（“电子带娃”报道）
+        source_type: news
+        date: 2026-08-03
+        claim: 专家指出：屏幕引起的是由外部刺激驱动的“假性专注”，真正的专注需主动思考，可支撑深度阅读等长期活动
+        confidence: high
+    existing_content:
+      saturation: low
+      summary: 观点散落在屏幕话题中，少有人把它作为独立主题讲透
+    content_gap: 从注意力机制讲“假性专注”并给家庭训练清单的内容缺失
+    candidate_angles: [假性专注来解释为什么不专注, 专注力家庭训练清单]
+
+# ------------------------------------------------------------
+# Stage 3 — Candidate Generation（prompts/topic-generator.md）
+# 注：示例演示候选主体字段；运行时每个候选须携带 evidence（来源同步 findings）
+# ------------------------------------------------------------
+candidates:
+  - core_topic: 幼小衔接：不抢跑真的会落后吗
+    user_problem: 看到别人家孩子都提前学，怕自家孩子上小学跟不上
+    target_audience: 大班/准一年级家长
+    content_angle: 用 65%/95% 数据+零起点政策拆穿焦虑，给出入学前 4 项准备的行动清单
+    content_type: opinion
+    source_signals: [幼小衔接焦虑]
+  - core_topic: 入学前 4 项准备的家庭版清单
+    user_problem: 不知道幼升小到底该准备什么，只能刷题/报班
+    target_audience: 大班家长
+    content_angle: 把官方“身心/生活/社会/学习”四维准备翻译成家庭每天能做的具体事项
+    content_type: methodology
+    source_signals: [幼小衔接焦虑]
+  - core_topic: 识字量要不要卷到 500
+    user_problem: 被“识字 400-500 是入学安全线”话术裹挟
+    target_audience: 学龄前家长
+    content_angle: 拆解大字量焦虑背后的认知误区，讲清阅读兴趣 vs 识字量关系
+    content_type: opinion
+    source_signals: [幼小衔接焦虑]
+  - core_topic: 电子带娃：从“禁 vs 放”到替代方案
+    user_problem: 知道屏幕不好但哄不住，也不认同完全禁止
+    target_audience: 0-6 岁家长，含隔代养育家庭
+    content_angle: 从心理学讲清屏幕吸引力的机制，给三层次替代陪伴方案
+    content_type: methodology
+    source_signals: [电子带娃：屏幕时间之争]
+  - core_topic: 假性专注：孩子盯着屏幕不等于专注力好
+    user_problem: 以为孩子能看动画一小时就是专注
+    target_audience: 0-6 岁家长
+    content_angle: 区分外部刺激驱动与主动专注，给家庭专注力训练清单
+    content_type: opinion
+    source_signals: [专注力的“假性专注”误读]
+  - core_topic: 屏幕规则制定了守不住怎么办
+    user_problem: 约定 30 分钟，孩子到点就哭闹要“再看一会儿”
+    target_audience: 2-6 岁家长
+    content_angle: 从儿童执行功能发展讲解规则落地，给“坚持约定”的五步法
+    content_type: pitfall
+    source_signals: [电子带娃：屏幕时间之争]
+  - core_topic: 隔代养育中的屏幕管理
+    user_problem: 老人精力有限只能给手机，说了也不听
+    target_audience: 双职工家庭、隔代养育家庭
+    content_angle: 不指责老人，给双方都能执行的低门槛替代方案
+    content_type: case_study
+    source_signals: [电子带娃：屏幕时间之争]
+  - core_topic: 接纳情绪不等于纵容行为
+    user_problem: 一安抚孩子就更来劲，怀疑“共情”教坏了孩子
+    target_audience: 2-6 岁家长
+    content_angle: 讲清“接住情绪”与“守住底线”的双轨操作
+    content_type: methodology
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 给情绪起名字：情绪命名法实操
+    user_problem: 孩子哭闹说不清感受，家长也不懂怎么教
+    target_audience: 3-6 岁家长
+    content_angle: 三步教孩子识别/命名/表达情绪的步骤与话术
+    content_type: tutorial
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 为什么讲道理没用：情绪脑 vs 理性脑
+    user_problem: 越讲道理孩子越闹
+    target_audience: 3-6 岁家长
+    content_angle: 用发展心理学解释前额叶未成熟，改变“先讲道理”的沟通顺序
+    content_type: tutorial
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 窝里横外面怂的孩子缺什么
+    user_problem: 在家是小霸王、出门是受气包
+    target_audience: 3-6 岁家长
+    content_angle: 从“过度代劳+无原则满足”的教养模式解释，给放手与边界练习
+    content_type: opinion
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 未成年人网络新规对学龄前家庭的 3 个影响
+    user_problem: 新规刷屏，不知道和自家孩子有什么关系
+    target_audience: 0-6 岁家长
+    content_angle: 从“旨意”落到“家庭动作”，不做论文式解读
+    content_type: trend
+    source_signals: [未成年人网络新规（政策趋势）]
+  - core_topic: 亲子阅读：读绘本的姿势比数量重要
+    user_problem: 书买一堆孩子不看，或只当听故事
+    target_audience: 1-6 岁家长
+    content_angle: 从互动共读机制讲“怎么读”，替代“多少本”焦虑
+    content_type: practice
+    source_signals: [专注力的“假性专注”误读, 幼小衔接焦虑]
+  - core_topic: 幼儿园阶段的“注意力保护”行动清单
+    user_problem: 担心孩子上了小学坐不住
+    target_audience: 3-6 岁家长
+    content_angle: 用“假性专注”框架给一组保护注意力的家庭做法
+    content_type: practice
+    source_signals: [专注力的“假性专注”误读]
+  - core_topic: 高质量陪伴：每天 15 分钟就够的话术
+    user_problem: 工作忙陪得少，充满愧疚也知道怎么陪
+    target_audience: 双职工家长
+    content_angle: 用“主动倾听”替代“陪伴时长”，给可执行的每日分钟级安排
+    content_type: practice
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 2 岁前要不要“禁屏”：底线是什么
+    user_problem: 长辈总给孩子看短视频，自己很纠结
+    target_audience: 0-3 岁家长（尤其隔代养育）
+    content_angle: 把“3 岁以下禁用”的倡议翻译成家庭协商话术
+    content_type: trend
+    source_signals: [电子带娃：屏幕时间之争]
+  - core_topic: 哭闹购物车场景：公共场所的情绪处理
+    user_problem: 在超市/餐厅当众哭闹，家长又气又没面子
+    target_audience: 2-5 岁家长
+    content_angle: 公共场所“接住情绪+快速带离”的分步演练
+    content_type: tutorial
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 情绪稳定的孩子背后是情绪稳定的家长
+    user_problem: 自己总被娃点燃，吼完又后悔
+    target_audience: 0-6 岁家长
+    content_angle: 从“家长先戴氧气面罩”说起，给自查与暂停工具
+    content_type: opinion
+    source_signals: [儿童情绪管理与“发脾气”]
+  - core_topic: 幼小衔接班的钱要怎么花（或不花）
+    user_problem: 周围都报班，怕不花这笔钱吃亏
+    target_audience: 大班家长
+    content_angle: 用 95% 教师反对数据+官方信，分析哪些班值得报哪些是情绪税
+    content_type: case_study
+    source_signals: [幼小衔接焦虑]
+  - core_topic: 孩子入园分离焦虑的 3 个真实阶段
+    user_problem: 入园哭一个月，家长既心疼又怕惯坏
+    target_audience: 3 岁入园家庭
+    content_angle: 讲清分离焦虑机制，给告别仪式与稳定接回的做法
+    content_type: tutorial
+    source_signals: [儿童情绪管理与“发脾气”]
+
+# ------------------------------------------------------------
+# Stage 4 — Market Ranking（prompts/ranking.md；权重见 scoring-policy）
+# ------------------------------------------------------------
+ranking_result:
+  ranking_method: "Market Score = Demand×25% + Pain×20% + Trend×15% + Novelty×15% + ContentGap×15% + Evidence×10%"
+  top_n: 5
+  ranked:
+    - rank: 1
+      topic: 幼小衔接：不抢跑真的会落后吗
+      core_problem: 被“不抢跑就落后”话术裹挟，怕跟不上
+      content_angle: 数据+零起点政策拆解焦虑，给 4 项准备的行动清单
+      market_score: 85
+      score_breakdown: { demand: 92, pain: 84, trend: 82, novelty: 80, content_gap: 84, evidence: 88 }
+    - rank: 2
+      topic: 电子带娃：从“禁 vs 放”到替代方案
+      core_problem: 知道屏幕不好但哄不住，也不认同完全禁止
+      content_angle: 讲清屏幕吸引机制 + 三层次替代陪伴方案
+      market_score: 82
+      score_breakdown: { demand: 88, pain: 80, trend: 92, novelty: 74, content_gap: 76, evidence: 80 }
+    - rank: 3
+      topic: 接纳情绪不等于纵容行为
+      core_problem: 一安抚孩子更来劲，怀疑共情教坏了
+      content_angle: 接住情绪 + 守住底线的双轨操作
+      market_score: 78
+      score_breakdown: { demand: 82, pain: 80, trend: 72, novelty: 78, content_gap: 78, evidence: 72 }
+    - rank: 4
+      topic: 假性专注：盯着屏幕不等于专注力好
+      core_problem: 以为孩子能看动画一小时就是专注
+      content_angle: 区分外部刺激驱动 vs 主动专注，给家庭训练清单
+      market_score: 76
+      score_breakdown: { demand: 78, pain: 74, trend: 74, novelty: 82, content_gap: 80, evidence: 70 }
+    - rank: 5
+      topic: 未成年人网络新规对学龄前家庭的 3 个影响
+      core_problem: 新规刷屏，不知道和自家孩子有什么关系
+      content_angle: 从“旨意”落到“家庭动作”
+      market_score: 73
+      score_breakdown: { demand: 76, pain: 66, trend: 90, novelty: 76, content_gap: 72, evidence: 72 }
+  analysis:
+    pool_size: 20
+    deduplicated: 3
+    diversity_note: "Top5 覆盖认知纠偏（opinion）与行动方案（methodology/practice/trend），角度不重叠，满足多样性"
+
+# ------------------------------------------------------------
+# Stage 5 — Positioning Filter（prompts/positioning-filter.md）
+# ------------------------------------------------------------
+top1_selection:
+  status: selected
+  selected:
+    topic: 幼小衔接：不抢跑真的会落后吗
+    angle: 用 65%/95% 数据与零起点政策拆穿焦虑，给出入学前 4 项准备的家庭行动清单
+    market_score: 85
+    account_fit: 87
+    fit_breakdown: { audience: 90, problem: 88, authority: 82, value: 90, differentiation: 86, style: 85 }
+    why_selected:
+      market_reason: 需求量级最大（每年暑期周期爆发），核心数据过硬（65%/95%），且政策层反复背书，可支撑长期内容系列
+      audience_reason: 大班/准一年级家长是本账号核心读者中的高痛点人群
+      account_reason: 定位“科学育儿+儿童心理学”，用证据与机制说话是其价值主张的强匹配项
+      differentiation_reason: 官方提醒与机构话术都不缺，缺的是把数据、政策、儿童发展机制串起来的独立判断内容
+    risks:
+      - 话题周期性强（暑期高峰），需配套系列化内容维持
+      - 观点可能被误读为“让孩子完全不准备”，需明确“不抢跑≠不准备”
+    confidence: high
+  rejected:
+    - topic: 电子带娃：从“禁 vs 放”到替代方案
+      reason: beat_by_top1
+      detail: 趋势强但机制内容已有一定供给；作为 Top2 进入后续内容池
+    - topic: 接纳情绪不等于纵容行为
+      reason: beat_by_top1
+      detail: 需求真实但差异化略弱于 Top1 的“数据+政策”组合
+    - topic: 假性专注：盯着屏幕不等于专注力好
+      reason: beat_by_top1
+      detail: 概念新颖，可作为 Top1 系列的第二篇延伸
+    - topic: 未成年人网络新规对学龄前家庭的 3 个影响
+      reason: beat_by_top1
+      detail: 时效内容适合快发，但与账号“儿童心理学机制”主线相关性略低
+  analysis:
+    boundary_filter_summary: "0 个候选被 HIGH 拒绝；医疗/处方类内容未进入候选（boundaries 生效）"
+    fit_summary: "通过 Boundary 的 5 个候选 fit 均 ≥ 75；Top1 在 audience/value/differentiation 三维领先"
+
+# ------------------------------------------------------------
+# Stage 6 — Editorial Development（prompts/editorial.md）
+# ------------------------------------------------------------
+article_brief:
+  account:
+    positioning: 科学育儿与儿童心理学，关注 0-6 岁早期教育与亲子关系
+    audience: 0-6 岁孩子的家长、学龄前儿童父母
+    value_proposition: [用心理学依据解释行为, 给可执行的互动方法]
+  selected_topic:
+    topic: 幼小衔接：不抢跑真的会落后吗
+    angle: 用数据与政策拆穿焦虑，给入学前 4 项准备的家庭行动清单
+    why_selected:
+      market_reason: 需求量级最大、数据过硬、政策背书
+      audience_reason: 核心读者高痛点人群
+      account_reason: 证据与机制表达强匹配
+      differentiation_reason: 缺把数据/政策/机制串起来的独立判断
+    confidence: high
+  target_reader: 孩子即将进入小学一年级、正被“要不要报衔接班/识字量够不够”纠结的家长
+  pain_points:
+    functional: 不知道该准备什么，只能靠报班缓解焦虑
+    efficiency: 时间与金钱投入在超前培训上，很可能无效甚至反效果
+    cognitive: 搞不清“零起点教学”是真是假，看不懂机构话术真假
+    risk: 怕不抢跑孩子一年级跟不上、输在起跑线
+    emotional: 被“别人家孩子都会了”的比较持续煎熬
+  core_insight:
+    misconception: 大多数家长认为幼小衔接=提前学拼音识字算术，“不抢跑就落后”
+    evidence: ["海淀调研 65% 生超前培训、95% 教师反对报班（央视 2026-08-16）", "教育部明确一年级零起点教学、设入学适应期（家长信 2026-08-03）", "学前教育法 2025-06 施行，普惠免费推进（央视 2026-05-19 报道）"]
+    insight: 孩子升学真正的坎不是“知识量”，而是身心/生活/社会/学习四项准备能力；超前学透支求知欲，不抢跑+科学准备才是更稳的路线
+  key_arguments:
+    - 用 65%/95% 数据说明超前培训是家长焦虑的产物，而非教学需要
+    - 零起点教学+适应期是政策承诺，家长无需用超前学习对冲
+    - “4 项准备”才是可观察、可培养的入学能力
+    - 家庭能做的具体动作：作息、自理、情绪、阅读习惯
+  title_candidates:
+    - "不抢跑，孩子的入学底气从哪来？（附 4 项准备清单）"
+    - "65% 的孩子提前学过拼音算术，为什么 95% 的老师反对"
+    - "别让机构收割你的幼升小焦虑"
+    - "幼小衔接真正的坎，不是识字量"
+    - "写给准一年级家长：这 4 件事比报班重要"
+  outline:
+    - section: Hook
+      purpose: 让家长对号入座
+      key_points: ["宝妈群“同事家娃会 100 以内加减法”的对话场景", "你纠结报不报班的真实瞬间"]
+    - section: Problem
+      purpose: 说明机构话术正在系统性制造焦虑
+      key_points: ["“识字 400-500 是入学安全线”话术的传播", "家长报班背后的恐惧逻辑"]
+    - section: Misconception
+      purpose: 拆解“提前学=领跑”的直觉
+      key_points: ["65% 超前培训 vs 95% 教师反对的数据对比", "提前学反而可能透支求知欲"]
+    - section: Core Insight
+      purpose: 提出“四项准备”框架
+      key_points: ["衔接真正看的是身心/生活/社会/学习四维能力", "数据与政策共同支持的结论"]
+    - section: Mechanism
+      purpose: 讲清孩子入学的真实适应机制
+      key_points: ["从游戏化幼儿园到规则化小学的转变", "专注力、自理、情绪调节才是适应力来源"]
+    - section: Solution
+      purpose: 给家庭版 4 项准备清单
+      key_points: ["作息小学化提前 2 周", "收纳整理与自理练习", "入学期待与情绪疏导话术", "亲子阅读习惯"]
+    - section: Example
+      purpose: 一个“零抢跑但准备充分”的家庭案例
+      key_points: ["家长如何应对“别人都会了”", "入学后实际适应的观察记录"]
+    - section: Action
+      purpose: 今天就能开始的三个动作
+      key_points: ["列一张家庭 4 项准备自检表", "与孩子共读一本入学绘本", "拆掉一条机构广告话术"]
+  evidence:
+    - source: 央视新闻
+      source_type: news
+      date: 2026-08-16
+      claim: 北京海淀调研：65% 新生超前培训、95% 教师反对超前报班
+      confidence: high
+    - source: 教育部基础教育教学指导委员会致家长信
+      source_type: official_doc
+      date: 2026-08-03
+      claim: 小学一年级全面实行零起点教学，重心放在生活自理、心理调节、习惯养成
+      confidence: high
+  risks:
+    - risk: 被机构/家长误读为“让孩子完全不准备”
+      severity: high
+      mitigation: 标题与正文反复区分“不抢跑 ≠ 不准备”，清单部分是正文重心
+    - risk: 选题周期性，开学后热度回落
+      severity: medium
+      mitigation: 拆成系列（幼儿园中班版/大班版/一年级适应版），配合“假性专注”等延伸题材
+    - risk: 与大量同题文章同质化
+      severity: medium
+      mitigation: 以 65%/95% 数据与政策文件为差异化锚点，避免空谈理念

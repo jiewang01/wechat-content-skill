@@ -27,7 +27,7 @@ source_signals:   [对应的 research finding 主题或信号标签]
 
 1. **展开**：从每个 finding 的 `content_gap`、`candidate_angles`、`user_questions`、`evidence` 展开候选。一个 finding 通常可衍生 2~5 个候选（不同角度、不同 content_type）。
 2. **去重（Duplicate Detection）**：语义重复的候选只保留证据最足、角度最清晰的一条。示例：`AI Agent Memory` / `Agent 长期记忆` / `Agent Memory Management` 是同一选题。
-3. **质量过滤**：剔除以下候选：
+3. **质量过滤**：每个候选必须**内联其支撑 evidence**（从对应 finding 复制到候选的 `evidence` 字段，不做摘要或跳转），保证全链路可追溯。再剔除以下候选：
    - 没有明确 `user_problem`；
    - 没有 `evidence` 支撑；
    - 纯新闻复述（只有事件、没有用户问题与角度）。

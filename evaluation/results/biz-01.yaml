@@ -1,0 +1,449 @@
+# ============================================================
+# 冒烟测试结果：biz-01（新消费品牌账号）
+# 输入：evaluation/evaluation-dataset.yaml -> biz-01.account_brief
+# "消费品牌增长案例拆解，从 0 到 1 做新消费"
+# 日期：2026-09-18（Stage 2 检索为真实结果，evidence 可溯源）
+# 执行器：SKILL.md + prompts/*（按调用顺序）
+# ============================================================
+
+# ------------------------------------------------------------
+# Stage 1 — Positioning Analysis
+# ------------------------------------------------------------
+account_profile:
+  description: 消费品牌增长案例拆解，从 0 到 1 做新消费
+  source: explicit
+  audience:
+    primary: ["新消费创业者", "品牌/市场运营从业者"]
+    secondary: ["电商操盘手", "内容营销从业者 [inferred]"]
+  domain: ["新消费品牌增长", "品牌案例研究", "渠道与营销打法"]
+  value_proposition:
+    - 用真实案例拆解品牌从 0 到 1 的增长路径
+    - 提供可直接复用的渠道、内容、投放方法论
+  content_style:
+    tone: "数据向、案例向、不鸡汤 [inferred]"
+    format: ["案例复盘长文", "数据图表", "方法论清单 [inferred]"]
+  authority:
+    strengths: ["案例研究与增长方法论框架", "跨品类视角"]
+    limitations: ["非投资/财务顾问身份；无个股与资本市场观点", "非平台官方信息源"]
+  boundaries:
+    - 个股推荐 / 上市公司财务分析（身份边界）
+    - 泛财经宏观（利率、宏观政策解读）
+    - 代运营/投流代投的商业软广
+  platform: unknown
+  constraints: []
+
+# ------------------------------------------------------------
+# Stage 2 — Research（真实检索 2026-09-18）
+# ------------------------------------------------------------
+research_findings:
+  - topic: 流量白牌集体退场与品牌价值回归
+    signals:
+      trend: 2026 年流量白牌从榜单清零；“不做品牌的商家已经输了”成主流叙事
+      demand: 投流型商家想知道自己会不会成为下一个、怎么转向
+      discussion: “90% 的卖家做的是白牌式生意”类反思持续升温
+    evidence:
+      - source: 36kr/天下网商
+        source_type: news
+        date: 2026-07-17
+        claim: 曾碾压大牌的白牌“肌先知”母公司欠债破产，巅峰期 900 多家店铺清零；白牌平均生命周期不足 8 个月
+        confidence: high
+      - source: 36kr/财经无忌
+        source_type: news
+        date: 2026-08-14
+        claim: 前些年风头正劲的流量白牌在 2026 年 618 集体退场，美妆 TOP20 榜单上白牌席位清零
+        confidence: high
+      - source: 商业新知（白牌自救手册）
+        source_type: community
+        date: 2026-05-12
+        claim: 2024 年中国白牌商品市场规模超 18 万亿元，白牌面临低价内卷、品牌力弱、合规与流量成本四重挑战
+        confidence: medium
+    existing_content:
+      saturation: medium
+      summary: 财经媒体报道密集，但多为“谁倒了、怎么倒”的叙事
+    content_gap: 把“白牌生死”翻译成「我自己的生意该怎么自查、怎么转向」的可操作方法缺失
+    candidate_angles: [白牌式脆弱体检清单, 从卖货到造牌的换挡路径]
+
+  - topic: 效果广告退潮、品牌预算回归
+    signals:
+      trend: 效果广告占比多年连续增长在 2025 年逆转，品牌广告占比回升
+      demand: 操盘手纠结预算怎么配、ROI 怎么算
+    evidence:
+      - source: 36kr/财经无忌（引用 QuestMobile 数据）
+        source_type: analytics
+        date: 2026-08-14
+        claim: 2026 年上半年 53.6% 的品牌投放费用加码超 5%，同时 44.9% 收缩超 5%；品牌与效果预算配比 6:4 的长期增长结论被反复引用
+        confidence: medium
+    existing_content:
+      saturation: low
+      summary: 观点性文章多，实操换算（我的行业怎么配）缺
+    content_gap: 从“行业结论”到“个体决策表”的桥接内容
+    candidate_angles: [预算 6:4 的适用边界, 效果广告退潮对我的影响]
+
+  - topic: 小红书 2026 算法重构
+    signals:
+      trend: 平台进入“理解意图”阶段，语义匹配与信任分值权重急升
+      demand: 品牌方投放逻辑过时，获客成本与转化效率承压
+    evidence:
+      - source: 第三方报告《2026 小红书品牌种草全链路闭环方案》（远瞻慧库转述）
+        source_type: analytics
+        date: 2026-04-29
+        claim: 2026 年算法权重对比：AI 语义匹配 25%→40%，信任分值 15%→25%，关键词匹配 35%→20%，粉丝数量 25%→15%
+        confidence: medium
+      - source: 新媒小番薯（搜狐号）
+        source_type: community
+        date: 2026-09-09
+        claim: 新品牌冷启动实操：长尾词精准截流 + 20-50 个垂直 KOC 铺信任基础，真实感比精致感重要
+        confidence: medium
+    existing_content:
+      saturation: medium
+      summary: 服务商解读多、口径杂，商家难以辨别
+    content_gap: 用“信任资产”框架统一解释算法变化与投放打法的内容缺失
+    candidate_angles: [信任分值时代的内容打法, 长尾词+KOC 冷启动清单]
+
+  - topic: AI 接管投放，操盘手的转型焦虑
+    signals:
+      trend: 千川“乘方”发布、TikTok/巨量系全面 AI Agent 化投放，手动调参时代结束
+      demand: 投手/品牌运营不知道下一步学什么、怎么不被淘汰
+      discussion: “黑盒”“不知道能控制什么”成为群聊高频词
+    evidence:
+      - source: TopMarketing 三里屯信息流
+        source_type: community
+        date: 2026-03-13
+        claim: 千川·乘方发布后标准计划退场、AI Agent 全面接管投放，投手普遍迷茫；冷启动“小额快跑喂养模型”、爆发期“设 ROI 红线不干预”是新的操作纪律
+        confidence: medium
+      - source: ZonFlip（TikTok 电商独立观察）
+        source_type: community
+        date: 2026-08-04
+        claim: TikTok Shop 手动购物型广告逐步谢幕，GMV Max 成默认形态；平台官方内部测试称早采用者 GMV 提升 20%，但混同归因导致 ROI 虚高是普遍坑
+        confidence: medium
+    existing_content:
+      saturation: low
+      summary: 中文区系统性拆解少，多为零散吐槽
+    content_gap: 「把 AI 投放当系统理解而不是黑盒」的框架化内容
+    candidate_angles: [AI 投放时代的账户纪律, 投手转型路线图]
+
+  - topic: 消费 K 型分化
+    signals:
+      trend: 中端价格带塌陷，低价与高端双向扩张
+      demand: 中端定位品牌慌，不知往哪端走
+    evidence:
+      - source: 新浪财经/投资界（引自 FBeauty 未来迹、魔镜洞察）
+        source_type: analytics
+        date: 2026-08-27
+        claim: 2026H1 美妆线上 0-200 元价格带占比升至 59.64%，400 元以上稳定 23.69%，唯独 200-400 元中端从 18.59% 收缩至 16.68%
+        confidence: medium
+    existing_content:
+      saturation: low
+      summary: 行业报告多，落到“中端品牌怎么决策”的少
+    content_gap: 中端品牌的三条可选路径（做细分功效、极致性价比、垂直赛道）
+    candidate_angles: [K 型分化下的三种活法, 中端品牌生存决策树]
+
+  - topic: 白牌品牌化的成功样本（比比赞）
+    signals:
+      demand: 白牌想品牌化，缺可参照案例
+    evidence:
+      - source: 经济观察网（学术案例研究）
+        source_type: analytics
+        date: 2026-04-13
+        claim: 比比赞近一年关联达人 2.6 万、直播达人 1.3 万，销售额破亿（直播占 46.83%），实现白牌“认知—行为—情感”三级品牌化跳跃
+        confidence: medium
+    existing_content:
+      saturation: low
+      summary: 多数为案例报道，缺少机制化拆解
+    content_gap: 把“达人矩阵如何沉淀品牌资产”讲清楚的方法论内容
+    candidate_angles: [以比比赞拆达人品牌化三段论]
+
+# ------------------------------------------------------------
+# Stage 3 — Candidate Generation（20 个）
+# ------------------------------------------------------------
+candidates:
+  - core_topic: 肌先知 900 店清零：白牌式脆弱的 4 个信号
+    user_problem: 自己的生意是不是“白牌式脆弱”，该怎么自查
+    target_audience: 投流型商家、创业者
+    content_angle: 用肌先知案例提炼可自查指标，而非只讲故事
+    content_type: case_study
+    source_signals: [流量白牌集体退场与品牌价值回归]
+  - core_topic: 从流量白牌到品牌的换挡路径
+    user_problem: 知道要建品牌但不知道从哪一步开始
+    target_audience: 有渠道没品牌的商家
+    content_angle: 给出“卖货→造牌”的四步换挡与时间节奏
+    content_type: methodology
+    source_signals: [流量白牌集体退场与品牌价值回归]
+  - core_topic: 白牌自救六策：避开低价内卷
+    user_problem: 白牌利润薄、同质化，不知如何突围
+    target_audience: 白牌工厂/中小商家
+    content_angle: 六条策略对照自查，每条配执行动作
+    content_type: methodology
+    source_signals: [流量白牌集体退场与品牌价值回归]
+  - core_topic: 不做品牌的商家已经输了？
+    user_problem: 被“只投流不建牌”说教裹挟，但不知对错
+    target_audience: 品牌/运营负责人
+    content_angle: 用效果广告退潮数据论证，给出“品牌不是口号”的落地定义
+    content_type: opinion
+    source_signals: [效果广告退潮、品牌预算回归]
+  - core_topic: 预算 6:4：你的行业真的适用吗
+    user_problem: 想抄 6:4 配比作业，怕拍脑袋
+    target_audience: 品牌市场负责人
+    content_angle: 讲清 6:4 的适用范围与反例（成长期/利润型生意）
+    content_type: opinion
+    source_signals: [效果广告退潮、品牌预算回归]
+  - core_topic: 小红书算法变了：信任分值时代的内容打法
+    user_problem: 投放逻辑过时，获客变贵却不知道为什么
+    target_audience: 内容营销、品牌运营
+    content_angle: 用 2026 权重变化解释，给“信任资产”内容清单
+    content_type: trend
+    source_signals: [小红书 2026 算法重构]
+  - core_topic: 长尾词 + KOC 矩阵：新品牌冷启动清单
+    user_problem: 预算少，不知道怎么拿到第一批用户
+    target_audience: 新消费创业者
+    content_angle: 三步走：长尾词截流、20-50 KOC 铺信任、数据迭代
+    content_type: practice
+    source_signals: [小红书 2026 算法重构]
+  - core_topic: KOC vs KOL：真实感为什么越来越值钱
+    user_problem: 预算有限不知找头部还是铺素人
+    target_audience: 品牌运营
+    content_angle: 从信任分值机制解释，给选号 3S 标准
+    content_type: opinion
+    source_signals: [小红书 2026 算法重构]
+  - core_topic: 千川乘方之后：投手的新账户纪律
+    user_problem: AI 接管投放后完全不知道还能控制什么
+    target_audience: 电商投手、操盘手
+    content_angle: 冷启动“喂养模型”/爆发期“ROI 红线”两套纪律
+    content_type: methodology
+    source_signals: [AI 接管投放，操盘手的转型焦虑]
+  - core_topic: GMV Max 的归因陷阱：表面 ROI 7 倍为什么还是亏
+    user_problem: 账户 ROI 好看但实际不赚钱
+    target_audience: 跨境电商、抖音商家
+    content_angle: 混同归因拆解 + 手工订单经济学模型
+    content_type: pitfall
+    source_signals: [AI 接管投放，操盘手的转型焦虑]
+  - core_topic: 投手转型路线图：从调参到系统思维
+    user_problem: 手动时代的技能正在贬值，不知道学什么
+    target_audience: 电商投手
+    content_angle: 三类新能力（归因、素材、系统理解）+ 学习路径
+    content_type: methodology
+    source_signals: [AI 接管投放，操盘手的转型焦虑]
+  - core_topic: K 型分化下中端品牌的三种活法
+    user_problem: 中端定位被上下夹击，不知往哪走
+    target_audience: 品牌创始人、市场负责人
+    content_angle: 细分功效 / 极致性价比 / 垂直赛道三选一决策树
+    content_type: methodology
+    source_signals: [消费 K 型分化]
+  - core_topic: 399 现象：极致性价比礼盒的启示
+    user_problem: 看到礼盒大战，不知要不要跟
+    target_audience: 大众消费品牌
+    content_angle: 拆解 399 打法的适用条件与反噬风险
+    content_type: case_study
+    source_signals: [消费 K 型分化]
+  - core_topic: 中端失速的止损清单：先保住基本盘
+    user_problem: 大盘下滑，先保利润还是先保份额
+    target_audience: 中端品牌操盘手
+    content_angle: 用价格带数据给“加减法”决策顺序
+    content_type: practice
+    source_signals: [消费 K 型分化]
+  - core_topic: 比比赞拆解：白牌如何靠达人矩阵完成品牌化
+    user_problem: 想做达人营销但没形成体系
+    target_audience: 白牌/新品牌负责人
+    content_angle: 认知→行为→情感三级跳跃的落地拆解
+    content_type: case_study
+    source_signals: [白牌品牌化的成功样本（比比赞）]
+  - core_topic: 达人矩阵 vs 品牌话语权：赢家靠什么
+    user_problem: 带货数据好但品牌认知没沉淀
+    target_audience: 品牌运营
+    content_angle: 拆分“销量增长”与“品牌资产增长”两条曲线
+    content_type: opinion
+    source_signals: [白牌品牌化的成功样本（比比赞）]
+  - core_topic: 新消费冷启动 ROI 的真实测算
+    user_problem: 冷启动亏钱不敢投，不知道何时转正
+    target_audience: 创业者
+    content_angle: 把冷启动成本拆成可跟踪的指标台账
+    content_type: practice
+    source_signals: [小红书 2026 算法重构, 效果广告退潮、品牌预算回归]
+  - core_topic: 店播与达人：品牌自营渠道的攻防
+    user_problem: 达人费用高，店播又起不来量
+    target_audience: 品牌电商负责人
+    content_angle: 用 69% 店播动销占比数据给出双轨节奏
+    content_type: trend
+    source_signals: [AI 接管投放，操盘手的转型焦虑]
+  - core_topic: 2026 投放合规红线避坑清单
+    user_problem: 极限词/功效词被罚，广告反复拒审
+    target_audience: 品牌运营、内容团队
+    content_angle: 四大红线 + 各平台常见拒审原因对照
+    content_type: pitfall
+    source_signals: [小红书 2026 算法重构]
+  - core_topic: 从曝光量到信任资产的经营指标
+    user_problem: 只看曝光/ROI，说不清品牌进展
+    target_audience: 品牌/增长负责人
+    content_angle: 定义一套“信任资产”指标，替代单点数据
+    content_type: methodology
+    source_signals: [小红书 2026 算法重构, 流量白牌集体退场与品牌价值回归]
+
+# ------------------------------------------------------------
+# Stage 4 — Market Ranking
+# ------------------------------------------------------------
+ranking_result:
+  ranking_method: "Market Score = Demand×25% + Pain×20% + Trend×15% + Novelty×15% + ContentGap×15% + Evidence×10%"
+  top_n: 5
+  ranked:
+    - rank: 1
+      topic: 肌先知 900 店清零：白牌式脆弱的 4 个信号
+      core_problem: 自己的生意是不是白牌式脆弱，怎么自查
+      content_angle: 用案例提炼可自查指标，而非只讲故事
+      market_score: 84
+      score_breakdown: { demand: 86, pain: 82, trend: 88, novelty: 82, content_gap: 82, evidence: 82 }
+    - rank: 2
+      topic: 小红书算法变了：信任分值时代的内容打法
+      core_problem: 投放逻辑过时，获客变贵却不知道为什么
+      content_angle: 用 2026 权重变化解释 + 信任资产内容清单
+      market_score: 82
+      score_breakdown: { demand: 86, pain: 80, trend: 90, novelty: 78, content_gap: 80, evidence: 70 }
+    - rank: 3
+      topic: 长尾词 + KOC 矩阵：新品牌冷启动清单
+      core_problem: 预算少，不知道怎么拿第一批用户
+      content_angle: 三步走实操清单
+      market_score: 78
+      score_breakdown: { demand: 84, pain: 76, trend: 78, novelty: 76, content_gap: 76, evidence: 70 }
+    - rank: 4
+      topic: GMV Max 的归因陷阱：表面 ROI 7 倍为什么还是亏
+      core_problem: 账户 ROI 好看但实际不赚钱
+      content_angle: 混同归因拆解 + 手工订单经济学模型
+      market_score: 76
+      score_breakdown: { demand: 78, pain: 82, trend: 82, novelty: 74, content_gap: 74, evidence: 62 }
+    - rank: 5
+      topic: K 型分化下中端品牌的三种活法
+      core_problem: 中端定位被上下夹击，不知往哪走
+      content_angle: 三选一决策树
+      market_score: 74
+      score_breakdown: { demand: 80, pain: 82, trend: 74, novelty: 70, content_gap: 72, evidence: 68 }
+  analysis:
+    pool_size: 20
+    deduplicated: 2
+    diversity_note: "Top5 覆盖案例 / 算法趋势 / 实操清单 / 归因避坑 / 战略决策，角度互补"
+
+# ------------------------------------------------------------
+# Stage 5 — Positioning Filter
+# ------------------------------------------------------------
+top1_selection:
+  status: selected
+  selected:
+    topic: 肌先知 900 店清零：白牌式脆弱的 4 个信号
+    angle: 用案例提炼可自查指标，把“别做白牌式生意”变成可执行的自查清单
+    market_score: 84
+    account_fit: 88
+    fit_breakdown: { audience: 88, problem: 88, authority: 84, value: 92, differentiation: 88, style: 86 }
+    why_selected:
+      market_reason: 2026 最热趋势之一（白牌退场），硬数据多（900 店清零、生命周期 <8 个月、18 万亿规模），话题自带传播性
+      audience_reason: 创业者与投流型商家正活在“我会不会成为下一个”的恐惧里，直击主角人群
+      account_reason: 账号定位“案例拆解”，此选题是该定位最典型的样本；案例研究方法论可复用
+      differentiation_reason: 媒体报道停留在“谁倒了怎么倒”，本稿从案例提炼「自查指标」，把故事变成工具
+    risks:
+      - 用“破产/限高”等细节讲故事易踩“消费他人苦难”的负面观感
+      - 案例披露数据多为媒体报道口径，需标注来源避免夸大
+    confidence: high
+  rejected:
+    - topic: 小红书算法变了：信任分值时代的内容打法
+      reason: beat_by_top1
+      detail: 紧追其后，但依赖第三方报告口径，证据强度略低于 Top1；作为第二篇发布
+    - topic: 长尾词 + KOC 矩阵：新品牌冷启动清单
+      reason: beat_by_top1
+      detail: 实操价值高但竞品供给多，差异化弱于案例型选题
+    - topic: GMV Max 的归因陷阱：表面 ROI 7 倍为什么还是亏
+      reason: beat_by_top1
+      detail: 归因工程化内容偏硬核，与“案例拆解”主线的受众匹配度次之
+    - topic: K 型分化下中端品牌的三种活法
+      reason: beat_by_top1
+      detail: 更适合作为“白牌转向”系列的第二篇战略篇
+  analysis:
+    boundary_filter_summary: "0 个候选被 HIGH 拒绝；个股/财报类选题（如良品铺子、敷尔佳半年报）已按 boundaries 排除，未进入候选池"
+    fit_summary: "通过 Boundary 的 5 个候选 fit 均 ≥ 72；Top1 在 audience / value / differentiation 三维领先"
+
+# ------------------------------------------------------------
+# Stage 6 — Editorial Development
+# ------------------------------------------------------------
+article_brief:
+  account:
+    positioning: 消费品牌增长案例拆解，从 0 到 1 做新消费
+    audience: 新消费创业者、品牌/市场运营从业者
+    value_proposition: [案例拆解增长路径, 可复用的渠道内容投放方法论]
+  selected_topic:
+    topic: 肌先知 900 店清零：白牌式脆弱的 4 个信号
+    angle: 把“别做白牌式生意”的告诫转成可自查的 4 个指标
+    why_selected:
+      market_reason: 白牌退场是 2026 最热趋势，硬数据多、自带传播
+      audience_reason: 直击创业者与投流商家的核心焦虑
+      account_reason: 与“案例拆解”定位最典型的样本
+      differentiation_reason: 从故事到工具，媒体没做的事
+    confidence: high
+  target_reader: 正在做或考虑做“投流型生意”的新消费创业者与品牌操盘手
+  pain_points:
+    functional: 想转向品牌化，但没有判断自己生意健康度的工具
+    efficiency: 花在投流上的钱越来越多，ROI 却越来越难算
+    cognitive: 说不清“白牌式增长”和“品牌式增长”的分界在哪
+    risk: 怕自己成为下一个暴毙样本（欠债、清店、资产贱卖）
+    emotional: 在“这轮爆款还能撑多久”的不确定中焦虑
+  core_insight:
+    misconception: 大多数创业者以为“投流型生意失败了是因为投得不够多/不够好”
+    evidence: ["肌先知巅峰 900 店、3 个月烧数亿广告费后一年内坠落（36kr 2026-07-17）", "白牌平均生命周期不足 8 个月（36kr/天下网商）", "2026 年 618 流量白牌集体退出美妆 TOP20（36kr 2026-08-14）"]
+    insight: 白牌式脆弱的本质是「没有沉淀不依赖流量也能成交的资产」——复购、口碑、内容、渠道心智；判断标准是可量化的 4 个信号
+  key_arguments:
+    - 纯投流增长指标会骗人：GMV 高不等于健康
+    - 白牌式生意共同特征：依赖投流、无复购、无内容资产、无定价权
+    - 转品牌化不是营销战役，而是资产结构改造
+    - 4 个自查信号每个都对应一个可执行动作
+  title_candidates:
+    - "900 家店铺清零：白牌式生意的 4 个死亡信号"
+    - "你的生意是白牌式脆弱吗？用 4 个指标自查"
+    - "从肌先知倒下，看投流型增长还能撑多久"
+    - "白牌平均只能活 8 个月，凭什么你的能活更久"
+    - "只投流不建牌，账单只是还没寄到"
+  outline:
+    - section: Hook
+      purpose: 用反差数据抓住投流型商家
+      key_points: ["巅峰年销 8.25 亿 → 资产起拍价 600 万", "900 店清零与限高令"]
+    - section: Problem
+      purpose: 说明“白牌式脆弱”是普遍系统性问题
+      key_points: ["白牌市场 18 万亿但平均生命周期 <8 个月", "2026 年 618 白牌集体退场"]
+    - section: Misconception
+      purpose: 破除“投得不够好”的归因
+      key_points: ["纯投流是透支明天的贷款", "GMV 高不等于健康"]
+    - section: Core Insight
+      purpose: 提出“不依赖流量也能成交的资产”标准
+      key_points: [资产四类：复购/口碑/内容/渠道心智, 判断标准可量化]
+    - section: Mechanism
+      purpose: 解释为什么投流型结构必然脆弱
+      key_points: ["流量成本攀升 + 平台算法变化（信任分值）", "没有复购的家庭预算结构"]
+    - section: Solution
+      purpose: 给 4 个自查信号与对应动作
+      key_points: ["复购率红线", "内容资产占比", "渠道依赖度", "定价权自检", "每个信号配一个行动"]
+    - section: Example
+      purpose: 一个成功换挡的对照案例
+      key_points: ["蒂洛薇：4 年 5 款产品年销 20 亿（可选对比）", "从卖货到造牌的惊险一跃"]
+    - section: Action
+      purpose: 让读者今天能做体检
+      key_points: ["下载/复制 4 信号自查表", "列出自己生意的三个瓶颈信号", "选择一条换挡路径"]
+  evidence:
+    - source: 36kr/天下网商
+      source_type: news
+      date: 2026-07-17
+      claim: 肌先知母公司麦凯莱欠债破产，巅峰 900 多家店铺清零，白牌生命周期平均不足 8 个月
+      confidence: high
+    - source: 36kr/财经无忌
+      source_type: news
+      date: 2026-08-14
+      claim: 2026 年 618 流量白牌在美妆 TOP20 集体退场；长期增长品牌预算配比稳定在 6:4
+      confidence: high
+    - source: 商业新知
+      source_type: community
+      date: 2026-05-12
+      claim: 2024 年中国白牌商品市场规模超 18 万亿元
+      confidence: medium
+  risks:
+    - risk: 破产细节叙述易被指“消费他人苦难”
+      severity: medium
+      mitigation: 细节服务于“4 信号”分析，避免猎奇渲染，注明信息来自公开报道
+    - risk: 数据口径来自媒体报道，存在误差
+      severity: medium
+      mitigation: 全部标注来源与时间，关键数字用区间表述
+    - risk: 观点被读成“投流无用论”
+      severity: low
+      mitigation: 明确投流仍是放大器，问题是结构与资产缺失
