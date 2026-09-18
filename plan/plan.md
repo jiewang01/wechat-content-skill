@@ -1686,6 +1686,25 @@ Decision Optimization
 - 详细见 tests/m3-report.md
 ```
 
+## 2026-09-18 — M4 Publish & Feedback Loop（task-002 闭环演示）
+
+```text
+- schemas/ 新增 3 份契约：
+  ├── publish-record.schema.json     (PublishRecord@v1：真实结算/工时/修改轮次)
+  ├── performance-record.schema.json (PerformanceRecord@v1：观察窗口 + 缺失置 null)
+  └── feedback-report.schema.json    (FeedbackReport@v1：Prediction vs Actual/错误分类/参数建议/更新提案)
+- knowledge/ 新增 2 份规则：
+  ├── feedback-loop-rules.md  (F01~F17：记录铁律、预测基线来源、偏差判定、conf_verdict、验收挂钩)
+  └── model-update-rules.md   (M01~M07：EMA/append、proposed→applied 人工 gate、版本化)
+- tools/feedback_loop.py：postmortem + summary 两个子命令
+- 种子案例 task-002 闭环产物（tests/publish、tests/performance、tests/feedback）：
+  实时/engagement/revenue 均 in_line；production_hours +66.7% → 成本低估 error(high)；
+  Model Update 提案 3→3.4h(EMA)、median_views 6500→6040(EMA)、历史样本 append；全 proposed 未改写账号画像
+- 三个产物 Schema 校验 ALL PASS；summary 聚合机制就绪（plan §6.6 六问均已挂接）
+- 说明：真实回填 30+ 完成案例后 summary 结论正式化；当前样本不足如实标注
+- 详细见 tests/m4-report.md
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
@@ -1694,9 +1713,11 @@ Decision Optimization
 - [x] M2 遗留清理：task-010 bonus 单列 + "账号缺基线"对抗回归
 - [x] M3 Content Copilot 骨架：Brief Schema + 3 规则 + brief_generator + task-021 产物
 - [x] M3 验收：task-002 全链抽检（遗漏率 0 / 结构可复用 / P1 修复）
+- [x] M4 Publish & Feedback Loop：3 Schema + 2 规则 + feedback_loop + task-002 闭环（详见 tests/m4-report.md）
 - [ ] P2：CTA 平台化模板
 - [ ] observe 占比校准：Phase 4 真实数据回填后校正阈值/权重
-- [ ] M4：Publish & Feedback Loop（plan §6）
+- [ ] 真实数据回填 30+ 已完成任务：summary 结论正式化（plan §6.6）
+- [ ] M5：Adaptive Agent（plan §7）
 
 ---
 

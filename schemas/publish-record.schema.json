@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/publish-record.schema.json",
+  "title": "PublishRecord",
+  "description": "广告发布完成记录。记录『任务实际执行的结果』：真实工时、真实修改轮次、真实结算收入。版本：v1",
+  "type": "object",
+  "required": [
+    "publish_id",
+    "task_id",
+    "account_id",
+    "decision_id",
+    "publish_time",
+    "status"
+  ],
+  "properties": {
+    "publish_id": {
+      "type": "string"
+    },
+
+    "task_id": {
+      "type": "string"
+    },
+
+    "account_id": {
+      "type": "string"
+    },
+
+    "decision_id": {
+      "type": "string"
+    },
+
+    "content_id": {
+      "type": ["string", "null"],
+      "description": "内容产物 ID（如 DRF-*/ 稿件自编号），未记录可为 null"
+    },
+
+    "publish_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "实际发布时间"
+    },
+
+    "status": {
+      "type": "string",
+      "enum": ["published", "canceled", "rejected"],
+      "description": "published=已发布；canceled=接单后取消；rejected=发布被平台/品牌拒"
+    },
+
+    "actual_production_hours": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "实际生产工时（策划+拍摄+剪辑+审核+修改），null=未记录"
+    },
+
+    "revision_count": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "实际修改轮次，null=未记录"
+    },
+
+    "actual_revenue": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "实际到账/结算收入（按结算结果，非报价），null=未结算"
+    },
+
+    "revenue_notes": {
+      "type": ["string", "null"],
+      "description": "结算口径说明（如：固定费 800 已结，佣金 5% 未产生）"
+    },
+
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

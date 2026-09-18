@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/performance-record.schema.json",
+  "title": "PerformanceRecord",
+  "description": "发布后平台表现数据采集。记录指标与观察窗口，缺失指标必须为 null（不编造）。版本：v1",
+  "type": "object",
+  "required": [
+    "performance_id",
+    "publish_id",
+    "task_id",
+    "window_hours",
+    "collected_at",
+    "metrics",
+    "source"
+  ],
+  "properties": {
+    "performance_id": {
+      "type": "string"
+    },
+
+    "publish_id": {
+      "type": "string"
+    },
+
+    "task_id": {
+      "type": "string"
+    },
+
+    "window_hours": {
+      "type": ["integer", "null"],
+      "description": "采集窗口（发布后第 N 小时），同任务多次回填以最新窗口覆盖"
+    },
+
+    "collected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "views":       { "type": ["integer", "null"], "minimum": 0 },
+        "likes":       { "type": ["integer", "null"], "minimum": 0 },
+        "comments":    { "type": ["integer", "null"], "minimum": 0 },
+        "saves":       { "type": ["integer", "null"], "minimum": 0 },
+        "shares":      { "type": ["integer", "null"], "minimum": 0 },
+        "clicks":      { "type": ["integer", "null"], "minimum": 0 },
+        "conversion":  { "type": ["integer", "null"], "minimum": 0 },
+        "revenue":     { "type": ["number", "null"], "minimum": 0 }
+      },
+      "description": "平台侧可获取到的计数（无数据则为 null）"
+    },
+
+    "engagement_rate": {
+      "type": ["number", "null"],
+      "description": "互动率 = (likes+comments+saves+shares)/views，工具计算"
+    },
+
+    "source": {
+      "type": "string",
+      "description": "数据来源（如 人工录入 / 平台导出）"
+    },
+
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

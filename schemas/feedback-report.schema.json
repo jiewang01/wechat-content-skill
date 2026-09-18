@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/feedback-report.schema.json",
+  "title": "FeedbackReport",
+  "description": "发布复盘报告（Postmortem）。回答『预测准不准、哪里错、下一次参数怎么调整』，并携带对 AccountProfile / Cost Model 的更新提案。版本：v1",
+  "type": "object",
+  "required": [
+    "feedback_id",
+    "task_id",
+    "publish_id",
+    "decision_id",
+    "campaign_category",
+    "content_angle",
+    "prediction_vs_actual",
+    "what_worked",
+    "what_failed",
+    "errors",
+    "next_recommendations",
+    "model_update_proposals",
+    "created_at"
+  ],
+  "properties": {
+    "feedback_id": {
+      "type": "string"
+    },
+
+    "task_id": {
+      "type": "string"
+    },
+
+    "publish_id": {
+      "type": "string"
+    },
+
+    "decision_id": {
+      "type": "string"
+    },
+
+    "campaign_category": {
+      "type": "string",
+      "description": "品类快照（用于跨任务聚合）"
+    },
+
+    "content_angle": {
+      "type": "string",
+      "description": "内容角度快照（来自 Brief，用于跨任务聚合）"
+    },
+
+    "prediction_vs_actual": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["metric", "source"],
+        "properties": {
+          "metric": { "type": "string" },
+          "prediction": { "type": ["number", "null"] },
+          "actual": { "type": ["number", "null"] },
+          "delta_pct": { "type": ["number", "null"] },
+          "source": { "type": "string", "description": "预测基线来源，no_baseline=无基线不预测" },
+          "verdict": {
+            "type": "string",
+            "enum": ["in_line", "above_baseline", "below_baseline", "no_baseline"]
+          }
+        }
+      }
+    },
+
+    "what_worked": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "what_failed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "detail"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["prediction", "production", "content", "commercial"]
+          },
+          "detail": { "type": "string" },
+          "impact": { "type": "string", "enum": ["high", "medium", "low"] }
+        }
+      }
+    },
+
+    "confidence_verdict": {
+      "type": "string",
+      "description": "决策置信度 vs 实际结果的一致性格局（如 high-confidence-overrun / high-confidence-inline）"
+    },
+
+    "next_recommendations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "对下一次任务参数的调整建议（不是对本次任务的打分）"
+    },
+
+    "model_update_proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["target", "from", "to", "method", "rationale", "status"],
+        "properties": {
+          "target": { "type": "string", "description": "更新目标路径，如 account.performance.avg_production_hours" },
+          "from": { "type": ["number", "string", "null"] },
+          "to": { "type": ["number", "string", "null"] },
+          "method": { "type": "string", "enum": ["ema", "append", "replace", "noop"] },
+          "rationale": { "type": "string" },
+          "status": { "type": "string", "enum": ["proposed", "applied", "rejected"] }
+        }
+      }
+    },
+
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
