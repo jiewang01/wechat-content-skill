@@ -1,3 +1,3 @@
 ---
-name: wechat-ad-skill
+name: wechat-topic-skill
 ---
