@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-NB-20260918-015",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "某母婴品牌",
+    "product": "湿巾",
+    "category": "母婴"
+  },
+  "campaign": {
+    "objective": "新品宣发",
+    "target_audience": null,
+    "content_type": "图文代发",
+    "key_messages": [],
+    "mandatory_points": [
+      "不可修改文案与图片内容",
+      "笔记保留12个月",
+      "无需真人出镜"
+    ],
+    "forbidden_points": [
+      "不可修改文案与图片内容"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 30,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 30,
+    "settlement_rule": null
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文代发",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "交付后24小时内发布",
+      "提供全部文案+图片"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": 0,
+    "approval_required": null
+  },
+  "risk": {}
+}

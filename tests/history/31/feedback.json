@@ -1,0 +1,84 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-016",
+  "publish_id": "PUB-HIST-0031",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "美妆",
+  "content_angle": "B-产品差异",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 6500,
+      "source": "account.performance.median_views",
+      "actual": 7081,
+      "delta_pct": 8.9,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.08,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.1152,
+      "delta_pct": 44.0,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 3,
+      "source": "account.production.avg_production_hours",
+      "actual": 3.0,
+      "delta_pct": 0.0,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 4,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": null,
+      "source": "no_baseline(未报价/置换)",
+      "actual": null,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    }
+  ],
+  "what_worked": [],
+  "what_failed": [
+    "品牌修改 4 轮，超出预期"
+  ],
+  "errors": [
+    {
+      "type": "commercial",
+      "detail": "品牌修改频繁：实际 4 轮（上限 未设）",
+      "impact": "medium"
+    }
+  ],
+  "confidence_verdict": "high-confidence-inline",
+  "next_recommendations": [
+    "接单前要求品牌明确修改轮次上限"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6616,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 7081 vs 基线 6500，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；美妆 图文 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 美妆 图文 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.280227Z"
+}

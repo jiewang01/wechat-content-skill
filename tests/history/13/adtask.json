@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-NB-20260918-007",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "某母婴品牌",
+    "product": null,
+    "category": "母婴"
+  },
+  "campaign": {
+    "objective": "直播预告宣发",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [
+      "直播时间9月22日20:00",
+      "半价尿裤"
+    ],
+    "mandatory_points": [
+      "露出直播时间",
+      "露出直播福利关键词",
+      "含直播间入口链接"
+    ],
+    "forbidden_points": [
+      "不可使用'今晚'等模糊时间描述"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 60,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 60,
+    "settlement_rule": null
+  },
+  "production": {
+    "deadline": "2026-10-22T20:00:00Z",
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "发布后2小时内不可删除"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

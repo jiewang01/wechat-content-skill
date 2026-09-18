@@ -331,7 +331,7 @@ def build_report(adtask, account, decision, publish, performance, angle) -> dict
 # ---------------------------------------------------------------- summary
 
 def run_summary(feedback_dir: str) -> dict:
-    paths = sorted(glob.glob(os.path.join(feedback_dir, "*.json")))
+    paths = sorted(glob.glob(os.path.join(feedback_dir, "**", "*feedback*.json"), recursive=True))
     reports = [load_json(p) for p in paths]
     n = len(reports)
     out = {"sample_count": n, "note": "", "metrics": {}, "by_category": {}, "by_angle": {}, "confidence_verdicts": {}}

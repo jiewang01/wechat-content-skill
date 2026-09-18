@@ -1720,6 +1720,21 @@ Decision Optimization
 - 详细见 tests/m5-report.md
 ```
 
+## 2026-09-18 — Backlog 五项（M3~M5 遗留收口）
+
+```text
+1. CTA 平台化模板：PLATFORM_CTA 查表 + 兜底（官方承接位统一口径，禁止私域导流）；
+   brief-generator-rules v1.1；task-002/021 回归通过
+2. observe 校准：35 例数据集验证 A07 → production_hours +44.5% → confirm 级提案（0.15→0.18）
+3. 30+ 完成案例：tools/seed_history.py 生成 35 条 synthetic 历史（固定种子可复现）；
+   summary 六问全输出；递归 glob 修复；真实数据可同格式替换
+4. 拒单审计：audit-*.json + calibrate --audit FN 统计（task-012 拒单=0 FN，拒单正确）
+5. 自适应上生产：decision_engine --config（显式加载）+ apply-calibration
+   （confirm 落 engine_config.json + 权重重算回归）；修复权重归一化（总和=1），
+   回归 21 例分数微调、action 零翻转
+- 详细见 tests/backlog-report.md
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
@@ -1730,11 +1745,9 @@ Decision Optimization
 - [x] M3 验收：task-002 全链抽检（遗漏率 0 / 结构可复用 / P1 修复）
 - [x] M4 Publish & Feedback Loop：3 Schema + 2 规则 + feedback_loop + task-002 闭环（详见 tests/m4-report.md）
 - [x] M5 Adaptive Agent：version-log + adaptive-agent-rules + adaptive_agent（画像 v2/成本学习/校准/回放 counterfactual，详见 tests/m5-report.md）
-- [ ] P2：CTA 平台化模板
-- [ ] observe 占比校准：真实数据回填后校正阈值/权重（A07 达 ≥3 例转 confirm）
-- [ ] 真实数据回填 30+ 已完成任务：summary/校准结论正式化（plan §6.6）
-- [ ] 拒单审计回填：让 FN 评估可用（A08）
-- [ ] 自适应上生产：proposed→applied 自动化 + 权重重算回归（M5 后续）
+- [x] Backlog 五项：CTA 平台化 / 校准 confirm / 30+ 完成案例(synthetic) / 拒单审计 / 自适应上生产（详见 tests/backlog-report.md）
+- [ ] 真实运营数据替换 synthetic：summary/校准结论正式化（格式已就绪）
+- [ ] 全自动应用：proposed→applied 免人工确认（当前保持人工 gate）
 
 ---
 

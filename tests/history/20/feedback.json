@@ -1,0 +1,103 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-010",
+  "publish_id": "PUB-HIST-0020",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "数码",
+  "content_angle": "C-场景植入",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 45000,
+      "source": "account.performance.median_views",
+      "actual": 74318,
+      "delta_pct": 65.2,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.07,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.1561,
+      "delta_pct": 123.0,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 8,
+      "source": "account.production.avg_production_hours",
+      "actual": 12.9,
+      "delta_pct": 61.3,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 4,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": 2000,
+      "source": "adtask.commercial.creator_fee",
+      "actual": 2000,
+      "delta_pct": 0.0,
+      "verdict": "in_line"
+    }
+  ],
+  "what_worked": [
+    "阅读超基线（实际 74318 > 预测 45000）",
+    "互动率超基线（实际 0.1561 > 预测 0.07）"
+  ],
+  "what_failed": [
+    "生产成本低估（实际 12.9h > 基线 8h）",
+    "品牌修改 4 轮，超出预期"
+  ],
+  "errors": [
+    {
+      "type": "production",
+      "detail": "生产成本低估：实际 12.9h vs 基线 8h（delta +61%）",
+      "impact": "high"
+    },
+    {
+      "type": "commercial",
+      "detail": "品牌修改频繁：实际 4 轮（上限 未设）",
+      "impact": "medium"
+    }
+  ],
+  "confidence_verdict": "high-confidence-deviation",
+  "next_recommendations": [
+    "上调生产成本基线至 8.98h（见 model_update_proposals）",
+    "接单前要求品牌明确修改轮次上限",
+    "品类「数码」阅读超基线：可列为优先接单方向"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 8,
+      "to": 8.98,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "生产成本复盘偏差（实际 12.9h vs 基线 8h，基于 1 例）"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 45000,
+      "to": 50864,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 74318 vs 基线 45000，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "数码商单 ×8；硬件评测 ×5",
+      "to": "数码商单 ×8；硬件评测 ×5；数码 视频 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 数码 视频 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.261961Z"
+}

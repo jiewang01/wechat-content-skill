@@ -1,0 +1,26 @@
+{
+  "sample_count": 35,
+  "note": "样本充足，产出 confirm 级校准建议",
+  "production_hours": {
+    "n": 35,
+    "mean_delta_pct": 44.5
+  },
+  "false_positive_candidates": [],
+  "audit_summary": {
+    "n": 1,
+    "true_negative": 1,
+    "false_negative": 0,
+    "detail": "0/1 拒单判定为 FalseNegative（实际可接），具体任务：无"
+  },
+  "false_negative_note": "0/1 拒单判定为 FalseNegative（实际可接），具体任务：无",
+  "calibration_proposals": [
+    {
+      "target": "decision_engine.W.production_cost",
+      "from": 0.15,
+      "to": 0.18,
+      "status": "confirm",
+      "rationale": "35 例生产成本均值偏差 +44%（系统性低估），建议上调权重"
+    }
+  ],
+  "generated_at": "2026-09-18T08:41:45.151521Z"
+}

@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-NB-20260918-002",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "XX妍肌",
+    "product": null,
+    "category": "护肤"
+  },
+  "campaign": {
+    "objective": "图文种草",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [
+      "敏感肌可用"
+    ],
+    "mandatory_points": [
+      "产品露出",
+      "突出敏感肌可用卖点"
+    ],
+    "forbidden_points": [
+      "不得提竞品"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 800,
+    "commission": 5,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "佣金按链接成交 5%"
+  },
+  "production": {
+    "deadline": "2026-09-20T00:00:00Z",
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "真人出镜（可协商）"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": "需品牌审核通过后发布",
+    "revision_limit": null,
+    "approval_required": true
+  },
+  "risk": {}
+}

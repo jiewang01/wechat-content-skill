@@ -23,6 +23,16 @@ PLATFORM_STYLE = {
     "B站": "深度测评、参数实测、长视频脚本分段",
 }
 
+# CTA 平台化模板（P2 backlog 落地）：均走官方承接位，禁止私域导流
+PLATFORM_CTA = {
+    "公众号": "文末官方承接位（品牌方小程序/阅读原文链接），不引导私域加人",
+    "小红书": "评论区置顶/笔记内官方链接（品牌方提供承接位），不加个人微信",
+    "抖音": "小黄车/POI/官方话题组件（品牌方提供），不留个人联系方式",
+    "知乎": "文末官方链接卡片（品牌方提供承接位），不引导私信加人",
+    "B站": "简介/置顶评论官方链接（品牌方提供承接位），不引导私域",
+}
+DEFAULT_CTA = "引导至官方承接位/链接（按任务要求：官方短链或组件，禁止私域导流）"
+
 NOW = None
 
 
@@ -111,7 +121,7 @@ def build_brief(adtask, account, decision, ev_refs) -> dict:
         "content_angle": chosen[0],
         "hook": hook,
         "storyline": f"采用角度「{chosen[0]}」：{chosen[1]}",
-        "cta": "引导至官方承接位/链接（按任务要求：官方短链或组件，禁止私域导流）",
+        "cta": PLATFORM_CTA.get(plat, DEFAULT_CTA),
         "platform_style": PLATFORM_STYLE.get(plat, "按平台惯例"),
         "account_style": account_content.get("style") or "账号既定风格",
         "risk_checklist": risk_checklist,

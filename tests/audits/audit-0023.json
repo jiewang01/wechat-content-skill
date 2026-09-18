@@ -1,0 +1,9 @@
+{
+  "audit_id": "AUD-HIST-0023",
+  "task_id": "TASK-NB-20260918-012",
+  "decision_id": "DEC-20260918-0001",
+  "decided_action": "reject",
+  "verdict": "true_negative",
+  "evidence": "后续信息显示「医美」类任务在该平台表现稳定（synthetic 审计样本，拒单正确）",
+  "generated_at": "2026-09-18T08:38:43.267317Z"
+}

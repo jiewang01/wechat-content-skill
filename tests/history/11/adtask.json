@@ -1,0 +1,54 @@
+{
+  "task_id": "TASK-NB-20260918-006",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "净澈",
+    "product": "洗碗块",
+    "category": "家清洗护"
+  },
+  "campaign": {
+    "objective": "测评种草",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [],
+    "mandatory_points": [
+      "产品开箱照",
+      "使用前/后对比图",
+      "笔记保留至少6个月"
+    ],
+    "forbidden_points": [
+      "禁止夸大去污效果"
+    ]
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "报价以私信询价为准"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "寄样测评"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {
+    "claim_risk": "去污效果宣称需以'杀菌99%'为限，不得夸大"
+  }
+}

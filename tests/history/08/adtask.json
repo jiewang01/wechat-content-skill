@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-NB-20260918-004",
+  "source": {
+    "platform": "知乎",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "静界",
+    "product": "静界 Pro 降噪耳机",
+    "category": "数码"
+  },
+  "campaign": {
+    "objective": "知乎好物带货",
+    "target_audience": null,
+    "content_type": "图文回答",
+    "key_messages": [
+      "真实使用场景与听感描述"
+    ],
+    "mandatory_points": [
+      "字数1200字以上",
+      "插入商品链接",
+      "纯软文不标广告"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": 300,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 300,
+    "settlement_rule": "稿费到账时间以知乎提现规则为准"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文回答",
+    "word_count": 1200,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": []
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

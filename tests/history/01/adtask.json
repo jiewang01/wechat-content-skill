@@ -1,0 +1,51 @@
+{
+  "task_id": "TASK-NB-20260918-001",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "某品牌母婴",
+    "product": null,
+    "category": "母婴"
+  },
+  "campaign": {
+    "objective": "活动宣发",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [],
+    "mandatory_points": [
+      "水下图文（代发）",
+      "笔记需保留1年",
+      "自撰文案"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": 50,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 50,
+    "settlement_rule": null
+  },
+  "production": {
+    "deadline": "2026-10-05T00:00:00Z",
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "需要自己撰写文案",
+      "笔记需保留1年"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

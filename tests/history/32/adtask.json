@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-NB-20260918-017",
+  "source": {
+    "platform": "抖音",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "燃动",
+    "product": "线上训练营课程",
+    "category": "健身"
+  },
+  "campaign": {
+    "objective": "课程转化引流",
+    "target_audience": "一线城市用户优先",
+    "content_type": "短视频",
+    "key_messages": [],
+    "mandatory_points": [
+      "口播引导评论区领取30元优惠券",
+      "限发布区域：一线城市优先"
+    ],
+    "forbidden_points": [
+      "禁止'减脂必瘦''一周见效'等承诺性表述"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 300,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "按转化人数5元/人另计"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "短视频",
+    "word_count": null,
+    "image_count": null,
+    "video_required": true,
+    "special_requirements": [
+      "60秒内",
+      "官方素材包",
+      "虚拟商品无实物"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {
+    "claim_risk": "承诺性减肥表述有广告合规风险"
+  }
+}

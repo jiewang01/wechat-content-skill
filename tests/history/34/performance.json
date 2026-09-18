@@ -1,0 +1,20 @@
+{
+  "performance_id": "PERF-HIST-0034",
+  "publish_id": "PUB-HIST-0034",
+  "task_id": "TASK-NB-20260918-019",
+  "window_hours": 72,
+  "collected_at": "2026-08-22T10:00:00Z",
+  "metrics": {
+    "views": 4877,
+    "likes": 397,
+    "comments": 59,
+    "saves": 198,
+    "shares": 99,
+    "clicks": null,
+    "conversion": null,
+    "revenue": 180.0
+  },
+  "engagement_rate": null,
+  "source": "synthetic（机制验证数据集）",
+  "created_at": "2026-09-18T08:38:43.285911Z"
+}

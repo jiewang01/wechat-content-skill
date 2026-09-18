@@ -1,0 +1,54 @@
+{
+  "task_id": "TASK-NB-20260918-013",
+  "source": {
+    "platform": "抖音",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "星野物语",
+    "product": "手游",
+    "category": "游戏"
+  },
+  "campaign": {
+    "objective": "新游推广引流下载",
+    "target_audience": null,
+    "content_type": "短视频",
+    "key_messages": [
+      "公测福利"
+    ],
+    "mandatory_points": [
+      "口播+实机试玩60秒以上",
+      "露出游戏昵称与下载承接位",
+      "带#星野物语#标签"
+    ],
+    "forbidden_points": [
+      "禁止测评/吐槽向内容"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 500,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "按真实下载量每千1元另计"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "短视频",
+    "word_count": null,
+    "image_count": null,
+    "video_required": true,
+    "special_requirements": [
+      "需账号近30天平均播放≥5000"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

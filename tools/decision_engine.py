@@ -336,7 +336,13 @@ def main() -> int:
     ap.add_argument("--batch", action="store_true", help="批量跑 tests/cases/*.json，按平台选账号，输出 tests/decisions/")
     ap.add_argument("--no-baseline", action="store_true",
                     help="对抗回归：所有用例改用最小账号 data/account-minimal.json（无 performance 基线），验证 need_information")
+    ap.add_argument("--config", default=None,
+                    help="权重配置 JSON（自适应校准产物 tools/engine_config.json），覆盖内置 W；缺省用内置权重")
     args = ap.parse_args()
+
+    if args.config:
+        cfg = load_json(args.config)
+        W.update(cfg.get("weights") or {})  # 校准落配置：显式传入才生效（M02/A13 人工 gate）
 
     if args.batch:
         import pathlib

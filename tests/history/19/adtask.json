@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-NB-20260918-010",
+  "source": {
+    "platform": "B站",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "智测",
+    "product": "显示器",
+    "category": "数码"
+  },
+  "campaign": {
+    "objective": "产品测评种草",
+    "target_audience": null,
+    "content_type": "视频",
+    "key_messages": [],
+    "mandatory_points": [
+      "开箱环节",
+      "面板参数实测（色域/漏光）",
+      "游戏帧率测试"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": 2000,
+    "commission": null,
+    "bonus": 500,
+    "estimated_total_income": 2500,
+    "settlement_rule": "播放量阶梯加成：1万播+100元，上限500元（bonus=500）；需发票"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "视频",
+    "word_count": null,
+    "image_count": null,
+    "video_required": true,
+    "special_requirements": [
+      "5-8分钟",
+      "60天内发布"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {
+    "copyright_risk": "商业授权范围：站内视频授权6个月"
+  }
+}

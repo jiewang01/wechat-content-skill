@@ -1,0 +1,51 @@
+{
+  "task_id": "TASK-NB-20260918-009",
+  "source": {
+    "platform": "公众号",
+    "source_url": "https://www.newrank.cn/account/ade/application.html",
+    "captured_at": null
+  },
+  "brand": {
+    "name": "XX知识付费",
+    "product": null,
+    "category": "知识付费"
+  },
+  "campaign": {
+    "objective": "贴片广告投放",
+    "target_audience": null,
+    "content_type": "图文贴片",
+    "key_messages": [],
+    "mandatory_points": [
+      "图文必须为头条或二条"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "按新榜指数分级：20/50/80 元每条"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文贴片",
+    "word_count": null,
+    "image_count": 4,
+    "video_required": false,
+    "special_requirements": [
+      "投放时间：抢单后3日内完成推送"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [
+      "推送位置须为头条或二条，否则不结算",
+      "图片单张不超过2M"
+    ],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

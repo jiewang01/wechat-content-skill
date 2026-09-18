@@ -1,0 +1,48 @@
+{
+  "task_id": "TASK-NB-20260918-016",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "雾感",
+    "product": "粉底液+定妆喷雾",
+    "category": "美妆"
+  },
+  "campaign": {
+    "objective": "CPS带货",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [],
+    "mandatory_points": [
+      "标注2个商品链接",
+      "带话题#雾感底妆#",
+      "笔记保留6个月"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": 10,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "佣金按成交额10%，次月15日结算"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": []
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

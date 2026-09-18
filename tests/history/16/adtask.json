@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-NB-20260918-008",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "MOMO",
+    "product": "当季新款连衣裙",
+    "category": "服饰"
+  },
+  "campaign": {
+    "objective": "新品穿搭展示",
+    "target_audience": null,
+    "content_type": "图文+视频",
+    "key_messages": [],
+    "mandatory_points": [
+      "3张以上上身展示图",
+      "15秒穿搭视频",
+      "风格与店铺日系风格一致"
+    ],
+    "forbidden_points": [
+      "禁过度修图"
+    ]
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "以置换形式结算（衣服归博主），无额外稿费"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文+视频",
+    "word_count": null,
+    "image_count": 3,
+    "video_required": true,
+    "special_requirements": [
+      "款式与尺码由店铺指定",
+      "笔记保留3个月"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

@@ -1,0 +1,107 @@
+{
+  "decision_id": "DEC-20260918-0001",
+  "task_id": "TASK-NB-20260918-019",
+  "action": "observe",
+  "decision_score": 63.1,
+  "dimensions": {
+    "revenue": 60,
+    "account_fit": 60,
+    "production_cost": 60,
+    "opportunity_cost": 65,
+    "risk": 75
+  },
+  "reasons": [
+    {
+      "statement": "收益维度 60 分：计价方式: 200",
+      "evidence_refs": [
+        "EVD-20260918-0061",
+        "EVD-20260918-0062",
+        "EVD-20260918-0063"
+      ]
+    },
+    {
+      "statement": "账号匹配 60 分：受众匹配评估(品类=宠物, 目标人群='未指定')",
+      "evidence_refs": [
+        "EVD-20260918-0061",
+        "EVD-20260918-0062",
+        "EVD-20260918-0063"
+      ]
+    },
+    {
+      "statement": "不确定性：预估工时未写明",
+      "evidence_refs": [
+        "EVD-20260918-0061",
+        "EVD-20260918-0062",
+        "EVD-20260918-0063"
+      ]
+    },
+    {
+      "statement": "不确定性：修改轮次未写明",
+      "evidence_refs": [
+        "EVD-20260918-0061",
+        "EVD-20260918-0062",
+        "EVD-20260918-0063"
+      ]
+    },
+    {
+      "statement": "不确定性：截止未写明或长窗口，机会成本按中性评估",
+      "evidence_refs": [
+        "EVD-20260918-0061",
+        "EVD-20260918-0062",
+        "EVD-20260918-0063"
+      ]
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "补齐缺失信息后再决策",
+    "确认账号是否有同类历史样本"
+  ],
+  "confidence": {
+    "value": 0.795,
+    "status": "high",
+    "evidence_refs": [
+      "EVD-20260918-0061",
+      "EVD-20260918-0062",
+      "EVD-20260918-0063"
+    ],
+    "uncertainty_reasons": [
+      "预估工时未写明",
+      "修改轮次未写明",
+      "截止未写明或长窗口，机会成本按中性评估"
+    ]
+  },
+  "evidence_refs": [
+    "EVD-20260918-0061",
+    "EVD-20260918-0062",
+    "EVD-20260918-0063"
+  ],
+  "hard_constraints": [
+    {
+      "constraint": "H1 account_rejects_category",
+      "status": "pass"
+    },
+    {
+      "constraint": "H2 platform_mismatch",
+      "status": "pass"
+    },
+    {
+      "constraint": "H3 mandatory_forbidden_clash",
+      "status": "pass",
+      "detail": null
+    },
+    {
+      "constraint": "H4 deadline_feasible",
+      "status": "pass"
+    },
+    {
+      "constraint": "H5 compliance_acceptable",
+      "status": "pass"
+    },
+    {
+      "constraint": "H6 capability_gate",
+      "status": "pass"
+    }
+  ],
+  "created_at": "2026-09-18T07:38:47.205119Z"
+}

@@ -1,0 +1,110 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-010",
+  "publish_id": "PUB-HIST-0019",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "数码",
+  "content_angle": "B-产品差异",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 45000,
+      "source": "account.performance.median_views",
+      "actual": 82403,
+      "delta_pct": 83.1,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.07,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.1652,
+      "delta_pct": 136.0,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 8,
+      "source": "account.production.avg_production_hours",
+      "actual": 11.2,
+      "delta_pct": 40.0,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 4,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": 2000,
+      "source": "adtask.commercial.creator_fee",
+      "actual": 1800.0,
+      "delta_pct": -10.0,
+      "verdict": "in_line"
+    }
+  ],
+  "what_worked": [
+    "阅读超基线（实际 82403 > 预测 45000）",
+    "互动率超基线（实际 0.1652 > 预测 0.07）"
+  ],
+  "what_failed": [
+    "生产成本低估（实际 11.2h > 基线 8h）",
+    "品牌修改 4 轮，超出预期",
+    "结算低于报价（1800.0 < 2000）"
+  ],
+  "errors": [
+    {
+      "type": "production",
+      "detail": "生产成本低估：实际 11.2h vs 基线 8h（delta +40%）",
+      "impact": "high"
+    },
+    {
+      "type": "commercial",
+      "detail": "品牌修改频繁：实际 4 轮（上限 未设）",
+      "impact": "medium"
+    },
+    {
+      "type": "commercial",
+      "detail": "结算低于报价：实际 1800.0 < 报价 2000",
+      "impact": "low"
+    }
+  ],
+  "confidence_verdict": "high-confidence-deviation",
+  "next_recommendations": [
+    "上调生产成本基线至 8.64h（见 model_update_proposals）",
+    "接单前要求品牌明确修改轮次上限",
+    "核对佣金/结算条件后再接同类任务",
+    "品类「数码」阅读超基线：可列为优先接单方向"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 8,
+      "to": 8.64,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "生产成本复盘偏差（实际 11.2h vs 基线 8h，基于 1 例）"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 45000,
+      "to": 52481,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 82403 vs 基线 45000，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "数码商单 ×8；硬件评测 ×5",
+      "to": "数码商单 ×8；硬件评测 ×5；数码 视频 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 数码 视频 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.260441Z"
+}

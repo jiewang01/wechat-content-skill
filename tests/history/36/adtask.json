@@ -1,0 +1,55 @@
+{
+  "task_id": "TASK-NB-20260918-021",
+  "source": {
+    "platform": "公众号",
+    "source_url": "https://a.newrank.cn/center/#/detail/tender?fakeId=41EF5E4C9D9848001CB68E9ED881CB36",
+    "captured_at": null
+  },
+  "brand": {
+    "name": "新榜项目（广告主未署名）",
+    "product": null,
+    "category": "财富"
+  },
+  "campaign": {
+    "objective": null,
+    "target_audience": "男女比例：男粉多",
+    "content_type": "公众号图文",
+    "key_messages": [],
+    "mandatory_points": [
+      "文案温和，不伤粉"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "阅读单价 0.5025 元/阅读；推文后 48 小时结算（CPM 计费形态，收入=阅读数×0.5025）"
+  },
+  "production": {
+    "deadline": "2027-05-01T00:00:00Z",
+    "estimated_hours": null,
+    "content_format": "公众号图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "推广期为 2025-10-07 至 2027-05-01，此为可接单/履行窗口"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [
+      "公众号类型须为财富类",
+      "男女比例：男粉多",
+      "阅读数门槛：不低于 100",
+      "接单频率：接过该广告主其他项目后须隔 30 天再接单"
+    ],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {
+    "account_reputation_risk": "'不伤粉'要求文案温和；财富类内容存在平台限流与敏感表述风险（依据未写明，属推断）"
+  }
+}

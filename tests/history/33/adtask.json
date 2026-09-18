@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-NB-20260918-018",
+  "source": {
+    "platform": "公众号",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "清欢",
+    "product": "空气净化器",
+    "category": "家电"
+  },
+  "campaign": {
+    "objective": "贴片广告投放",
+    "target_audience": "母婴家庭",
+    "content_type": "公众号图文",
+    "key_messages": [
+      "母婴适用"
+    ],
+    "mandatory_points": [
+      "头条或二条均可",
+      "正文600-800字围绕母婴适用"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": 50,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 50,
+    "settlement_rule": "按新榜指数700-800档50元/条结算"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "公众号图文",
+    "word_count": 700,
+    "image_count": 2,
+    "video_required": false,
+    "special_requirements": [
+      "抢单后3天内推送"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [
+      "推送须为头条或二条"
+    ],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

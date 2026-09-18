@@ -1,0 +1,104 @@
+{
+  "decision_id": "DEC-20260918-0001",
+  "task_id": "TASK-NB-20260918-002",
+  "action": "accept",
+  "decision_score": 72.3,
+  "dimensions": {
+    "revenue": 80,
+    "account_fit": 61,
+    "production_cost": 60,
+    "opportunity_cost": 40,
+    "risk": 95
+  },
+  "reasons": [
+    {
+      "statement": "收益维度 80 分：计价方式: 800",
+      "evidence_refs": [
+        "EVD-20260918-0005",
+        "EVD-20260918-0006",
+        "EVD-20260918-0007",
+        "EVD-20260918-0008"
+      ]
+    },
+    {
+      "statement": "账号匹配 61 分：受众匹配评估(品类=护肤, 目标人群='未指定')",
+      "evidence_refs": [
+        "EVD-20260918-0005",
+        "EVD-20260918-0006",
+        "EVD-20260918-0007",
+        "EVD-20260918-0008"
+      ]
+    },
+    {
+      "statement": "不确定性：预估工时未写明",
+      "evidence_refs": [
+        "EVD-20260918-0005",
+        "EVD-20260918-0006",
+        "EVD-20260918-0007",
+        "EVD-20260918-0008"
+      ]
+    },
+    {
+      "statement": "不确定性：修改轮次未写明",
+      "evidence_refs": [
+        "EVD-20260918-0005",
+        "EVD-20260918-0006",
+        "EVD-20260918-0007",
+        "EVD-20260918-0008"
+      ]
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "生成 Campaign Brief",
+    "确认品牌审核规则"
+  ],
+  "confidence": {
+    "value": 0.855,
+    "status": "high",
+    "evidence_refs": [
+      "EVD-20260918-0005",
+      "EVD-20260918-0006",
+      "EVD-20260918-0007",
+      "EVD-20260918-0008"
+    ],
+    "uncertainty_reasons": [
+      "预估工时未写明",
+      "修改轮次未写明"
+    ]
+  },
+  "evidence_refs": [
+    "EVD-20260918-0005",
+    "EVD-20260918-0006",
+    "EVD-20260918-0007",
+    "EVD-20260918-0008"
+  ],
+  "hard_constraints": [
+    {
+      "constraint": "H1 account_rejects_category",
+      "status": "pass"
+    },
+    {
+      "constraint": "H2 platform_mismatch",
+      "status": "pass"
+    },
+    {
+      "constraint": "H3 mandatory_forbidden_clash",
+      "status": "pass",
+      "detail": null
+    },
+    {
+      "constraint": "H4 deadline_feasible",
+      "status": "pass"
+    },
+    {
+      "constraint": "H5 compliance_acceptable",
+      "status": "pass"
+    },
+    {
+      "constraint": "H6 capability_gate",
+      "status": "pass"
+    }
+  ],
+  "created_at": "2026-09-18T07:38:47.195050Z"
+}

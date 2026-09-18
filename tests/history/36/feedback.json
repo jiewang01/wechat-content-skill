@@ -1,0 +1,94 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-021",
+  "publish_id": "PUB-HIST-0036",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "财富",
+  "content_angle": "A-人群共鸣",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 1200,
+      "source": "account.performance.median_views",
+      "actual": 1441,
+      "delta_pct": 20.1,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.04,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.102,
+      "delta_pct": 155.0,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 2.5,
+      "source": "account.production.avg_production_hours",
+      "actual": 4.4,
+      "delta_pct": 76.0,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 1,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": 603.0,
+      "source": "median_views×阅读单价(CPM估算)",
+      "actual": null,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    }
+  ],
+  "what_worked": [
+    "互动率超基线（实际 0.102 > 预测 0.04）"
+  ],
+  "what_failed": [
+    "生产成本低估（实际 4.4h > 基线 2.5h）"
+  ],
+  "errors": [
+    {
+      "type": "production",
+      "detail": "生产成本低估：实际 4.4h vs 基线 2.5h（delta +76%）",
+      "impact": "high"
+    }
+  ],
+  "confidence_verdict": "high-confidence-deviation",
+  "next_recommendations": [
+    "上调生产成本基线至 2.88h（见 model_update_proposals）"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 2.5,
+      "to": 2.88,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "生产成本复盘偏差（实际 4.4h vs 基线 2.5h，基于 1 例）"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1248,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 1441 vs 基线 1200，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；财富 公众号图文 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 财富 公众号图文 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.290298Z"
+}

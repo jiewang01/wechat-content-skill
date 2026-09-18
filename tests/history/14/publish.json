@@ -1,0 +1,14 @@
+{
+  "publish_id": "PUB-HIST-0014",
+  "task_id": "TASK-NB-20260918-007",
+  "account_id": "ACCOUNT-XHS-001",
+  "decision_id": "DEC-20260918-0001",
+  "content_id": null,
+  "publish_time": "2026-08-08T14:00:00Z",
+  "status": "published",
+  "actual_production_hours": 4.7,
+  "revision_count": 0,
+  "actual_revenue": 60,
+  "revenue_notes": "固定费按报价结清",
+  "created_at": "2026-09-18T08:38:43.251358Z"
+}

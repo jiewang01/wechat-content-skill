@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-NB-20260918-011",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "脆脆星球",
+    "product": "薯脆",
+    "category": "食品"
+  },
+  "campaign": {
+    "objective": "试吃种草",
+    "target_audience": null,
+    "content_type": "图文",
+    "key_messages": [
+      "真实试吃感受"
+    ],
+    "mandatory_points": [
+      "真实试吃感受"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": null,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "无稿费，实物置换（寄样2袋）"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文",
+    "word_count": null,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "寄样2袋"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {}
+}

@@ -1,0 +1,54 @@
+{
+  "task_id": "TASK-NB-20260918-019",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "鲜本",
+    "product": "主粮1.5kg",
+    "category": "宠物"
+  },
+  "campaign": {
+    "objective": "种草带货",
+    "target_audience": null,
+    "content_type": "图文或视频",
+    "key_messages": [],
+    "mandatory_points": [
+      "需宠物自然出镜",
+      "需添加官方链接",
+      "笔记保留4个月"
+    ],
+    "forbidden_points": [
+      "禁止医疗功效宣称"
+    ]
+  },
+  "commercial": {
+    "creator_fee": 200,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": 550,
+    "settlement_rule": "寄样主粮价值约350元+稿费200元"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文或视频",
+    "word_count": 400,
+    "image_count": null,
+    "video_required": false,
+    "special_requirements": [
+      "图文≥400字含喂食对比 或 视频20秒以上含宠物体态展示"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": null,
+    "revision_limit": null,
+    "approval_required": null
+  },
+  "risk": {
+    "claim_risk": "宠物粮医疗功效宣称有合规风险"
+  }
+}

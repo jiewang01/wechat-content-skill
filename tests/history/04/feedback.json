@@ -1,0 +1,94 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-002",
+  "publish_id": "PUB-HIST-0004",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "护肤",
+  "content_angle": "B-产品差异",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 6500,
+      "source": "account.performance.median_views",
+      "actual": 6097,
+      "delta_pct": -6.2,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.08,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.1719,
+      "delta_pct": 114.9,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 3,
+      "source": "account.production.avg_production_hours",
+      "actual": 5.0,
+      "delta_pct": 66.7,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 1,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": 800,
+      "source": "adtask.commercial.creator_fee",
+      "actual": 800,
+      "delta_pct": 0.0,
+      "verdict": "in_line"
+    }
+  ],
+  "what_worked": [
+    "互动率超基线（实际 0.1719 > 预测 0.08）"
+  ],
+  "what_failed": [
+    "生产成本低估（实际 5.0h > 基线 3h）"
+  ],
+  "errors": [
+    {
+      "type": "production",
+      "detail": "生产成本低估：实际 5.0h vs 基线 3h（delta +67%）",
+      "impact": "high"
+    }
+  ],
+  "confidence_verdict": "high-confidence-deviation",
+  "next_recommendations": [
+    "上调生产成本基线至 3.4h（见 model_update_proposals）"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.4,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "生产成本复盘偏差（实际 5.0h vs 基线 3h，基于 1 例）"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6419,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 6097 vs 基线 6500，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；护肤 图文 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 护肤 图文 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.233650Z"
+}

@@ -1,0 +1,51 @@
+{
+  "task_id": "TASK-NB-20260918-014",
+  "source": {
+    "platform": "小红书",
+    "source_url": null,
+    "captured_at": null
+  },
+  "brand": {
+    "name": "蓝湾",
+    "product": "度假酒店",
+    "category": "旅游"
+  },
+  "campaign": {
+    "objective": "酒店种草引流",
+    "target_audience": null,
+    "content_type": "图文+视频",
+    "key_messages": [],
+    "mandatory_points": [
+      "图文2篇（外观/泳池/房内/早餐）",
+      "视频1条30秒以上",
+      "配合官方拍摄时间表"
+    ],
+    "forbidden_points": []
+  },
+  "commercial": {
+    "creator_fee": 800,
+    "commission": null,
+    "bonus": null,
+    "estimated_total_income": null,
+    "settlement_rule": "住宿置换+交通补贴800元"
+  },
+  "production": {
+    "deadline": null,
+    "estimated_hours": null,
+    "content_format": "图文+视频",
+    "word_count": null,
+    "image_count": null,
+    "video_required": true,
+    "special_requirements": [
+      "限常驻东南亚或可自付机票者",
+      "地点：泰国普吉"
+    ]
+  },
+  "requirements": {
+    "platform_rules": [],
+    "brand_review": "发布前需酒店市场部审核",
+    "revision_limit": null,
+    "approval_required": true
+  },
+  "risk": {}
+}

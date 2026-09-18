@@ -1,0 +1,101 @@
+{
+  "feedback_id": "FDB-20260918-0001",
+  "task_id": "TASK-NB-20260918-003",
+  "publish_id": "PUB-HIST-0005",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_category": "餐饮",
+  "content_angle": "C-场景植入",
+  "prediction_vs_actual": [
+    {
+      "metric": "views",
+      "prediction": 6500,
+      "source": "account.performance.median_views",
+      "actual": 8903,
+      "delta_pct": 37.0,
+      "verdict": "in_line"
+    },
+    {
+      "metric": "engagement_rate",
+      "prediction": 0.08,
+      "source": "account.performance.avg_engagement_rate",
+      "actual": 0.1742,
+      "delta_pct": 117.7,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "production_hours",
+      "prediction": 3,
+      "source": "account.production.avg_production_hours",
+      "actual": 6.2,
+      "delta_pct": 106.7,
+      "verdict": "above_baseline"
+    },
+    {
+      "metric": "revision_count",
+      "prediction": null,
+      "source": "no_baseline",
+      "actual": 3,
+      "delta_pct": null,
+      "verdict": "no_baseline"
+    },
+    {
+      "metric": "revenue",
+      "prediction": 100,
+      "source": "adtask.commercial.creator_fee",
+      "actual": 100,
+      "delta_pct": 0.0,
+      "verdict": "in_line"
+    }
+  ],
+  "what_worked": [
+    "互动率超基线（实际 0.1742 > 预测 0.08）"
+  ],
+  "what_failed": [
+    "生产成本低估（实际 6.2h > 基线 3h）",
+    "品牌修改 3 轮，超出预期"
+  ],
+  "errors": [
+    {
+      "type": "production",
+      "detail": "生产成本低估：实际 6.2h vs 基线 3h（delta +107%）",
+      "impact": "high"
+    },
+    {
+      "type": "commercial",
+      "detail": "品牌修改频繁：实际 3 轮（上限 未设）",
+      "impact": "medium"
+    }
+  ],
+  "confidence_verdict": "high-confidence-deviation",
+  "next_recommendations": [
+    "上调生产成本基线至 3.64h（见 model_update_proposals）",
+    "接单前要求品牌明确修改轮次上限"
+  ],
+  "model_update_proposals": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.64,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "生产成本复盘偏差（实际 6.2h vs 基线 3h，基于 1 例）"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6981,
+      "method": "ema",
+      "status": "proposed",
+      "rationale": "阅读复盘偏差（实际 8903 vs 基线 6500，基于 1 例）"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；餐饮 视频+图文 ×1",
+      "method": "append",
+      "status": "proposed",
+      "rationale": "已发布 餐饮 视频+图文 内容，追加历史样本（基于 1 例）"
+    }
+  ],
+  "created_at": "2026-09-18T08:38:43.235664Z"
+}

@@ -183,8 +183,8 @@ def run_cost_predict(task_path, account_path, out_path=None) -> int:
 
 # ---------------------------------------------------------------- calibrate
 
-def run_calibrate(feedback_dir: str, out_path=None) -> int:
-    paths = sorted(glob.glob(os.path.join(feedback_dir, "*.json")))
+def run_calibrate(feedback_dir: str, out_path=None, audit_dir=None) -> int:
+    paths = sorted(glob.glob(os.path.join(feedback_dir, "**", "*feedback*.json"), recursive=True))
     reports = [load_json(p) for p in paths]
     n = len(reports)
 
@@ -219,13 +219,31 @@ def run_calibrate(feedback_dir: str, out_path=None) -> int:
         if has_low_rev and row:
             fp.append({"task_id": r.get("task_id"), "why": "结算低于报价且阅读低于基线（A08 FP 候选）"})
 
+    # 拒单审计（A08/A14）：reject/need_information 未接任务的回访
+    audits = []
+    if audit_dir and os.path.isdir(audit_dir):
+        for p in sorted(glob.glob(os.path.join(audit_dir, "*.json"))):
+            try:
+                audits.append(load_json(p))
+            except Exception:
+                continue
+    fn = [a for a in audits if a.get("verdict") == "false_negative"]
+    tn = [a for a in audits if a.get("verdict") == "true_negative"]
+    if audits:
+        fn_summary = f"{len(fn)}/{len(audits)} 拒单判定为 FalseNegative（实际可接），具体任务：" + \
+                     ("，".join(a.get("task_id", "?") for a in fn) if fn else "无")
+    else:
+        fn_summary = "无法评估：缺拒单审计数据（A08/A14，需回填 reject/observe 未接任务的实际表现）"
+
     result = {
         "sample_count": n,
         "note": note,
         "production_hours": {"n": len(hours),
                              "mean_delta_pct": round(sum(h["delta_pct"] for h in hours) / len(hours), 1) if hours else None},
         "false_positive_candidates": fp,
-        "false_negative_note": "无法评估：缺拒单审计数据（A08/A14，需回填 reject/observe 未接任务的实际表现）",
+        "audit_summary": {"n": len(audits), "true_negative": len(tn), "false_negative": len(fn),
+                          "detail": fn_summary},
+        "false_negative_note": fn_summary,
         "calibration_proposals": cal,
         "generated_at": now_iso(),
     }
@@ -308,6 +326,72 @@ def run_debug(adtask_path, account_path, decision_path, feedback_path, out_path=
     return 0
 
 
+# ---------------------------------------------------------------- apply-calibration
+
+def run_apply_calibration(report_path: str, config_out: str, regress_out: str) -> int:
+    """自适应上生产（M5 遗留落地）：
+    1) 将 calibrate 输出中 status=confirm 的权重提案落配置 tools/engine_config.json；
+    2) 权重重算回归：内置权重 vs 新权重跑全量 cases，对比 action/score 变化。
+    显式 --config 才被决策引擎加载（M02/A13 人工 gate 双重保障）。"""
+    report = load_json(report_path)
+    confirms = [c for c in report.get("calibration_proposals", []) if c.get("status") == "confirm"]
+    if not confirms:
+        print("[apply-calibration] 无 confirm 级提案（校准未达样本门槛），不生成配置")
+        return 1
+
+    import pathlib
+    from decision_engine import W as _W, build_decision, select_account
+
+    rationales = "；".join(f"{c['from']}→{c['to']}：{c.get('rationale','')}" for c in confirms)
+    weights = dict(_W)
+    for c in confirms:
+        weights[c["target"].split(".")[-1]] = c["to"]
+    # 权重保持归一化（总和=1）：避免确认调整后 score 系统性上浮/下移
+    total = sum(weights.values())
+    if abs(total - 1.0) > 1e-9:
+        weights = {k: round(v / total, 4) for k, v in weights.items()}
+    config = {
+        "meta": {"version": "v1.1", "applied_at": now_iso(),
+                 "sample_count": report.get("sample_count"),
+                 "source": "adaptive_agent.apply-calibration（calibrate confirm 级提案）",
+                 "rationale": rationales},
+        "weights": weights,
+    }
+    dump_json(config_out, config)
+
+    def _batch() -> dict:
+        res = {}
+        for p in sorted(pathlib.Path("tests/cases").glob("task-*.json")):
+            case = load_json(p)
+            adtask = case["expected_adtask"]
+            evs = case.get("expected_evidence") or []
+            d = build_decision(adtask, select_account(adtask), evs)
+            res[p.stem] = (d["action"], d["decision_score"])
+        return res
+
+    old_res = _batch()
+    old_w = dict(_W)          # 备份内置权重，供回归后恢复（防污染）
+    _W.update(weights)
+    new_res = _batch()
+    _W.clear(); _W.update(old_w)
+
+    changed = []
+    for k in old_res:
+        if old_res[k] != new_res[k]:
+            changed.append({"case": k, "action": {"from": old_res[k][0], "to": new_res[k][0]},
+                            "score": {"from": old_res[k][1], "to": new_res[k][1]}})
+    regress = {"config_version": config["meta"]["version"], "cases_total": len(old_res),
+               "cases_changed": len(changed), "changes": changed,
+               "generated_at": now_iso()}
+    dump_json(regress_out, regress)
+
+    print(f"[apply-calibration] config -> {config_out}（{len(confirms)} 条 confirm 应用）")
+    print(f"[apply-calibration] regression -> {regress_out}（{len(changed)}/{len(old_res)} 例 action/score 变化）")
+    for c in changed:
+        print(f"   {c['case']}: {c['action']['from']}/{c['score']['from']} -> {c['action']['to']}/{c['score']['to']}")
+    return 0
+
+
 # ---------------------------------------------------------------- main
 
 def main() -> int:
@@ -325,8 +409,9 @@ def main() -> int:
     c.add_argument("--account", required=True)
     c.add_argument("--out", default=None)
 
-    k = sub.add_parser("calibrate", help="用历史复盘校准决策参数（A07 样本门槛）")
+    k = sub.add_parser("calibrate", help="用历史复盘校准决策参数（A07 样本门槛）；--audit 纳拒单审计 FN 统计")
     k.add_argument("--feedback", required=True)
+    k.add_argument("--audit", default=None)
     k.add_argument("--out", default=None)
 
     d = sub.add_parser("debug", help="决策回放：Task→Evidence→Analysis→Score→Decision→Actual + Counterfactual")
@@ -336,6 +421,11 @@ def main() -> int:
     d.add_argument("--feedback", required=True)
     d.add_argument("--out", default=None)
 
+    a = sub.add_parser("apply-calibration", help="校准 confirm 落配置 + 权重重算回归（自适应上生产）")
+    a.add_argument("--report", required=True)
+    a.add_argument("--config-out", default="tools/engine_config.json")
+    a.add_argument("--regress-out", default="tests/calibration-regression.json")
+
     args = ap.parse_args()
 
     if args.cmd == "profile-update":
@@ -343,9 +433,11 @@ def main() -> int:
     if args.cmd == "cost-predict":
         return run_cost_predict(args.task, args.account, args.out)
     if args.cmd == "calibrate":
-        return run_calibrate(args.feedback, args.out)
+        return run_calibrate(args.feedback, args.out, args.audit)
     if args.cmd == "debug":
         return run_debug(args.adtask, args.account, args.decision, args.feedback, args.out)
+    if args.cmd == "apply-calibration":
+        return run_apply_calibration(args.report, args.config_out, args.regress_out)
     return 1
 
 
