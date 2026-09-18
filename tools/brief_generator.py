@@ -92,6 +92,13 @@ def build_brief(adtask, account, decision, ev_refs) -> dict:
     if unknown_notes:
         risk_checklist.append("待确认项：%s" % "；".join(unknown_notes[:3]))
 
+    # hook 按角度生成：有 USP 优先引用卖点，否则用人群利益点占位
+    if chosen[0] == "B-产品差异" and usp:
+        hook = f"围绕核心点「{usp[0]}」，用一句话点明与普通产品的差异"
+    elif chosen[0] == "A-人群共鸣":
+        hook = "从目标人群最关心的利益点直接提问式开场"
+    else:
+        hook = "从日常场景切入，自然引出主题"
     return {
         "brief_id": "BRF-20260918-0001",
         "task_id": adtask.get("task_id"),
@@ -102,7 +109,7 @@ def build_brief(adtask, account, decision, ev_refs) -> dict:
         "mandatory_claims": mandatory,
         "forbidden_claims": forbidden,
         "content_angle": chosen[0],
-        "hook": "用一句与读者利益强相关的话开场（草稿阶段人工打磨）",
+        "hook": hook,
         "storyline": f"采用角度「{chosen[0]}」：{chosen[1]}",
         "cta": "引导至官方承接位/链接（按任务要求：官方短链或组件，禁止私域导流）",
         "platform_style": PLATFORM_STYLE.get(plat, "按平台惯例"),
@@ -120,6 +127,7 @@ def build_draft(brief, adtask) -> dict:
     brand = adtask.get("brand") or {}
     brand_name = brand.get("name") or "品牌"
     product = brand.get("product") or "产品"
+    plat = adtask.get("source", {}).get("platform") or "公众号"
 
     claims = brief["mandatory_claims"]
     claim_block = "；".join(claims) if claims else "（按任务要求补充必选点）"
@@ -127,7 +135,7 @@ def build_draft(brief, adtask) -> dict:
 
     body = (
         f"# 草稿（DRAFT — 需人工补全并审核）\n\n"
-        f"标题（待拟定）：关于{product}，理性财富信息你需要知道的 N 件事\n\n"
+        f"标题（待拟定）：关于{product}，你需要了解的 N 件事\n\n"
         f"正文骨架：\n"
         f"1. 开头钩子：{brief['hook']}\n"
         f"2. 主体段落：围绕「{brief['content_angle']}」展开，必须覆盖：{claim_block}\n"
@@ -142,9 +150,81 @@ def build_draft(brief, adtask) -> dict:
         "brief_id": brief["brief_id"],
         "brand": brand_name,
         "product": product,
-        "format": "公众号图文（约 600-800 字）",
+        "platform": plat,
+        "format": f"{plat} 图文（约 600-800 字）",
         "content": body,
         "is_draft": True,
+        "generated_at": now_iso(),
+    }
+
+
+def build_full_draft(brief, adtask, account) -> dict:
+    """按 Brief 生成结构化完整草稿（模板风格文案，供人工改写，非成品）。"""
+    brand = adtask.get("brand") or {}
+    brand_name = brand.get("name") or "品牌"
+    product = brand.get("product") or "【产品名待品牌确认】"
+    plat = adtask.get("source", {}).get("platform") or "公众号"
+    claims = brief["mandatory_claims"]
+    usp = brief["product_usp"] or ["核心卖点（待品牌确认）"]
+    forb = brief["forbidden_claims"]
+    forb_line = ("；".join(forb)) if forb else "（本任务未列禁用点，需与品牌复核）"
+
+    if plat == "小红书":
+        title = f"自用分享 | {product}到底值不值得买？（敏感肌实测向）"
+        body = (
+            f"【自用分享】作为一个敏感肌星人，选护肤品真的太难了😭\n\n"
+            f"前前后后用了很多牌子，这次尝试了{product}，说说真实感受：\n"
+            f"· {usp[0]}\n"
+            f"· 使用两周的体感变化（此处补具体细节）\n\n"
+            f"划重点：{'' if not claims else ('；'.join(claims))}\n\n"
+            f"小tips：敏感肌姐妹记得先在耳后测试再上脸～\n"
+            f"图文均自用实拍，诚心分享不吹不黑。"
+        )
+        extra = {"image_notes": ["产品实拍（含包装细节）", "使用过程图 2-3 张", "质地/推开效果特写"],
+                  "tags": [f"#{brand_name}", "#敏感肌护肤", "#真实测评", "#自用分享"]}
+    elif plat == "公众号":
+        title = f"关于{product}，你需要了解的 N 件事"
+        body = (
+            f"今天想和大家理性聊聊{product}这个话题。\n\n"
+            f"1. 先说结论：{usp[0]}\n"
+            f"2. 适用人群与注意事项（此处按任务要求展开）\n\n"
+            f"需要提醒的是：{'' if not claims else ('；'.join(claims))}\n"
+            f"以上为客观信息整理，具体以官方说明为准。"
+        )
+        extra = {"image_notes": ["官方素材图 2 张（品牌提供）"], "tags": []}
+    elif plat == "抖音":
+        title = f"{product} 实测 60s"
+        body = (
+            f"【口播脚本】\n"
+            f"前3秒：{'；'.join(usp) }（此处设钩子）\n"
+            f"中段：使用/实测过程快剪（此处补画面）\n"
+            f"结尾：{brief['cta']}\n"
+            f"字幕要点：{'' if not claims else ('；'.join(claims))}"
+        )
+        extra = {"image_notes": ["实拍 B-roll", "字幕卡片"], "tags": ["#沉浸式体验", f"#{brand_name}"]}
+    else:
+        title = f"{product} 相关内容（按平台模板补全）"
+        body = (
+            f"主题：{brief['content_angle']}\n必须覆盖：{'' if not claims else ('；'.join(claims))}\n"
+            f"禁用：{forb_line}\nCTA：{brief['cta']}"
+        )
+        extra = {"image_notes": ["按平台素材要求"], "tags": []}
+
+    return {
+        "draft_id": "DRF-20260918-0002",
+        "task_id": adtask.get("task_id"),
+        "brief_id": brief["brief_id"],
+        "brand": brand_name,
+        "product": product,
+        "platform": plat,
+        "format": f"{plat} 内容（完整稿模板）",
+        "title": title,
+        "body": body,
+        **extra,
+        "word_count_hint": "600-800 字（按任务要求）",
+        "is_draft": True,
+        "mandatory_covered": claims,
+        "forbidden_forbidden": forb_line,
         "generated_at": now_iso(),
     }
 
@@ -157,7 +237,8 @@ def self_review(draft, brief, adtask) -> dict:
     items.append({"check": "Requirement", "status": req_status,
                   "note": "必选点已列入骨架；正文漏点需人工复核（plan §5.6 核心指标）"})
 
-    forbidden_hit = [f for f in brief["forbidden_claims"] if f and f in draft["content"]]
+    review_text = "\n".join([str(draft.get("content")), str(draft.get("title")), str(draft.get("body"))])
+    forbidden_hit = [f for f in brief["forbidden_claims"] if f and f in review_text]
     items.append({"check": "Claim", "status": "FAIL" if forbidden_hit else "WARN",
                   "note": f"草稿为骨架，宣称合规需逐句核对；禁用点：{ '；'.join(brief['forbidden_claims']) if brief['forbidden_claims'] else '无' }"})
 
@@ -189,6 +270,7 @@ def main() -> int:
     ap.add_argument("--decision", required=True)
     ap.add_argument("--brief-out", default=None)
     ap.add_argument("--draft", action="store_true", help="同时生成 draft 与 self-review")
+    ap.add_argument("--full", action="store_true", help="生成结构化完整稿模板（build_full_draft）")
     ap.add_argument("--draft-out", default=None)
     args = ap.parse_args()
 
@@ -209,13 +291,17 @@ def main() -> int:
     if args.draft:
         draft = build_draft(brief, adtask)
         review = self_review(draft, brief, adtask)
+        payload = {"brief": brief, "draft": draft, "self_review": review}
+        if args.full:
+            full = build_full_draft(brief, adtask, account)
+            payload["full_draft"] = full
+            payload["full_review"] = self_review(full, brief, adtask)
         if args.draft_out:
             with open(args.draft_out, "w", encoding="utf-8") as f:
-                json.dump({"brief": brief, "draft": draft, "self_review": review},
-                          f, ensure_ascii=False, indent=2)
+                json.dump(payload, f, ensure_ascii=False, indent=2)
             print("draft+review written to", args.draft_out)
         else:
-            print(json.dumps({"draft": draft, "self_review": review}, ensure_ascii=False, indent=2))
+            print(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0
 
 

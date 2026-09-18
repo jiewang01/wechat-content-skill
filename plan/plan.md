@@ -1673,6 +1673,19 @@ Decision Optimization
 3. decision-engine-rules §4 固化：unknown 硬约束⇒need_information。
 ```
 
+## 2026-09-18 — M3 验收（task-002 accept 案例全链抽检）
+
+```text
+- 全链产物：Decision→Brief→Draft(skeleton+full)→Self Review→Human Gate
+  （tests/task-002.brief.json / draft.json，brief_generator 新增 --full 完整稿模式）
+- plan §5.6 指标：品牌要求遗漏率 0；初稿修改集中在实物置换内容（产品名/实拍细节/话题），结构可复用
+- Self Review：WARN_PASS（Claim/Brand 需人工核对），Human Gate 保留
+- 修复 P1×3：hook 按角度+USP 生成；product=null 以「【产品名待品牌确认】」占位；
+  骨架模式 format/标题平台化（硬编码「公众号图文」残留）；task-021 同步回归通过。
+  P2 遗留：CTA 平台化模板
+- 详细见 tests/m3-report.md
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
@@ -1680,8 +1693,9 @@ Decision Optimization
 - [x] M2 验收：21 例盲测 + Schema 结构校验 + 决策解释检查（详见 tests/m2-report.md）
 - [x] M2 遗留清理：task-010 bonus 单列 + "账号缺基线"对抗回归
 - [x] M3 Content Copilot 骨架：Brief Schema + 3 规则 + brief_generator + task-021 产物
+- [x] M3 验收：task-002 全链抽检（遗漏率 0 / 结构可复用 / P1 修复）
+- [ ] P2：CTA 平台化模板
 - [ ] observe 占比校准：Phase 4 真实数据回填后校正阈值/权重
-- [ ] M3 验收：对 accept 案例生成完整 Brief/Draft 并人工抽查（plan §5.6：修改量/遗漏率/审校时长）
 - [ ] M4：Publish & Feedback Loop（plan §6）
 
 ---

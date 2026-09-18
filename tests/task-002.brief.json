@@ -1,0 +1,48 @@
+{
+  "brief_id": "BRF-20260918-0001",
+  "task_id": "TASK-NB-20260918-002",
+  "decision_id": "DEC-20260918-0001",
+  "campaign_objective": "图文种草",
+  "target_audience": "女性为主、关注护肤信息的公众号读者",
+  "product_usp": [
+    "敏感肌可用"
+  ],
+  "mandatory_claims": [
+    "产品露出",
+    "突出敏感肌可用卖点"
+  ],
+  "forbidden_claims": [
+    "不得提竞品"
+  ],
+  "content_angle": "B-产品差异",
+  "hook": "围绕核心点「敏感肌可用」，用一句话点明与普通产品的差异",
+  "storyline": "采用角度「B-产品差异」：围绕产品 USP 单点放大",
+  "cta": "引导至官方承接位/链接（按任务要求：官方短链或组件，禁止私域导流）",
+  "platform_style": "真实种草、场景化、口语化、带话题标签",
+  "account_style": "真实种草",
+  "risk_checklist": [
+    "禁用点：不得提竞品",
+    "发布前需品牌/法务审核",
+    "待确认项：预估工时未写明；修改轮次未写明"
+  ],
+  "evidence_refs": [
+    "EVD-20260918-0005",
+    "EVD-20260918-0006",
+    "EVD-20260918-0007",
+    "EVD-20260918-0008"
+  ],
+  "angle_alternatives": [
+    "A-人群共鸣",
+    "C-场景植入"
+  ],
+  "preferred_categories_hint": [
+    "护肤",
+    "美妆",
+    "食品",
+    "母婴",
+    "家清",
+    "服饰",
+    "宠物"
+  ],
+  "created_at": "2026-09-18T07:52:48.520137Z"
+}
