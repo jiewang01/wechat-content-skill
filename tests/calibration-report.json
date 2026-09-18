@@ -1,0 +1,20 @@
+{
+  "sample_count": 1,
+  "note": "样本 <3，仅输出 research 候选，权重保持现状",
+  "production_hours": {
+    "n": 1,
+    "mean_delta_pct": 66.7
+  },
+  "false_positive_candidates": [],
+  "false_negative_note": "无法评估：缺拒单审计数据（A08/A14，需回填 reject/observe 未接任务的实际表现）",
+  "calibration_proposals": [
+    {
+      "target": "decision_engine.W.production_cost",
+      "from": 0.15,
+      "to": 0.18,
+      "status": "research",
+      "rationale": "生产成本偏差候选：仅 1 例（均值 67%），单样本不显著，不动权重（A07）"
+    }
+  ],
+  "generated_at": "2026-09-18T08:29:51.739897Z"
+}

@@ -1,0 +1,52 @@
+{
+  "replay": {
+    "task_id": "TASK-NB-20260918-002",
+    "evidence_count": 4,
+    "dimensions": {
+      "revenue": 80,
+      "account_fit": 61,
+      "production_cost": 60,
+      "opportunity_cost": 40,
+      "risk": 95
+    },
+    "score": 72.3,
+    "action": "accept",
+    "confidence": "high",
+    "actual": {
+      "views": 4200,
+      "engagement_rate": 0.0736,
+      "production_hours": 5.0,
+      "revision_count": 1,
+      "revenue": 800
+    },
+    "feedback_errors": [
+      {
+        "type": "production",
+        "detail": "生产成本低估：实际 5.0h vs 基线 3h（delta +67%）",
+        "impact": "high"
+      }
+    ]
+  },
+  "counterfactual": {
+    "trigger": "实际工时 5.0h > 决策时基线 3h（A11）",
+    "r": 0.667,
+    "penalty": 20,
+    "production_cost": {
+      "from": 60,
+      "to": 40
+    },
+    "score": {
+      "from": 72.3,
+      "to": 69.3
+    },
+    "action": {
+      "from": "accept",
+      "to": "observe"
+    }
+  },
+  "changed_evidence": [
+    "production_hours 实际 5.0h vs 基线 3h → production_cost 60→40，score 72.3→69.3，结论 accept→observe"
+  ],
+  "conclusion": "当时证据链（4 条 Evidence）支撑 accept；production_hours 实际 5.0h vs 基线 3h → production_cost 60→40，score 72.3→69.3，结论 accept→observe",
+  "generated_at": "2026-09-18T08:29:52.303687Z"
+}

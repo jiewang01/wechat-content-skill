@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wechat-ad-skill/schemas/version-log.schema.json",
+  "title": "ModelVersionLog",
+  "description": "模型/画像更新的版本留痕。plan §16：任何对 AccountProfile、权重、基线的修改都必须有版本记录。版本：v1",
+  "type": "object",
+  "required": [
+    "log_id",
+    "target_model",
+    "account_id",
+    "applied_at",
+    "entries"
+  ],
+  "properties": {
+    "log_id": {
+      "type": "string"
+    },
+
+    "target_model": {
+      "type": "string",
+      "description": "被更新对象（如 AccountProfile / CostModel / DecisionWeights）"
+    },
+
+    "profile_version": {
+      "type": ["string", "null"],
+      "description": "画像版本（如 v2），无画像时可为 null"
+    },
+
+    "account_id": {
+      "type": "string"
+    },
+
+    "applied_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["target", "from", "to", "method", "feedback_id", "status"],
+        "properties": {
+          "target": { "type": "string", "description": "更新路径，如 account.production.avg_production_hours" },
+          "from": { "type": ["number", "string", "null"] },
+          "to": { "type": ["number", "string", "null"] },
+          "method": { "type": "string", "enum": ["ema", "append", "replace", "noop"] },
+          "feedback_id": { "type": "string" },
+          "status": { "type": "string", "enum": ["applied"] }
+        }
+      }
+    }
+  }
+}

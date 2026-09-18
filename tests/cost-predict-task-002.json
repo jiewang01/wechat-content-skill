@@ -1,0 +1,12 @@
+{
+  "base_hours": 3.4,
+  "adjustments": [
+    {
+      "factor": "特要求含实拍/出镜",
+      "value": 0.3
+    }
+  ],
+  "predicted_hours": 4.4,
+  "source": "account.production.avg_production_hours(@v2)+任务特征调整",
+  "generated_at": "2026-09-18T08:29:52.892994Z"
+}

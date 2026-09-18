@@ -1705,6 +1705,21 @@ Decision Optimization
 - 详细见 tests/m4-report.md
 ```
 
+## 2026-09-18 — M5 Adaptive Agent（task-002 自适应闭环）
+
+```text
+- schemas/version-log.schema.json：ModelVersionLog@v1（每次 applied 留痕，校验 PASS）
+- knowledge/adaptive-agent-rules.md：A01~A14（画像版本化/成本因子表/校准门槛/回放与 counterfactual/人工 gate/诚实性）
+- tools/adaptive_agent.py：profile-update / cost-predict / calibrate / debug
+- 演示（task-002）：
+  · 画像 v1→v2：avg_production_hours 3→3.4(ema)、median_views 6500→6040(ema)、历史样本 append；VersionLog 3 条 applied，v1 可回滚
+  · 成本学习：base 3.4 + 出镜因子 30% → 预测 4.4h（实际 5.0h，贴近真实）
+  · 校准：1 例样本 → production_cost 权重 0.15→0.18 仅 research（A07 样本门槛）；FP 无候选、FN 如实"无法评估"
+  · 决策回放：72.3/accept(conf high)；counterfactual 实际 5.0h vs 基线 3h → penalty 20 → score 69.3 → accept→observe
+- 修复：提案 target 路径归一化（account. 前缀 vs 画像顶层字段）
+- 详细见 tests/m5-report.md
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
@@ -1714,10 +1729,12 @@ Decision Optimization
 - [x] M3 Content Copilot 骨架：Brief Schema + 3 规则 + brief_generator + task-021 产物
 - [x] M3 验收：task-002 全链抽检（遗漏率 0 / 结构可复用 / P1 修复）
 - [x] M4 Publish & Feedback Loop：3 Schema + 2 规则 + feedback_loop + task-002 闭环（详见 tests/m4-report.md）
+- [x] M5 Adaptive Agent：version-log + adaptive-agent-rules + adaptive_agent（画像 v2/成本学习/校准/回放 counterfactual，详见 tests/m5-report.md）
 - [ ] P2：CTA 平台化模板
-- [ ] observe 占比校准：Phase 4 真实数据回填后校正阈值/权重
-- [ ] 真实数据回填 30+ 已完成任务：summary 结论正式化（plan §6.6）
-- [ ] M5：Adaptive Agent（plan §7）
+- [ ] observe 占比校准：真实数据回填后校正阈值/权重（A07 达 ≥3 例转 confirm）
+- [ ] 真实数据回填 30+ 已完成任务：summary/校准结论正式化（plan §6.6）
+- [ ] 拒单审计回填：让 FN 评估可用（A08）
+- [ ] 自适应上生产：proposed→applied 自动化 + 权重重算回归（M5 后续）
 
 ---
 

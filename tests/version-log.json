@@ -1,0 +1,33 @@
+{
+  "log_id": "VERLOG-20260918-0001",
+  "target_model": "AccountProfile",
+  "profile_version": "v2",
+  "account_id": "ACCOUNT-XHS-001",
+  "applied_at": "2026-09-18T08:29:22.541158Z",
+  "entries": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.4,
+      "method": "ema",
+      "feedback_id": "FDB-20260918-0001",
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6040,
+      "method": "ema",
+      "feedback_id": "FDB-20260918-0001",
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；护肤 图文 ×1",
+      "method": "append",
+      "feedback_id": "FDB-20260918-0001",
+      "status": "applied"
+    }
+  ]
+}
