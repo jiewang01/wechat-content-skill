@@ -35,7 +35,13 @@ AdTask（符合 schemas/ad-task.schema.json）
 ## 3. 金额与时间识别
 
 - 金额：统一以数字（元/人民币）记录，提取时保留原始字符串到 Evidence `data` 中。
-- 时间：统一 `YYYY-MM-DDTHH:mm:ssZ`（ISO-8601），相对的「9月20日」按任务捕获日推断，并在 Evidence 中标注推断来源。
+- **计费形态识别**（新增，依据真实任务 task-021）：
+  - 固定费：`commercial.creator_fee` 直接记录。
+  - 佣金/CPS：`commission` + `settlement_rule`。
+  - **CPM/按阅读计费**：无固定费，`settlement_rule` 记录「单价×阅读数」与结算周期（如 `阅读单价 0.5025 元/阅读，推文后 48 小时结算`）；收入为区间预测而非确定额，进入 Economics 时必须带 confidence，禁止当作固定收入。
+  - 置换/寄样/无现金：`creator_fee = null` + `settlement_rule` 说明实物。
+  - 未写明：`creator_fee = null` + `status: unknown`（禁止默认 0 或默认有费）。
+- 时间：统一 `YYYY-MM-DDTHH:mm:ssZ`（ISO-8601），相对的「9月20日」按任务捕获日推断，并在 Evidence 中标注推断来源。**推广期/截稿期**：任务给出起止窗口（如 `2025-10-07 至 2027-05-01`）时，`production.deadline` 记录窗口结束时间，窗口起始时间记入 Evidence，不能只记起止之一。
 
 ## 4. 缺失处理（RULE 05）
 

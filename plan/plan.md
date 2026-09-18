@@ -1633,8 +1633,9 @@ Decision Optimization
 
 待办：
 
-- [ ] M1 验收执行：对 20 例执行 Task Parser，记录字段提取完整率 / 金额准确率 / unknown 识别率
-- [ ] 用户提供真实新榜任务后补充 real- 用例
+- [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
+- [ ] task-010 bonus 上限字段是否单列（M2 前决定）
+- [ ] 真实任务继续补充（用户提供）
 - [ ] M2：Decision Engine 规则细化（Account Fit / Economics / Risk / Hard Constraint / 权重）
 
 ---
