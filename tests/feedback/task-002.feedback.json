@@ -3,6 +3,7 @@
   "task_id": "TASK-NB-20260918-002",
   "publish_id": "PUB-20260918-0001",
   "decision_id": "DEC-20260918-0001",
+  "account_id": "ACCOUNT-XHS-001",
   "campaign_category": "护肤",
   "content_angle": "B-产品差异",
   "prediction_vs_actual": [
@@ -88,5 +89,5 @@
       "rationale": "已发布 护肤 图文 内容，追加历史样本（基于 1 例）"
     }
   ],
-  "created_at": "2026-09-18T08:04:23.581725Z"
+  "created_at": "2026-09-18T09:40:44.418093Z"
 }

@@ -1,0 +1,489 @@
+{
+  "log_id": "VERLOG-AUTO-ACCOUNT-XHS-001",
+  "target_model": "AccountProfile",
+  "profile_version": "v2",
+  "account_id": "ACCOUNT-XHS-001",
+  "applied_at": "2026-09-18T09:42:56.860925Z",
+  "entries": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.42,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7526,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.18,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7428,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.34,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6861,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.4,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6419,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.64,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6981,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.48,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6749,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7576,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.42,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6230,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.32,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 5802,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.34,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7345,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.12,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6477,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.4,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7082,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.32,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6429,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6340,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.56,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7413,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.14,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 7601,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.3,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6171,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.44,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6661,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.2,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6928,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1；美妆 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6616,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1；美妆 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1；美妆 图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3,
+      "to": 3.54,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 6500,
+      "to": 6175,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1；美妆 图文 ×1",
+      "to": "护肤测评 ×5；美妆种草 ×3；探店 ×2；母婴 图文 ×1；护肤 图文 ×1；餐饮 视频+图文 ×1；家清洗护 图文 ×1；服饰 图文+视频 ×1；食品 图文 ×1；旅游 图文+视频 ×1；母婴 图文代发 ×1；美妆 图文 ×1；宠物 图文或视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    }
+  ]
+}

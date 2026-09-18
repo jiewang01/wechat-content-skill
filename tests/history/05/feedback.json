@@ -3,6 +3,7 @@
   "task_id": "TASK-NB-20260918-003",
   "publish_id": "PUB-HIST-0005",
   "decision_id": "DEC-20260918-0001",
+  "account_id": "ACCOUNT-XHS-001",
   "campaign_category": "餐饮",
   "content_angle": "C-场景植入",
   "prediction_vs_actual": [
@@ -97,5 +98,5 @@
       "rationale": "已发布 餐饮 视频+图文 内容，追加历史样本（基于 1 例）"
     }
   ],
-  "created_at": "2026-09-18T08:38:43.235664Z"
+  "created_at": "2026-09-18T09:40:44.996542Z"
 }

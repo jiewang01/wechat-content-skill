@@ -9,6 +9,7 @@
     "task_id",
     "publish_id",
     "decision_id",
+    "account_id",
     "campaign_category",
     "content_angle",
     "prediction_vs_actual",
@@ -34,6 +35,11 @@
 
     "decision_id": {
       "type": "string"
+    },
+
+    "account_id": {
+      "type": "string",
+      "description": "发布账号 ID（用于按账号自动聚合画像更新）"
     },
 
     "campaign_category": {

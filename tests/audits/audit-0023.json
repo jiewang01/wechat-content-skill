@@ -5,5 +5,5 @@
   "decided_action": "reject",
   "verdict": "true_negative",
   "evidence": "后续信息显示「医美」类任务在该平台表现稳定（synthetic 审计样本，拒单正确）",
-  "generated_at": "2026-09-18T08:38:43.267317Z"
+  "generated_at": "2026-09-18T09:40:45.026364Z"
 }

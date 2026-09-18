@@ -315,6 +315,7 @@ def build_report(adtask, account, decision, publish, performance, angle) -> dict
         "task_id": adtask.get("task_id"),
         "publish_id": publish.get("publish_id"),
         "decision_id": (decision or {}).get("decision_id"),
+        "account_id": account.get("account_id"),
         "campaign_category": (adtask.get("brand") or {}).get("category") or "未知品类",
         "content_angle": angle or "n/a",
         "prediction_vs_actual": pva,

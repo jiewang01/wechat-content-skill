@@ -1,0 +1,57 @@
+{
+  "log_id": "VERLOG-AUTO-ACCOUNT-BZ-001",
+  "target_model": "AccountProfile",
+  "profile_version": "v2",
+  "account_id": "ACCOUNT-BZ-001",
+  "applied_at": "2026-09-18T09:42:56.859116Z",
+  "entries": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 8,
+      "to": 8.64,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 45000,
+      "to": 52481,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "数码商单 ×8；硬件评测 ×5",
+      "to": "数码商单 ×8；硬件评测 ×5；数码 视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 8,
+      "to": 8.98,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 45000,
+      "to": 50864,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "数码商单 ×8；硬件评测 ×5；数码 视频 ×1",
+      "to": "数码商单 ×8；硬件评测 ×5；数码 视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    }
+  ]
+}

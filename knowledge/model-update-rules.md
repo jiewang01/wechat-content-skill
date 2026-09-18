@@ -24,12 +24,14 @@ account.commercial.historical_cpm         ema(α=0.2)   CPM 任务且 revenue/vi
 ## 2. 反馈先于更新
 
 ```text
-Rule M02  顺序：记录 → 复盘 → 提案 → 人工确认 → 应用
+Rule M02  顺序：记录 → 复盘 → 提案 → 应用（自动或人工） → 版本留痕
 
 FeedbackReport.model_update_proposals 一律以 status=proposed 输出。
-status ∈ {proposed, applied, rejected}。
-只有人工（或后续已确认的自动化批处理）才把 proposed 置为 applied。
-禁止工具直接改写 AccountProfile。
+应用方式两种：
+  a) 人工：挑选文件逐条确认（profile-update / apply-calibration）
+  b) 自动：adaptive_agent auto-apply 批量应用（放开人工 gate，2026-09-18）
+自动模式仍遵守护栏（下述 M03/M05），且只写新版本文件、不覆盖原画像；
+权重配置仅在回归 flips=0 时 auto_enabled=true（否则只落盘不启用）。
 ```
 
 ---

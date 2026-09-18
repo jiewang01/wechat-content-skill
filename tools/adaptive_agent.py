@@ -392,6 +392,134 @@ def run_apply_calibration(report_path: str, config_out: str, regress_out: str) -
     return 0
 
 
+# ---------------------------------------------------------------- auto-apply
+
+def run_auto_apply(accounts_dir, feedback_dir, accounts_out, log_path,
+                   config_out, regress_out, max_flips=0) -> int:
+    """全自动应用（放开人工 gate，A13 演进版）：
+    1) 按 account_id 聚合 feedback 的 proposed 提案，自动升级各账号画像（数值 last-write-wins、
+       historical_campaigns union；每账号独立版本 + VersionLog，旧版保留可回滚）；
+    2) 全量校准：≥3 例且生产偏差一致 → confirm 权重 → 归一化 → 落 engine_config.json；
+    3) 权重重算回归：action 翻转数 ≤ max_flips 时设置 meta.auto_enabled=true，
+       decision_engine 无 --config 自动加载该配置（否则仅落盘不自动启用）。
+    安全护栏仍保留：版本化留痕、权重归一化、回归护栏（翻转即拒自动启用）。"""
+    fdb_paths = sorted(glob.glob(os.path.join(feedback_dir, "**", "*feedback*.json"), recursive=True))
+    reports = [load_json(p) for p in fdb_paths]
+    by_account = {}
+    for r in reports:
+        by_account.setdefault(r.get("account_id") or "?", []).append(r)
+
+    account_files = sorted(glob.glob(os.path.join(accounts_dir, "account-example*.json")))
+    log_dir = os.path.dirname(log_path) or "."
+    log_base = os.path.splitext(os.path.basename(log_path))[0]
+    upgraded = []
+    for acc_path in account_files:
+        account = load_json(acc_path)
+        acc_id = account.get("account_id")
+        acc_feedbacks = by_account.get(acc_id, [])
+        if not acc_feedbacks:
+            continue
+        version = next_version(account)
+        proposals = [p for r in acc_feedbacks
+                     for p in r.get("model_update_proposals", []) if p.get("method") != "noop"]
+        entries = []
+        for p in proposals:
+            target = p.get("target") or ""
+            if target.endswith("historical_campaigns"):
+                cur = get_by_path(account, target) or []
+                to_list = p["to"].split("；") if isinstance(p["to"], str) else (p["to"] or [])
+                merged = list(cur)
+                for it in to_list:
+                    if it not in merged:
+                        merged.append(it)
+                set_by_path(account, target, merged)
+                entries.append({"target": target, "from": "；".join(cur) if cur else "（空）",
+                                "to": "；".join(merged), "method": "append",
+                                "feedback_id": p.get("feedback_id"), "status": "applied"})
+            else:
+                set_by_path(account, target, p["to"])  # last-write-wins，历史在 VersionLog 回溯
+                entries.append({"target": target, "from": p.get("from"), "to": p.get("to"),
+                                "method": p.get("method"), "feedback_id": p.get("feedback_id"),
+                                "status": "applied"})
+        account["profile_version"] = version
+        out_path = os.path.join(accounts_out, os.path.basename(acc_path).replace(".json", f".{version}.json"))
+        dump_json(out_path, account)
+        if entries:
+            dump_json(os.path.join(log_dir, f"{log_base}-{acc_id}.json"), {
+                "log_id": f"VERLOG-AUTO-{acc_id}",
+                "target_model": "AccountProfile", "profile_version": version,
+                "account_id": acc_id, "applied_at": now_iso(), "entries": entries,
+            })
+        upgraded.append((acc_id, version, len(proposals)))
+
+    # ---- 全量校准：confirm 提案 + 归一化 ----
+    hours = []
+    for r in reports:
+        for row in r.get("prediction_vs_actual", []):
+            if row["metric"] == "production_hours" and row.get("verdict") != "no_baseline" \
+                    and row.get("delta_pct") is not None:
+                hours.append(row)
+    confirms = []
+    if len(hours) >= 3:
+        mean = sum(h["delta_pct"] for h in hours) / len(hours)
+        if mean > 30:
+            confirms.append({"target": "decision_engine.W.production_cost", "from": 0.15, "to": 0.18,
+                             "status": "confirm",
+                             "rationale": f"{len(hours)} 例生产成本均值 +{mean:.0f}%（自动校准，A07 门槛已过）"})
+
+    auto_on = False
+    if confirms:
+        import decision_engine as de
+        weights = dict(de.W)
+        for c in confirms:
+            weights[c["target"].split(".")[-1]] = c["to"]
+        total = sum(weights.values())
+        if abs(total - 1.0) > 1e-9:
+            weights = {k: round(v / total, 4) for k, v in weights.items()}
+
+        def _batch() -> dict:
+            import pathlib
+            res = {}
+            for p in sorted(pathlib.Path("tests/cases").glob("task-*.json")):
+                case = load_json(p)
+                adtask = case["expected_adtask"]
+                evs = case.get("expected_evidence") or []
+                d = de.build_decision(adtask, de.select_account(adtask), evs)
+                res[p.stem] = (d["action"], d["decision_score"])
+            return res
+
+        old_res = _batch()
+        old_w = dict(de.W)
+        de.W.update(weights)
+        new_res = _batch()
+        de.W.clear(); de.W.update(old_w)
+        flips = [k for k in old_res if old_res[k] != new_res[k] and old_res[k][0] != new_res[k][0]]
+        score_moved = [k for k in old_res if old_res[k] != new_res[k] and old_res[k][0] == new_res[k][0]]
+        auto_on = len(flips) <= max_flips
+
+        config = {
+            "meta": {"version": "v1.1", "applied_at": now_iso(),
+                     "sample_count": len(reports), "auto_enabled": auto_on,
+                     "source": "adaptive_agent.auto-apply（全自动校准）",
+                     "rationale": "；".join(c["rationale"] for c in confirms),
+                     "regression": {"action_flips": len(flips), "score_only_changes": len(score_moved),
+                                    "flips": flips}},
+            "weights": weights,
+        }
+        dump_json(config_out, config)
+        dump_json(regress_out, {"config_version": config["meta"]["version"],
+                                "cases_total": len(old_res), "action_flips": len(flips),
+                                "score_only_changes": len(score_moved), "flips": flips,
+                                "generated_at": now_iso()})
+    else:
+        print("[auto-apply] 校准未达 confirm 门槛（<3 例或偏差 <30%），不落权重配置")
+
+    print(f"[auto-apply] feedback={len(reports)} 账号升级={len(upgraded)} config->{config_out} auto_enabled={auto_on}")
+    for acc_id, ver, n in upgraded:
+        print(f"    {acc_id} → {ver}（{n} 条提案 applied，VersionLog 已写）")
+    return 0
+
+
 # ---------------------------------------------------------------- main
 
 def main() -> int:
@@ -426,6 +554,16 @@ def main() -> int:
     a.add_argument("--config-out", default="tools/engine_config.json")
     a.add_argument("--regress-out", default="tests/calibration-regression.json")
 
+    aa = sub.add_parser("auto-apply", help="全自动应用（放开人工 gate）：按账号聚合升级画像 + 校准落配置 + 回归护栏")
+    aa.add_argument("--accounts-dir", default="data")
+    aa.add_argument("--feedback", required=True)
+    aa.add_argument("--accounts-out", default="data/accounts")
+    aa.add_argument("--log", default="tests/version-log-auto.json")
+    aa.add_argument("--config-out", default="tools/engine_config.json")
+    aa.add_argument("--regress-out", default="tests/calibration-regression.json")
+    aa.add_argument("--max-flips", type=int, default=0,
+                    help="回归允许的 action 翻转上限，超过则不自动启用（保持落盘）")
+
     args = ap.parse_args()
 
     if args.cmd == "profile-update":
@@ -438,6 +576,9 @@ def main() -> int:
         return run_debug(args.adtask, args.account, args.decision, args.feedback, args.out)
     if args.cmd == "apply-calibration":
         return run_apply_calibration(args.report, args.config_out, args.regress_out)
+    if args.cmd == "auto-apply":
+        return run_auto_apply(args.accounts_dir, args.feedback, args.accounts_out, args.log,
+                              args.config_out, args.regress_out, args.max_flips)
     return 1
 
 

@@ -39,7 +39,23 @@
   现应用时归一化（总和=1）→ production_cost 实际 0.1748
 - 回归：21/21 例分数微调（±0.5），**action 零翻转**；--config 生效验证（task-002 72.3→72.0）✓
 
+## 6. 全自动应用（放开人工 gate）
+
+- [adaptive_agent.py](file:///workspace/tools/adaptive_agent.py) 新增 `auto-apply`：
+  - 按 `account_id` 聚合 feedback 的 proposed 提案 → 各账号自动升级新版本（数值 last-write-wins、
+    historical_campaigns union；每账号独立 VersionLog `version-log-auto-*.json`，原画像不覆盖）
+  - 全量校准：35 例生产偏差 +44% → confirm 权重 → **归一化** → 落 `tools/engine_config.json`
+  - 回归护栏：action 翻转（0 例，仅 15 例分数微调）≤ max_flips → `auto_enabled=true`
+- [decision_engine.py](file:///workspace/tools/decision_engine.py)：无 `--config` 时自动加载
+  `auto_enabled=true` 的 engine_config.json（`[engine] auto-load config` 生效验证，task-002 72.3→72.0）
+- FeedbackReport 契约补 `account_id`（按账号分组更新的前提，Schema 校验 PASS）
+- 结果：5 账号（BZ/DY/XHS/WX/ZH）v1→v2 全自动，XHS v2 工时 3.54h / median_views 6175，WX 由 14 条提案升级
+- 规则同步：model-update-rules M02、adaptive-agent-rules A13 更新为「放开 gate ≠ 放开护栏」
+
+**含义**：proposed→applied 无需人工逐条确认；保留的三个护栏（版本化可回滚 / 权重归一化 /
+回归 flips=0 才自动启用）由脚本强制执行，人工只审阅输出与日志。
+
 ## 遗留收口
 
 - 真实运营数据替换 synthetic 后：summary/校准结论正式化（格式已就绪）
-- propose→apply 仍保持人工 gate（配置文件显式启用），未放开全自动
+- 全自动应用已放开（本报告 §6）：护栏保留版本化/归一化/回归 flips=0 才 auto_enabled

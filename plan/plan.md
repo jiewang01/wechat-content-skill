@@ -1735,6 +1735,19 @@ Decision Optimization
 - 详细见 tests/backlog-report.md
 ```
 
+## 2026-09-18 — 放开人工 gate：全自动应用（auto-apply）
+
+```text
+- adaptive_agent 新增 auto-apply：按 account_id 聚合 feedback 提案 → 各账号自动升级新版本
+  （数值 last-write-wins / historical_campaigns union / 每账号 VersionLog，原画像不覆盖可回滚）
+- 校准 confirm 达门槛自动落权重配置（35 例 +44% → production_cost 0.1748 归一化）；
+  回归护栏 flips=0 → auto_enabled=true
+- decision_engine 无 --config 时自动加载 auto_enabled 配置（[engine] auto-load 验证，task-002 72.3→72.0）
+- FeedbackReport 契约补 account_id；5 账号 v1→v2 全自动（XHS 工时 3.54h/median 6175）
+- 规则更新：model-update-rules M02、adaptive-agent-rules A13（放开 gate ≠ 放开护栏）
+- 详见 tests/backlog-report.md §6
+```
+
 待办：
 
 - [x] M1 结算：21 例 Task Parser 对照（详见 tests/cases/m1-report.md）
@@ -1746,8 +1759,9 @@ Decision Optimization
 - [x] M4 Publish & Feedback Loop：3 Schema + 2 规则 + feedback_loop + task-002 闭环（详见 tests/m4-report.md）
 - [x] M5 Adaptive Agent：version-log + adaptive-agent-rules + adaptive_agent（画像 v2/成本学习/校准/回放 counterfactual，详见 tests/m5-report.md）
 - [x] Backlog 五项：CTA 平台化 / 校准 confirm / 30+ 完成案例(synthetic) / 拒单审计 / 自适应上生产（详见 tests/backlog-report.md）
+- [x] 全自动应用（放开人工 gate）：adaptive_agent auto-apply 按账号批量升级 + 校准自动落配置 +
+      decision_engine auto-load；护栏保留版本化/归一化/回归 flips=0 才启用（详见 tests/backlog-report.md §6）
 - [ ] 真实运营数据替换 synthetic：summary/校准结论正式化（格式已就绪）
-- [ ] 全自动应用：proposed→applied 免人工确认（当前保持人工 gate）
 
 ---
 

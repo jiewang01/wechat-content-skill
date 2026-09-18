@@ -1,0 +1,113 @@
+{
+  "log_id": "VERLOG-AUTO-ACCOUNT-DY-001",
+  "target_model": "AccountProfile",
+  "profile_version": "v2",
+  "account_id": "ACCOUNT-DY-001",
+  "applied_at": "2026-09-18T09:42:56.859998Z",
+  "entries": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3.5,
+      "to": 3.66,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 28000,
+      "to": 29643,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3.5,
+      "to": 3.68,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 28000,
+      "to": 32468,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3.5,
+      "to": 3.82,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 28000,
+      "to": 26648,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "美妆短视频 ×6；健身课程 ×2",
+      "to": "美妆短视频 ×6；健身课程 ×2；游戏 短视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3.5,
+      "to": 3.68,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 28000,
+      "to": 32239,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "美妆短视频 ×6；健身课程 ×2；游戏 短视频 ×1",
+      "to": "美妆短视频 ×6；健身课程 ×2；游戏 短视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 3.5,
+      "to": 3.7,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 28000,
+      "to": 28601,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "美妆短视频 ×6；健身课程 ×2；游戏 短视频 ×1",
+      "to": "美妆短视频 ×6；健身课程 ×2；游戏 短视频 ×1；健身 短视频 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    }
+  ]
+}

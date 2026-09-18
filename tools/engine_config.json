@@ -1,10 +1,16 @@
 {
   "meta": {
     "version": "v1.1",
-    "applied_at": "2026-09-18T08:42:11.356708Z",
+    "applied_at": "2026-09-18T09:42:56.881989Z",
     "sample_count": 35,
-    "source": "adaptive_agent.apply-calibration（calibrate confirm 级提案）",
-    "rationale": "0.15→0.18：35 例生产成本均值偏差 +44%（系统性低估），建议上调权重"
+    "auto_enabled": true,
+    "source": "adaptive_agent.auto-apply（全自动校准）",
+    "rationale": "35 例生产成本均值 +44%（自动校准，A07 门槛已过）",
+    "regression": {
+      "action_flips": 0,
+      "score_only_changes": 15,
+      "flips": []
+    }
   },
   "weights": {
     "revenue": 0.2913,

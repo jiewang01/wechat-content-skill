@@ -1,0 +1,93 @@
+{
+  "account_id": "ACCOUNT-DY-001",
+  "platform": "抖音",
+  "account": {
+    "name": "示例抖音号",
+    "category": "生活/美妆",
+    "followers": 85000
+  },
+  "audience": {
+    "age_distribution": {
+      "18-24": 0.3,
+      "25-34": 0.45,
+      "35-44": 0.25
+    },
+    "gender_distribution": {
+      "male": 0.45,
+      "female": 0.55
+    },
+    "location_distribution": {},
+    "interest_tags": [
+      "美妆",
+      "时尚",
+      "游戏",
+      "健身",
+      "美食"
+    ]
+  },
+  "content": {
+    "niches": [
+      "美妆",
+      "游戏",
+      "健身"
+    ],
+    "preferred_topics": [
+      "测评",
+      "开箱",
+      "口播"
+    ],
+    "forbidden_topics": [
+      "医美项目体验",
+      "借贷推广"
+    ],
+    "content_formats": [
+      "短视频"
+    ],
+    "style": "快节奏口播"
+  },
+  "performance": {
+    "avg_views": 35000,
+    "median_views": 28601,
+    "avg_engagement_rate": 0.06,
+    "conversion_rate": 0.015,
+    "historical_campaigns": [
+      "美妆短视频 ×6",
+      "健身课程 ×2",
+      "游戏 短视频 ×1",
+      "健身 短视频 ×1"
+    ]
+  },
+  "commercial": {
+    "historical_revenue": null,
+    "historical_cpm": 25,
+    "historical_cpe": null,
+    "preferred_categories": [
+      "美妆",
+      "游戏",
+      "健身",
+      "食品"
+    ],
+    "rejected_categories": [
+      "医美",
+      "借贷催收",
+      "博彩"
+    ]
+  },
+  "production": {
+    "avg_production_hours": 3.7,
+    "ai_generation_capability": "较强",
+    "available_formats": [
+      "短视频"
+    ]
+  },
+  "risk": {
+    "brand_risk_tolerance": "中",
+    "restricted_categories": [
+      "医美",
+      "借贷催收",
+      "博彩"
+    ],
+    "platform_risk_tolerance": "中"
+  },
+  "profile_version": "v2"
+}

@@ -11,6 +11,7 @@
 """
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 
@@ -343,6 +344,14 @@ def main() -> int:
     if args.config:
         cfg = load_json(args.config)
         W.update(cfg.get("weights") or {})  # 校准落配置：显式传入才生效（M02/A13 人工 gate）
+    else:
+        # 全自动模式：同目录存在 auto-enabled 配置时自动加载（release 由回归护栏把关）
+        auto_cfg = os.path.join(os.path.dirname(os.path.abspath(__file__)), "engine_config.json")
+        if os.path.exists(auto_cfg):
+            cfg = load_json(auto_cfg)
+            if cfg.get("meta", {}).get("auto_enabled"):
+                W.update(cfg.get("weights") or {})
+                print(f"[engine] auto-load config {os.path.basename(auto_cfg)}")
 
     if args.batch:
         import pathlib

@@ -3,6 +3,7 @@
   "task_id": "TASK-NB-20260918-005",
   "publish_id": "PUB-HIST-0010",
   "decision_id": "DEC-20260918-0001",
+  "account_id": "ACCOUNT-DY-001",
   "campaign_category": "美妆",
   "content_angle": "B-产品差异",
   "prediction_vs_actual": [
@@ -91,5 +92,5 @@
       "rationale": "阅读复盘偏差（实际 50339 vs 基线 28000，基于 1 例）"
     }
   ],
-  "created_at": "2026-09-18T08:38:43.244487Z"
+  "created_at": "2026-09-18T09:40:45.004895Z"
 }

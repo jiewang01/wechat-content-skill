@@ -54,14 +54,23 @@
   },
   "performance": {
     "avg_views": 8000,
-    "median_views": 6040,
+    "median_views": 6175,
     "avg_engagement_rate": 0.08,
     "conversion_rate": 0.02,
     "historical_campaigns": [
       "护肤测评 ×5",
       "美妆种草 ×3",
       "探店 ×2",
-      "护肤 图文 ×1"
+      "母婴 图文 ×1",
+      "护肤 图文 ×1",
+      "餐饮 视频+图文 ×1",
+      "家清洗护 图文 ×1",
+      "服饰 图文+视频 ×1",
+      "食品 图文 ×1",
+      "旅游 图文+视频 ×1",
+      "母婴 图文代发 ×1",
+      "美妆 图文 ×1",
+      "宠物 图文或视频 ×1"
     ]
   },
   "commercial": {
@@ -84,7 +93,7 @@
     ]
   },
   "production": {
-    "avg_production_hours": 3.4,
+    "avg_production_hours": 3.54,
     "ai_generation_capability": "中等",
     "available_formats": [
       "图文",

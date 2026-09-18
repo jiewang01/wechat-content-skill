@@ -1,0 +1,121 @@
+{
+  "log_id": "VERLOG-AUTO-ACCOUNT-WX-001",
+  "target_model": "AccountProfile",
+  "profile_version": "v2",
+  "account_id": "ACCOUNT-WX-001",
+  "applied_at": "2026-09-18T09:42:56.862742Z",
+  "entries": [
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 2.5,
+      "to": 2.62,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1380,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 2.5,
+      "to": 2.66,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1128,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 2.5,
+      "to": 2.74,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1302,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1；家电 公众号图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1154,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1；家电 公众号图文 ×1",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1；家电 公众号图文 ×1；金融 公众号图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.production.avg_production_hours",
+      "from": 2.5,
+      "to": 2.88,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.median_views",
+      "from": 1200,
+      "to": 1248,
+      "method": "ema",
+      "feedback_id": null,
+      "status": "applied"
+    },
+    {
+      "target": "account.performance.historical_campaigns",
+      "from": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1；家电 公众号图文 ×1；金融 公众号图文 ×1",
+      "to": "财富类金融科普广告 ×3；理财 APP 推广 ×2；知识付费 图文贴片 ×1；家电 公众号图文 ×1；金融 公众号图文 ×1；财富 公众号图文 ×1",
+      "method": "append",
+      "feedback_id": null,
+      "status": "applied"
+    }
+  ]
+}

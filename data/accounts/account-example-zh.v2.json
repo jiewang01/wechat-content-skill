@@ -1,0 +1,89 @@
+{
+  "account_id": "ACCOUNT-ZH-001",
+  "platform": "知乎",
+  "account": {
+    "name": "示例知乎答主",
+    "category": "数码/好物",
+    "followers": 30000
+  },
+  "audience": {
+    "age_distribution": {
+      "18-24": 0.25,
+      "25-34": 0.5,
+      "35-44": 0.25
+    },
+    "gender_distribution": {
+      "male": 0.62,
+      "female": 0.38
+    },
+    "location_distribution": {},
+    "interest_tags": [
+      "数码",
+      "耳机",
+      "好物",
+      "职场"
+    ]
+  },
+  "content": {
+    "niches": [
+      "数码",
+      "3C 好物"
+    ],
+    "preferred_topics": [
+      "测评",
+      "选购指南"
+    ],
+    "forbidden_topics": [
+      "医美项目体验",
+      "借贷推广",
+      "荐股"
+    ],
+    "content_formats": [
+      "图文回答",
+      "文章"
+    ],
+    "style": "专业客观"
+  },
+  "performance": {
+    "avg_views": 12000,
+    "median_views": 10547,
+    "avg_engagement_rate": 0.05,
+    "conversion_rate": 0.02,
+    "historical_campaigns": [
+      "耳机测评 ×4",
+      "数码好物 ×3",
+      "数码 图文回答 ×1"
+    ]
+  },
+  "commercial": {
+    "historical_revenue": null,
+    "historical_cpm": 18,
+    "historical_cpe": null,
+    "preferred_categories": [
+      "数码",
+      "家电"
+    ],
+    "rejected_categories": [
+      "医美",
+      "借贷催收",
+      "博彩"
+    ]
+  },
+  "production": {
+    "avg_production_hours": 2.5,
+    "ai_generation_capability": "较强",
+    "available_formats": [
+      "图文回答"
+    ]
+  },
+  "risk": {
+    "brand_risk_tolerance": "中",
+    "restricted_categories": [
+      "医美",
+      "借贷催收",
+      "博彩"
+    ],
+    "platform_risk_tolerance": "中"
+  },
+  "profile_version": "v2"
+}

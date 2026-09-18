@@ -99,9 +99,14 @@ Rule A12  输出"会改变结论的证据清单"
 ## 5. 人工 Gate 与诚实性
 
 ```text
-Rule A13  自适应不等于自动上生产
-profile-update / 校准 / 权重调整一律 proposed→applied 经人工确认；
-当前阶段工具只产出新版本文件与日志，不静默改写线上画像。
+Rule A13  自动应用（放开人工 gate，2026-09-18 起）
+adaptive_agent auto-apply 可按账号批量应用 proposed 提案（画像升级），
+校准 confirm 达门槛时自动落权重配置；decision_engine 无 --config 时自动加载
+auto_enabled=true 的配置。
+『放开 gate』不等于『放开护栏』，底线不变：
+  · 权重归一化（总和=1）与回归护栏（action 翻转>0 则拒自动启用）
+  · 只写新版本文件 + VersionLog，原画像不覆盖（可回滚）
+  · <3 例样本的校准保持 research，不落权重（A07）
 
 Rule A14  无样本不下结论
 FN、历史修改缓冲、方差等无真实数据支撑的项，输出"无样本/待回填"，
