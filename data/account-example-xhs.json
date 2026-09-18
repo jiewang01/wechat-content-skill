@@ -1,0 +1,46 @@
+{
+  "account_id": "ACCOUNT-XHS-001",
+  "platform": "小红书",
+  "account": {
+    "name": "示例种草号",
+    "category": "生活方式",
+    "followers": 12000
+  },
+  "audience": {
+    "age_distribution": { "18-24": 0.35, "25-34": 0.5, "35-44": 0.15 },
+    "gender_distribution": { "male": 0.2, "female": 0.8 },
+    "location_distribution": { "一线城市": 0.4, "新一线": 0.35, "其他": 0.25 },
+    "interest_tags": ["美妆", "护肤", "穿搭", "美食", "母婴", "家居", "宠物"]
+  },
+  "content": {
+    "niches": ["美妆", "护肤", "生活方式"],
+    "preferred_topics": ["测评", "种草", "探店"],
+    "forbidden_topics": ["医美项目体验", "借贷推广"],
+    "content_formats": ["图文", "短视频"],
+    "style": "真实种草"
+  },
+  "performance": {
+    "avg_views": 8000,
+    "median_views": 6500,
+    "avg_engagement_rate": 0.08,
+    "conversion_rate": 0.02,
+    "historical_campaigns": ["护肤测评 ×5", "美妆种草 ×3", "探店 ×2"]
+  },
+  "commercial": {
+    "historical_revenue": null,
+    "historical_cpm": 10,
+    "historical_cpe": null,
+    "preferred_categories": ["护肤", "美妆", "食品", "母婴", "家清", "服饰", "宠物"],
+    "rejected_categories": ["医美", "借贷催收", "博彩"]
+  },
+  "production": {
+    "avg_production_hours": 3,
+    "ai_generation_capability": "中等",
+    "available_formats": ["图文", "短视频"]
+  },
+  "risk": {
+    "brand_risk_tolerance": "中",
+    "restricted_categories": ["医美", "借贷催收", "博彩"],
+    "platform_risk_tolerance": "中"
+  }
+}
