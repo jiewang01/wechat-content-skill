@@ -1,0 +1,86 @@
+# ============================================================
+# AccountProfile Schema v1.0
+# Stage 1（Positioning Analysis）输出
+# 生成执行器：prompts/profile-parser.md
+# 用途：把非结构化账号信息转换为结构化账号画像，
+#       作为 Research / Ranking / Positioning Filter / Editorial 的共享上下文。
+# ============================================================
+schema: account_profile
+version: 1.0
+
+required:
+  - description
+  - source
+  - audience
+  - domain
+  - value_proposition
+  - authority
+  - boundaries
+
+fields:
+  description:
+    type: string
+    description: 用户提供的原始账号简介 / 定位（尽量原文保留）。
+  source:
+    type: string
+    enum: [explicit, inferred, unknown]
+    description: >
+      定位来源标记：
+      explicit = 用户明确描述；inferred = 从素材（主页/历史内容）推断；
+      unknown  = 无法判断
+  audience:
+    type: object
+    required: true
+    fields:
+      primary:
+        type: string[]
+        description: 核心目标读者群，1~3 个（WHO）。
+      secondary:
+        type: string[]
+        description: 次要读者群，可为空。
+  domain:
+    type: string[]
+    required: true
+    description: 内容领域，如 ["AI Coding", "Agent 工程"]。
+  value_proposition:
+    type: string[]
+    required: true
+    description: 账号为用户解决什么问题、提供什么价值（WHAT / WHY）。
+  content_style:
+    type: object
+    description: 内容风格（HOW），未知字段填 unknown。
+    fields:
+      tone:
+        type: string
+        description: 语气，如 专业 / 轻松 / 实战向 / 犀利。
+      format:
+        type: string[]
+        description: 形式，如 [长文, 图文, 视频]。
+  authority:
+    type: object
+    required: true
+    fields:
+      strengths:
+        type: string[]
+        description: 支撑内容可信度的专业优势（经历 / 领域 / 独特视角）。
+      limitations:
+        type: string[]
+        description: 明确缺乏权威的方面，用于反推边界。
+  boundaries:
+    type: string[]
+    required: true
+    description: >
+      账号不该做 / 不会做 / 不擅长做的内容。
+      Positioning Filter 的 Hard Filter 依据；至少 1 项。
+  platform:
+    type: string
+    description: 平台，如 wechat / xiaohongshu / zhihu，未知填 unknown。
+  constraints:
+    type: string[]
+    description: 平台或作者施加的内容约束（长度、频率、敏感范围等），可为空。
+
+rules:
+  - 无法判断的字段一律填 unknown，禁止编造。
+  - boundaries 无明确描述时，基于 authority.limitations 反推并标注 [inferred]。
+  - audience.primary 不超过 3 个。
+  - 任何推断内容（字段值或条目）必须附加 "[inferred]" 标记。

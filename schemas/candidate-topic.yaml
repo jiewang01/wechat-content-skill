@@ -1,0 +1,49 @@
+# ============================================================
+# CandidateTopic Schema v1.0
+# Stage 3（Candidate Generation）输出
+# 生成执行器：prompts/topic-generator.md
+# 注意：candidate 是「内容机会对象」，不是标题。
+# ============================================================
+schema: candidate_topic
+version: 1.0
+
+required:
+  - core_topic
+  - user_problem
+  - target_audience
+  - content_angle
+  - evidence
+  - source_signals
+
+fields:
+  core_topic:
+    type: string
+    required: true
+    description: 内容机会主题（非标题），如 "AI Coding 中的 Context Engineering"。
+  user_problem:
+    type: string
+    required: true
+    description: 对应用户的真实问题（来自 research 的 demand / discussion 信号）。
+  target_audience:
+    type: string
+    description: 该选题面向的具体读者（对应 account_profile.audience，可含推断）。
+  content_angle:
+    type: string
+    required: true
+    description: 切入角度（区别于现有内容与竞品内容的独特点）。
+  content_type:
+    type: string
+    enum: [tutorial, trend, case_study, opinion, practice, pitfall, tooling, methodology]
+    description: 内容类型，供 Editorial 阶段选择大纲结构。
+  evidence:
+    type: evidence[]
+    required: true
+    description: 支撑该候选的证据（结构与 research-finding 一致）。
+  source_signals:
+    type: string[]
+    description: 来源信号（对应的 research_finding.topic 或信号标签），保证可追溯。
+
+rules:
+  - 每条候选必须对应一个明确用户问题，且至少有 1 条证据。
+  - core_topic 是内容机会，不是标题、不是新闻复述。
+  - 语义重复的候选（如 "AI Agent Memory" / "Agent 长期记忆" / "Agent Memory Management"）只保留最强一条。

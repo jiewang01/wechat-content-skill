@@ -1,0 +1,86 @@
+# ============================================================
+# ResearchFinding & Evidence Schema v1.0
+# Stage 2（Research）输出；每个 research_finding 是可独立评估的中间产物
+# 生成执行器：prompts/research.md
+# ============================================================
+schema: research_finding
+version: 1.0
+
+required:
+  - topic
+  - signals
+  - evidence
+  - content_gap
+  - candidate_angles
+
+fields:
+  topic:
+    type: string
+    description: 该 finding 聚焦的主题。
+  signals:
+    type: object
+    description: 三个 Lens 的信号摘要，没有证据支持的信号为 null 或标注低置信。
+    fields:
+      trend:
+        type: string
+        description: 趋势信号：最近发生了什么（新产品 / 技术 / 事件 / 观点 / 行业变化）。
+      demand:
+        type: string
+        description: 需求信号：用户在关心 / 搜索 / 询问什么。
+      discussion:
+        type: string
+        description: 讨论信号：社区 / 评论区 / FAQ 在讨论什么。
+  evidence:
+    type: evidence[]
+    required: true
+    description: 事实层依据（见下方 evidence 定义），每个重要结论至少 1 条。
+  user_questions:
+    type: string[]
+    description: 从社区 / 评论区 / 搜索中捕捉到的真实用户问题（原话或近义转述）。
+  existing_content:
+    type: object
+    description: 现有内容情况（Content Lens 产出）。
+    fields:
+      saturation:
+        type: string
+        enum: [very_low, low, medium, high, very_high]
+        description: 内容饱和度评估。
+      summary:
+        type: string
+        description: 现有内容覆盖了什么、主流观点是什么。
+      representative_samples:
+        type: string[]
+        description: 高互动内容样本（标题 / 来源）。
+  content_gap:
+    type: string
+    required: true
+    description: 高需求 + 存在讨论 + 内容有缺口的交集点。
+  candidate_angles:
+    type: string[]
+    description: 该 gap 可以切入的内容角度（角度，非标题）。
+
+# ---- 子类型：evidence（在全部 schema 中复用）----
+evidence:
+  source:
+    type: string
+    description: 来源名称 / URL。
+  source_type:
+    type: string
+    enum: [news, product, community, discussion, search_trend, official_doc, analytics, social, other]
+    description: 来源类型。
+  date:
+    type: string
+    description: "YYYY-MM-DD；未知填 unknown。"
+  claim:
+    type: string
+    description: 可验证的事实陈述（发生了什么 / 谁说了什么 / 数据是什么）。
+  confidence:
+    type: string
+    enum: [high, medium, low]
+    description: 对 claim 可靠性的置信度。
+
+rules:
+  - evidence 记录的是事实层（发生了什么、用户说了什么、数据如何），不是观点层（我认为……）。
+  - 每个重要 finding 必须有至少 1 条 evidence 支撑；无依据的信号必须标注 confidence: low。
+  - 引用的实时数据必须标注来源与日期；无法核实的数据一律不写。
+  - 若整个 Research 有效信号 < 3，执行器应输出 `Research Insufficient`，不产出弱结论。

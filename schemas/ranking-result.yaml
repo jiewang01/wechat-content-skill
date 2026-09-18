@@ -1,0 +1,75 @@
+# ============================================================
+# RankingResult Schema v1.0
+# Stage 4（Market Ranking）输出：TopN
+# 生成执行器：prompts/ranking.md
+# 注：本阶段只评估「市场潜力」，不含任何账号适配评估。
+# ============================================================
+schema: ranking_result
+version: 1.0
+
+required:
+  - ranking_method
+  - top_n
+  - ranked
+  - analysis
+
+fields:
+  ranking_method:
+    type: string
+    description: 评分模型说明，如 "Market Score = Demand×25% + Pain×20% + Trend×15% + Novelty×15% + ContentGap×15% + Evidence×10%"。
+  top_n:
+    type: integer
+    description: 目标 TopN（默认 5，可配置）。
+  ranked:
+    type: ranked_item[]
+    required: true
+    description: 按 market_score 降序排列。
+  analysis:
+    type: object
+    description: 排名过程的去重与多样性说明。
+    fields:
+      pool_size:
+        type: integer
+        description: 进入评分的候选池规模。
+      deduplicated:
+        type: integer
+        description: 因语义重复合并 / 剔除的数量。
+      diversity_note:
+        type: string
+        description: TopN 是否覆盖不同角度 / 类型的说明。
+
+# ---- 子类型：ranked_item ----
+ranked_item:
+  rank:
+    type: integer
+    description: 从 1 递增。
+  topic:
+    type: string
+    description: candidate.core_topic。
+  core_problem:
+    type: string
+    description: candidate.user_problem。
+  content_angle:
+    type: string
+    description: candidate.content_angle。
+  market_score:
+    type: number
+    description: 加权总分，0~100。
+  score_breakdown:
+    type: object
+    description: 各维度原始分，0~100。
+    fields:
+      demand: number
+      pain: number
+      trend: number
+      novelty: number
+      content_gap: number
+      evidence: number
+  evidence:
+    type: evidence[]
+    description: 支撑该排名的关键证据。
+
+rules:
+  - Market Score 只回答「这个题值不值得做」，不评估「这个账号是否应该做」。
+  - 评分必须给出理由（引用 evidence / 信号），禁止凭感觉打分。
+  - 未进入 TopN 但与 TopN 差额很小的候选，在 analysis 中记录备选。

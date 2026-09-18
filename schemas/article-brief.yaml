@@ -1,0 +1,93 @@
+# ============================================================
+# ArticleBrief Schema v1.0
+# Stage 6（Editorial Development）最终输出
+# 生成执行器：prompts/editorial.md
+# 用途：可作为下游 Writing Skill 的直接输入。
+# ============================================================
+schema: article_brief
+version: 1.0
+
+required:
+  - account
+  - selected_topic
+  - target_reader
+  - pain_points
+  - core_insight
+  - key_arguments
+  - title_candidates
+  - outline
+  - evidence
+  - risks
+
+fields:
+  account:
+    type: object
+    description: 上下文速览。
+    fields:
+      positioning: string
+      audience: string
+      value_proposition: string[]
+  selected_topic:
+    type: object
+    required: true
+    fields:
+      topic: string
+      angle: string
+      why_selected:
+        type: object
+        fields:
+          market_reason: string
+          audience_reason: string
+          account_reason: string
+          differentiation_reason: string
+      confidence:
+        type: string
+        enum: [high, medium, low]
+  target_reader:
+    type: string
+    description: 这篇文章具体写给谁（比 audience 更具体）。
+  pain_points:
+    type: object
+    description: 只输出有证据或明确逻辑支持的维度，缺失维度省略；禁止模板化硬凑五类。
+    fields:
+      functional: string   # 做不到
+      efficiency: string   # 太慢 / 太复杂 / 重复劳动
+      cognitive: string    # 不知道为什么失败
+      risk: string         # 担心出错 / 返工 / 数据损失 / 不可控
+      emotional: string    # 焦虑 / 挫败 / 不确定性
+  core_insight:
+    type: object
+    required: true
+    fields:
+      misconception: string      # 用户以为的问题是什么 / 主流认知
+      evidence: string[]         # 为什么（支持证据摘要）
+      insight: string            # 真正值得讨论的问题与核心判断
+  key_arguments:
+    type: string[]
+    description: 支撑核心观点的 3~5 个论点。
+  title_candidates:
+    type: string[]
+    description: 5~10 个标题候选；允许吸引人，禁止夸大 / 虚构。
+  outline:
+    type: outline_section[]
+    required: true
+    description: 按主题类型选择结构（见 prompts/editorial.md）。
+  evidence:
+    type: evidence[]
+    description: 全文关键事实依据（复用 research-finding evidence 结构）。
+  risks:
+    type: risk[]
+    description: 内容风险与应对。
+
+# ---- 子类型：outline_section ----
+outline_section:
+  section: string
+  purpose: string       # 该段要达成的目标
+  key_points: string[]  # 该段要点（非空壳）
+  notes: string         # 可选：写作提示 / 素材线索
+
+# ---- 子类型：risk ----
+risk:
+  risk: string
+  severity: string      # high / medium / low
+  mitigation: string
